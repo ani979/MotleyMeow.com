@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <link href="js/fb.js" rel="stylesheet">
+        <script language="JavaScript1.1">
+ 
+var slideimages=new Array()
+var slidelinks=new Array()
+function slideshowimages(){
+for (i=0;i<slideshowimages.arguments.length;i++){
+slideimages[i]=new Image()
+slideimages[i].src=slideshowimages.arguments[i]
+}
+}
+
+function slideshowlinks(){
+for (i=0;i<slideshowlinks.arguments.length;i++)
+slidelinks[i]=slideshowlinks.arguments[i]
+}
+
+function gotoshow(){
+if (!window.winslide||winslide.closed)
+winslide=window.open(slidelinks[whichlink])
+else
+winslide.location=slidelinks[whichlink]
+winslide.focus()
+}
+</script>
+
+h
+      </head>
+    <body>
+     
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Website Name </a>
+    </div>
+
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="p2.html">Home<span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">About Us</a></li>
+
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">More <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Contact Us</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Register</a></li>
+            <li class="divider"></li>
+            <li><a href="#">login</a></li>
+            <li class="divider"></li>
+            <li><a href="#">link 1</a></li>
+            <li class="divider"></li>
+            <li><a href="#">link 2</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-right">
+        <div class="form-group">
+          
+          <input type="text" class="form-control" placeholder="Username">
+          <input type="text" class="form-control" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-default">login</button>
+      
+      </form>
+      
+    </div>
+  </div>
+</nav>
+  
+
+<a href="javascript:gotoshow()"><img src="images/1.jpg" name="slide" border=0 width=960 height=356 ></a>
+<script>
+
+
+
+slideshowimages("images/1.jpg","images/2.jpg","images/3.jpg","images/4.jpg","images/5.jpg")
+slideshowlinks("#","#","#","#","#")
+
+var slideshowspeed=2000
+
+var whichlink=0
+var whichimage=0
+function slideit(){
+if (!document.images)
+return
+document.images.slide.src=slideimages[whichimage].src
+whichlink=whichimage
+if (whichimage<slideimages.length-1)
+whichimage++
+else
+whichimage=0
+setTimeout("slideit()",slideshowspeed)
+}
+slideit()
+</script>
+</div>
+          
+          
+                <form class="form-horizontal pull-right static-top no-margin no-padding">
+                  <h1>Sign up</h1>
+  <div class="form-group" >
+    <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
+    <div class="col-sm-8">
+      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+    </div>
+  </div>
+  <div class="form-group" >
+    <label for="phone" class="col-sm-3 control-label">Ph no</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="phone" placeholder="phone number">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+    <div class="col-sm-8">
+      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-3 control-label">confirm Password</label>
+    <div class="col-sm-8">
+      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox"> Remember me
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Sign in</button>
+    </div>
+  </div>
+</form>
+              </div>
+            </div>
+          </div>
+      
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

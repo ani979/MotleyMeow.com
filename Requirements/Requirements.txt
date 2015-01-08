@@ -1,0 +1,48 @@
+Your city
+Login through facebook, Google, create your own account
+Search - Plays & People
+Auditions - recent auditions, past auditions
+Upcoming plays
+Requests: Direction, Actors, script writer, lights, sound, etc..
+Performance & rehearsal spaces - Advertise your space
+Theatre groups
+About theatre
+Give feedback:
+
+For every person:
+Name:
+Gender:
+Role: Actor/Director/Audience/back stage/etc.
+About the person:
+Part-time/full-time:
+Recommendations:
+Plays involved in: Play - Involved as?
+
+For every play:
+Event date:
+Director
+Actors
+Writer
+Producer:
+Lights
+Sound
+Dramaturgist
+Movement speacialist
+Feedback from the audience
+.....
+
+For every group:
+About the group
+Founded:
+Plays performed
+
+
+Wireframes
+Node.js + mongoDB
+
+
+
+
+
+
+

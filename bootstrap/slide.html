@@ -1,0 +1,28 @@
+<a href="javascript:gotoshow()"><img src="1.jpg" name="slide" border=0 width=771 height=375></a>
+<script>
+<!--
+
+//configure the paths of the images, plus corresponding target links
+slideshowimages("1.jpg","2.jpg","3.jpg","4.jpg","5.jpg")
+slideshowlinks("http://food.epicurious.com/run/recipe/view?id=13285","http://food.epicurious.com/run/recipe/view?id=10092","http://food.epicurious.com/run/recipe/view?id=100975","http://food.epicurious.com/run/recipe/view?id=2876","http://food.epicurious.com/run/recipe/view?id=20010")
+
+//configure the speed of the slideshow, in miliseconds
+var slideshowspeed=2000
+
+var whichlink=0
+var whichimage=0
+function slideit(){
+if (!document.images)
+return
+document.images.slide.src=slideimages[whichimage].src
+whichlink=whichimage
+if (whichimage<slideimages.length-1)
+whichimage++
+else
+whichimage=0
+setTimeout("slideit()",slideshowspeed)
+}
+slideit()
+
+//-->
+</script>
