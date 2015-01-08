@@ -1,0 +1,4 @@
+08/01/2014
+1) Login from facebook/google - Animesh
+2) Add city name - to be copied
+2) Profile edit/view page - Chethan
