@@ -8,38 +8,13 @@
 
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
-        <link href="js/fb.js" rel="stylesheet">
-        <script language="JavaScript1.1">
-
-vvar slideimages=new Array()
-var slidelinks=new Array()
-function slideshowimages(){
-  for (i=0;i<slideshowimages.arguments.length;i++){
-    slideimages[i]=new Image()
-    slideimages[i].src=slideshowimages.arguments[i]
-  }
-}
-
-function slideshowlinks(){
-  for (i=0;i<slideshowlinks.arguments.length;i++)
-    slidelinks[i]=slideshowlinks.arguments[i]
-  }
-
-  function gotoshow(){
-    if (!window.winslide||winslide.closed)
-      winslide=window.open(slidelinks[whichlink])
-      else
-        winslide.location=slidelinks[whichlink]
-        winslide.focus()
-      }
-</script>
-
+        
 
       </head>
-    <body>
+    <body  background="images/8.jpg">
 
 
-    <nav class="navbar navbar-inverse navbar-static-top">
+    <nav class="navbar navbar-inverse navbar-static-top no-margin">
   <div class="container-fluid">
 
     <div class="navbar-header">
@@ -70,57 +45,68 @@ function slideshowlinks(){
 </nav>
 
 
-<a href="javascript:gotoshow()"><img src="images/1.jpg" name="slide" border=0 width=960 height=356 ></a>
-<script>
+ <!-- Carousel
+    ================================================== -->
+    <div class="col-md-9 col-xs-8 no-padding no-margin">
+      
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item active"><a href="#">
+          <img src="images/1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
+          
+        </div>
+        <div class="item"><a href="#">
+          <img src="images/2.jpg" border=0 width=1025 height=356 alt="Second slide"></a>
+         
+        </div>
+        <div class="item"><a href="#">
+          <img src="images/5.jpg" border=0 width=1025 height=356  alt="Third slide"></a>
+         
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div><!-- /.carousel -->
+  </div>
 
+ <div class="col-md-3 col-xs-4">
+     <form class="form-horizontal static-top no-margin no-padding">
+      
+                  <h1><font color="white">Join Us</font></h1>
 
-
-slideshowimages("images/1.jpg","images/2.jpg","images/3.jpg","images/4.jpg","images/5.jpg")
-slideshowlinks("#","#","#","#","#")
-
-var slideshowspeed=2000
-
-var whichlink=0
-var whichimage=0
-function slideit(){
-  if (!document.images)
-    return
-    document.images.slide.src=slideimages[whichimage].src
-    whichlink=whichimage
-    if (whichimage<slideimages.length-1)
-      whichimage++
-      else
-        whichimage=0
-        setTimeout("slideit()",slideshowspeed)
-      }
-      slideit()
-      </script>
-    </div>
-
-
-                <form class="form-horizontal pull-right static-top no-margin no-padding">
-                  <h1>JOIN US </h1>
   <div class="form-group" >
-    <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
+    <label for="inputEmail3" class="col-sm-3 control-label"><font color="white">Email</font></label>
     <div class="col-sm-8">
       <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
     </div>
   </div>
   <div class="form-group" >
-    <label for="phone" class="col-sm-3 control-label">Ph no</label>
+    <label for="phone" class="col-sm-3 control-label"><font color="white">Phone no</font></label>
     <div class="col-sm-8">
       <input type="text" class="form-control" id="phone" placeholder="phone number">
     </div>
   </div>
   <div class="form-group">
-    <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+    <label for="inputPassword3" class="col-sm-3 control-label"><font color="white">Password</font></label>
     <div class="col-sm-8">
       <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
     </div>
   </div>
-
+  
   <div class="form-group">
-    <label for="inputPassword3" class="col-sm-3 control-label">confirm Password</label>
+    <label for="inputPassword3" class="col-sm-3 control-label"><font color="white">Confirm password</font></label>
     <div class="col-sm-8">
       <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
     </div>
@@ -129,25 +115,29 @@ function slideit(){
     <div class="col-sm-offset-2 col-sm-10">
       <div class="checkbox">
         <label>
-          <input type="checkbox"> Remember me
+          <input type="checkbox"><font color="white">Remember me</font>
         </label>
       </div>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">Join us</button>
-
-
+      <button type="submit" class="btn btn-default">Sign in</button>
     </div>
-
-
   </div>
 </form>
+
               </div>
             </div>
           </div>
-
+          <div class="container">
+            <div >
+<h2 style="text-align:center "><font style="font-family:timesnewroman" size="100" color="white">Random caption</font></h2>
+</div>
+</div>
+<div class="container">
+  <div>
+  <p><font style="font-family:timesnewroman" size="50" color="white"> Movies will make you famous,Television will make you rich,but the Theartre will make you good at what you are.</font></p>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <script src="js/jquery.js"></script>
