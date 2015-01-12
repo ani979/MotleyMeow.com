@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        
+
+      </head>
+    <body  background="images/8.jpg">
+
+
+    <nav class="navbar navbar-inverse navbar-static-top no-margin">
+  <div class="container-fluid">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">BuzzingArtists </a>
+    </div>
+
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="p2.html">Home<span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Vision</a></li>
+        <li><a href="#">about us changed</a></li>
+        <li><a href="#">Contact us</a></li>
+
+      </ul>
+      <ul class="nav nav-bar pull-right">
+          <!-- <li><a class="btn btn-primary navbar-btn" href="loginpage.html">Login</a></li> -->
+          <% if (user != null) { %>
+          <div class="col-md-3 col-xs-4">
+            <h2 style="text-align:center "><font color="white"> Hi <%= user.email %></font></h2>
+          <% } else { %>
+            <li><a class="btn btn-primary navbar-btn" href="/signup">Login</a></li>
+          <% } %>
+      </ul>
+
+
+    </div>
+  </div>
+</nav>
+
+
+ <!-- Carousel
+    ================================================== -->
+    <div class="col-md-9 col-xs-8 no-padding no-margin">
+      
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item active"><a href="#">
+          <img src="images/1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
+          
+        </div>
+        <div class="item"><a href="#">
+          <img src="images/2.jpg" border=0 width=1025 height=356 alt="Second slide"></a>
+         
+        </div>
+        <div class="item"><a href="#">
+          <img src="images/5.jpg" border=0 width=1025 height=356  alt="Third slide"></a>
+         
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div><!-- /.carousel -->
+  </div>
+<div>
+ <div class="col-md-3 col-xs-4">
+
+        <% if (user != null) { %>
+          <div class="col-md-3 col-xs-4">
+            <li><a class="btn btn-primary navbar-btn" href="/signout">Sign Out</a></li>
+        <% } else { %>
+            <div>
+               <form class="form-horizontal" action="/login" method="post" >
+                <h1><font color="white">login</font></h1>
+
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-4 control-label"><font color="white">user-id or email</font></label>
+                <div class="col-sm-8">
+                  <input type="email" class="form-control" name="username" id="inputEmail3" placeholder="Email">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword3" class="col-sm-4 control-label"><font color="white">password</font></label>
+                <div class="col-sm-8">
+                  <input type="password" class="form-control" name="password" id="inputPassword3" placeholder="Password">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-4">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"><font color="white">Remember</font>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-4">
+                  <button type="submit" class="btn btn-default">Sign in</button>
+                </div>
+              </div>
+              <div class="col-sm-offset-4 col-sm-4">
+                <i class="fa fa-facebook"></i>
+                <a class='btn btn-primary' href="javascript:void(0);" onClick="FB.login(function(resp){ if (resp.authResponse)jfb_js_login_callback(); }, {scope:'email,publish_actions,user_about_me,user_location,user_likes,user_website'});" style="width:12em"> Sign in with Facebook</a>
+              </div>
+            </form>
+          </div>
+        <% } %>
+</div>
+             
+          </div>
+          <div class="container">
+            <div >
+<h2 style="text-align:center "><font style="font-family:timesnewroman" size="100" color="white">Random caption</font></h2>
+</div>
+</div>
+<div class="container">
+  <div>
+  <p><font style="font-family:timesnewroman" size="50" color="white"> Movies will make you famous,Television will make you rich,but the Theartre will make you good at what you are.</font></p>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
