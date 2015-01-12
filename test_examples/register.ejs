@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login details</title>
+</head>
+<script type="text/javascript">
+var count = 0;
+  function showMe (box,boxname) {
+        var chboxs = document.getElementsByName(boxname);
+        var vis = "none";
+        for(var i=0;i<chboxs.length;i++) { 
+            if(chboxs[i].checked){
+             vis = "block";
+                break;
+            }
+        }
+        document.getElementById(box).style.display = vis;
+    }
+
+    function displayRoles (box,boxname) {
+        var noOfRoles = document.getElementById(boxname);
+        console.log("no of roles: "+noOfRoles.length);
+for (var i = 0; i < noOfRoles.length; i++) {
+	console.log("message : "+noOfRoles[0].selected);
+	switch(i) {
+				case 0:
+				if(noOfRoles[0].selected == true) {
+				document.getElementById("role_actor").style.display = "block";
+				} else {
+					document.getElementById("role_actor").style.display = "none";
+				}
+				break;
+				case 1:
+				if(noOfRoles[1].selected == true) {
+				document.getElementById("role_scriptwriter").style.display = "block";
+				} else {
+					document.getElementById("role_scriptwriter").style.display = "none";
+				}					
+				break;
+				case 2:
+				if(noOfRoles[2].selected == true) {
+				document.getElementById("role_lightman").style.display = "block";
+				} else {
+					document.getElementById("role_lightman").style.display = "none";
+				}
+				break;
+				case 3:
+				if(noOfRoles[3].selected == true) {
+				document.getElementById("role_setdesigner").style.display = "block";
+				} else {
+					document.getElementById("role_setdesigner").style.display = "none";
+				}
+			}
+	// if(noOfRoles[0].selected == true) {
+	// 	document.getElementById("role").style.display = "block";
+	// }
+};
+
+        // if(noOfRoles > 0) {
+        // 	count = 1;
+        // 	document.getElementById(box).style.display = "block";
+        // } else {
+        // 	count = 0;
+        // 	document.getElementById(box).style.display = "none";
+        // }
+        console.log("count: "+count);
+    }
+</script>
+<body>
+<!-- <h1>Login details</h1> -->
+	<hr>
+	<form action="" method="post">
+		<label for="">User Id :</label>
+		<input type="email" name="userId" id="">
+		<br>
+		<br>
+		<label for="">Password :</label>
+		<input type="password" name="password" id="">
+		<br>
+		<br>
+		<!-- <label for="">Name :</label>
+		<input type="text" name="name" id=""> -->
+		<label for="">FirstName :</label>
+		<input type="text" name="fname" id="">
+		<br>
+		<br>
+		<label for="">LastName :</label>
+		<input type="text" name="lname" id="">
+		<br>
+		<br>
+		<label for="">MobileNumber :</label>
+		<input type="value" name="pnumber" id="">
+		<br>
+		<br>
+		<label for="">DOB :</label>
+		<input type="text" name="dbirth" id="">
+		<br>
+		<br>
+		<label for="">CityOfResidence :</label>
+		<input type="text" name="cres" id="">
+		<br>
+		<br>
+		<!-- <form> -->
+		<!-- <input type="checkbox" name="roleCheckBox" onclick="showMe('role','roleCheckBox')">Role -->
+		<label for="">Roles :</label>
+					<select name="roles" id ="roles" onclick="displayRoles('role','roles')" multiple	>
+  						<option value="actor">Actor</option>
+  						<option value="scriptwriter">Scriptwriter</option>
+  						<option value="lightman">Lightman</option>
+  						<option value="setdesigner">Setdesigner</option>
+  						<option value="costumedesigner">Costumedesigner</option>
+					</select>
+		<!-- </form> -->
+		<div id="role_actor" style="display:none">
+			<br>
+			<br>
+			<label for="">Experience_actor :</label>
+					<select name="experience_actor">
+  						<option value="one">1</option>
+  						<option value="two">2</option>
+  						<option value="three">3</option>
+  						<option value="four">4</option>
+					</select>
+			<br>
+			<br>
+			<label for="">Availability_actor :</label>
+					<select name ="availability_actor">
+  						<option value="yes">Yes</option>
+  						<option value="yes">No</option>
+					</select>
+			<br>
+			<br>
+			<input type="checkbox" name="performance_actor" onclick="showMe('div_performance_actor','performance_actor')">Performance_actor
+				<div id="div_performance_actor" style="display:none">
+					<br>
+					<br>
+					<label for="">EventName_actor :</label>
+					<input type="text" name="eventName_actor" id="">
+					<br>
+					<br>
+					<label for="">Link_actor :</label>
+					<input type="text" name="link_actor" id="">
+				</div>
+		</div>
+
+		<div id="role_scriptwriter" style="display:none">
+			<br>
+			<br>
+			<label for="">Experience_scriptwriter :</label>
+					<select name="experience_scriptwriter">
+  						<option value="one">1</option>
+  						<option value="two">2</option>
+  						<option value="three">3</option>
+  						<option value="four">4</option>
+					</select>
+			<br>
+			<br>
+			<label for="">Availability_scriptwriter :</label>
+					<select name ="availability_scriptwriter">
+  						<option value="yes">Yes</option>
+  						<option value="yes">No</option>
+					</select>
+			<br>
+			<br>
+			<input type="checkbox" name="performance_scriptwriter" onclick="showMe('div_performance_scriptwriter','performance_scriptwriter')">Performance_scriptwriter
+				<div id="div_performance_scriptwriter" style="display:none">
+					<br>
+					<br>
+					<label for="">EventName_scriptwriter :</label>
+					<input type="text" name="eventName_scriptwriter" id="">
+					<br>
+					<br>
+					<label for="">Link_scriptwriter :</label>
+					<input type="text" name="link_scriptwriter" id="">
+				</div>
+		</div>
+
+		<div id="role_lightman" style="display:none">
+			<br>
+			<br>
+			<label for="">Experience_lightman:</label>
+					<select name="experience_lightman">
+  						<option value="one">1</option>
+  						<option value="two">2</option>
+  						<option value="three">3</option>
+  						<option value="four">4</option>
+					</select>
+			<br>
+			<br>
+			<label for="">Availability_lightman :</label>
+					<select name ="availability_lightman">
+  						<option value="yes">Yes</option>
+  						<option value="yes">No</option>
+					</select>
+			<br>
+			<br>
+			<input type="checkbox" name="performance_lightman" onclick="showMe('div_performance_lightman','performance_lightman')">Performance_lightman
+				<div id="div_performance_lightman" style="display:none">
+					<br>
+					<br>
+					<label for="">EventName_lightman :</label>
+					<input type="text" name="eventName_lightman" id="">
+					<br>
+					<br>
+					<label for="">Link_lightman :</label>
+					<input type="text" name="link_lightman" id="">
+				</div>
+		</div>
+
+		<div id="role_setdesigner" style="display:none">
+			<br>
+			<br>
+			<label for="">Experience_setdesigner :</label>
+					<select name="experience_setdesigner">
+  						<option value="one">1</option>
+  						<option value="two">2</option>
+  						<option value="three">3</option>
+  						<option value="four">4</option>
+					</select>
+			<br>
+			<br>
+			<label for="">Availability_setdesigner :</label>
+					<select name ="availability_setdesigner">
+  						<option value="yes">Yes</option>
+  						<option value="yes">No</option>
+					</select>
+			<br>
+			<br>
+			<input type="checkbox" name="performance_setdesigner" onclick="showMe('div_performance_setdesigner','performance_setdesigner')">Performance_setdesigner
+				<div id="div_performance_setdesigner" style="display:none">
+					<br>
+					<br>
+					<label for="">EventName_setdesigner :</label>
+					<input type="text" name="eventName_setdesigner" id="">
+					<br>
+					<br>
+					<label for="">Link_setdesigner :</label>
+					<input type="text" name="link_setdesigner" id="">
+				</div>
+		</div>
+		<br>
+		<br>
+		<input type="submit" value="Add User">
+	</form>
+</body>
+</html>
