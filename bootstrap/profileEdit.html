@@ -10,7 +10,7 @@
     <title></title>
         <link href="css/tab.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
-        
+        <link href="css/bootstrap.css" rel="stylesheet">
        
           </head>
 
@@ -52,17 +52,7 @@
     });
 
 
-    $('[data-toggle="tooltip"]').tooltip();
-
-    $('button').click(function(e) {
-        e.preventDefault();
-        alert("This is a demo.\n :-)");
-    });
-});
-
-    $(function(){
-$('a[title]').tooltip();
-});
+    
 
     </script>
     <body>
@@ -193,7 +183,8 @@ $('a[title]').tooltip();
                              <label class="col-sm-3 control-label" for="card-holder-name">Email address</label>
                             <div class="col-sm-9">
                               <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name" value = "ani979@gmail.com">
-                            </div>
+                              <span class="fieldNote">Not made public - only used for notifications, recommendations, etc.</span>
+                              </div>
                           </div>
                           <div class="form-group">
                              <label class="col-sm-3 control-label" for="card-holder-name">Location</label>
@@ -266,8 +257,99 @@ $('a[title]').tooltip();
                           </div>
                           
                         </div>
-                    <div class="tab-pane fade" id="tab2primary">Primary 2</div>
-                    <div class="tab-pane fade" id="tab3primary">Primary 3</div>
+                    <div class="tab-pane fade" id="tab2primary">We would like to know what binds you in theatre. This will enable us to connect you to ones who are looking for artists like you!! 
+                      <div class="form-group" style = "margin-left:1px; margin-right=1px; ">
+                            <label class="control-label">Your association or interests in theatre:</label> 
+                              <br>
+                          <div class = "col-sm-6">
+                            <label class="checkbox-inline">
+                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Acting
+                            </label>
+                           </div> 
+                           <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                          </div>
+                          <div class = "col-sm-6">
+                            <label class="checkbox-inline">
+                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Directing
+                            </label>
+                           </div> 
+                           <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                          </div>
+                          <div class = "col-sm-6">
+                            <label class="checkbox-inline">
+                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Sound
+                            </label>
+                           </div> 
+                           <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                          </div>
+                          <div class = "col-sm-6">
+                            <label class="checkbox-inline">
+                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Lights
+                            </label>
+                           </div> 
+                           <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                          </div>
+                          <div class = "col-sm-6">
+                            <label class="checkbox-inline">
+                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Music
+                            </label>
+                           </div> 
+                           <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                          </div>
+                          <div class = "col-sm-6">
+                            <label class="checkbox-inline">
+                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Scriptwriting
+                            </label>
+                           </div> 
+                           <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                          </div>
+                          <div class = "col-sm-6">
+                            <label class="checkbox-inline">
+                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Costume
+                            </label>
+                           </div> 
+                           <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                          </div>
+                          <div class = "col-sm-6">
+                            <label class="checkbox-inline">
+                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Set Design
+                            </label>
+                           </div> 
+                           <div class="col-sm-6">
+                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                          </div>
+
+                               
+                         <div>
+
+                    </div> 
+
+                            
+                      </div>
+                      
+                   </div>      
+                          
+
+                    <div class="tab-pane fade" id="tab3primary">You can set your availability through which you let us know if you are to be disturbed for requests that come your way.
+                     <div class="form-group">
+                        <label for="happy" class="col-sm-4 col-md-4 control-label text-right">Are you available?</label>
+                        <div class="col-sm-7 col-md-7">
+                          <div class="input-group">
+                            <div id="radioBtn" class="btn-group">
+                              <a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="Y">YES</a>
+                              <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="N">NO</a>
+                            </div>
+                            <input type="hidden" name="happy" id="happy">
+                          </div>
+                        </div>
+                      </div>
                   </div>      
               </fieldset>
         </form>
@@ -280,6 +362,9 @@ $('a[title]').tooltip();
                   
                   <div class="panel-footer">
                         <a title="Mail us" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+                        
+            <span style="padding-left: 20px;">Please ensure this abides by our <a href="/legal/terms/" target="_blank">Terms of Service</a> and <a href="/help/guidelines" target="_blank">Community Guidelines</a>.</span>
+                        
                         <span class="pull-right">
                             <a href="profileEdit.html" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a>
                             <a title="Remove me from this site" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
@@ -455,8 +540,33 @@ $('a[title]').tooltip();
         </div>
 </div>
 -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('button').click(function(e) {
+        e.preventDefault();
+        alert("This is a demo.\n :-)");
+    });
+
+
+$(function(){
+$('a[title]').tooltip();
+});
+
+
+$("#radioBtn a").on("click", function() {
+    
+    var sel = $(this).data('title');
+    var tog = $(this).data('toggle');
+    
+    $('#'+tog).prop('value', sel);
+    
+    $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+});
+    </script>
   </body>
 </html>

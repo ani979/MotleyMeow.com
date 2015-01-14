@@ -253,3 +253,15 @@
     color: #fff; /* active text color */
     background-color: #a94442; /* active bg color */
 }
+
+#radioBtn .notActive{
+    color: #3276b1;
+    background-color: #fff;
+}
+
+.fieldNote {
+    font-size: 11px;
+    line-height: 14px;
+    color: #666;
+    padding-top: 0;
+}
