@@ -12000,10 +12000,12 @@ div.tertiaryNavigation {
     border-bottom: 1px solid #666;
     font-size: 11px;
     line-height: normal;
+	padding-left:80px;
+	padding-top:45px;
+	width:860px;
 }
 
 div.tertiaryNavigation ul li {
-    float: left;
     position: relative;
     margin: 0 6px -1px 0;
 }
@@ -17727,3 +17729,17 @@ img.friend-listening-now-icon {
     color: #333;
 }
 
+div.profView {
+    
+    margin-right: auto; /* -330px */
+    width: 100%;
+    overflow: hidden;
+}
+
+div.profWrapper {
+    margin-right: auto; /* 330px */
+    overflow: hidden;
+	padding-left: 90px;
+	padding-top: 25px;
+    padding-right: 0;
+}
