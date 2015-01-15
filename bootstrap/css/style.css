@@ -8,18 +8,28 @@
 }
 .site-footer
 {
+
+	position:relative;
+	margin-top:-358px;
+	
+	clear:both;
+	
+	bottom:0;
+	width:100%;
+	border-top:1px #e1e3e3 solid;
+	z-index:100;
 	background-color: #222;
 
 	color: #fff;
-	margin-top: 30px;
-	padding: 30px;
+	#padding-top: 10px;
+	#padding-bottom: 5px;
 
 }
 .bottom-footer
 {
 	
 	margin-top: 10px;
-	padding-top:10px;
+	padding-top:0px;
 	color: #b2b2b2;
 }
 .footer-nav
@@ -58,3 +68,9 @@
 	width: 15%;
 
 }
+.cp-copyright{
+	text-align:center;
+	border-top:1px #f1f2f2 dotted;
+	clear:both;
+}
+
