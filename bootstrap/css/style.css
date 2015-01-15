@@ -9,6 +9,7 @@
 .site-footer
 {
 	background-color: #222;
+
 	color: #fff;
 	margin-top: 30px;
 	padding: 30px;
@@ -16,14 +17,14 @@
 }
 .bottom-footer
 {
-	border-top:1px solid #b2b2b2;
+	
 	margin-top: 10px;
 	padding-top:10px;
 	color: #b2b2b2;
 }
 .footer-nav
 {
-	text-align: right;
+	text-align: center;
 	list-style: none
 }
 .footer-nav li
@@ -45,5 +46,15 @@
 {
   color: #fff;
   text-decoration: none;
+
+}
+.col-md-8
+{
+	width: 35.6%;
+	
+}
+.col-md-4
+{
+	width: 15%;
 
 }
