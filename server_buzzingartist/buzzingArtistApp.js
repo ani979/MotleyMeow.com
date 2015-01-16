@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var FB = require('fb');
 
 var dbConfig = require('./db');
 var mongoose = require('mongoose');
@@ -11,9 +12,9 @@ var mongoose = require('mongoose');
 // Connect to DB
 mongoose.connect(dbConfig.url);
 
-var home = require('./routes/home_buzzingartist'),
-login = require('./routes/login_buzzingartist'),
-app = express();
+// var home = require('./routes/home_buzzingartist'),
+// login = require('./routes/login_buzzingartist'),
+var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,6 +29,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+ // Using the flash middleware provided by connect-flash to store messages in session
+ // and displaying in templates
+var flash = require('connect-flash');
+app.use(flash());
+
 // Configuring Passport
 var passport = require('passport');
 var expressSession = require('express-session');
@@ -36,17 +42,14 @@ app.use(expressSession({secret: 'mySecretKey'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
- // Using the flash middleware provided by connect-flash to store messages in session
- // and displaying in templates
-var flash = require('connect-flash');
-app.use(flash());
-
 // Initialize Passport
 var initPassport = require('./passport/init');
 initPassport(passport);
 
 var index = require('./routes/index')(passport);
 app.use('/', index);
+var index_facebook = require('./routes/index_facebook');
+app.get( '/login/callback',  index_facebook.loginCallback);
 
 // app.use('/', home);	
 // app.use('/login', login);	

@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+   <style>
+  img { width:100%; }
+</style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/tab.css" rel="stylesheet">
+
+   </head>
+
+    <script type="text/javascript">
+          var count = 0;
+           function showMe (box) {
+                document.getElementById(box).style.display = "block";
+    }
+
+    function showandhideMe (box, oldbox) {
+                document.getElementById(oldbox).style.display = "none";
+                document.getElementById(box).style.display = "block";
+
+    }
+    $(document).ready(function() {
+    var panels = $('.user-infos');
+    var panelsButton = $('.dropdown-user');
+    panels.hide();
+
+    //Click dropdown
+    panelsButton.click(function() {
+        //get data-for attribute
+        var dataFor = $(this).attr('data-for');
+        var idFor = $(dataFor);
+
+        //current button
+        var currentButton = $(this);
+        idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+            if(idFor.is(':visible'))
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+            }
+            else
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+            }
+        })
+    });
+
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('button').click(function(e) {
+        e.preventDefault();
+        alert("This is a demo.\n :-)");
+    });
+});
+
+    $(function(){
+$('a[title]').tooltip();
+});
+
+    </script>
+    <body>
+     
+
+<nav class="navbar navbar-inverse navbar-static-top no-margin">
+  <div class="container-fluid">
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">BuzzingArtists </a>
+    </div>
+
+       
+      <form class="navbar-form navbar-right">
+        <button type="submit" class="btn btn-default"><a href="/signout">logout</a></button>
+       </form> 
+    </div>
+  </div>
+</nav>
+<section style="background:#efefe9;">
+        <div class="container">
+            <div class="row">
+                <div class="board">
+                    <!-- <h2>Welcome to IGHALO!<sup>™</sup></h2>-->
+                    <div class="board-inner">
+                    <ul class="nav nav-tabs" id="myTab">
+                    <div class="liner"></div>
+                     <li class="active">
+                     <a href="home.html"  title="home">
+                      <span class="round-tabs one">
+                              <i class="glyphicon glyphicon-home"></i>
+                      </span> 
+                  </a></li>
+
+                  <li><a href="profileEdit.html"  title="profile">
+                     <span class="round-tabs two">
+                         <i class="glyphicon glyphicon-user"></i>
+                     </span> 
+                      </a>
+                 </li>
+                 <li><a href="#messages"  title="inbox">
+                     <span class="round-tabs three">
+                          <i class="glyphicon glyphicon-gift"></i>
+                     </span> </a>
+                     </li>
+
+                     <li><a href="#settings" title="provide feedback">
+                         <span class="round-tabs four">
+                              <i class="glyphicon glyphicon-comment"></i>
+                         </span> 
+                     </a></li>
+
+                    
+                     
+                     </ul></div>
+
+                     
+</section>
+ <div class="container">
+      <div class="row">
+      <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+           
+
+        
+       <br>
+
+      </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+   
+   
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Hi, <%= user %></h3>
+              <A href="profileEdit.html" >Edit Profile</A>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle"> </div>
+                
+                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                  <dl>
+                    <dt>DEPARTMENT:</dt>
+                    <dd>Administrator</dd>
+                    <dt>HIRE DATE</dt>
+                    <dd>11/12/2013</dd>
+                    <dt>DATE OF BIRTH</dt>
+                       <dd>11/12/2013</dd>
+                    <dt>GENDER</dt>
+                    <dd>Male</dd>
+                  </dl>
+                </div>-->
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Full Name:</td>
+                        <td>Animesh Shrivastava</td>
+                      </tr>
+                      <tr>
+                        <td>Age:</td>
+                        <td>35 years</td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td>ani979@gmail.com</td>
+                      </tr>
+                   
+                         <tr>
+                             <tr>
+                        <td>Gender</td>
+                        <td>Male</td>
+                      </tr>
+                        <tr>
+                        <td>Your contribution in theatre:</td>
+                        <td>Actor</td>
+                        <td>Experience</td>
+                      </tr>
+                      <tr>
+                        
+                      </tr>
+                        
+                     
+                    </tbody>
+                  </table>
+                  
+                  
+                </div>
+              </div>
+            </div>
+                 <div class="panel-footer">
+                        <a title="Mail us" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+                        <span class="pull-right">
+                            <a href="profileedit.html" title="Edit me" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a title="Remove me from this site" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                        </span>
+                    </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--<div class="col-md-2">
+  <img src="" alt="image" class="img-thumbnail"  style="width:140px;height:140px">
+  <div class="pull-left">
+  <a href=""><u> First name </u></a><div></div>
+<a href=""><u>last name</u></a><div></div>
+<a href="">city</a>
+</div>
+</div>
+<div class="col-md-7">
+
+<h2>Requirements,ongoing events,auditions,upcoming plays</h2>
+</div>
+<!--<div class="col-md-3">
+  <h1>Edit profile</h1>
+  <b>How do you want to controbute to theatre?</b>
+  <b>Add the number of years of experience column next to the checkbox</b>
+  <div class="form-group">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Actor
+          
+          <div class="form-group pull-right" >
+        <div class="col-sm-4">
+      <input type="text" class="form-control" >
+    </div>
+        </div></label>
+     
+    </div>
+    <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">director
+          </label>
+        </div>
+          </div>
+    
+
+<div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">producer
+          </label>
+
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Sound designer
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">lighting designer
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Graphic artist
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Theatre blogger
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Costume disigner
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Editor
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Mucsician
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">photo grapher
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">video grapher
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">content writer
+          </label>
+        </div>
+          </div>
+         <div> 
+          <b>If you are an actor,languages you are comfortable with</b>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Hindi
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">English
+          </label>
+        </div>
+          </div>
+          <div class="form-group ">
+      
+        <div class="checkbox">
+          <label>
+            <input type="checkbox">Kannada
+          </label>
+        </div>
+          </div>
+          
+          
+       <div class="container">
+          <button type="submit" class="btn btn-default ">Update profile</button>
+        </div>
+</div>
+-->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
