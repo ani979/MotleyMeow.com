@@ -154,8 +154,8 @@
                 <div class="panel-heading">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab1primary" data-toggle="tab">Basic</a></li>
-                            <li><a href="#tab2primary" data-toggle="tab">Artistic</a></li>
-                            <li><a href="#tab3primary" data-toggle="tab">Famous</a></li>
+                            <li><a href="#tab2primary" data-toggle="tab">On the stage</a></li>
+                            <li><a href="#tab3primary" data-toggle="tab">Part of Audience</a></li>
                             
                         </ul>
                 </div>
@@ -257,7 +257,9 @@
                           </div>
                           
                         </div>
-                    <div class="tab-pane fade" id="tab2primary">We would like to know what binds you in theatre. This will enable us to connect you to ones who are looking for artists like you!! 
+                    <div class="tab-pane fade" id="tab2primary">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! You can put the number of years experience in your interest area.
+                    <br>
+                    <span class="fieldNote">We at BuzzingArtists believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, put zero in the years of experience.</span>
                       <div class="form-group" style = "margin-left:1px; margin-right=1px; ">
                             <label class="control-label">Your association or interests in theatre:</label> 
                               <br>
@@ -271,7 +273,7 @@
                           </div>
                           <div class = "col-sm-6">
                             <label class="checkbox-inline">
-                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Directing
+                                  <input type="checkbox" id="inlineCheckbox1" value="Directing" > Directing
                             </label>
                            </div> 
                            <div class="col-sm-6">
@@ -279,7 +281,7 @@
                           </div>
                           <div class = "col-sm-6">
                             <label class="checkbox-inline">
-                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Sound
+                                  <input type="checkbox" id="artisticCheckbox1" value="Sound" > Sound
                             </label>
                            </div> 
                            <div class="col-sm-6">
@@ -287,7 +289,7 @@
                           </div>
                           <div class = "col-sm-6">
                             <label class="checkbox-inline">
-                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Lights
+                                  <input type="checkbox" id="artisticCheckbox2" value="Lights" > Lights
                             </label>
                            </div> 
                            <div class="col-sm-6">
@@ -295,7 +297,7 @@
                           </div>
                           <div class = "col-sm-6">
                             <label class="checkbox-inline">
-                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Music
+                                  <input type="checkbox" id="artisticCheckbox3" value="Music" > Music
                             </label>
                            </div> 
                            <div class="col-sm-6">
@@ -303,7 +305,7 @@
                           </div>
                           <div class = "col-sm-6">
                             <label class="checkbox-inline">
-                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Scriptwriting
+                                  <input type="checkbox" id="artisticCheckbox4" value="Scriptwriting" > Scriptwriting
                             </label>
                            </div> 
                            <div class="col-sm-6">
@@ -311,7 +313,7 @@
                           </div>
                           <div class = "col-sm-6">
                             <label class="checkbox-inline">
-                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Costume
+                                  <input type="checkbox" id="artisticCheckbox5" value="Costume" > Costume
                             </label>
                            </div> 
                            <div class="col-sm-6">
@@ -319,38 +321,156 @@
                           </div>
                           <div class = "col-sm-6">
                             <label class="checkbox-inline">
-                                  <input type="checkbox" id="inlineCheckbox1" value="Acting" > Set Design
+                                  <input type="checkbox" id="artisticCheckbox6" value="SetDesign" > Set Design
                             </label>
                            </div> 
                            <div class="col-sm-6">
-                                 <input type="text" class="form-control" placeholder="number of years of experience"> 
+                                 <input type="text" class="form-control" placeholder="number of years of experience" id = "artisticText"> 
                           </div>
 
-                               
-                         <div>
-
-                    </div> 
-
-                            
-                      </div>
+                       </div>        
+                          <div class="form-group" style = "margin-left:1px; margin-right=1px;">You can set your availability through which you can let us know if you are to be disturbed for requests that come your way.<br>
+                                <label for="happy" class="col-sm-7 col-md-7 control-label text-right" >Are you available currently?</label>
+                                <div class="col-sm-4 col-md-4" style="padding-top: 7px; padding-left: 20px;">
+                                  <div class="input-group">
+                                    <div id="radioBtn" class="btn-group">
+                                      <a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="Y">YES</a>
+                                      <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="N">NO</a>
+                                    </div>
+                                    <input type="hidden" name="happy" id="happy">
+                                  </div>
+                                </div>
+                          </div>
+                      
                       
                    </div>      
                           
 
-                    <div class="tab-pane fade" id="tab3primary">You can set your availability through which you let us know if you are to be disturbed for requests that come your way.
-                     <div class="form-group">
-                        <label for="happy" class="col-sm-4 col-md-4 control-label text-right">Are you available?</label>
-                        <div class="col-sm-7 col-md-7">
-                          <div class="input-group">
-                            <div id="radioBtn" class="btn-group">
-                              <a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="Y">YES</a>
-                              <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="N">NO</a>
+                    <div class="tab-pane fade" id="tab3primary">Without an audience, theatre won't survive! We would like to know what binds you in theatre or what doesnt bind you. This form is the most important and without it we consider our efforts incomplete. 
+                      <br>
+                      <label class="control-label">What kind of theatre-goer are you?:</label> 
+                    </br>
+                     <br>
+                     <div id="accordion-container">
+                         <div class="accordion" id="accordion2">
+                           <div class="accordion-group">                          
+                              <div class="accordion-heading">
+                                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" data-target="#collapseOne" href="#collapseOne">
+                                     Avid goer (watches almost every other play played in the town)
+                                  </a>
+                              </div>
+                              
+                              <div id="collapseOne" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                      Excellent! Thanks a lot. Theatre certainly need people like you. Tell us what binds you in theatre:
+                                      <BR>
+                                      <div class = "col-sm-6">
+                                          <label class="checkbox-inline">
+                                              <input type="checkbox" id="avidgoercheckbox1" value="avidgoercheckbox1" /> Sheer love for the art
+                                          </label>
+                                      </div>
+                                      <div class = "col-sm-6">
+                                          <label class="checkbox-inline">
+                                              <input type="checkbox" id="avidgoercheckbox2" value="avidgoercheckbox2" /> Amazing production houses
+                                          </label>
+                                      </div>
+                                      <div class = "col-sm-4">
+                                          <label class="checkbox-inline">
+                                              <input type="checkbox" id="avidgoercheckbox3" value="avidgoercheckbox2" /> Brilliant scripts 
+                                          </label>
+                                      </div>
+                                      
+                                      <div class="col-sm-8">
+                                           <input type="textbox" class="form-control" placeholder="Anything else that's not mentioned above" id = "avidgoertext"/> 
+                                           <span class="fieldNote">Use comma for separation</span>
+                                      </div>  
+                                </div>
+                              </div>
+                          </div> 
+                          <BR>
+                          <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" data-target="#collapseTwo" href="#collapseTwo">
+                                   Sometimes (when someone known is performing or a famous play being played)
+                                </a>
                             </div>
-                            <input type="hidden" name="happy" id="happy">
+                            <div id="collapseTwo" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    Excellent! Thanks a lot. Theatre certainly need people like you. Tell us what holds you back(apart from no time):
+                                    <BR>
+                                    <div class = "col-sm-6">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="frequentgoercheckbox1" value="frequentgoercheckbox1" /> Too much for the wallet
+                                        </label>
+                                    </div>
+                                    <div class = "col-sm-6">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="frequentgoercheckbox2" value="frequentgoercheckbox2" /> Not sure what is worth watching!
+                                        </label>
+                                    </div>
+                                    <div class = "col-sm-4">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="frequentgoercheckbox3" value="frequentgoercheckbox3" /> Distance matters
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="col-sm-8">
+                                     <input type="textbox" class="form-control" placeholder="Anything else that's not mentioned above" id = "freqgoertext"/> 
+                                     <span class="fieldNote">Use comma for separation</span>
+                                    </div>  
+                                </div>
+                            </div>
                           </div>
+                          <BR>
+                          <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" data-target="#collapseThree" href="#collapseThree">
+                                  Never been so far
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    
+                                      Excellent! There is always a first time for everything. Tell us what holds you back(apart from no time):
+                                      <BR>
+                                      <div class = "col-sm-6">
+                                          <label class="checkbox-inline">
+                                              <input type="checkbox" id="neverbeencheckbox1" value="neverbeencheckbox1" /> What's in it for me!
+                                          </label>
+                                      </div>
+                                      <div class = "col-sm-6">
+                                          <label class="checkbox-inline">
+                                              <input type="checkbox" id="neverbeencheckbox2" value="neverbeencheckbox2" /> Not aware of plays running in town
+                                          </label>
+                                      </div>
+       
+                                      <div class = "col-sm-6">
+                                          <label class="checkbox-inline">
+                                              <input type="checkbox" id="neverbeencheckbox3" value="neverbeencheckbox3" /> Too costly!
+                                          </label>
+                                      </div>
+                                      <div class = "col-sm-6">
+                                          <label class="checkbox-inline">
+                                              <input type="checkbox" id="neverbeencheckbox4" value="Bneverbeencheckbox4" /> Distance matters
+                                          </label>
+                                      </div>
+                                      <div class = "col-sm-4">
+                                          <label class="checkbox-inline">
+                                              <input type="checkbox" id="neverbeencheckbox5" value="neverbeencheckbox5" /> Prefer movies
+                                          </label>
+                                      </div>
+                                      
+                                      <div class="col-sm-8">
+                                         <input type="textbox" class="form-control" placeholder="Anything else that's not mentioned above" id = "neverbeentext"/> 
+                                         <span class="fieldNote">Use comma for separation</span>
+                                      </div>  
+                                  </div>
+                                </div>
+                             </div>   
                         </div>
                       </div>
-                  </div>      
+                  </div>
+                </div>      
               </fieldset>
         </form>
   
@@ -378,172 +498,12 @@
       </div>
     </div>
 
-<!--<div class="col-md-2">
-  <img src="" alt="image" class="img-thumbnail"  style="width:140px;height:140px">
-  <div class="pull-left">
-  <a href=""><u> First name </u></a><div></div>
-<a href=""><u>last name</u></a><div></div>
-<a href="">city</a>
-</div>
-</div>
-<div class="col-md-7">
-
-<h2>Requirements,ongoing events,auditions,upcoming plays</h2>
-</div>
-<!--<div class="col-md-3">
-  <h1>Edit profile</h1>
-  <b>How do you want to controbute to theatre?</b>
-  <b>Add the number of years of experience column next to the checkbox</b>
-  <div class="form-group">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Actor
-          
-          <div class="form-group pull-right" >
-        <div class="col-sm-4">
-      <input type="text" class="form-control" >
-    </div>
-        </div></label>
-     
-    </div>
-    <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">director
-          </label>
-        </div>
-          </div>
-    
-
-<div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">producer
-          </label>
-
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Sound designer
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">lighting designer
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Graphic artist
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Theatre blogger
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Costume disigner
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Editor
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Mucsician
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">photo grapher
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">video grapher
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">content writer
-          </label>
-        </div>
-          </div>
-         <div> 
-          <b>If you are an actor,languages you are comfortable with</b>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Hindi
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">English
-          </label>
-        </div>
-          </div>
-          <div class="form-group ">
-      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox">Kannada
-          </label>
-        </div>
-          </div>
-          
-          
-       <div class="container">
-          <button type="submit" class="btn btn-default ">Update profile</button>
-        </div>
-</div>
--->
 
    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
+
+
     $('[data-toggle="tooltip"]').tooltip();
 
     $('button').click(function(e) {
@@ -553,9 +513,8 @@
 
 
 $(function(){
-$('a[title]').tooltip();
+    $('a[title]').tooltip();
 });
-
 
 $("#radioBtn a").on("click", function() {
     
