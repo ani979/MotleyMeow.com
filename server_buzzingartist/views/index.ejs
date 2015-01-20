@@ -8,8 +8,36 @@
     <title></title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
   </head>
-  
+  <script type="text/javascript">
+ 
+    $(document).ready(function() {
+    var panels = $('.user-infos');
+    var panelsButton = $('.dropdown-user');
+    panels.hide();
+
+    //Click dropdown
+    panelsButton.click(function() {
+        //get data-for attribute
+        var dataFor = $(this).attr('data-for');
+        var idFor = $(dataFor);
+
+        //current button
+        var currentButton = $(this);
+        idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+            if(idFor.is(':visible'))
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+            }
+            else
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+            }
+        })
+    });
+   </script> 
   <body>
 
 
@@ -88,59 +116,168 @@
     </div><!-- /.carousel -->
  <!-- </div> -->
   <div class="col-md-7 col-xs-8 no-padding no-margin" style = "padding-left: 20px; padding-right:100px;">
-      <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner">
-        
-          <div class="item active">
-            
-             <div class="carousel-caption">
-              <h3>Events in your city</h3>
-              <a href="#">
-             <img src="images/1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
-              
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. <a href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank" class="label label-danger">Bootstrap 3 - Carousel Collection</a></p>
-            </div>
-          </div><!-- End Item -->
-   
-           <div class="item">
-            
-             <div class="carousel-caption">
-              <h3>Headline</h3>
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. <a href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank" class="label label-danger">Bootstrap 3 - Carousel Collection</a></p>
-            </div>
-          </div><!-- End Item -->
-          
-          <div class="item">
-            
-             <div class="carousel-caption">
-              <h3>Headline</h3>
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. <a href="http://sevenx.de/demo/bootstrap-carousel/" target="_blank" class="label label-danger">Bootstrap 3 - Carousel Collection</a></p>
-            </div>
-          </div><!-- End Item -->
-          
-          <div class="item">
-            
-             <div class="carousel-caption">
-              <h3>Headline</h3>
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
-            </div>
-          </div><!-- End Item -->
+      <div class="panel with-nav-tabs panel-primary">
+                    <div class="panel-heading">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab1primary" data-toggle="tab">Plays running during this week</a></li>
+                                <li><a href="#tab2primary" data-toggle="tab">Workshops being held</a></li>
+                                <li><a href="#tab3primary" data-toggle="tab">Auditions running</a></li>
+                                <li><a href="#tab4primary" data-toggle="tab">Other Events, Festivals, meets, theatre jam</a></li>
+                                
+                            </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab1primary">
+                                  <div id="myCarousel" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+                                       <ol class="carousel-indicators">
+                                          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                          <li data-target="#myCarousel" data-slide-to="1"></li>
+                                          <li data-target="#myCarousel" data-slide-to="2"></li>
+                                          <li data-target="#myCarousel" data-slide-to="3"></li>
+                                          <li data-target="#myCarousel" data-slide-to="4"></li>
+                                        </ol>
+                                         <div class="carousel-inner" role="listbox">
+                                             <div class="item active"><a href="#">
+                                               <img src="images/E1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
+                                             </div>
+                                             <div class="item"><a href="#">
+                                                <img src="images/E2.jpg" border=0 width=1025 height=356 alt="Second slide"></a>
+                                             </div>
+                                              <div class="item"><a href="#">
+                                                <img src="images/E3.jpg" border=0 width=1025 height=356  alt="Third slide"></a>
+                                              </div>
+                                              <div class="item"><a href="#">
+                                                <img src="images/E4.jpg" border=0 width=1025 height=356  alt="Fourth slide"></a>
+                                              </div>
+                                              <div class="item"><a href="#">
+                                                <img src="images/E5.jpg" border=0 width=1025 height=356  alt="Fifth slide"></a>
+                                              </div>
+                                         </div>
+                                        <a class="left carousel-control" href="#myCarousel1" role="button" data-slide="prev">
+                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#myCarousel1" role="button" data-slide="next">
+                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                  </div>
+
+                            </div><!-- End Item -->
+                            <div class="tab-pane fade" id="tab2primary">
+
+                                  <div id="myCarousel2" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+                                       <ol class="carousel-indicators">
+                                          <li data-target="#myCarouse2" data-slide-to="0" class="active"></li>
+                                          <li data-target="#myCarouse2" data-slide-to="1"></li>
+                                          
+                                        </ol>
+                                         <div class="carousel-inner" role="listbox">
+                                             <div class="item active"><a href="#">
+                                               <img src="images/Wo1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
+                                             </div>
+                                             <div class="item"><a href="#">
+                                                <img src="images/Wo2.jpg" border=0 width=1025 height=356 alt="Second slide"></a>
+                                             </div>
+                                              
+                                         </div>
+                                        <a class="left carousel-control" href="#myCarousel2" role="button" data-slide="prev">
+                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#myCarousel2" role="button" data-slide="next">
+                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                  </div>
+
+                            </div><!-- End Item -->
+
+                            <div class="tab-pane fade" id="tab3primary">
+
+                                  <div id="myCarousel3" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+                                       <ol class="carousel-indicators">
+                                          <li data-target="#myCarouse3" data-slide-to="0" class="active"></li>
+                                          <li data-target="#myCarouse3" data-slide-to="1"></li>
+                                          <li data-target="#myCarouse3" data-slide-to="2"></li>
+                                        </ol>
+                                         <div class="carousel-inner" role="listbox">
+                                             <div class="item active"><a href="#">
+                                               <img src="images/1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
+                                             </div>
+                                             <div class="item"><a href="#">
+                                                <img src="images/2.jpg" border=0 width=1025 height=356 alt="Second slide"></a>
+                                             </div>
+                                              <div class="item"><a href="#">
+                                                <img src="images/5.jpg" border=0 width=1025 height=356  alt="Third slide"></a>
+                                              </div>
+                                         </div>
+                                        <a class="left carousel-control" href="#myCarousel3" role="button" data-slide="prev">
+                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#myCarousel3" role="button" data-slide="next">
+                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                  </div>
+
+                            </div><!-- End Item -->
+
+                            <div class="tab-pane fade" id="tab4primary">
+
+                                  <div id="myCarousel4" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+                                       <ol class="carousel-indicators">
+                                          <li data-target="#myCarouse4" data-slide-to="0" class="active"></li>
+                                          <li data-target="#myCarouse4" data-slide-to="1"></li>
+                                          <li data-target="#myCarouse4" data-slide-to="2"></li>
+                                          <li data-target="#myCarouse4" data-slide-to="3"></li>
+                                          <li data-target="#myCarouse4" data-slide-to="4"></li>
+                                        </ol>
+                                         <div class="carousel-inner" role="listbox">
+                                             <div class="item active"><a href="#">
+                                               <img src="images/Ev1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
+                                             </div>
+                                             <div class="item"><a href="#">
+                                                <img src="images/Ev2.jpg" border=0 width=1025 height=356 alt="Second slide"></a>
+                                             </div>
+                                              <div class="item"><a href="#">
+                                                <img src="images/Ev3.jpg" border=0 width=1025 height=356  alt="Third slide"></a>
+                                              </div>
+                                              <div class="item"><a href="#">
+                                                <img src="images/Ev4.jpg" border=0 width=1025 height=356  alt="Fourth slide"></a>
+                                              </div>
+                                              <div class="item"><a href="#">
+                                                <img src="images/Ev5.jpg" border=0 width=1025 height=356  alt="Fifth slide"></a>
+                                              </div>
+                                         </div>
+                                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                  </div>
+
+                            </div><!-- End Item -->
+
                   
-        </div><!-- End Carousel Inner -->
+                        </div><!-- End Carousel Inner -->
+
+                     </div>
 
 
-        <ul class="nav nav-pills nav-justified">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"><a href="#">Plays<small>Plays running during this week</small></a></li>
-            <li data-target="#myCarousel" data-slide-to="1"><a href="#">Workshops<small>Workshops being held</small></a></li>
-            <li data-target="#myCarousel" data-slide-to="2"><a href="#">Auditions<small>Auditions running</small></a></li>
-            <li data-target="#myCarousel" data-slide-to="3"><a href="#">Other Events<small>Festivals, meets, theatre jam</small></a></li>
-          </ul>
 
-
-      </div><!-- End Carousel -->
-    </div>
+      </div>   
+</div><!-- End Carousel -->
+    
 
     <div class="col-md-5 col-xs-2">
       <div>
