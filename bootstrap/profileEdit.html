@@ -258,9 +258,9 @@
                               </div>
                               
                             </div>
-                        <div class="tab-pane fade" id="tab2primary">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! You can put the number of years experience in your interest area.
+                        <div class="tab-pane fade" id="tab2primary">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
                         <br>
-                        <span class="fieldNote">We at BuzzingArtists believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, put zero in the years of experience.</span>
+                        <span class="fieldNote">We at BuzzingArtists believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
                           <div class="form-group" style = "margin-left:1px; margin-right=1px; ">
                                 <label class="control-label">Your association or interests in theatre:</label> 
                                   <br>
@@ -268,16 +268,12 @@
                                 <label class="checkbox-inline col-sm-3">
                                       <input type="checkbox" id="checkboxinlineActing" value="Acting" > Acting
                                 </label>
-                                                             
-                                     <input class = "form-control" type="text" placeholder="exp.in years" style="width:50%; float:right; display:none;"> 
-                              
                              </div>  
                               <div class = "col-sm-6">
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineDirecting" value="Directing" > Directing
                                 </label>
-                                <input class = "form-control" type="text" placeholder="exp.in years" style="width:50%; float:right; display:none;"> 
-                               </div> 
+                              </div> 
                                <!--<div class="col-sm-3" style= "display:block">
                                      <input type="text" class="form-control" placeholder="number of years of experience"> 
                               </div>-->
@@ -285,7 +281,6 @@
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineSound" value="Sound" > Sound
                                 </label>
-                                <input class = "form-control" type="text" placeholder="exp.in years" style="width:50%; float:right; display:none;">
                                </div> 
                                <!-- <div class="col-sm-6" style= "display:none">
                                      <input type="text" class="form-control" placeholder="number of years of experience"> 
@@ -294,7 +289,6 @@
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineLights" value="Lights" > Lights
                                 </label>
-                                <input class = "form-control" type="text" placeholder="exp.in years" style="width:50%; float:right; display:none;">
                                </div> 
                                <!-- <div class="col-sm-6" style= "display:none">
                                      <input type="text" class="form-control" placeholder="number of years of experience"> 
@@ -303,7 +297,6 @@
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineMusic" value="Music" > Music
                                 </label>
-                                <input class = "form-control" type="text" placeholder="exp.in years" style="width:50%; float:right; display:none;">
                                </div> 
                                <!-- <div class="col-sm-6" style= "display:none">
                                      <input type="text" class="form-control" placeholder="number of years of experience"> 
@@ -312,8 +305,7 @@
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineScriptwriting" value="Scriptwriting" > Scriptwriting
                                 </label>
-                                <input class = "form-control" type="text" placeholder="exp.in years" style="width:50%; float:right; display:none;">
-                               </div> 
+                              </div> 
                                <!-- div class="col-sm-6" style= "display:none">
                                      <input type="text" class="form-control" placeholder="number of years of experience"> 
                               </div> -->
@@ -321,7 +313,6 @@
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineCostume" value="Costume" > Costume
                                 </label>
-                                <input class = "form-control" type="text" placeholder="exp.in years" style="width:50%; float:right; display:none;">
                                </div> 
                                <!-- <div class="col-sm-6" style= "display:none">
                                      <input type="text" class="form-control" placeholder="number of years of experience"> 
@@ -330,8 +321,7 @@
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineSetDesign" value="SetDesign" > Set Design
                                 </label>
-                                <input class = "form-control" type="text" placeholder="exp.in years" style="width:50%; float:right; display:none;">
-                               </div> 
+                              </div> 
                                <!-- <div class="col-sm-6" style= "display:none">
                                      <input type="text" class="form-control" placeholder="number of years of experience" id = "artisticText"> 
                               </div> -->
@@ -385,7 +375,7 @@
                                   </div> 
                                </div>     
 
-                              <div class="form-group" style = "margin-left:1px; margin-right=1px;">You can set your availability through which you can let us know if you are to be disturbed for requests that come your way.<br>
+                               <div class="form-group" style = "margin-left:1px; margin-right=1px;">You can set your availability through which you can let us know if you are to be buzzed for requests that come your way.<br>
                                     <label for="happy" class="col-sm-7 col-md-7 control-label text-right" >Are you available currently?</label>
                                     <div class="col-sm-4 col-md-4" style="padding-top: 7px; padding-left: 20px;">
                                       <div class="input-group">
@@ -585,8 +575,7 @@ $(function(){
     $('a[title]').tooltip();
 });
 
-$("#radioBtn a").on("click", function() {
-    
+$('[id^=radioBtn] a').on("click", function() {
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
     
