@@ -281,15 +281,15 @@
 
     <div class="col-md-5 col-xs-2">
       <div>
-         <form class="form-signin">
+         <form class="form-signin" action="/login" method="post">
             <h3 class="heading-desc">
             <button type="button" class="close pull-right" aria-hidden="true"></button>
             Login to BuzzingArtist</h3>
             <div class="social-box">
                 <div class="row mg-btm">
                    <div class="col-md-12">
-                      <a class="btn btn-primary btn-block" href="javascript:void(0);" onClick="FB.login(function(resp){ if (resp.authResponse)jfb_js_login_callback(); }, {scope:'email,publish_actions,user_about_me,user_location,user_likes,user_website'});" style="width:12em">
-                        <i class="icon-facebook"></i> &nbsp;&nbsp;Login with Facebook
+                      <a class="btn btn-primary btn-block" href="<%- loginUrl %>"
+                        <i class="icon-facebook"></i> &nbsp;&nbsp; Login with Facebook
                       </a>
                   </div>
                 </div>
@@ -297,8 +297,8 @@
             </div>
             <div class="main">    
      
-                <input type="text" class="form-control" placeholder="Email" autofocus>
-                <input type="password" class="form-control" placeholder="Password"/>
+                <input type="text" class="form-control" name="username" placeholder="Email" autofocus>
+                <input type="password" class="form-control" name="password" placeholder="Password"/>
      
                 Are you a theatre artist? <a href="loginpage.html"> Get started here</a>
                 <span class="clearfix"></span>    

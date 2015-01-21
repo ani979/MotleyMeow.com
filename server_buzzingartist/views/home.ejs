@@ -12,7 +12,6 @@
 
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/tab.css" rel="stylesheet">
-
    </head>
 
     <script type="text/javascript">
@@ -84,7 +83,7 @@ $('a[title]').tooltip();
 
        
       <form class="navbar-form navbar-right">
-        <button type="submit" class="btn btn-default"><a href="/signout">logout</a></button>
+        <button type="submit" class="btn btn-default"><a href="/logout">logout</a></button>
        </form> 
     </div>
   </div>
@@ -142,7 +141,7 @@ $('a[title]').tooltip();
    
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title">Hi, <%= user %></h3>
+              <h3 class="panel-title">Hi <%= user.firstName %></h3>
               <A href="profileEdit.html" >Edit Profile</A>
             </div>
             <div class="panel-body">
@@ -166,7 +165,7 @@ $('a[title]').tooltip();
                     <tbody>
                       <tr>
                         <td>Full Name:</td>
-                        <td>Animesh Shrivastava</td>
+                        <td><%= user.fullName %></td>
                       </tr>
                       <tr>
                         <td>Age:</td>
@@ -174,18 +173,18 @@ $('a[title]').tooltip();
                       </tr>
                       <tr>
                         <td>Email</td>
-                        <td>ani979@gmail.com</td>
+                        <td><%= user.email %></td>
                       </tr>
                    
                          <tr>
                              <tr>
                         <td>Gender</td>
-                        <td>Male</td>
+                        <td><%= user.gender %></td>
                       </tr>
                         <tr>
-                        <td>Your contribution in theatre:</td>
+                        <!-- <td>Your contribution in theatre:</td>
                         <td>Actor</td>
-                        <td>Experience</td>
+                        <td>Experience</td> -->
                       </tr>
                       <tr>
                         

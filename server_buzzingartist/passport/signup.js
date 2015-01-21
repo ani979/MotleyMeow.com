@@ -7,11 +7,11 @@ module.exports = function(passport){
 	passport.use('signup', new LocalStrategy({
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
-        function(req, email, password, done) {
+        function(req, username, password, done) {
             console.log("signuppppppppppp");
             findOrCreateUser = function(){
                 // find a user in Mongo with provided username
-                User.findOne({ 'username' :  email }, function(err, user) {
+                User.findOne({ 'email' :  username }, function(err, user) {
                     // In case of any error, return using the done method
                     console.log("user: "+user);
                     if (err){
@@ -20,7 +20,7 @@ module.exports = function(passport){
                     }
                     // already exists
                     if (user) {
-                        console.log('User already exists with username: '+email);
+                        console.log('User already exists with username: '+username);
                         return done(null, false, req.flash('message','User Already Exists'));
                     } else {
                         // if there is no user with that email
@@ -31,8 +31,9 @@ module.exports = function(passport){
                         // newUser.username = username;
                         newUser.password = createHash(password);
                         newUser.email = req.param('username');
-                        newUser.phoneNo = req.param('phoneNo');
-                        // newUser.lastName = req.param('lastName');
+                        newUser.firstName = req.param('firstName');
+                        newUser.lastName = req.param('lastName');
+                        newUser.gender = req.param('gender');
 
                         // save the user
                         newUser.save(function(err) {
