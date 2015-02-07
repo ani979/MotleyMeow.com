@@ -36,7 +36,14 @@
                 currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
             }
         })
+
+       //(function ($) {
+          
+      //  }(jQuery));
+
+
     });
+   
    </script> 
   <body>
 
@@ -56,21 +63,26 @@
 
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
             <ul class="nav navbar-nav">
-             
-              <!-- <form class="navbar-form navbar-left" role="search" >
-              <div class="form-group" align="center">
-                <input type="text" class="form-control" placeholder="Search">
-              </div>
-              <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-            </form> -->
-
+              <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+               <li ><a href="#">Update profile <span class="sr-only">(current)</span></a></li>
+               <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
+                  <ul class="dropdown-menu" role="menu">
+                      <li><a href="postqrequest.ejs">Post a request</a></li>
+                      <li><a href="#">Browse</a></li>                      
+                  </ul>
+               </li> 
+               <li ><a href="#">Your posts<span class="sr-only">(current)</span></a></li>
             </ul>
-            <ul class="nav nav-bar pull-right">
-                <li><a class="btn btn-primary navbar-btn" href="/signup">Join us</a></li>
-            </ul>
-
-
-          
+            <ul class="nav navbar-right navbar-nav">                  
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Profile</a></li>
+                      <li><a href="#">Logout</a></li>
+                      
+                    </ul>
+                  </li>
+             </ul>              
         </div>
   </div>
 </nav>
@@ -81,6 +93,34 @@
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
    </div>
+  
+   <div class="container">
+    <h2 class="title" style= "text-align:center;">Join other artists in your city who are looking out for you</h2>
+    
+
+    <hr class="half-rule">
+
+    <div class="row">
+      <div class="col-sm-4">
+        <img src="http://getfuelux.com/assets/img/a-little-a-lot.png" alt="Modular controls" class="img-responsive">
+        <h3>Update your profile</h3>
+        <p>How do you contribute to theare? Acting or Lights or Sound or Music or just an audienceetc. <a href="profileEdit.ejs">Update it here</a> </p>
+      </div>
+      <div class="col-sm-4">
+        <img src="http://getfuelux.com/assets/img/daily-dogfooding.png" alt="Documentation &amp; Unit Tests" class="img-responsive">
+        <h3>Post your need for an artists</h3>
+        <p>Post an audition or post a need for Lights etc. <a href="PostANeed.ejs">Post it here</a> 
+      </div>
+      <div class="col-sm-4">
+        <img src="http://getfuelux.com/assets/img/umd-everywhere.png" alt="UMD Compliant" class="img-responsive">
+        <h3>Get ready to be buzzed</h3>
+        <p>Get notified for requests posted here and support theatre.</p>
+      </div>
+    </div>
+  <hr class="half-rule">
+    
+  </div>
+  <br>
      
       
  <!-- Carousel
@@ -278,10 +318,38 @@
       </div>   
 </div><!-- End Carousel -->
     
+<div class="input-group col-md-5"> <h2>Recent requests for artists</h2>
 
-    <div class="col-md-5 col-xs-4">
-     
-    </div>
+    <input id="filter" type="text" class="form-control" placeholder="Type your search key">
+      <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>Search Title</th>
+              <th>Looking for</th>
+              <th>Languages</th>
+              <th>City</th>
+          </tr>
+      </thead>
+      <tbody class="searchable">
+          <tr>
+              <td>Looking for actor</td>
+              <td>Actor, Lights</td>
+              <td>Hindi</td>
+              <td>Bengaluru</td>
+          </tr>
+          <tr>
+              <td>Need help in Music</td>
+              <td>Music</td>
+              <td>Don't bother</td>
+              <td>Mumbai</td>
+          </tr>
+          
+      </tbody>
+  </table>
+</div>
+
+
+  
 
 
 
@@ -361,7 +429,12 @@
    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
-              $(document).ready( function() {
+
+  
+
+    
+
+        $(document).ready( function() {
               $('[id^=mycarousel]').carousel({
               interval:   4000
             });
@@ -384,6 +457,18 @@
               clickEvent = false;
             });
           });
+          
+        $(document).ready(function(){
+          $('[id=filter]').on("keyup", function(){
+                      
+                      var rex = new RegExp($(this).val(), 'i');
+                      $('.searchable tr').hide();
+                      $('.searchable tr').filter(function () {
+                          return rex.test($(this).text());
+                      }).show();
+                  //})
+          });
+         }(jQuery));
 
           $('#openBtn').click(function(){
               $('#myModal').modal({show:true})

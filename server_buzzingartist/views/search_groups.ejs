@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+        <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+  </head>
+  <script type="text/javascript">
+ 
+    $(document).ready(function() {
+    var panels = $('.user-infos');
+    var panelsButton = $('.dropdown-user');
+    panels.hide();
+
+    //Click dropdown
+    panelsButton.click(function() {
+        //get data-for attribute
+        var dataFor = $(this).attr('data-for');
+        var idFor = $(dataFor);
+
+        //current button
+        var currentButton = $(this);
+        idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+            if(idFor.is(':visible'))
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+            }
+            else
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+            }
+        })
+    });
+   </script> 
+  <body>
+
+
+<nav class="navbar navbar-inverse navbar-static-top no-margin">
+  <div class="container-fluid">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">BuzzingArtists </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+             
+              <!-- <form class="navbar-form navbar-left" role="search" >
+              <div class="form-group" align="center">
+                <input type="text" class="form-control" placeholder="Search">
+              </div>
+              <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            </form> -->
+
+            </ul>
+            <ul class="nav nav-bar pull-right">
+                <li><a class="btn btn-primary navbar-btn" href="/signup">Join us</a></li>
+            </ul>
+
+
+          
+        </div>
+  </div>
+</nav>
+
+<div class = "main-container">
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <h3 class = "thtrexplore">
+      EXPLORE. CONNECT. CONTRIBUTE.
+     </h3>
+  </div>
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <h3>
+      THEATRE GROUPS AROUND YOU
+     </h3>
+     <div class="row">    
+        <div class="btn-group">
+            <button class="btn btn-primary" data-label-placement>Select City</button>
+            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><input type="checkbox" id="Bengaluru" name="NAME" value="VALUE"><label for="Bengaluru">Bengaluru</label></li>
+                <li><input type="checkbox" id="Chennai" name="NAME" value="VALUE"><label for="Chennai">Chennai</label></li>
+                <li><input type="checkbox" id="Delhi" name="NAME" value="VALUE"><label for="Delhi">Delhi</label></li>
+                <li><input type="checkbox" id="Mumbai" name="NAME" value="VALUE"><label for="Mumbai">Mumbai</label></li>
+                <li><input type="checkbox" id="AllIndia" name="NAME" value="VALUE"><label for="AllIndia">All India</label></li>
+            </ul>
+         </div>
+         
+    </div>
+    <div class="row col-md-8 col-md-offset-2">
+    
+        
+      <div>
+        
+        <div class="table-responsive">
+
+                
+              <table id="mytable" class="table table-bordered table-striped">
+                   
+                   <thead>
+                      <th>Name of the group</th>
+                      <th>Based out of</th>
+                       <th>Comfortable in Language</th>
+
+                   </thead>
+                  <tbody>
+                    <tr>
+                        <td><a href="#" >Ashok Kumar</a></td>
+                        <td>Lights</td>
+                        <td>Don't bother</td>
+                        <td>Chennai</td>
+                    </tr>
+    
+                   <tr>
+                        <td><a href="#" >Ashish Kumar</a></td>
+                        <td>Sound</td>
+                        <td>Don't bother</td>
+                        <td>Bengaluru</td>
+                      </tr>
+                      
+                      
+                  
+                  </tbody>
+        
+              </table>
+
+                 <div class="clearfix"></div>
+                    <ul class="pagination pull-right">
+                      <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+                      <li class="active"><a href="#">1</a></li>
+                      <li><a href="#">2</a></li>
+                      <li><a href="#">3</a></li>
+                      <li><a href="#">4</a></li>
+                      <li><a href="#">5</a></li>
+                      <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+  </div>
+
+         
+
+   <!-- footer starts-->
+<footer class="site-footer">
+     <div class="container">
+        <div class="bottom-footer">
+              <ul class="footer-nav">
+                <li><a href="p2demo.html">What are we</a></li>
+                <li><a href="#">Who are we</a></li>
+                <li><a href="#">Where are we</a></li>
+              </ul>
+        </div>
+    
+        <div class="cp-footer-links cpfl-social col-sm-12 text-center">
+                    <ul class="list-inline">
+                        <li><a href="" target="_blank"><img alt="facebook" src="images/fb.png" style="width:28px"></a></li>
+                        <li><a href="" target="_blank"><img alt="linkedin" src="images/lin.png" style="width:28px"></a></li>
+                        
+                    </ul>
+        </div>
+
+        <div class="row cp-copyright">
+            <div class="col-sm-12 col-xs-12">
+                <small>&copy; 2015 | Buzz'ed Pvt. Ltd.  <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. <a href="/view/user-agreement">User Agreement</a> | <a href="/view/privacy">Privacy Policy</a> | <a class="pressKitLink" data-link-position="footer" href="/static/cupickpresskit.zip" target="_blank" download="cupickpresskit.zip">Press Kit</a></small>
+            </div>
+        </div>
+      </div>  
+        
+  
+   </footer>
+    
+   <!-- footer ends-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+     <script src="js/dropdowns-enhancement.js"></script>
+    <script type="text/javascript">
+          $(document).ready( function() {
+              $('[id^=mycarousel]').carousel({
+              interval:   4000
+          });
+            
+            var clickEvent = false;
+           $('[id^=mycarousel]').on('click', '.nav a', function() {
+                clickEvent = true;
+                $('.nav li').removeClass('active');
+                $(this).parent().addClass('active');    
+            }).on('slid.bs.carousel', function(e) {
+              if(!clickEvent) {
+                var count = $('.nav').children().length -1;
+                var current = $('.nav li.active');
+                current.removeClass('active').next().addClass('active');
+                var id = parseInt(current.data('slide-to'));
+                if(count == id) {
+                  $('.nav li').first().addClass('active');  
+                }
+              }
+              clickEvent = false;
+            });
+          });
+
+          $('#openBtn').click(function(){
+              $('#myModal').modal({show:true})
+          });
+
+          $(document).ready(function(){
+            $('[id=any]').on("keyup", function(){
+                        
+                        var rex = new RegExp($(this).val(), 'i');
+                        $('.searchable tr').hide();
+                        $('.searchable tr').filter(function () {
+                            return rex.test($(this).text());
+                        }).show();
+                    //})
+            });
+         }(jQuery));
+    </script>
+  </body>
+</html>

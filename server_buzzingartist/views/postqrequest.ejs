@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+  </head>
+  <script type="text/javascript">
+ 
+    $(document).ready(function() {
+    var panels = $('.user-infos');
+    var panelsButton = $('.dropdown-user');
+    panels.hide();
+
+    //Click dropdown
+    panelsButton.click(function() {
+        //get data-for attribute
+        var dataFor = $(this).attr('data-for');
+        var idFor = $(dataFor);
+
+        //current button
+        var currentButton = $(this);
+        idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+            if(idFor.is(':visible'))
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+            }
+            else
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+            }
+        })
+    });
+   </script> 
+  <body>
+
+
+<nav class="navbar navbar-inverse navbar-static-top no-margin">
+  <div class="container-fluid">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="Landing.ejs">BuzzingArtists </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="Landing.ejs">Home <span class="sr-only">(current)</span></a></li>
+               <li ><a href="#">Update profile <span class="sr-only">(current)</span></a></li>
+               <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
+                  <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Post a request</a></li>
+                      <li><a href="#">Browse</a></li>                      
+                  </ul>
+               </li>
+               <li ><a href="#">Request posted from you <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav navbar-right navbar-nav">                  
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Profile</a></li>
+                      <li><a href="#">Logout</a></li>
+                      
+                    </ul>
+                  </li>
+             </ul>              
+        </div>
+  </div>
+</nav>
+
+<div class = "main-container">
+
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <form class="form-horizontal">
+    
+
+    <!-- Form Name -->
+    <legend>Post a request</legend>
+
+    <!-- Textarea -->
+    <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
+    <div class="control-group">
+        <label class="control-label" for="textarea">Title of the request</label>
+        <div class="controls">                       
+          <input type="textarea" name="title" id="title" class="input-lg" placeholder="Need an actor etc." style="text-align: center; width: 40%;">
+
+        </div>
+     </div>   
+          
+      <div class="control-group">
+        <label class="control-label" for="textarea">Copy paste the requirement from FB or write it down</label>
+        <div class="controls">                       
+          <textarea id="textarea" name="textarea" style="width:60%;min-height:300px;"></textarea>
+      </div>
+
+      <div class="control-group col-md-12">
+      <label class="control-label" for="checkboxes">Select the city</label>
+      <div class="controls">
+        <label class="checkbox-inline" for="checkboxes-0">
+          <input name="checkboxes" id="checkboxes-0" value="1" type="checkbox">
+         Bengaluru
+        </label>
+        <label class="checkbox-inline" for="checkboxes-1">
+          <input name="checkboxes" id="checkboxes-1" value="2" type="checkbox">
+         Chennai
+        </label>
+        <label class="checkbox-inline" for="checkboxes-2">
+          <input name="checkboxes" id="checkboxes-2" value="3" type="checkbox">
+          Pune
+        </label>
+        <label class="checkbox-inline" for="checkboxes-3">
+          <input name="checkboxes" id="checkboxes-3" value="4" type="checkbox">
+          Mumbai
+        </label>
+        <label class="checkbox-inline" for="checkboxes-0">
+          <input name="checkboxes" id="checkboxes-4" value="5" type="checkbox">
+          Delhi
+        </label>
+        <label class="checkbox-inline" for="checkboxes-0">
+          <input name="checkboxes" id="checkboxes-4" value="5" type="checkbox">
+          Pan India
+        </label>
+      </div>
+    </div>
+
+    <!--</div>-->
+    <!-- Multiple Checkboxes -->
+    <div class="control-group">
+      <label class="control-label" for="checkboxes">Select artists you need</label>
+      <div class="controls">
+        <label class="checkbox-inline" for="checkboxes-0">
+          <input name="checkboxes" id="checkboxes-0" value="Option one" type="checkbox">
+          Actor
+        </label>
+        <label class="checkbox-inline" for="checkboxes-1">
+          <input name="checkboxes" id="checkboxes-1" value="Option two" type="checkbox">
+          Lights
+        </label>
+      </div>
+    </div>
+
+    <!-- Multiple Checkboxes (inline) -->
+    <div class="control-group col-md-12">
+      <label class="control-label" for="checkboxes">Comfortable in languages</label>
+      <div class="controls">
+        <label class="checkbox-inline" for="checkboxes-0">
+          <input name="checkboxes" id="checkboxes-0" value="1" type="checkbox">
+          Hindi
+        </label>
+        <label class="checkbox-inline" for="checkboxes-1">
+          <input name="checkboxes" id="checkboxes-1" value="2" type="checkbox">
+         Kannada
+        </label>
+        <label class="checkbox-inline" for="checkboxes-2">
+          <input name="checkboxes" id="checkboxes-2" value="3" type="checkbox">
+          Bengali
+        </label>
+        <label class="checkbox-inline" for="checkboxes-3">
+          <input name="checkboxes" id="checkboxes-3" value="4" type="checkbox">
+          Hindi
+        </label>
+        <label class="checkbox-inline" for="checkboxes-0">
+          <input name="checkboxes" id="checkboxes-4" value="5" type="checkbox">
+          Don't bother
+        </label>
+      </div>
+    </div>
+
+
+    <!-- Button -->
+    <div class="control-group">
+      <label class="control-label" for="singlebutton">Submit your request</label>
+      <div class="controls">
+        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+
+    </fieldset>
+    </form>
+  </div>  
+</div>    
+
+         
+
+   <!-- footer starts-->
+<footer class="site-footer">
+     <div class="container">
+        <div class="bottom-footer">
+              <ul class="footer-nav">
+                <li><a href="p2demo.html">What are we</a></li>
+                <li><a href="#">Who are we</a></li>
+                <li><a href="#">Where are we</a></li>
+              </ul>
+        </div>
+    
+        <div class="cp-footer-links cpfl-social col-sm-12 text-center">
+                    <ul class="list-inline">
+                        <li><a href="" target="_blank"><img alt="facebook" src="images/fb.png" style="width:28px"></a></li>
+                        <li><a href="" target="_blank"><img alt="linkedin" src="images/lin.png" style="width:28px"></a></li>
+                        
+                    </ul>
+        </div>
+
+        <div class="row cp-copyright">
+            <div class="col-sm-12 col-xs-12">
+                <small>&copy; 2015 | Buzz'ed Pvt. Ltd.  <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. <a href="/view/user-agreement">User Agreement</a> | <a href="/view/privacy">Privacy Policy</a> | <a class="pressKitLink" data-link-position="footer" href="/static/cupickpresskit.zip" target="_blank" download="cupickpresskit.zip">Press Kit</a></small>
+            </div>
+        </div>
+      </div>  
+        
+  
+   </footer>
+    
+   <!-- footer ends-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+              $(document).ready( function() {
+              $('[id^=mycarousel]').carousel({
+              interval:   4000
+            });
+            
+            var clickEvent = false;
+           $('[id^=mycarousel]').on('click', '.nav a', function() {
+                clickEvent = true;
+                $('.nav li').removeClass('active');
+                $(this).parent().addClass('active');    
+            }).on('slid.bs.carousel', function(e) {
+              if(!clickEvent) {
+                var count = $('.nav').children().length -1;
+                var current = $('.nav li.active');
+                current.removeClass('active').next().addClass('active');
+                var id = parseInt(current.data('slide-to'));
+                if(count == id) {
+                  $('.nav li').first().addClass('active');  
+                }
+              }
+              clickEvent = false;
+            });
+          });
+
+          $('#openBtn').click(function(){
+              $('#myModal').modal({show:true})
+            });
+    </script>
+  </body>
+</html>

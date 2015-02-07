@@ -58,16 +58,7 @@
   text-decoration: none;
 
 }
-.col-md-8
-{
-	width: 35.6%;
-	
-}
-.col-md-4
-{
-	width: 15%;
 
-}
 .cp-copyright{
 	text-align:center;
 	border-top:1px #f1f2f2 dotted;
@@ -91,7 +82,8 @@ div.srchBox {
 }
 
 .main-container{
-	position:relative
+	position:relative;
+  width: 100%;
 }
 .thtrexplore {
     letter-spacing: 4px;
@@ -203,4 +195,8 @@ div.srchBox {
   min-height: 500px;
   max-height: 500px;
 }
+.table th {
+   text-align: center;   
+}
+
 
