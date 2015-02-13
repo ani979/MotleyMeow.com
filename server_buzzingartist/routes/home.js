@@ -21,24 +21,25 @@ var profile = {
     gender:'',
 };
 
-var isAuthenticated = function (req, res, next) {
-    // if user is authenticated in the session, call the next() to call the next request handler 
-    // Passport adds this method to request object. A middleware is allowed to add properties to
-    // request and response objects
-    console.log("req.session.access_token inside home.isAuthenticated: "+req.session.access_token);
-    console.log("req.session.access_token inside home.req.isAuthenticated(): "+req.isAuthenticated());
-    if (req.isAuthenticated() || req.session.access_token)
-        return next();
-    // if the user is not authenticated then redirect him to the login page
-    // res.redirect('/');
-    return null;
-}
+// var isAuthenticated = function (req, res, next) {
+//     // if user is authenticated in the session, call the next() to call the next request handler 
+//     // Passport adds this method to request object. A middleware is allowed to add properties to
+//     // request and response objects
+//     console.log("req.session.access_token inside home.isAuthenticated: "+req.session.access_token);
+//     console.log("req.session.access_token inside home.req.isAuthenticated(): "+req.isAuthenticated());
+//     if (req.isAuthenticated() || req.session.access_token)
+//         return next();
+//     // if the user is not authenticated then redirect him to the login page
+//     // res.redirect('/');
+//     return null;
+// }
 
 exports.index = function(req, res) {
+    //req.session = null;
     var accessToken = req.session.access_token;
-    console.log("accesstoken: "+accessToken);
+    console.log("accesstoken: "+ accessToken);
     if(!accessToken) {
-        console.log("isAuthenticatedddddddd: "+req.isAuthenticated());
+        console.log("isAuthenticatedddddddd: "+ req.isAuthenticated());
         if(req.isAuthenticated()) {
             res.redirect('/home');
         } else {
@@ -55,11 +56,13 @@ exports.index = function(req, res) {
 
 exports.loginCallback = function (req, res, next) {
     var code            = req.query.code;
-
+    console.log("I am here in the callback and code is " + code);
     if(req.query.error) {
         // user might have disallowed the app
+        console.log("Am i here1");
         return res.send('login-error ' + req.query.error_description);
-    } else if(!code) {
+    } else {
+        console.log("Am i here2");
         return res.redirect('/');
     }
 
@@ -95,6 +98,26 @@ exports.logout = function (req, res) {
     console.log("LOGOUTTTTT");
     req.session = null; // clear session
     res.redirect('/');
+};
+
+
+exports.profile = function (req, res) {
+    var accessToken = req.session.access_token;
+    console.log("accesstoken111: "+ accessToken);
+    if(!accessToken) {
+        console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
+        if(req.isAuthenticated()) {
+            console.log("req.user city " + req.session.user.local.city);
+            console.log("req.user name " + req.session.user.facebook.name);
+            res.render('profileEdit', { user: req.session.user });
+        } else {
+                res.redirect('/');
+            
+        }
+    } else {
+        // res.render('home');
+        res.redirect('/');
+    }
 };
 
 exports.home = function (req,res) {

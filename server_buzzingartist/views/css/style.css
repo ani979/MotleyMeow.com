@@ -13,7 +13,7 @@
 	margin-top:-358px;
 	
 	clear:both;
-	
+	position: fixed;
 	bottom:0;
 	width:100%;
 	border-top:1px #e1e3e3 solid;

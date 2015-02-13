@@ -1,0 +1,4 @@
+1) Session still persists even if the user has logged out of FB. session issue.
+2) refactor to keep stuff at different places
+3) ensure no email id is changed in profile update. It cannot be updated.
+4) Update button need to corrected in profile edit.

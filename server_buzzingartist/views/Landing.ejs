@@ -64,7 +64,7 @@
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-               <li ><a href="#">Update profile <span class="sr-only">(current)</span></a></li>
+               <li ><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
                <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
                   <ul class="dropdown-menu" role="menu">
                       <li><a href="postqrequest.ejs">Post a request</a></li>
@@ -77,8 +77,8 @@
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Profile</a></li>
-                      <li><a href="#">Logout</a></li>
+                      <li><a href="/profile">Profile</a></li>
+                      <li><a href="/logout">Logout</a></li>
                       
                     </ul>
                   </li>
@@ -95,7 +95,8 @@
    </div>
   
    <div class="container">
-    <h2 class="title" style= "text-align:center;">Join other artists in your city who are looking out for you</h2>
+    <h2 class="title" style= "text-align:center;">Hi, <strong> <%= user.facebook.name %> <strong></h2>
+     <h3 style= "text-align:center;">Join other artists in your city who are looking out for you</h3>
     
 
     <hr class="half-rule">
@@ -104,7 +105,7 @@
       <div class="col-sm-4">
         <img src="http://getfuelux.com/assets/img/a-little-a-lot.png" alt="Modular controls" class="img-responsive">
         <h3>Update your profile</h3>
-        <p>How do you contribute to theare? Acting or Lights or Sound or Music or just an audienceetc. <a href="profileEdit.ejs">Update it here</a> </p>
+        <p>How do you contribute to theare? Acting or Lights or Sound or Music or just an audienceetc. <a href="/profile">Update it here</a> </p>
       </div>
       <div class="col-sm-4">
         <img src="http://getfuelux.com/assets/img/daily-dogfooding.png" alt="Documentation &amp; Unit Tests" class="img-responsive">

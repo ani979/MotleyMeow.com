@@ -15,7 +15,7 @@
        
           </head>
 
-    <script type="text/javascript">
+  <script type="text/javascript">
           var count = 0;
            function showMe (box) {
                 document.getElementById(box).style.display = "block";
@@ -26,37 +26,16 @@
                 document.getElementById(box).style.display = "block";
 
     }
-    $(document).ready(function() {
-    var panels = $('.user-infos');
-    var panelsButton = $('.dropdown-user');
-    panels.hide();
-
-    //Click dropdown
-    panelsButton.click(function() {
-        //get data-for attribute
-        var dataFor = $(this).attr('data-for');
-        var idFor = $(dataFor);
-
-        //current button
-        var currentButton = $(this);
-        idFor.slideToggle(400, function() {
-            //Completed slidetoggle
-            if(idFor.is(':visible'))
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
-            }
-            else
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
-            }
-        })
-    });
+    
+    
+    
 
 
     
 
     </script>
-    <body>
+
+<body>
      
 
 <nav class="navbar navbar-inverse navbar-static-top no-margin">
@@ -74,7 +53,7 @@
 
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="Landing.ejs">Home <span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
                <li ><a href="#">Update profile <span class="sr-only">(current)</span></a></li>
                <li><a href="#">Need artists? </a></li>
  
@@ -84,8 +63,8 @@
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Profile</a></li>
-                      <li><a href="#">Logout</a></li>
+                      <li><a href="/profile">Profile</a></li>
+                      <li><a href="/logout">Logout</a></li>
                     </ul>
                   </li>
              </ul>     
@@ -102,13 +81,13 @@
                     <ul class="nav nav-tabs" id="myTab">
                     <div class="liner"></div>
                      <li>
-                     <a href="home.html"  title="home">
+                     <a href="/home"  title="home">
                       <span class="round-tabs one">
                               <i class="glyphicon glyphicon-home"></i>
                       </span> 
                   </a></li>
 
-                  <li class="active"><a href="profileEdit.html"  title="profile">
+                  <li class="active"><a href="/profile"  title="profile">
                      <span class="round-tabs two">
                          <i class="glyphicon glyphicon-user"></i>
                      </span> 
@@ -140,12 +119,12 @@
    
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title">Hi, Animesh Shrivastava</h3>
+              <h3 class="panel-title">Hi, <%= user.facebook.name %></h3>
               
             </div>
             <div class="panel-body">
               <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle"> </div>
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src=<%= user.local.picture %> class="img-circle"> </div>
                 
                 <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
                   <dl>
@@ -160,7 +139,7 @@
                   </dl>
                 </div>-->
   <div class=" col-md-9 col-lg-9 "> 
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" role="form" action="/update" method="post">
 
 
         <fieldset>
@@ -170,7 +149,7 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab1primary" data-toggle="tab">Basic</a></li>
                                 <li><a href="#tab2primary" data-toggle="tab">On the stage</a></li>
-                                <li><a href="#tab3primary" data-toggle="tab">Part of Audience</a></li>
+                                
                                 
                             </ul>
                     </div>
@@ -179,110 +158,38 @@
                             <div class="tab-pane fade in active" id="tab1primary">
                             
                               <div class="form-group">
-                                <label class="col-sm-3 control-label" for="card-holder-name">Full Name</label>
+                                <label class="col-sm-3 control-label" for="fullname">Full Name</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name" value = "Animesh Shrivastava">
+                                  <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Name" Maxlength="100"
+                                  value = "<%= user.facebook.name %>" >
                                 </div>
                               </div>
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label" for="card-number">Gender</label>
+                             <div class="form-group">
+                                 <label class="col-sm-3 control-label" for="email">Email address</label>
                                 <div class="col-sm-9">
-                                  <input value="M" type="radio" id="qf_929f8f" name="sex1" checked="checked" /><label for="qf_929f8f">Male</label>                           
-                                                                                                                                            
-                                  <input value="F" type="radio" id="qf_62204f" name="sex1" /><label for="qf_62204f">Female</label>                           
-                                                                                                                                            
-                                  <input value="N" type="radio" id="qf_0a2374" name="sex1" /><label for="qf_0a2374">Unknown</label>     
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                 <label class="col-sm-3 control-label" for="card-holder-name">Email address</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name" value = "ani979@gmail.com">
+                                  <input type="text" class="form-control" name="email" id="card-holder-name" placeholder="Card Holder's Name" 
+                                  value = "<%= user.facebook.email %>" readonly >
                                   <span class="fieldNote">Not made public - only used for notifications, recommendations, etc.</span>
                                   </div>
                               </div>
-                               <div class="form-group">
-                                 <label class="col-sm-3 control-label" for="card-holder-name">Phone number</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="phone-number-name" id="phone-number-name" placeholder="Phone number" value = "">
-                                  <span class="fieldNote">Not made public - only used for notifications, recommendations, etc.</span>
-                                  </div>
-                              </div>
+                               
                               <div class="form-group">
-                                 <label class="col-sm-3 control-label" for="card-holder-name">Location</label>
+                                 <label class="col-sm-3 control-label" for="city">Location</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name" value = "Bangalore">
+                                  <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
+                                  <select class="form-control" value=<%= user.local.city %> name="city">
+                                            <option>Chennai</option>
+                                            <option>Bengaluru</option>
+                                            <option>Mumbai</option>
+                                  </select> 
+                                  <span class="fieldNote">Currently only for Bengaluru, launching soon in other cities</span>
                                 </div>
                               </div>
-                              <div class="form-group">
-                                 <label class="col-sm-3 control-label" for="card-holder-name">Country</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name" value = "India">
-                                </div>
-                              </div>
-
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label" for="expiry-month">Date of Birth</label>
-                                <div class="col-sm-9">
-                                  <div class="row">
-                                    <div class="col-xs-4">
-                                      <select class="form-control col-sm-2" name="expiry-month" id="expiry-month">
-                                        <option>Date</option>
-                                        <option value="01">Jan (01)</option>
-                                        <option value="02">Feb (02)</option>
-                                        <option value="03">Mar (03)</option>
-                                        <option value="04">Apr (04)</option>
-                                        <option value="05">May (05)</option>
-                                        <option value="06">June (06)</option>
-                                        <option value="07">July (07)</option>
-                                        <option value="08">Aug (08)</option>
-                                        <option value="09" selected = "selected">Sep (09)</option>
-                                        <option value="10">Oct (10)</option>
-                                        <option value="11">Nov (11)</option>
-                                        <option value="12">Dec (12)</option>
-                                      </select>
-                                    </div>
-                                    <div class="col-xs-4">
-                                      <select class="form-control col-sm-2" name="expiry-month" id="expiry-month">
-                                        <option>Month</option>
-                                        <option value="01">Jan (01)</option>
-                                        <option value="02">Feb (02)</option>
-                                        <option value="03">Mar (03)</option>
-                                        <option value="04">Apr (04)</option>
-                                        <option value="05">May (05)</option>
-                                        <option value="06">June (06)</option>
-                                        <option value="07">July (07)</option>
-                                        <option value="08">Aug (08)</option>
-                                        <option value="09" selected = "selected">Sep (09)</option>
-                                        <option value="10">Oct (10)</option>
-                                        <option value="11">Nov (11)</option>
-                                        <option value="12">Dec (12)</option>
-                                      </select>
-                                    </div>
-                                    <div class="col-xs-4">
-                                      <select class="form-control" name="expiry-year">
-                                        <option value="13">2013</option>
-                                        <option value="14">2014</option>
-                                        <option value="15">2015</option>
-                                        <option value="16">2016</option>
-                                        <option value="17" selected = "selected">2017</option>
-                                        <option value="18">2018</option>
-                                        <option value="19">2019</option>
-                                        <option value="20">2020</option>
-                                        <option value="21">2021</option>
-                                        <option value="22">2022</option>
-                                        <option value="23">2023</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              
-                            </div>
+                       </div>
                         <div class="tab-pane fade" id="tab2primary">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
-                        <br>
-                        <span class="fieldNote">We at BuzzingArtists believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
-                          <div class="form-group" style = "margin-left:1px; margin-right=1px; ">
+                          <br>
+                          <span class="fieldNote">We at BuzzingArtists believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
+                            <div class="form-group" style = "margin-left:1px; margin-right=1px; ">
                                 <label class="control-label">Your association or interests in theatre:</label> 
                                   <br>
                               <div class = "col-sm-6">
@@ -396,150 +303,23 @@
                                   </div> 
                                </div>     
 
-                               <div class="form-group" style = "margin-left:1px; margin-right=1px;">You can set your availability through which you can let us know if you are to be buzzed for requests that come your way.<br>
-                                    <label for="happy" class="col-sm-7 col-md-7 control-label text-right" >Are you available currently?</label>
-                                    <div class="col-sm-4 col-md-4" style="padding-top: 7px; padding-left: 20px;">
-                                      <div class="input-group">
-                                        <div id="radioBtn" class="btn-group">
-                                          <a class="btn btn-primary btn-sm active" data-toggle="happy" data-title="Y">YES</a>
-                                          <a class="btn btn-primary btn-sm notActive" data-toggle="happy" data-title="N">NO</a>
-                                        </div>
-                                        <input type="hidden" name="happy" id="happy">
-                                      </div>
-                                    </div>
-                              </div>
-                          
+                                                      
                           
                        </div>      
                               
 
-                        <div class="tab-pane fade" id="tab3primary">Without an audience, theatre won't survive! We would like to know what binds you in theatre or what doesnt bind you. This form is the most important and without it we consider our efforts incomplete. 
-                          <br>
-                          <label class="control-label">What kind of theatre-goer are you?:</label> 
-                          </br>
-                          <br>
-                              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                <div class="panel panel-default">
-                                  <div class="panel-heading" role="tab" id="headingOne">
-                                    <h4 class="panel-title">
-                                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Avid goer (watches almost every other play played in the town)
-                                      </a>
-                                    </h4>
-                                  </div>
-                                  <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                    <div class="panel-body">
-                                      Excellent! Thanks a lot. Theatre certainly needs people like you. Tell us what binds you in theatre:
-                                      <BR>
-                                      <div class = "col-sm-6" >
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="avidgoercheckbox1" value="avidgoercheckbox1" /> Sheer love for the art
-                                          </label>
-                                      </div>
-                                      <div class = "col-sm-6" >
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="avidgoercheckbox2" value="avidgoercheckbox2" /> Amazing production houses
-                                          </label>
-                                      </div>
-                                      <div class = "col-sm-4" >
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="avidgoercheckbox3" value="avidgoercheckbox2" /> Brilliant scripts 
-                                          </label>
-                                      </div>
-                                      
-                                      <div class="col-sm-8">
-                                           <input type="textbox" class="form-control" placeholder="Anything else that's not mentioned above" id = "avidgoertext" style="padding-right:5px;"/> 
-                                           <span class="fieldNote">Use comma for separation</span>
-                                      </div>  
-                                        </div>
-                                  </div>
-                                </div>
-                                <div class="panel panel-default">
-                                  <div class="panel-heading" role="tab" id="headingTwo">
-                                    <h4 class="panel-title">
-                                      <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Sometimes (when someone known is performing or a famous play being played)
-                                      </a>
-                                    </h4>
-                                  </div>
-                                  <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                   <div class="panel-body">
-                                      Excellent! Thanks a lot. Theatre certainly need people like you. Tell us what holds you back(apart from no time):
-                                    <BR>
-                                    <div class = "col-sm-6">
-                                        <label class="checkbox-inline" style="padding-left:5px;">
-                                            <input type="checkbox" id="frequentgoercheckbox1" value="frequentgoercheckbox1" /> Too much for the wallet
-                                        </label>
-                                    </div>
-                                    <div class = "col-sm-6">
-                                        <label class="checkbox-inline" style="padding-left:5px;">
-                                            <input type="checkbox" id="frequentgoercheckbox2" value="frequentgoercheckbox2" /> Not sure what is worth watching!
-                                        </label>
-                                    </div>
-                                    <div class = "col-sm-4">
-                                        <label class="checkbox-inline" style="padding-left:5px;">
-                                            <input type="checkbox" id="frequentgoercheckbox3" value="frequentgoercheckbox3" /> Distance matters
-                                        </label>
-                                    </div>
-                                    
-                                    <div class="col-sm-8">
-                                     <input type="textbox" class="form-control" placeholder="Anything else that's not mentioned above" id = "freqgoertext" style="padding-right:5px;"/> 
-                                     <span class="fieldNote">Use comma for separation</span>
-                                    </div>                                     </div>
-                                  </div>
-                                </div>
-                                <div class="panel panel-default">
-                                  <div class="panel-heading" role="tab" id="headingThree">
-                                    <h4 class="panel-title">
-                                      <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        Never been so far
-                                      </a>
-                                    </h4>
-                                  </div>
-                                  <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                                    <div class="panel-body">
-                                       Excellent! There is always a first time for everything. Tell us what holds you back(apart from no time):
-                                      <BR>
-                                      <div class = "col-sm-6">
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="neverbeencheckbox1" value="neverbeencheckbox1" /> What's in it for me!
-                                          </label>
-                                      </div>
-                                      <div class = "col-sm-6">
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="neverbeencheckbox2" value="neverbeencheckbox2" /> Not aware of plays running in town
-                                          </label>
-                                      </div>
-       
-                                      <div class = "col-sm-6">
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="neverbeencheckbox3" value="neverbeencheckbox3" /> Too costly!
-                                          </label>
-                                      </div>
-                                      <div class = "col-sm-6">
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="neverbeencheckbox4" value="Bneverbeencheckbox4" /> Distance and traffic matters
-                                          </label>
-                                      </div>
-                                      <div class = "col-sm-4">
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="neverbeencheckbox5" value="neverbeencheckbox5" /> Prefer movies
-                                          </label>
-                                      </div>
-                                      
-                                      <div class="col-sm-8">
-                                         <input type="textbox" class="form-control" placeholder="Anything else that's not mentioned above" id = "neverbeentext" style="padding-right:5px;"/> 
-                                         <span class="fieldNote">Use comma for separation</span>
-                                      </div>  
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
                     </div>
-                            
+                               
+              
+                    
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Update</button>
+                    </div>
+                  </div>
+            </div>      
                   
-             </div>
+             
         </fieldset>
    </form>
   
@@ -555,7 +335,7 @@
             <span style="padding-left: 20px;">Please ensure this abides by our <a href="/legal/terms/" target="_blank">Terms of Service</a> and <a href="/help/guidelines" target="_blank">Community Guidelines</a>.</span>
                         
                         <span class="pull-right">
-                            <a href="profileEdit.html" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a>
+                            <a href="/update" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a>
                             <a title="Remove me from this site" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
                         </span>
                     </div>
@@ -572,6 +352,15 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
+    $(function(){
+      //alert($('.selectpicker').val($('.selectpicker').getAttribute("value")));
+      $('select[value]').each(function(){
+        $(this).val(this.getAttribute("value"));
+     });
+    });
+
+
+
 $('[id^=checkboxinline]').click(function(){
   
   if($(this).prop('checked')){
@@ -586,10 +375,7 @@ $('[id^=checkboxinline]').click(function(){
 
     $('[data-toggle="tooltip"]').tooltip();
 
-    $('button').click(function(e) {
-        e.preventDefault();
-        alert("This is a demo.\n :-)");
-    });
+    
 
 
 $(function(){
