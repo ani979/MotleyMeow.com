@@ -35,9 +35,17 @@ var profile = {
 // }
 
 exports.index = function(req, res) {
-    //req.session = null;
+
+    // req.session = null;
+    // if(req.session == null) {
+    //     res.render('index', {
+    //             title: 'Express',
+    //             loginUrl: FB.getLoginUrl({ scope: 'user_about_me' })                
+    //         });
+    // }
     var accessToken = req.session.access_token;
     console.log("accesstoken: "+ accessToken);
+
     if(!accessToken) {
         console.log("isAuthenticatedddddddd: "+ req.isAuthenticated());
         if(req.isAuthenticated()) {
@@ -45,7 +53,7 @@ exports.index = function(req, res) {
         } else {
                 res.render('index', {
                 title: 'Express',
-                loginUrl: FB.getLoginUrl({ scope: 'user_about_me' })
+                loginUrl: FB.getLoginUrl({ scope: 'user_about_me' })                
             });
         }
     } else {

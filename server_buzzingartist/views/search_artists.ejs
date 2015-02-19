@@ -7,74 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">       
-        <link href="css/tab.css" rel="stylesheet">
         <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/dropdowns-enhancement.js"></script>
+        <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+        <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">        
   </head>
-  <script type="text/javascript">
- 
-    $(document).ready(function() {
-    var panels = $('.user-infos');
-    var panelsButton = $('.dropdown-user');
-    panels.hide();
+  
+<body>
 
-    //Click dropdown
-    panelsButton.click(function() {
-        //get data-for attribute
-        var dataFor = $(this).attr('data-for');
-        var idFor = $(dataFor);
-
-        //current button
-        var currentButton = $(this);
-        idFor.slideToggle(400, function() {
-            //Completed slidetoggle
-            if(idFor.is(':visible'))
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
-            }
-            else
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
-            }
-        })
-    });
-   </script> 
-  <body>
-
-
-<nav class="navbar navbar-inverse navbar-static-top no-margin">
-  <div class="container-fluid">
-
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">BuzzingArtists </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-             
-              <!-- <form class="navbar-form navbar-left" role="search" >
-              <div class="form-group" align="center">
-                <input type="text" class="form-control" placeholder="Search">
-              </div>
-              <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-            </form> -->
-
-            </ul>
-            <ul class="nav nav-bar pull-right">
-                <li><a class="btn btn-primary navbar-btn" href="/signup">Join us</a></li>
-            </ul>
-
-
-          
-        </div>
-  </div>
-</nav>
+ <% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout">
+  <%}%> 
 
 <div class = "main-container">
   <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
@@ -82,44 +32,52 @@
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
   </div>
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;" id = "searchartists">
     <h3>
       ARTISTS AROUND YOU
      </h3>
-     <div class="row">    
-        <div class="btn-group">
-            <button class="btn btn-primary" data-label-placement>Select City</button>
-            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><input type="checkbox" id="Bengaluru" name="NAME" value="VALUE"><label for="Bengaluru">Bengaluru</label></li>
-                <li><input type="checkbox" id="Chennai" name="NAME" value="VALUE"><label for="Chennai">Chennai</label></li>
-                <li><input type="checkbox" id="Delhi" name="NAME" value="VALUE"><label for="Delhi">Delhi</label></li>
-                <li><input type="checkbox" id="Mumbai" name="NAME" value="VALUE"><label for="Mumbai">Mumbai</label></li>
-                <li><input type="checkbox" id="AllIndia" name="NAME" value="VALUE"><label for="AllIndia">All India</label></li>
-            </ul>
-         </div>
-         <div class="btn-group">
-            <button class="btn btn-primary" data-label-placement>Select Artists</button>
-            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><input type="checkbox" id="Actor" name="NAME" value="VALUE"><label for="Actor">Actor</label></li>
-                <li><input type="checkbox" id="Lights" name="NAME" value="VALUE"><label for="Lights">Lights</label></li>
-            </ul>
-         </div>
-         <div class="btn-group">
-            <button class="btn btn-primary" data-label-placement>Language comfortability</button>
-            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><input type="checkbox" id="Hindi" name="NAME" value="VALUE"><label for="Hindi">Hindi</label></li>
-                <li><input type="checkbox" id="Kannada" name="NAME" value="VALUE"><label for="Kannada">Kannada</label></li>
-                <li><input type="checkbox" id="Bengali" name="NAME" value="VALUE"><label for="Bengali">Bengali</label></li>
-                <li><input type="checkbox" id="English" name="NAME" value="VALUE"><label for="English">English</label></li>
-            </ul>
-         </div>
-         <div class="btn-group">
-                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-         </div>
-    </div>
+     
+       <div class="row">    
+        <form id = "form_artists" class ="form-control" action="/search" method="post" style="height:auto">
+          <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement>Select City</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru"><label for="Bengaluru">Bengaluru</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai"><label for="Chennai">Chennai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"><label for="Delhi">Delhi</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai"><label for="Mumbai">Mumbai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="AllIndia" name="city" value="AllIndia" checked><label for="AllIndia">All India</label></li>
+                  <input type="hidden" name="selectedcity" id="selected" value="">
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement>Select Artists</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor"><label for="Actor">Actor</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Lights" name="role" value="Lights"><label for="Lights">Lights</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="AllArtists" name="role" value="AllArtists" checked><label for="AllArtists" checked>All Artists</label></li>
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement>Language comfortability</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi"><label for="Hindi">Hindi</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Kannada" name="lang" value="Kannada"><label for="Kannada">Kannada</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Bengali" name="lang" value="Bengali"><label for="Bengali">Bengali</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"><label for="English">English</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="AllLanguage" name="lang" value="AllLanguage" checked><label for="AllLanguage">All Language</label></li>
+              </ul>
+           </div>
+           
+           <div class="btn-group">
+                  <button id = "submit" class="btn btn-default animesh_b" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+           </div>
+           </form>
+      </div>
+    
     <div class="row col-md-8 col-md-offset-2">
     
         
@@ -136,41 +94,24 @@
                        <th>Comfortable in Language</th>
                        <th>City</th>
                    </thead>
-                  <tbody>
-                    <tr>
-                        <td><a href="#" >Ashok Kumar</a></td>
-                        <td>Lights</td>
-                        <td>Don't bother</td>
-                        <td>Chennai</td>
-                    </tr>
-    
-                   <tr>
-                        <td><a href="#" >Ashish Kumar</a></td>
-                        <td>Sound</td>
-                        <td>Don't bother</td>
-                        <td>Bengaluru</td>
-                      </tr>
+                   <tbody class="searchable">
                       
-                      
-                  
+                      <% users.forEach( function( user ){ %>
+                        <tr>
+                          <td><%= user.facebook.name %></td>
+                          <td><%= user.local.role %></td>
+                          <td><%= user.local.lang %></td>
+                          <td><%= user.local.city %></td>
+                        </tr> 
+                      <% }); %>
+                        
                   </tbody>
-        
               </table>
-
-                 <div class="clearfix"></div>
-                    <ul class="pagination pull-right">
-                      <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-                      <li class="active"><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-                    </ul>
-            </div>
         </div>
     </div>
   </div>
+ </div>
+  
 
          
 
@@ -204,41 +145,85 @@
    </footer>
     
    <!-- footer ends-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-   <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-     <script src="js/dropdowns-enhancement.js"></script>
+
     <script type="text/javascript">
-          $(document).ready( function() {
-              $('[id^=mycarousel]').carousel({
-              interval:   4000
-          });
-            
-            var clickEvent = false;
-           $('[id^=mycarousel]').on('click', '.nav a', function() {
-                clickEvent = true;
-                $('.nav li').removeClass('active');
-                $(this).parent().addClass('active');    
-            }).on('slid.bs.carousel', function(e) {
-              if(!clickEvent) {
-                var count = $('.nav').children().length -1;
-                var current = $('.nav li.active');
-                current.removeClass('active').next().addClass('active');
-                var id = parseInt(current.data('slide-to'));
-                if(count == id) {
-                  $('.nav li').first().addClass('active');  
-                }
-              }
-              clickEvent = false;
-            });
-          });
+    $("#headerloggedin").load("header.ejs");
+    $("#headerloggedout").load("headerloggedout.ejs");
 
-          $('#openBtn').click(function(){
-              $('#myModal').modal({show:true})
-          });
+    $(document).ready(function(){
 
-          $(document).ready(function(){
-            $('[id=any]').on("keyup", function(){
+      $('#mytable').dataTable();
+    });
+
+    
+   $(document).ready(function(){
+
+         var city;
+         var role;
+         var lang;
+          $('#form_artists').submit(function(event){
+                 $('input:checkbox[name=city]:checked').each(function() {
+                              
+                      // this.value = null;   
+                      //var city=null;
+                      if ( $( '#AllIndia' ).prop( "checked" ) ) {
+
+                          this.value = $( ".citycheck" ).map(function() {
+                            if(this.value != "AllIndia") {
+                              return this.value;
+                            } else {
+                              return null;
+                            }
+                          }).get().join();
+                      }   
+                       
+                       //this.value = city;
+                       //alert("city is " + city);
+                       if(this.value != null) {
+                        city = this.value;
+                       } return false;
+
+                  });
+
+
+                 $('input:checkbox[name=lang]:checked').each(function() {
+                              
+                      if ( $( '#AllLanguage' ).prop( "checked" ) ) {
+                          //this.value = null;
+                          this.value = $( ".langcheck" ).map(function() {
+                            if(this.value != "AllLanguage") {
+                              return this.value;
+                            }
+                            }).get().join();
+                       }   
+                       if(this.value != null) {
+                        lang = this.value;
+                        return false;
+                       } 
+                  });
+
+                  $('input:checkbox[name=role]:checked').each(function() {
+                              
+                      if ( $( '#AllArtists' ).prop( "checked" ) ) {
+                          //this.value = null;
+                          this.value = $( ".artistscheck" ).map(function() {
+                            if(this.value != "AllArtists") {
+                              return this.value;
+                            } 
+                            }).get().join();
+                       }  
+                       if(this.value != null) {
+                        role = this.value;
+                        return false; 
+                       } 
+                  });
+
+          });
+ });
+
+  $(document).ready(function(){
+            $('[id=searchartists]').on("keyup", function(){
+              
                         
                         var rex = new RegExp($(this).val(), 'i');
                         $('.searchable tr').hide();
@@ -248,6 +233,44 @@
                     //})
             });
          }(jQuery));
+
+
+    $(function(){
+      $('select[value]').each(function(){
+        $(this).val(this.getAttribute("value"));
+     });
+     
+      var values_role = '<%=rolearr%>';
+      var roleInitValues = values_role.split(",");
+
+      var values_lang = '<%=langarr%>';
+      var langInitValues = values_lang.split(",");
+
+      var values_city = '<%=cityarr%>';
+      var cityInitValues = values_city.split(",");
+
+      
+
+      $('input[name=role][type=checkbox]').each(function(){
+        
+        $(this).prop("checked", ($.inArray($(this).val(), roleInitValues) != -1));
+
+     });
+
+      $('input[name=lang][type=checkbox]').each(function(){
+        
+        $(this).prop("checked", ($.inArray($(this).val(), langInitValues) != -1));
+
+     });
+
+      $('input[name=city][type=checkbox]').each(function(){
+        
+        $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
+
+     });
+
+
+    });
     </script>
   </body>
 </html>

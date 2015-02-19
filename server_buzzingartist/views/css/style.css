@@ -10,10 +10,10 @@
 {
 
 	position:relative;
-	margin-top:-358px;
+	
 	
 	clear:both;
-	position: fixed;
+	
 	bottom:0;
 	width:100%;
 	border-top:1px #e1e3e3 solid;
@@ -84,6 +84,8 @@ div.srchBox {
 .main-container{
 	position:relative;
   width: 100%;
+  min-height: 100%;
+
 }
 .thtrexplore {
     letter-spacing: 4px;
@@ -192,11 +194,30 @@ div.srchBox {
   top: 0;
   left: 0;
   min-width: 100%;
-  min-height: 500px;
-  max-height: 500px;
+  min-height: 200px;
+  max-height: 200px;
 }
 .table th {
    text-align: center;   
 }
+
+.carousel-control {
+  padding-top:10%;
+  width:5%;
+}
+
+
+.imagedisplay {
+  position: relative;
+  top: 0;
+  left: 0;
+  min-width: 95%;
+  min-height: 200px;
+  max-height: 300px;
+}
+
+
+
+
 
 

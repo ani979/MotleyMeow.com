@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+        <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+  </head>
+  
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-static-top no-margin">
+  <div class="container-fluid">
+    
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">BuzzingArtists </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+            <% if(user!=null) { %>
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                   <li ><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
+                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a href="/postarequest">Post a request</a></li>
+                          <li><a href="/browserequests">Browse</a></li>                      
+                      </ul>
+                   </li> 
+                   <li ><a href="#">Your posts<span class="sr-only">(current)</span></a></li>
+                </ul>
+
+            <ul class="nav navbar-right navbar-nav">                  
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/profile">Profile</a></li>
+                      <li><a href="/logout">Logout</a></li>
+                      
+                    </ul>
+                  </li>
+             </ul>  
+             <%} else { %>
+             <ul class="nav nav-bar pull-right">
+                        
+                <li><a class="btn btn-primary navbar-btn" href="/auth/facebook">Join us</a></li>
+              
+            </ul>
+             <% } %> 
+      </div>
+  </div>
+</nav>
+
+<div class = "main-container">
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <h3 class = "thtrexplore">
+      EXPLORE. CONNECT. CONTRIBUTE.
+     </h3>
+  </div>
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;" id = "searchartists">
+    <h3>
+      ARTISTS AROUND YOU
+     </h3>
+     
+       <div class="row">    
+        <form id = "form_artists" class ="form-control" action="/search" method="post" style="height:auto">
+          <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement>Select City</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru"><label for="Bengaluru">Bengaluru</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai"><label for="Chennai">Chennai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"><label for="Delhi">Delhi</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai"><label for="Mumbai">Mumbai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="AllIndia" name="city" value="AllIndia" checked><label for="AllIndia">All India</label></li>
+                  <input type="hidden" name="selectedcity" id="selected" value="">
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement>Select Artists</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor"><label for="Actor">Actor</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Lights" name="role" value="Lights"><label for="Lights">Lights</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="AllArtists" name="role" value="AllArtists" checked><label for="AllArtists" checked>All Artists</label></li>
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement>Language comfortability</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi"><label for="Hindi">Hindi</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Kannada" name="lang" value="Kannada"><label for="Kannada">Kannada</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Bengali" name="lang" value="Bengali"><label for="Bengali">Bengali</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"><label for="English">English</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="AllLanguage" name="lang" value="AllLanguage" checked><label for="AllLanguage">All Language</label></li>
+              </ul>
+           </div>
+           
+           <div class="btn-group">
+                  <button id = "submit" class="btn btn-default animesh_b" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+           </div>
+           </form>
+      </div>
+    
+    <div class="row col-md-8 col-md-offset-2">
+    
+        
+      <div>
+        
+        <div class="table-responsive">
+
+                
+              <table id="mytable" class="table table-bordered table-striped">
+                   
+                   <thead>
+                      <th>Name</th>
+                      <th>Contribution in theatre</th>
+                       <th>Comfortable in Language</th>
+                       <th>City</th>
+                   </thead>
+                   <tbody class="searchable">
+                      
+                      <% users.forEach( function( user ){ %>
+                        <tr>
+                          <td><%= user.facebook.name %></td>
+                          <td><%= user.local.role %></td>
+                          <td><%= user.local.lang %></td>
+                          <td><%= user.local.city %></td>
+                        </tr> 
+                      <% }); %>
+                        
+                  </tbody>
+              <!--     <tbody>
+                    <tr>
+                        <td><a href="#" >Ashok Kumar</a></td>
+                        <td>Lights</td>
+                        <td>Don't bother</td>
+                        <td>Chennai</td>
+                    </tr>
+    
+                   <tr>
+                        <td><a href="#" >Ashish Kumar</a></td>
+                        <td>Sound</td>
+                        <td>Don't bother</td>
+                        <td>Bengaluru</td>
+                      </tr>
+                      
+                      
+                  
+                  </tbody>
+         -->
+              </table>
+
+                
+        </div>
+    </div>
+  </div>
+ </div>
+</div>  
+
+         
+
+   <!-- footer starts-->
+<footer class="site-footer">
+     <div class="container">
+        <div class="bottom-footer">
+              <ul class="footer-nav">
+                <li><a href="p2demo.html">What are we</a></li>
+                <li><a href="#">Who are we</a></li>
+                <li><a href="#">Where are we</a></li>
+              </ul>
+        </div>
+    
+        <div class="cp-footer-links cpfl-social col-sm-12 text-center">
+                    <ul class="list-inline">
+                        <li><a href="" target="_blank"><img alt="facebook" src="images/fb.png" style="width:28px"></a></li>
+                        <li><a href="" target="_blank"><img alt="linkedin" src="images/lin.png" style="width:28px"></a></li>
+                        
+                    </ul>
+        </div>
+
+        <div class="row cp-copyright">
+            <div class="col-sm-12 col-xs-12">
+                <small>&copy; 2015 | Buzz'ed Pvt. Ltd.  <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. <a href="/view/user-agreement">User Agreement</a> | <a href="/view/privacy">Privacy Policy</a> | <a class="pressKitLink" data-link-position="footer" href="/static/cupickpresskit.zip" target="_blank" download="cupickpresskit.zip">Press Kit</a></small>
+            </div>
+        </div>
+      </div>  
+        
+  
+   </footer>
+    
+   <!-- footer ends-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+     <script src="js/dropdowns-enhancement.js"></script>
+    <script type="text/javascript">
+    $(document).ready( function() {
+       var panels = $('.user-infos');
+        var panelsButton = $('.dropdown-user');
+        panels.hide();
+
+          //Click dropdown
+          panelsButton.click(function() {
+              //get data-for attribute
+              var dataFor = $(this).attr('data-for');
+              var idFor = $(dataFor);
+
+              //current button
+              var currentButton = $(this);
+              idFor.slideToggle(400, function() {
+                  //Completed slidetoggle
+                  if(idFor.is(':visible'))
+                  {
+                      currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+                  }
+                  else
+                  {
+                      currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+                  }
+              });
+          });
+
+
+
+              $('[id^=mycarousel]').carousel({
+              interval:   4000
+          });
+            
+            var clickEvent = false;
+           $('[id^=mycarousel]').on('click', '.nav a', function() {
+                clickEvent = true;
+                $('.nav li').removeClass('active');
+                $(this).parent().addClass('active');    
+            }).on('slid.bs.carousel', function(e) {
+              if(!clickEvent) {
+                var count = $('.nav').children().length -1;
+                var current = $('.nav li.active');
+                current.removeClass('active').next().addClass('active');
+                var id = parseInt(current.data('slide-to'));
+                if(count == id) {
+                  $('.nav li').first().addClass('active');  
+                }
+              }
+              clickEvent = false;
+            });
+          });
+
+          $('#openBtn').click(function(){
+              $('#myModal').modal({show:true})
+          });
+
+         var city;
+         var role;
+         var lang;
+          $('#form_artists').submit(function(event){
+              
+              //if ( $( '#AllIndia' ).prop( "checked" ) ) {
+                //var city=null;
+
+                  
+                  $('input:checkbox[name=city]:checked').each(function() {
+                              
+                      // this.value = null;   
+                      //var city=null;
+                      if ( $( '#AllIndia' ).prop( "checked" ) ) {
+
+                          this.value = $( ".citycheck" ).map(function() {
+                            if(this.value != "AllIndia") {
+                              return this.value;
+                            } else {
+                              return null;
+                            }
+                          }).get().join();
+                      }   
+                       
+                       //this.value = city;
+                       //alert("city is " + city);
+                       if(this.value != null) {
+                        city = this.value;
+                       } return false;
+
+                  });
+
+
+                 $('input:checkbox[name=lang]:checked').each(function() {
+                              
+                      if ( $( '#AllLanguage' ).prop( "checked" ) ) {
+                          //this.value = null;
+                          this.value = $( ".langcheck" ).map(function() {
+                            if(this.value != "AllLanguage") {
+                              return this.value;
+                            }
+                            }).get().join();
+                       }   
+                       if(this.value != null) {
+                        lang = this.value;
+                        return false;
+                       } 
+                  });
+
+                  $('input:checkbox[name=role]:checked').each(function() {
+                              
+                      if ( $( '#AllArtists' ).prop( "checked" ) ) {
+                          //this.value = null;
+                          this.value = $( ".artistscheck" ).map(function() {
+                            if(this.value != "AllArtists") {
+                              return this.value;
+                            } 
+                            }).get().join();
+                       }  
+                       if(this.value != null) {
+                        role = this.value;
+                        return false; 
+                       } 
+                  });
+
+
+
+           
+
+                // this = $('.citycheck');
+                // alert($('checkbox').value);
+                // alert("hello");
+                // this.value = $( ".citycheck" ).map(function() {
+                //   if(this.value != "AllIndia") {
+                //     alert(this);
+                //     alert(this.value);
+                //     return this.value;
+                //   }
+                //   }).get().join();
+               //} 
+
+               
+
+              // $('input:checkbox[name=city]').each(function() 
+              //     {    
+              //     if ( $( '#AllIndia' ).prop( "checked" ) ) {
+              //         this.value = null;
+              //         alert("hello");
+              //         this.value = $( ".citycheck" ).map(function() {
+              //           if(this.value != "AllIndia") {
+              //             alert(this);
+              //             alert(this.value);
+              //             return this.value;
+              //           }
+              //           }).get().join();
+              //      }
+                   
+              //   });
+                
+              //}
+
+              
+              //$('#AllIndia').checked
+          });
+
+          // $('#AllIndia').click(function() {
+          //   this.value = null;
+          //     // $('.citycheck').each(function() { //loop through each checkbox
+          //     //     this.checked = true;  //select all checkboxes with class "checkbox1"              
+          //     // });
+          //     alert("here");
+
+          //     this.value = $( ".citycheck" ).map(function() {
+          //       if(this.value != "AllIndia")
+          //       return this.value;
+          //       })
+          //       .get()
+          //       .join();
+              
+          // }); 
+
+  $(document).ready(function(){
+            $('[id=searchartists]').on("keyup", function(){
+              
+                        
+                        var rex = new RegExp($(this).val(), 'i');
+                        $('.searchable tr').hide();
+                        $('.searchable tr').filter(function () {
+                            return rex.test($(this).text());
+                        }).show();
+                    //})
+            });
+         }(jQuery));
+
+
+    $(function(){
+      $('select[value]').each(function(){
+        $(this).val(this.getAttribute("value"));
+     });
+     
+      var values_role = '<%=rolearr%>';
+      var roleInitValues = values_role.split(",");
+
+      var values_lang = '<%=langarr%>';
+      var langInitValues = values_lang.split(",");
+
+      var values_city = '<%=cityarr%>';
+      var cityInitValues = values_city.split(",");
+
+      
+      // var initValues = [];
+      // for (var prop in values) {
+      //     initValues.push(data[values]);
+      // }
+      //var initValues = _(values).toArray();
+
+       // for(var i = 0; i < initValues.length; i++) { 
+       //    alert("length of array " + initValues.length);
+       //     alert("values[i]" +initValues[i])
+       //    // $("#animesh [value=" + values[i] + "]").prop('checked', true);
+       //  } 
+        
+      $('input[name=role][type=checkbox]').each(function(){
+        
+        $(this).prop("checked", ($.inArray($(this).val(), roleInitValues) != -1));
+
+     });
+
+      $('input[name=lang][type=checkbox]').each(function(){
+        
+        $(this).prop("checked", ($.inArray($(this).val(), langInitValues) != -1));
+
+     });
+
+      $('input[name=city][type=checkbox]').each(function(){
+        
+        $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
+
+     });
+
+
+    });
+    </script>
+  </body>
+</html>

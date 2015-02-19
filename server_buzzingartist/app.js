@@ -5,12 +5,15 @@ var express       = require('express'),
     path          = require('path'),
     config        = require('./oauth.js'),
     home          = require('./routes/home'),
+    ejs           = require('ejs'),
     mongoose      = require('mongoose');
+
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
 var User = require('./models/user.js');
+var Event = require('./models/event.js');
 var app = express();
 // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
@@ -28,10 +31,13 @@ var dbConfig = require('./db');
 mongoose.connect(dbConfig.url);
 
 passport.serializeUser(function(user, done) {
-    done(null, user);
+    done(null, user._id);
 });
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+passport.deserializeUser(function(id, done) {
+    
+    User.findById(id, function(err, user) {
+            done(err, user);
+        });
 });
 
 
@@ -94,10 +100,11 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new FacebookStrategy({
          clientID: config.facebook.clientID,
          clientSecret: config.facebook.clientSecret,
-         callbackURL: config.facebook.callbackURL
+         callbackURL: config.facebook.callbackURL,
+         passReqToCallback: true
          
 },
-    function(accessToken, refreshToken, profile, done) {
+    function(req,accessToken, refreshToken, profile, done) {
 
              // asynchronous
             process.nextTick(function() {
@@ -107,13 +114,31 @@ passport.use(new FacebookStrategy({
 
                     // if there is an error, stop everything and return that
                     // ie an error connecting to the database
-                    if (err)
+                    console.log("not found");
+                    if (err) {
                         return done(err);
-
+                        console.log("here err" + err);
+                     }   
                     // if the user is found, then log them in
                     if (user) {
+
+                        // FB.api(
+                        //     '/890660314318987?access_token=' + accessToken,
+                        //     function (response) {
+                        //       if (response) {
+                        //         /* handle the result */
+                        //         console.log("came here" + response.name);
+                        //       }
+                        //     }
+                        // );
+                        // app.get('https://graph.facebook.com/events/350654041784862', function(req, res) {
+                        //      console.log("got the event", res);
+                        //     });
+                        console.log("found user");
+                        req.session.fbAccessToken = accessToken;
                         return done(null, user); // user found, return that user
                     } else {
+                        console.log("i am here");
                         // if there is no user found with that facebook id, create them
                         var newUser            = new User();
 
@@ -126,6 +151,8 @@ passport.use(new FacebookStrategy({
                         newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken;
                         
                         console.log("email id " + newUser.facebook.email);
+                        req.session.fbAccessToken = accessToken;
+
 
                         // save our user to the database
                         newUser.save(function(err) {
@@ -165,7 +192,7 @@ var app = express();
         app.use(passport.session());
         app.use(flash());
         //app.use(app.router);
-        app.use(express.static(__dirname + '/public'));
+        app.use(express.static(__dirname + '/views'));
 //        });
 
 // if ('development' == app.get('env')) {
@@ -204,6 +231,8 @@ app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/' }),
     function(req, res) {
      console.log("setting here");
+     console.log("session " + req.session);
+     console.log("user " + req.user);
      req.session.user = req.user;
      res.redirect('/home');
 });
@@ -227,14 +256,12 @@ app.post("/update", function (req, res) {
           res.send({ error: error });          
         } else {
            // update the user object found using findOne
-           console.log("here inside city setting " + req.body.city);
            db.facebook.name=req.body.fullname;
            db.local.city = req.body.city;
-           console.log("here inside city setting " + db.local.city);
-           console.log("here inside name setting " + req.body.name);
-           console.log("name set is " + db.facebook.name);
+           console.log("roles selected " + req.body.role);
            // now update it in MongoDB
-
+           db.local.role = req.body.role;
+           db.local.lang = req.body.lang;
            db.save(function (err, user) {
                if (err) {
                     console.log("ERRRORRRR");
@@ -250,106 +277,542 @@ app.post("/update", function (req, res) {
     });
 });
 
+
+app.post("/post", function (req, res) {
+    console.log("User is " + req.session.user.facebook.email)
+    var city = req.body.city;
+    var lang = req.body.lang;
+    var role = req.body.role;
+    var langarr="";
+    var cityarr="";
+    var rolearr="";
+    var x= false;
+
+
+    if(!city || (typeof city == 'undefined')) {
+        //cityarr = {}.toString();
+        //x= true;
+    } else {
+        console.log("city selected is " + city);
+        cityarr = city.toString();
+        //x = false;
+    }
+    
+
+    var role = req.body.role;
+    if (!role || (typeof role == 'undefined')) {
+        console.log("role selected is " + role);
+        //rolearr = {}.toString();
+        //x= true;
+    } else {
+        console.log("role selected is " + role);
+        rolearr = role.toString();
+       //x = false;
+    }
+
+    var lang = req.body.lang;
+    if (!lang || (typeof lang == 'undefined')) {
+        console.log("lang selected is undefinded" + lang);
+        //langarr = {}.toString();
+        //x= true;
+    } else {
+        console.log("lang selected is " + lang);
+        langarr = lang.toString();
+       //x = false;
+    }
+
+    User.findOne({ $and:[{ 'facebook.email' : req.session.user.facebook.email }, {'post._id' : req.body._postid}]}, 
+                { post: { $elemMatch: { '_id': req.body._postid } } }
+                ,function(error, db) {
+        if (error || !db) { 
+                console.log("NO POST FOUND");
+                User.findOne({ 'facebook.email' : req.session.user.facebook.email }, function(error, db) {
+                //     console.log("coming 1");
+                if (error || !req.user) {
+                    console.log("ERRPRRR NOT A VALID");
+                  res.send({ error: error });          
+                } else {
+                   // update the user object found using findOne
+                   console.log("req.body.title" + req.body.postTitle);
+                   // db.post ={ $addToSet:  {postTitle:req.body.postTitle,
+                   //          postDetail:req.body.post,
+                   //          city:cityarr,
+                   //          role: rolearr,
+                   //          lang: langarr,
+                   //          date:new Date()}};
+
+                   var postt ={
+                            postTitle:req.body.postTitle,
+                            postDetail:req.body.post,
+                            city:cityarr,
+                            role: rolearr,
+                            lang: langarr,
+                            date:new Date()};
+                    console.log("post is " + postt)
+                   db.update({ $push: {post: postt}}, { upsert: true },function (err, user) {
+                       if (err) {
+                            console.log("ERRRORRRR");
+                        }
+
+                       //req.session.user = user;
+                       //req.session.loggedIn = true;
+                       res.redirect('/searchPosts');
+                   });
+                }
+             });   
+
+        }  else {
+            console.log("POST FOUND db " + db);
+
+            var postt ={
+                            _id:req.body._postid,
+                            postTitle:req.body.postTitle,
+                            postDetail:req.body.post,
+                            city:cityarr,
+                            role: rolearr,
+                            lang: langarr,
+                            date:new Date()};
+                         
+                    console.log("posttt is " + req.body._postid);
+            User.update({'facebook.email' : req.session.user.facebook.email, 'post._id':req.body._postid},
+                    { $set: {"post.$": postt}},
+                    function (err, user) {
+                       if (err) {
+                            console.log("ERRRORRRR");
+                        }
+                        console.log("USERRR" + user);
+                       //req.session.user = user;
+                       //req.session.loggedIn = true;
+                       res.redirect('/searchPosts');
+            });
+        }         
+    });
+    
+        
+});
+
+app.post('/search', function (req, res) {
+    var city = req.body.city;
+    var lang = req.body.lang;
+    var role = req.body.role;
+    var x= false;
+    if(!city && !lang && !role) {
+        x=true;
+    } else {
+        x = false;
+    }
+
+    if(!city) {
+        var cityarr = {}.toString();
+        //x= true;
+    } else {
+        console.log("city selected is " + city);
+        var cityarr = city.toString();
+        //x = false;
+    }
+    
+
+    var role = req.body.role;
+    if (!role) {
+        console.log("role selected is " + role);
+        var rolearr = {}.toString();
+        //x= true;
+    } else {
+        console.log("role selected is " + role);
+       var rolearr = role.toString();
+       //x = false;
+    }
+
+    var lang = req.body.lang;
+    if (!lang) {
+        console.log("lang selected is " + lang);
+        var langarr = {}.toString();
+        //x= true;
+    } else {
+        console.log("lang selected is " + lang);
+       var langarr = lang.toString();
+       //x = false;
+    }
+    
+    if(x) {
+        console.log("coming here as x is true");
+        User.find(function ( err, cities, count ){
+                    
+                    console.log("cities are " + cities);
+                    console.log("err is " + err);
+                    res.render('search_artists', { user: req.session.user, users: cities });
+
+        });
+
+    } else {
+        console.log("city array selected is " + cityarr);
+        User.find({ $and:[{'local.city':{$in : cityarr.split(",")}}, {'local.role':{$in : rolearr.split(",")}},
+            {'local.lang':{$in : langarr.split(",")}}]}, function ( err, artists, count ){
+                    
+                    console.log("artists are " + artists);
+                    console.log("cityarr is " + err);
+                    res.render('search_artists', { user: req.session.user, users: artists, cityarr:cityarr, rolearr:rolearr, langarr:langarr });
+
+        }); 
+
+// User.find({ $and:[{'local.city':{$in : cityarr.split(",")}}]}, function ( err, artists, count ){
+                    
+//                     console.log("artists are " + artists);
+//                     console.log("err is " + err);
+//                     res.render('search_artists', { user: req.session.user, users: artists });
+
+//         }); 
+    }   
+    
+
+});
+
 app.get('/logout', home.logout);
+app.get( '/searchPosts',  ensureAuthenticated, function(req, res){
+            console.log("req.session " + req.sesson);
+            console.log("req.session.user " + req.session.user);
+            var allUsers;
+            console.log("req.user.email " + req.session.user.facebook.email);
+            User.findOne({ 'facebook.email' : req.session.user.facebook.email }, function(error, db) {
+                //     console.log("coming 1");
+                if (error || !req.user) {
+                    console.log("ERROR NOT A VALID");
+                  res.send({ error: error });          
+                } else {
+                  console.log("found user " + db.facebook.email);
+                  res.render('post_search', { user: db });
+                }    
+             });   
+
+});
+            
+            // User.find( function ( err, users, count ){
+                
+            //     allUsers = users
+                        
+            //     res.render('Landing', { user: req.session.user, users: allUsers });
+
+            // });
+
 app.get( '/home',  ensureAuthenticated, function(req, res){
             console.log("req.session " + req.sesson);
             console.log("req.session.user " + req.session.user);
+            var allUsers;
+            var posts; 
+            var events;
+            var playEvents=null;;
+            var workshopEvents=null;
+            var otherEvents=null;
 
-            console.log("req.user " + req.user);
-            res.render('Landing', { user: req.session.user });
+
+            User.find( function ( err, users, count ){
+
+                if(err) res.render('index');
+
+                allUsers = users;
+
+                //Get all posts
+                User.distinct('post', function(err, postsinDB) {
+                    if(!err) {
+                        posts = postsinDB;
+                    } else {
+                        posts = {};
+                    }
+                    var currDate = new Date(new Date().toUTCString()) ;
+                    
+                    console.log("Date.now()" + new Date(currDate));
+                    console.log("Date current" + currDate);
+                    
+                    //currDate =   new Date( currDate.getTime() + ( currDate.getTimezoneOffset() * 60000 ) );
+                    console.log("current date after format is " + currDate);
+                    Event.find({ $and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
+                                    { 'event.date': { $gte: currDate } } ] },
+                                function(err, eventsInDB) {
+
+                        if(err) {
+                            events = {};
+                            console.log("Am i here");
+                            res.render('Landing', { user: req.session.user, users: allUsers, postss: posts, events: events});
+                        }
+                        
+
+                        Event.distinct('event', { 'event.eventCategory': "Play" }, function(err, allPlays) {
+                            playEvents = allPlays;
+                            Event.distinct('event', { 'event.eventCategory': "Workshop" }, function(err, allWorkshops) {
+                                workshopEvents = allWorkshops;
+                                Event.distinct('event', { 'event.eventCategory': "Others" }, function(err, allOthers) {
+                                    otherEvents = allOthers;
+                                    res.render('Landing', 
+                                        { user: req.session.user, 
+                                            users: allUsers, 
+                                            postss: posts, events: eventsInDB,
+                                            plays:playEvents, workshops:workshopEvents,others:otherEvents
+                                            });
+                                });
+                            });        
+                        });    
+
+                        
+                    });
+
+                });    
+
+            });
+
 });
+
+app.post('/searchallposts', function (req, res) {
+    var city = req.body.city;
+    var lang = req.body.lang;
+    var role = req.body.role;
+    var x= false;
+    if(!city && !lang && !role) {
+        x=true;
+    } else {
+        x = false;
+    }
+
+    if(!city) {
+        var cityarr = {}.toString();
+        //x= true;
+    } else {
+        console.log("city selected is " + city);
+        var cityarr = city.toString();
+        //x = false;
+    }
+    
+
+    var role = req.body.role;
+    if (!role) {
+        console.log("role selected is " + role);
+        var rolearr = {}.toString();
+        //x= true;
+    } else {
+        console.log("role selected is " + role);
+       var rolearr = role.toString();
+       //x = false;
+    }
+
+    var lang = req.body.lang;
+    if (!lang) {
+        console.log("lang selected is " + lang);
+        var langarr = {}.toString();
+        //x= true;
+    } else {
+        console.log("lang selected is " + lang);
+       var langarr = lang.toString();
+       //x = false;
+    }
+    
+    if(x) {
+        console.log("coming here as x is true");
+        User.find(function ( err, posts, count ){
+                    
+                    console.log("cities are " + cities);
+                    console.log("err is " + err);
+                    res.render('browserequests', { user: req.session.user, allposts: posts });
+
+        });
+
+    } else {
+        console.log("city array selected is " + cityarr);
+        User.distinct('post',{ $and:[{'post.$city':{$in : cityarr.split(",")}}, {'post.role':{$in : rolearr.split(",")}},
+            {'post.lang':{$in : langarr.split(",")}}]}, function ( err, posts, count ){
+         // User.distinct('post',{'post.city':{$in : cityarr.split(",")}}, function ( err, posts, count ){   
+                    
+                    console.log("posts are " + posts);
+                    console.log("cityarr is " + err);
+                    res.render('browserequests', { user: req.session.user, allposts: posts, cityarr:cityarr, rolearr:rolearr, langarr:langarr });
+
+        }); 
+
+    }   
+    
+
+});
+
+app.get( '/viewallposts',  ensureAuthenticated, function(req, res){
+            console.log("req.session " + req.sesson);
+            console.log("req.session.user " + req.session.user);
+            var allUsers;
+            var posts; 
+            User.distinct('post', function(err, postsinDB) {
+                console.log("here");
+                if(!err) {
+                    posts = postsinDB;
+                }
+                console.log("posts is " + posts);
+                console.log("posts length is " + posts.length);
+                console.log("req.user " + req.user);
+                
+                            
+                res.render('browserequests', { user: req.session.user, allposts: posts, rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia"});
+
+                
+            });
+
+});
+
+app.get( '/allEvents',  ensureAuthenticated, function(req, res){
+            console.log("req.session " + req.sesson);
+            console.log("req.session.user " + req.session.user);
+            var allUsers;
+            var events; 
+            Event.distinct('event', function(err, eventsinDB) {
+                console.log("here");
+                if(!err) {
+                    events = eventsinDB;
+                }
+                
+                console.log("events length is " + events);
+                            
+                res.render('search_events', { user: req.session.user, allEvents: events, datearr:"AllDates",cityarr:"AllIndia"});
+
+                
+            });
+});
+
+
+
+app.get( '/artists',  function(req, res){
+            var allUsers;
+            console.log("req.user " + req.user);
+            User.find( function ( err, users, count ){
+                //console.log("all users " + users);
+                allUsers = users
+                        
+                res.render('search_artists', { user: req.session.user, users: allUsers,rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia" });
+
+            });
+});
+
+app.get( '/postevents',  ensureAuthenticated, function(req, res){
+            console.log("coming here posting an event");
+            res.render('postevent', { user: req.session.user});
+
+       
+});
+app.post( '/posteventDetails',  function(req, res){
+            var allUsers;
+            console.log("req.body.eventid " + req.body.eventId);
+           
+                FB.api(
+                            '/' + req.body.eventId + '?access_token=' + req.session.fbAccessToken,
+                            function (response) {
+                                if (response) {
+
+                                    Event.findOne({ 'event.eventId' : req.body.eventId }, function(err, event) {
+                                            if (err) {
+                                                return done(err);
+                                                console.log("Error in retrieving" + err);
+                                             }   
+                                            // if the user is found, then log them in
+                                            if (event) {
+                                             console.log("sorry that Event is already registered");
+                                            } else {
+
+                                            
+                                                var newEvent            = new Event();
+                                                
+                                                // set all of the facebook information in our user model
+                                                newEvent.event.userid    = req.session.user._id; 
+                                                newEvent.event.eventId    = req.body.eventId;
+                                                newEvent.event.date    = response.start_time;
+                                                newEvent.event.city = response.venue.city; 
+                                                newEvent.event.eventCategory = req.body.category; 
+                                                newEvent.event.title = response.name; 
+                                                newEvent.event.link = "https://www.facebook.com/events/" + req.body.eventId; 
+
+                                                FB.api(
+                                                        '/' + req.body.eventId + '/picture',
+                                                        {
+                                                            "redirect": false,
+                                                            "width": "500",
+                                                            "height":"500"
+                                                        },
+                                                        function(response) {
+
+                                                            if (response && !response.error) {
+                                                                newEvent.event.eventcover = response.data.url; 
+                                                                console.log("event picture url " + response.data.url);
+                                                                newEvent.save(function(err) {
+                                                                    if (err)
+                                                                        throw err;
+                                                                });   
+                                                             } else {
+                                                                console.log("error");
+                                                             }   
+                                                         }        
+                                               );
+                                            }
+                                        });    
+                                }   
+ 
+                        });               
+        
+            res.redirect('/home');
+});
+
 app.get( '/profile', home.profile);
 
+app.get( '/postarequest',  ensureAuthenticated, function(req, res){
+            var allUsers;
+            console.log("req.user " + req.user);
+            res.render('postarequest', { user: req.session.user, users: allUsers });
+});
+
+app.post( '/editpost',  ensureAuthenticated, function(req, res){
+            console.log("user id " + req.body._id);
+            console.log("post id " + req.body._postid);
+            User.findOne({ $and:[{ '_id' : req.body._id }, {'post._id' : req.body._postid}]}, 
+                { post: { $elemMatch: { '_id': req.body._postid } } }
+                ,function(error, db) {
+                //     console.log("coming 1");
+                if (error || !req.user) {
+                    console.log("ERROR NOT A VALID");
+                  res.send({ error: error });          
+                } else {
+                  console.log("found post " + db);
+                  res.render('postarequest', { post: db, user:req.session.user });
+                }    
+             }); 
+});
+
+app.post( '/viewpost',  ensureAuthenticated, function(req, res){
+            console.log("event id " + req.body.eventId);
+
+            
+});
+
+app.post( '/deletepost',  ensureAuthenticated, function(req, res){
+            console.log("user id " + req.body._id);
+            console.log("post id " + req.body._postid);
 
 
-// app.get( '/',                home.index);
-// app.get( '/login/callback',  home.loginCallback);
-// app.get( '/logout',          home.logout);
-// app.post( '/login',          passport.authenticate('login', {
-//         successRedirect: '/home',
-//         failureRedirect: '/',
-//         failureFlash : true  
-//     }));
-// app.get( '/signup',          home.signup);
-// app.post( '/signup',          passport.authenticate('signup', {
-//         successRedirect: '/home',
-//         failureRedirect: '/',
-//         failureFlash : true  
-//     }));
-// app.get( '/home',          isAuthenticated,home.home);
+            User.update({ '_id' : req.body._id },
+                        { $pull: { 'post': {'_id': req.body._postid}}}
+                ,function(error, db) {
+                //     console.log("coming 1");
+                if (error || !req.user) {
+                    console.log("ERROR NOT A VALID");
+                  res.send({ error: error });          
+                } else {
+                  console.log("found post " + db);
+                  res.redirect('/searchposts');
+                }    
+             }); 
+});
 
-// // port
-// app.listen(1337);
-
-// test authentication
 function ensureAuthenticated(req, res, next) {
-if (req.isAuthenticated()) { return next(); }
+
+if (req.isAuthenticated()) { 
+    console.log("here accessToken " + req.session.fbAccessToken);
+    return next(); 
+}
+console.log("not authenticated");
 res.redirect('/')
 }
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
 });
-
-
-
-
-// if(!config.facebook.appId || !config.facebook.appSecret) {
-//     throw new Error('facebook appId and appSecret required in config.js');
-// }
-
-// app.configure(function() {
-//     app.set('port', process.env.PORT || 3000);
-//     app.set('views', __dirname + '/views');
-//     app.set('view engine', 'ejs');
-//     app.use(express.favicon());
-//     app.use(express.logger('dev'));
-//     app.use(express.cookieParser());
-//     app.use(express.cookieSession({ secret: 'secret'}));
-//     app.use(express.bodyParser());
-//     app.use(express.methodOverride());
-
-//     // TODO - Why Do we need this key ?
-//     app.use(expressSession({secret: 'mySecretKey'}));
-//     app.use(passport.initialize());
-//     app.use(passport.session());
-
-//     app.use(flash());
-//     app.use(app.router);
-//     app.use(express.static(path.join(__dirname, 'public')));
-
-// });
-
-// app.configure('development', function() {
-//     app.use(express.errorHandler());
-// });
-
-// var dbConfig = require('./db');
-// var mongoose = require('mongoose');
-// // var mongoClient = require('mongodb').MongoClient;
-// // Connect to DB
-// mongoose.connect(dbConfig.url);
-
-
-// // Initialize Passport
-// var initPassport = require('./passport/init');
-// initPassport(passport);
-
-// var isAuthenticated = function (req, res, next) {
-//     // if user is authenticated in the session, call the next() to call the next request handler 
-//     // Passport adds this method to request object. A middleware is allowed to add properties to
-//     // request and response objects
-//     console.log("req.session.access_token inside isAuthenticated: "+req.session.access_token);
-//     if (req.isAuthenticated() || req.session.access_token)
-//         return next();
-//     // if the user is not authenticated then redirect him to the login page
-//     res.redirect('/');
-// }
-
-
-
-
-
-// http.createServer(app).listen(app.get('port'), function() {
-//     console.log("Express server listening on port " + app.get('port'));
-// });

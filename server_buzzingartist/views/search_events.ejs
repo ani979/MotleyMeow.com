@@ -7,80 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">       
-        <link href="css/tab.css" rel="stylesheet">
         <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/dropdowns-enhancement.js"></script>
+        <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+        <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">        
   </head>
-  <script type="text/javascript">
+  
+<body>
 
-  <script> 
-    // $(function(){
-    //   alert("here");
-      
-    //});
- 
-    $(document).ready(function() {
-    var panels = $('.user-infos');
-    var panelsButton = $('.dropdown-user');
-    panels.hide();
-
-    //Click dropdown
-    panelsButton.click(function() {
-        //get data-for attribute
-        var dataFor = $(this).attr('data-for');
-        var idFor = $(dataFor);
-
-        //current button
-        var currentButton = $(this);
-        idFor.slideToggle(400, function() {
-            //Completed slidetoggle
-            if(idFor.is(':visible'))
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
-            }
-            else
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
-            }
-        })
-    });
-   </script> 
-  <body>
-
-
-<nav class="navbar navbar-inverse navbar-static-top no-margin">
-  <div class="container-fluid">
-
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">BuzzingArtists </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-             
-              <!-- <form class="navbar-form navbar-left" role="search" >
-              <div class="form-group" align="center">
-                <input type="text" class="form-control" placeholder="Search">
-              </div>
-              <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-            </form> -->
-
-            </ul>
-            <ul class="nav nav-bar pull-right">
-                <li><a class="btn btn-primary navbar-btn" href="/signup">Join us</a></li>
-            </ul>
-
-
-          
-        </div>
-  </div>
-</nav>
+ <% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout">
+  <%}%> 
 
 <div class = "main-container">
   <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
@@ -88,36 +32,57 @@
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
   </div>
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2+" - "+$5+":"+$6 + "hrs"
+                  }
+                ); 
+            return retDate;
+        }
+    %>    
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;" id = "searchevents">
     <h3>
-      EVENTS RUNNING IN YOUR CITY
+      EVENTS PLAYING AROUND YOU
      </h3>
-     <div class="row">    
-        <div class="btn-group">
-            <button class="btn btn-primary" data-label-placement>Where</button>
-            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><input type="checkbox" id="Bengaluru" name="NAME" value="VALUE"><label for="Bengaluru">Bengaluru</label></li>
-                <li><input type="checkbox" id="Chennai" name="NAME" value="VALUE"><label for="Chennai">Chennai</label></li>
-                <li><input type="checkbox" id="Delhi" name="NAME" value="VALUE"><label for="Delhi">Delhi</label></li>
-                <li><input type="checkbox" id="Mumbai" name="NAME" value="VALUE"><label for="Mumbai">Mumbai</label></li>
-                <li><input type="checkbox" id="AllIndia" name="NAME" value="VALUE"><label for="AllIndia">All India</label></li>
-            </ul>
-         </div>
+     
+       <div class="row">    
+        <form id = "form_artists" class ="form-control" action="" method="post" style="height:auto">
           <div class="btn-group">
-            <button class="btn btn-primary" data-label-placement>When</button>
-            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><input type="checkbox" id="thisweek" name="NAME" value="VALUE"><label for="thisweek">This Week</label></li>
-                <li><input type="checkbox" id="comingweeks" name="NAME" value="VALUE"><label for="comingweeks">Coming Weeks</label></li>
-                
-            </ul>
-         </div>
-         
-         <div class="btn-group">
-                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-         </div>
-    </div>
+              <button type ="button" class="btn btn-primary" data-label-placement>Select City</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bangalore"><label for="Bengaluru">Bengaluru</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai"><label for="Chennai">Chennai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"><label for="Delhi">Delhi</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai"><label for="Mumbai">Mumbai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="AllIndia" name="city" value="AllIndia" checked><label for="AllIndia">All India</label></li>
+                  <input type="hidden" name="selectedcity" id="selected" value="">
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement>Select Date</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="one"><label for="Actor">Within one week</label></li>
+                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="Lights"><label for="Lights">Within two weeks</label></li>
+                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="Lights"><label for="Lights">Within this month</label></li>
+                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="AllDates" checked><label for="AllDates" checked>Doesn't natter</label></li>
+              </ul>
+           </div>
+
+           
+           <div class="btn-group">
+                  <button id = "submit" class="btn btn-default animesh_b" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+           </div>
+           </form>
+      </div>
+    
     <div class="row col-md-8 col-md-offset-2">
     
         
@@ -129,86 +94,117 @@
               <table id="mytable" class="table table-bordered table-striped">
                    
                    <thead>
-                      <th>Name</th>
-                      <th>Where?</th>
-                       <th>When?</th>
-                       <th>What?</th>
+                      <th>Event Name</th>
+                      <th>Event cover</th>
+                       <th>Starting date</th>
+                       <th>City</th>
                    </thead>
-                  <tbody>
-                    <tr>
-                        <td><a href="#" >Contemporary Dance</a></td>
-                        <td>Jagriti, Bengaluru</td>
-                        <td>06th Feb 2014</td>
-                        <td>Dance</td>
-                    </tr>
-    
-                   
+                   <tbody class="searchable">
                       
-                      
-                  
+                      <% for(var i =0 ; i < allEvents.length; i++) { 
+                            var d = new Date(new Date(allEvents[i].date).toISOString());
+                            
+                            if(d >= new Date()) { %>
+                                <% var isodateString = new Date(allEvents[i].date).toISOString();
+                                    var displayableDate = getDate(isodateString) %>
+                                <tr>
+                                  <td style = "width:250px; font-size:15px;">
+                                    <a href = "<%=allEvents[i].link%>" target="_blank">
+                                      <div>
+                                        <strong><%= allEvents[i].title %></strong>
+                                      </div>
+                                    </a>
+                                  </td>
+                                  <td><img src="<%=allEvents[i].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive imagedisplay"></img></td>
+                                  <td style = "width:250px; font-size:20px;"><%=displayableDate%></td>
+                                  <td style = "width:250px; font-size:20px;"><%= allEvents[i].city %></td>
+                                </tr> 
+                             <%}%>   
+                      <% } %>
+                        
                   </tbody>
-        
               </table>
-
-                 <div class="clearfix"></div>
-                    <ul class="pagination pull-right">
-                      <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-                      <li class="active"><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                      <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-                    </ul>
-            </div>
         </div>
     </div>
   </div>
- </div> 
+ </div>
+  
 
          
 
    <!-- footer starts-->
-   <div id = "footer"></div>
+<footer class="site-footer">
+     <div class="container">
+        <div class="bottom-footer">
+              <ul class="footer-nav">
+                <li><a href="p2demo.html">What are we</a></li>
+                <li><a href="#">Who are we</a></li>
+                <li><a href="#">Where are we</a></li>
+              </ul>
+        </div>
+    
+        <div class="cp-footer-links cpfl-social col-sm-12 text-center">
+                    <ul class="list-inline">
+                        <li><a href="" target="_blank"><img alt="facebook" src="images/fb.png" style="width:28px"></a></li>
+                        <li><a href="" target="_blank"><img alt="linkedin" src="images/lin.png" style="width:28px"></a></li>
+                        
+                    </ul>
+        </div>
 
+        <div class="row cp-copyright">
+            <div class="col-sm-12 col-xs-12">
+                <small>&copy; 2015 | Buzz'ed Pvt. Ltd.  <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. <a href="/view/user-agreement">User Agreement</a> | <a href="/view/privacy">Privacy Policy</a> | <a class="pressKitLink" data-link-position="footer" href="/static/cupickpresskit.zip" target="_blank" download="cupickpresskit.zip">Press Kit</a></small>
+            </div>
+        </div>
+      </div>  
+        
+  
+   </footer>
     
    <!-- footer ends-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-   <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-     <script src="js/dropdowns-enhancement.js"></script>
+
     <script type="text/javascript">
-    $("#footer").load("footer.ejs"); 
-          $(document).ready( function() {
-              $('[id^=mycarousel]').carousel({
-              interval:   4000
-          });
-            
-            var clickEvent = false;
-           $('[id^=mycarousel]').on('click', '.nav a', function() {
-                clickEvent = true;
-                $('.nav li').removeClass('active');
-                $(this).parent().addClass('active');    
-            }).on('slid.bs.carousel', function(e) {
-              if(!clickEvent) {
-                var count = $('.nav').children().length -1;
-                var current = $('.nav li.active');
-                current.removeClass('active').next().addClass('active');
-                var id = parseInt(current.data('slide-to'));
-                if(count == id) {
-                  $('.nav li').first().addClass('active');  
-                }
-              }
-              clickEvent = false;
-            });
-          });
+    $("#headerloggedin").load("header.ejs");
+    $("#headerloggedout").load("headerloggedout.ejs");
 
-          $('#openBtn').click(function(){
-              $('#myModal').modal({show:true})
-          });
+    $(document).ready(function(){
 
-          $(document).ready(function(){
-            $('[id=any]').on("keyup", function(){
+        var table = $('#mytable').DataTable();
+
+        // Apply the search
+      //table.columns().eq( 0 ).each( function ( colIdx ) {
+          $('input[name=city][type=checkbox]').change(function(){
+          alert("this.value " + this.value);
+          //$('input[name=city][type=checkbox]').each(function(){
+                
+                table
+                    .column(3)
+                    .search(this.value)
+                    .draw();
+           // } );
+          });
+       //});   
+        
+        
+    });
+
+    // $(function() {
+    //   $('input[name=city][type=checkbox]').each(function(){
+    //         alert("hererere");
+    //         table
+    //             .column($this)
+    //             .search( $(this).val() )
+    //             .draw();
+    //     } );
+    // });
+
+  
+
+
+        
+  $(document).ready(function(){
+            $('[id=searchevents]').on("keyup", function(){
+              
                         
                         var rex = new RegExp($(this).val(), 'i');
                         $('.searchable tr').hide();
@@ -218,6 +214,36 @@
                     //})
             });
          }(jQuery));
+
+
+    $(function(){
+      $('select[value]').each(function(){
+        $(this).val(this.getAttribute("value"));
+     });
+     
+      var values_date = '<%=datearr%>';
+      var dateInitValues = values_date.split(",");
+
+      var values_city = '<%=cityarr%>';
+      var cityInitValues = values_city.split(",");
+
+      
+
+      $('input[name=date][type=checkbox]').each(function(){
+        
+        $(this).prop("checked", ($.inArray($(this).val(), dateInitValues) != -1));
+
+     });
+
+ 
+      $('input[name=city][type=checkbox]').each(function(){
+        
+        $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
+
+     });
+
+
+    });
     </script>
   </body>
 </html>

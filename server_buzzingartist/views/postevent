@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+  </head>
+  <script type="text/javascript">
+ 
+    $(document).ready(function() {
+        var panels = $('.user-infos');
+        var panelsButton = $('.dropdown-user');
+        panels.hide();
+
+        //Click dropdown
+        panelsButton.click(function() {
+            //get data-for attribute
+            var dataFor = $(this).attr('data-for');
+            var idFor = $(dataFor);
+
+            //current button
+            var currentButton = $(this);
+            idFor.slideToggle(400, function() {
+                //Completed slidetoggle
+                if(idFor.is(':visible'))
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+                }
+                else
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+                }
+            })
+        });
+      });
+   </script> 
+  <body>
+
+
+ <% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout">
+  <%}%> 
+
+<div class = "main-container">
+
+
+
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <form class="form-horizontal" action="/postevent" method="post">
+    
+
+    <!-- Form Name -->
+    <legend>Post an event in our main page</legend>
+     <span class="fieldNote">Just put the event id in the text area below. The event id is present in the event URL. For eg. event id of ths url""https://www.facebook.com/events/1234567/?ref_dashboard_filter....." is "1234567" </span>
+
+    <!-- Textarea -->
+    <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
+    <div class="control-group">
+        <label class="control-label" for="textarea">EVENT ID:</label>
+        <div class="controls">       
+        <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>   
+         <input name="_postid"  type="hidden" value=<%=post.post[0]._id%>>              
+        <input type="textarea" name="postTitle" id="title" class="input-lg" style="text-align: center; width: 40%;" value= "<%=post.post[0].postTitle%>"> </input>
+        <% } else { %> 
+          <input type="textarea" name="postTitle" id="title" class="input-lg" placeholder="Need an actor etc." style="text-align: center; width: 40%;" value=""> </input>
+        <% } %>
+        </div>
+     </div>   
+      
+        
+  
+    </form>
+    <input action="action" type="button" value="Back" onclick="history.go(-1);" />
+    <!-- <form action="/goback" method="post">
+    <div class="control-group">
+      <label class="control-label" for="cancelbutton">Exit the page</label>
+      <div class="controls">
+        <button id="cancelbutton" name="cancelbutton" class="btn btn-primary">Cancel</button>
+      </div>
+    </div>
+  </form> -->
+
+  </div>  
+</div>    
+
+         
+
+   <!-- footer starts-->
+<footer class="site-footer">
+     <div class="container">
+        <div class="bottom-footer">
+              <ul class="footer-nav">
+                <li><a href="p2demo.html">What are we</a></li>
+                <li><a href="#">Who are we</a></li>
+                <li><a href="#">Where are we</a></li>
+              </ul>
+        </div>
+    
+        <div class="cp-footer-links cpfl-social col-sm-12 text-center">
+                    <ul class="list-inline">
+                        <li><a href="" target="_blank"><img alt="facebook" src="images/fb.png" style="width:28px"></a></li>
+                        <li><a href="" target="_blank"><img alt="linkedin" src="images/lin.png" style="width:28px"></a></li>
+                        
+                    </ul>
+        </div>
+
+        <div class="row cp-copyright">
+            <div class="col-sm-12 col-xs-12">
+                <small>&copy; 2015 | Buzz'ed Pvt. Ltd.  <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. <a href="/view/user-agreement">User Agreement</a> | <a href="/view/privacy">Privacy Policy</a> | <a class="pressKitLink" data-link-position="footer" href="/static/cupickpresskit.zip" target="_blank" download="cupickpresskit.zip">Press Kit</a></small>
+            </div>
+        </div>
+      </div>  
+        
+  
+   </footer>
+    
+   <!-- footer ends-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+  </body>
+</html>

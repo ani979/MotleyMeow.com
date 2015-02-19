@@ -10,41 +10,7 @@
         <link href="css/style.css" rel="stylesheet">       
         <link href="css/tab.css" rel="stylesheet">
   </head>
-  <script type="text/javascript">
- 
-    $(document).ready(function() {
-    var panels = $('.user-infos');
-    var panelsButton = $('.dropdown-user');
-    panels.hide();
-
-    //Click dropdown
-    panelsButton.click(function() {
-        //get data-for attribute
-        var dataFor = $(this).attr('data-for');
-        var idFor = $(dataFor);
-
-        //current button
-        var currentButton = $(this);
-        idFor.slideToggle(400, function() {
-            //Completed slidetoggle
-            if(idFor.is(':visible'))
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
-            }
-            else
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
-            }
-        })
-
-       //(function ($) {
-          
-      //  }(jQuery));
-
-
-    });
-   
-   </script> 
+  
   <body>
 
 
@@ -62,17 +28,20 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-               <li ><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
-               <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
-                  <ul class="dropdown-menu" role="menu">
-                      <li><a href="postqrequest.ejs">Post a request</a></li>
-                      <li><a href="#">Browse</a></li>                      
-                  </ul>
-               </li> 
-               <li ><a href="#">Your posts<span class="sr-only">(current)</span></a></li>
-            </ul>
+            <% if(user!=null) { %>
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                   <li ><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
+                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a href="/postarequest">Post a request</a></li>
+                          <li><a href="/artists">Browse</a></li>                      
+                      </ul>
+                   </li> 
+                   <li ><a href="/searchPosts">Your posts<span class="sr-only">(current)</span></a></li>
+                   <li><a href="/postevents">Post event from FB <span class="sr-only">(current)</span></a></li>
+                </ul>
+
             <ul class="nav navbar-right navbar-nav">                  
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
@@ -82,8 +51,15 @@
                       
                     </ul>
                   </li>
-             </ul>              
-        </div>
+             </ul>  
+             <%} else { %>
+             <ul class="nav nav-bar pull-right">
+                        
+                <li><a class="btn btn-primary navbar-btn" href="/signup">Join us</a></li>
+              
+            </ul>
+             <% } %> 
+      </div>
   </div>
 </nav>
 
@@ -92,11 +68,11 @@
     <h3 class = "thtrexplore">
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
-   </div>
+  </div>
   
-   <div class="container">
+  <div class="container">
     <h2 class="title" style= "text-align:center;">Hi, <strong> <%= user.facebook.name %> <strong></h2>
-     <h3 style= "text-align:center;">Join other artists in your city who are looking out for you</h3>
+    <h3 style= "text-align:center;">Join other artists in your city who are looking out for you</h3>
     
 
     <hr class="half-rule">
@@ -118,232 +94,199 @@
         <p>Get notified for requests posted here and support theatre.</p>
       </div>
     </div>
-  <hr class="half-rule">
+    <hr class="half-rule">
     
   </div>
   <br>
      
       
- <!-- Carousel
-    ================================================== -->
-  <!-- <div class="col-md-7 col-xs-8 no-padding no-margin">
-      
-    <div id="myCarousel" class="carousel slide" data-ride="carousel" >
-      <!-- Indicators -->
-     <!-- <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
-       <div class="carousel-inner" role="listbox">
-           <div class="item active"><a href="#">
-             <img src="images/1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
-           </div>
-           <div class="item"><a href="#">
-              <img src="images/2.jpg" border=0 width=1025 height=356 alt="Second slide"></a>
-           </div>
-            <div class="item"><a href="#">
-              <img src="images/5.jpg" border=0 width=1025 height=356  alt="Third slide"></a>
-            </div>
-       </div>
-      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div><!-- /.carousel -->
- <!-- </div> -->
-  <div class="col-md-7 col-xs-8 no-padding no-margin" style = "padding-left: 20px; padding-right:100px;">
-      <div class="panel with-nav-tabs panel-primary">
-                    <div class="panel-heading">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab1primary" data-toggle="tab">Plays running during this week</a></li>
-                                <li><a href="#tab2primary" data-toggle="tab">Workshops being held</a></li>
-                                <li><a href="#tab3primary" data-toggle="tab">Auditions running</a></li>
-                                <li><a href="#tab4primary" data-toggle="tab">Other Events, Festivals, Readings etc.</a></li>
-                                
-                            </ul>
-                    </div>
-                    <div class="panel-body">
-                        <div class="tab-content">
-                            <div class="tab-pane fade in active" id="tab1primary">
-                                  <div id="myCarousel" class="carousel slide" data-ride="carousel" >
-      <!-- Indicators -->
-                                       <ol class="carousel-indicators">
-                                          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                          <li data-target="#myCarousel" data-slide-to="1"></li>
-                                          <li data-target="#myCarousel" data-slide-to="2"></li>
-                                          <li data-target="#myCarousel" data-slide-to="3"></li>
-                                          <li data-target="#myCarousel" data-slide-to="4"></li>
-                                        </ol>
-                                         <div class="carousel-inner span6 columns" role="listbox">
-                                             <div class="item active imagecarousel"> <a href="#">
-                                               <img src="images/E1.jpg" border=0  alt="First slide"></a>
-                                             </div>
-                                             <div class="item imagecarousel" ><a href="#">
-                                                <img src="images/E2.jpg" border=0  alt="Second slide"></a>
-                                             </div>
-                                              <div class="item imagecarousel"><a href="#">
-                                                <img src="images/E3.jpg" border=0   alt="Third slide"></a>
-                                              </div>
-                                              <div class="item imagecarousel"><a href="#">
-                                                <img src="images/E4.jpg" border=0   alt="Fourth slide"></a>
-                                              </div>
-                                              <div class="item imagecarousel"><a href="#">
-                                                <img src="images/E5.jpg" border=0   alt="Fifth slide"></a>
-                                              </div>
-                                         </div>
-                                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                  </div>
+  <% getDate = function(today) {
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
 
-                            </div><!-- End Item -->
-                            <div class="tab-pane fade" id="tab2primary">
-
-                                  <div id="myCarousel2" class="carousel slide" data-ride="carousel" >
-      <!-- Indicators -->
-                                       <ol class="carousel-indicators">
-                                          <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
-                                          <li data-target="#myCarousel2" data-slide-to="1"></li>
-                                          
-                                        </ol>
-                                         <div class="carousel-inner" role="listbox">
-                                             <div class="item active imagecarousel"><a href="#">
-                                               <img src="images/Wo1.jpg" border=0  alt="First slide"></a>
-                                             </div>
-                                             <div class="item imagecarousel"><a href="#">
-                                                <img src="images/Wo2.jpg" border=0  alt="Second slide"></a>
-                                             </div>
-                                              
-                                         </div>
-                                        <a class="left carousel-control" href="#myCarousel2" role="button" data-slide="prev">
-                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="right carousel-control" href="#myCarousel2" role="button" data-slide="next">
-                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                  </div>
-
-                            </div><!-- End Item -->
-
-                            <div class="tab-pane fade" id="tab3primary">
-
-                                  <div id="myCarousel3" class="carousel slide" data-ride="carousel" >
-      <!-- Indicators -->
-                                       <ol class="carousel-indicators">
-                                          <li data-target="#myCarousel3" data-slide-to="0" class="active"></li>
-                                          <li data-target="#myCarousel3" data-slide-to="1"></li>
-                                          <li data-target="#myCarousel3" data-slide-to="2"></li>
-                                        </ol>
-                                         <div class="carousel-inner" role="listbox">
-                                             <div class="item active imagecarousel"><a href="#">
-                                               <img src="images/1.jpg" border=0 alt="First slide"></a>
-                                             </div>
-                                             <div class="item imagecarousel"><a href="#">
-                                                <img src="images/2.jpg" border=0 alt="Second slide"></a>
-                                             </div>
-                                              <div class="item imagecarousel"><a href="#">
-                                                <img src="images/5.jpg" border=0  alt="Third slide"></a>
-                                              </div>
-                                         </div>
-                                        <a class="left carousel-control" href="#myCarousel3" role="button" data-slide="prev">
-                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="right carousel-control" href="#myCarousel3" role="button" data-slide="next">
-                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                  </div>
-
-                            </div><!-- End Item -->
-
-                            <div class="tab-pane fade" id="tab4primary">
-
-                                  <div id="myCarousel4" class="carousel slide" data-ride="carousel" >
-      <!-- Indicators -->
-                                       <ol class="carousel-indicators">
-                                          <li data-target="#myCarousel4" data-slide-to="0" class="active"></li>
-                                          <li data-target="#myCarousel4" data-slide-to="1"></li>
-                                          <li data-target="#myCarousel4" data-slide-to="2"></li>
-                                          <li data-target="#myCarousel4" data-slide-to="3"></li>
-                                          <li data-target="#myCarousel4" data-slide-to="4"></li>
-                                        </ol>
-                                         <div class="carousel-inner" role="listbox">
-                                             <div class="item active imagecarousel"><a href="#">
-                                               <img src="images/Ev1.jpg" border=0 alt="First slide"></a>
-                                             </div>
-                                             <div class="item imagecarousel"><a href="#">
-                                                <img src="images/Ev2.jpg" border=0 alt="Second slide"></a>
-                                             </div>
-                                              <div class="item imagecarousel"><a href="#">
-                                                <img src="images/Ev3.jpg" border=0  alt="Third slide"></a>
-                                              </div>
-                                              <div class="item imagecarousel"><a href="#">
-                                                <img src="images/Ev4.jpg" border=0  alt="Fourth slide"></a>
-                                              </div>
-                                              <div class="item imagecarousel"><a href="#">
-                                                <img src="images/Ev5.jpg" border=0  alt="Fifth slide"></a>
-                                              </div>
-                                         </div>
-                                        <a class="left carousel-control" href="#myCarousel4" role="button" data-slide="prev">
-                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                          <span class="sr-only">Previous</span>
-                                        </a>
-                                        <a class="right carousel-control" href="#myCarousel4" role="button" data-slide="next">
-                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                          <span class="sr-only">Next</span>
-                                        </a>
-                                  </div>
-
-                            </div><!-- End Item -->
-
-                  
-                        </div><!-- End Carousel Inner -->
-
-                     </div>
-
-
-
-      </div>   
-</div><!-- End Carousel -->
+            var yyyy = today.getFullYear();
+            if(dd<10){
+                dd='0'+dd
+            } 
+            if(mm<10){
+                mm='0'+mm
+            } 
+            today = dd+'/'+mm+'/'+yyyy;
+            return today;
+          }
+    %>      
+  <div class="col-md-6 col-xs-8 no-padding no-margin" style = "padding-left: 20px; padding-right:50px;">
+     <div class="well" style="padding-top:5px; background-color:#534B4B;">
     
-<div class="input-group col-md-5"> <h2>Recent requests for artists</h2>
+      <h3 style="margin-top:0px; color:#FFF9F9;">Upcoming plays</h3>
+      <% if (typeof plays != 'undefined' && plays != null && plays.length != null) { 
+                      %>
+            <div id="myCarousel" class="carousel slide">
+
+                
+                <!-- Carousel items -->
+                <div class="carousel-inner">
+              
+                  <% for(var i = 0; i < plays.length; i=i+4) { 
+                        console.log("event title is " + plays[i].title);
+                  %> 
+                      <% if(i <= 3) { %>
+                            <div class="item active">
+                      <%} else { %>         
+                            <div class="item">
+                      <%}%> 
+                                <div class="row">
+                                <% for(var j = i; j < plays.length && j < i+4; j++) { %>
+                                          <%  var d = new Date(new Date(plays[j].date).toISOString());
+                                              var displayableDate = getDate(d);
+                                              if(d >= new Date()) { %>
+                                       
+                                          <div class="col-sm-3 imagecarousel">
+                                              <a href = "<%=plays[j].link%>" target="_blank">
+                                               <img src="<%=plays[j].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive">
+                                               <span style="color:#FFF9F9;"><%=plays[j].title%></span><span style="color:#FFF9F9;"> on <%=displayableDate%></span>
+                                               <span style="color:#FFF9F9;"> in <%=plays[j].city%></span></h2>
+                                               </a>
+                                          </div>
+                                              <%}%>
+                                 <%}%>
+                                </div><!-- for row -->
+                             </div><!-- for if -->
+                    <%}%> <!-- For loop ends -->
+
+                        
+
+                    </div> <!-- carousel inner -->
+                 
+                 <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                 <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+              </div><!-- my carousel -->   
+           <%}%> <!-- If condition ends -->    
+        </div><!-- well ends -->
+        
+     <div class="well" style="padding-top:5px; background-color:#534B4B;">
+      <h3 style="margin-top:0px; color:#FFF9F9;">Upcoming workshops</h3>
+       <% if (typeof workshops != 'undefined' && workshops != null && workshops.length !=0) { 
+                      %> 
+            <div id="myCarousel1" class="carousel slide">
+
+              
+                <!-- Carousel items -->
+                <div class="carousel-inner">
+              
+                  <% for(var i = 0; i < workshops.length; i=i+4) { 
+                        console.log("workshop title is " + workshops[i].title);
+                  %> 
+                      <% if(i <= 3) { %>
+                            <div class="item active">
+                      <%} else { %>         
+                            <div class="item">
+                      <%}%> 
+                                <div class="row">
+                                <% for(var j = i; j < workshops.length && j < i+ 4; j++) { %>
+                                          <%  var d = new Date(new Date(workshops[j].date).toISOString());
+                                          var displayableDate = getDate(d);
+                                              if(d >= new Date()) { %>
+                                       
+                                          <div class="col-sm-3 imagecarousel">
+                                              <a href = "<%=workshops[j].link%>" target="_blank">
+                                               <img src="<%=workshops[j].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive">
+                                               <span style="color:#FFF9F9;"><%=workshops[j].title%></span><span style="color:#FFF9F9;"> on <%=displayableDate%></span>
+                                               <span style="color:#FFF9F9;"> in <%=workshops[j].city%></span></h2>
+                                               </a>
+                                          </div>
+                                          <%}%>
+                                 <%}%>
+                                </div><!-- for row -->
+                             </div><!-- for if -->
+                    <%}%> <!-- For loop ends -->
+
+                    </div> <!-- carousel inner -->
+                
+                 
+                 <a class="left carousel-control" href="#myCarousel1" data-slide="prev">‹</a>
+                 <a class="right carousel-control" href="#myCarousel1" data-slide="next">›</a>
+              </div><!-- my carousel -->   
+             <%}%> <!-- If condition ends -->      
+        </div><!-- well ends -->
+
+     <div class="well" style="padding-top:5px; background-color:#534B4B;">
+      <h3 style="margin-top:0px;color:#FFF9F9;">Other upcoming events</h3>
+      <% if (typeof others != 'undefined' && others != null && others.length != 0) { 
+                      %>
+            <div id="myCarousel2" class="carousel slide">
+
+                
+                <!-- Carousel items -->
+                <div class="carousel-inner">
+              
+                  <% for(var i = 0; i < others.length; i=i+4) { 
+                        console.log("other event title is " + others[i].title);
+                  %> 
+                      <% if(i <= 3) { %>
+                            <div class="item active">
+                      <%} else { %>         
+                            <div class="item">
+                      <%}%> 
+                                <div class="row">
+                                <% for(var j = i; j < others.length && j < i+4; j++) { %>
+                                            <%  var d = new Date(new Date(others[j].date).toISOString());
+                                            var displayableDate = getDate(d);
+                                              if(d >= new Date()) { %>
+                                    
+                                          <div class="col-sm-3 imagecarousel">
+                                              <a href = "<%=others[j].link%>" target="_blank">
+                                               <img src="<%=others[j].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive">
+                                                <span style="color:#FFF9F9;"><%=others[j].title%></span><span style="color:#FFF9F9;"> on <%=displayableDate%></span>
+                                               <span style="color:#FFF9F9;"> in <%=others[j].city%></span></h2>
+                                               </a>
+                                          </div>
+                                          <%}%>
+                                 <%}%>
+                                </div><!-- for row -->
+                             </div><!-- for if -->
+                    <%}%> <!-- For loop ends -->
+
+                     
+
+                    </div> <!-- carousel inner -->
+                      
+                 
+                 <a class="left carousel-control" href="#myCarousel2" data-slide="prev">‹</a>
+                 <a class="right carousel-control" href="#myCarousel2" data-slide="next">›</a>
+              </div><!-- my carousel -->   
+            <%}%> <!-- If condition ends -->    
+        </div><!-- well ends -->
+
+           
+</div>
+    
+    
+<div class="input-group col-md-6" style="vertical-align:top;"> <h2>Recent requests for artists</h2>
 
     <input id="filter" type="text" class="form-control" placeholder="Type your search key">
       <table class="table table-striped">
       <thead>
           <tr>
-              <th>Search Title</th>
-              <th>Looking for</th>
-              <th>Languages</th>
+              <th>Posted On</th>
+              <th>Searching for</th>
+              <th>Artists needed</th>
               <th>City</th>
           </tr>
       </thead>
       <tbody class="searchable">
+        
+        <% console.log("length of post is " + postss.length)
+        for(var i=0; i < postss.length; i++) { %>
           <tr>
-              <td>Looking for actor</td>
-              <td>Actor, Lights</td>
-              <td>Hindi</td>
-              <td>Bengaluru</td>
+          <td><%= postss[i].date %></td>
+          <td><%= postss[i].postTitle %></td>
+          <td><%= postss[i].role %></td>
+          <td><%= postss[i].city %></td>
           </tr>
-          <tr>
-              <td>Need help in Music</td>
-              <td>Music</td>
-              <td>Don't bother</td>
-              <td>Mumbai</td>
-          </tr>
+        <% } %>
+          
+          
           
       </tbody>
   </table>
@@ -369,24 +312,24 @@
   
 
 
-  <div class="container">
-      <div class="col-md-12 no-margin no-padding">
+  <div class="container" >
+      <div class="col-md-12 no-margin no-padding" style="height:100%">
             <h1 class="page-header">Buzzing around you </h1>
 
             <div class="row">
                 <div class="col-xs-4 col-sm-4 ">
                   <img src="images/a1.jpg" class="img-responsive" >
-                  <h4><a href="">Artists near you</a></h4>
+                  <h4><a href="/artists">Artists near you</a></h4>
                   
                 </div>
                 <div class="col-xs-4 col-sm-4 ">
                   <img src="images/m1.jpg" class="img-responsive" >
-                  <h4><a href="">Events in your city</a></h4>
+                  <h4><a href="/allevents">Events in your city</a></h4>
                  
                 </div>
                 <div class="col-xs-4 col-sm-4 ">
                   <img src="images/p1.jpg" class="img-responsive">
-                  <h4><a href="">Theatre groups in your city</a></h4>
+                  <h4><a href="/viewallposts">Browse recent requests</a></h4>
                 </div>
             </div>
       </div>
@@ -394,37 +337,11 @@
 
 </div>
 
+
          
 
    <!-- footer starts-->
-<footer class="site-footer">
-     <div class="container">
-        <div class="bottom-footer">
-              <ul class="footer-nav">
-                <li><a href="p2demo.html">What are we</a></li>
-                <li><a href="#">Who are we</a></li>
-                <li><a href="#">Where are we</a></li>
-              </ul>
-        </div>
-    
-        <div class="cp-footer-links cpfl-social col-sm-12 text-center">
-                    <ul class="list-inline">
-                        <li><a href="" target="_blank"><img alt="facebook" src="images/fb.png" style="width:28px"></a></li>
-                        <li><a href="" target="_blank"><img alt="linkedin" src="images/lin.png" style="width:28px"></a></li>
-                        
-                    </ul>
-        </div>
-
-        <div class="row cp-copyright">
-            <div class="col-sm-12 col-xs-12">
-                <small>&copy; 2015 | Buzz'ed Pvt. Ltd.  <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. <a href="/view/user-agreement">User Agreement</a> | <a href="/view/privacy">Privacy Policy</a> | <a class="pressKitLink" data-link-position="footer" href="/static/cupickpresskit.zip" target="_blank" download="cupickpresskit.zip">Press Kit</a></small>
-            </div>
-        </div>
-      </div>  
-        
-  
-   </footer>
-    
+   <div id = "footer"></div>
    <!-- footer ends-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <script src="js/jquery.js"></script>
@@ -432,33 +349,28 @@
     <script type="text/javascript">
 
   
-
+  
     
+$("#footer").load("footer.ejs"); 
 
-        $(document).ready( function() {
-              $('[id^=mycarousel]').carousel({
-              interval:   4000
-            });
+        $(document).ready(function() {
+          $('#myCarousel').carousel({
+          interval: 10000
+          })
+          $('#myCarousel1').carousel({
+          interval: 10000
+          })
+          $('#myCarousel2').carousel({
+          interval: 10000
+          })
             
-            var clickEvent = false;
-           $('[id^=mycarousel]').on('click', '.nav a', function() {
-                clickEvent = true;
-                $('.nav li').removeClass('active');
-                $(this).parent().addClass('active');    
-            }).on('slid.bs.carousel', function(e) {
-              if(!clickEvent) {
-                var count = $('.nav').children().length -1;
-                var current = $('.nav li.active');
-                current.removeClass('active').next().addClass('active');
-                var id = parseInt(current.data('slide-to'));
-                if(count == id) {
-                  $('.nav li').first().addClass('active');  
-                }
-              }
-              clickEvent = false;
-            });
+            $('#myCarousel').on('slid.bs.carousel', function() {
+              //alert("slid");
           });
-          
+            
+            
+        });
+        
         $(document).ready(function(){
           $('[id=filter]').on("keyup", function(){
                       
@@ -474,6 +386,8 @@
           $('#openBtn').click(function(){
               $('#myModal').modal({show:true})
             });
+
+          
     </script>
   </body>
 </html>

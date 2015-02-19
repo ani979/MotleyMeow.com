@@ -1,4 +1,38 @@
-1) Session still persists even if the user has logged out of FB. session issue.
-2) refactor to keep stuff at different places
-3) ensure no email id is changed in profile update. It cannot be updated.
-4) Update button need to corrected in profile edit.
+
+TodoS:
+
+1) refactor to keep stuff at different places
+2) ensure no email id is changed in profile update. It cannot be updated. Its currently readable - nothing to be done
+3) Update button need to corrected in profile edit. -
+4) number of artists in your city
+5) pagination - already done by using table
+6) Update all roles and actors in several pages. See if you can commonalize it.
+7) profile edit doesnt have a footer
+
+
+
+GOOD TO HAVE:
+1) Add theatre group details also.. - TBD
+2) Check header and footer in each file. - Its in a template. Need to use it for all the pages.
+3) How to display header conditionally - Done by keeping inside template
+
+DESIGN DISCUSSIONS:
+1) Date is stored in DB as Date object, do we have to change to string format or keep it as date.
+2) Check header and footer in each file. - Its in a template. Need to use it for all the pages.
+3) How to display header conditionally - Done by keeping inside template
+4) Success and failure messages in the page - Please check how to do.
+5) How to handle the cases of database migration - read in the internet
+6) Use Table.js to manage the ajax query.
+7) Separate out post from User database. Use user link and update all the pages that has post.
+8) Should we use RedIs sesstion store for storing sessions?
+
+todo for 19th Feb:
+1) Use ajax based query for managing the selection of checkbox in table
+2) sort by time the events.
+4) 
+
+To read:
+http://www.webdesignerdepot.com/2014/02/how-to-create-horizontal-scrolling-using-display-table-cell/
+http://www.sitepoint.com/use-jquerys-ajax-function/
+
+

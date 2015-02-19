@@ -8,16 +8,43 @@ var userSchema = mongoose.Schema({
 
     local            : {
         picture      : String,
-        city         : { type: String, default: "Bengaluru" }
+        city         : { type: String, default: "Bengaluru" },
+        role         :[{}],
+        lang         :[{}]
     },
     facebook         : {
         id           : String,
         token        : String,
         email        : String,
         name         : String
-    }   
+    },
+    post             :[{
+        postTitle         : String,
+        postDetail         : String,
+        date         : Date,
+        city         :{},
+        role         :{},
+        lang         :{}
+    }]
 
 });
+
+// var postSchema = mongoose.Schema({
+
+//     local            : {
+//         post      : String,
+//         postCity         :[{}],
+//         postRole         :[{}],
+//         postLang         :[{}]
+//     },
+//     facebook         : {
+//         id           : String,
+//         token        : String,
+//         email        : String,
+//         name         : String
+//     }   
+
+// });
 
 // methods ======================
 // generating a hash
@@ -32,4 +59,6 @@ userSchema.methods.validPassword = function(password) {
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
+// // create the model for users and expose it to our app
+// module.exports = mongoose.model('Post', postSchema);
 	

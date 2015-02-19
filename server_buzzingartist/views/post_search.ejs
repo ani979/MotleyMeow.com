@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+       <link href="css/dropdowns-enhancement.css" rel="stylesheet">        
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">   
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+        <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+ 
+
+        
+  </head>
+  
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-static-top no-margin">
+  <div class="container-fluid">
+    
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">BuzzingArtists </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+            <% if(user!=null) { %>
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
+                   <li ><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
+                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a href="/postarequest">Post a request</a></li>
+                          <li><a href="/artists">Browse</a></li>                      
+                      </ul>
+                   </li> 
+                   <li ><a href="#">Your posts<span class="sr-only">(current)</span></a></li>
+                </ul>
+
+            <ul class="nav navbar-right navbar-nav">                  
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/profile">Profile</a></li>
+                      <li><a href="/logout">Logout</a></li>
+                      
+                    </ul>
+                  </li>
+             </ul>  
+             <%} else { %>
+             <ul class="nav nav-bar pull-right">
+                        
+                <li><a class="btn btn-primary navbar-btn" href="/auth/facebook">Join us</a></li>
+              
+            </ul>
+             <% } %> 
+      </div>
+  </div>
+</nav>
+
+<div class = "main-container">
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <h3 class = "thtrexplore">
+      EXPLORE. CONNECT. CONTRIBUTE.
+     </h3>
+  </div>
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;" id = "searchartists">
+    <h3>
+      YOUR POSTS
+     </h3>
+     
+    
+    <div class="row col-md-8 col-md-offset-2">
+    
+        
+      <div>
+        
+        <div class="table-responsive">
+          
+             
+              <table id="mytable" class="table table-bordered table-striped">
+                   
+                   <thead>
+                      <th>I Posted on</th>
+                      <th>Artists needed</th>
+                       <th>For</th>
+                       <th>In the city</th>
+                       <th>Edit</th>
+                       <th>Delete</th>
+                       <th>View</th>
+                   </thead>
+                   <tbody class="searchable">
+                      
+                      <% var posts = user.post; 
+                        for (var i = 0; i < posts.length; i ++) { 
+                        console.log("post length is " + posts.length);
+                        console.log("posts[i] " + posts[i]);%>
+                        <tr>
+                          <td><%= new Date(posts[i].date) %></td>
+                          <td><%= posts[i].role %></td>
+                          <td><%= posts[i].postTitle %></td>
+                          <td><%= posts[i].city %></td>
+                           <form action="/editpost" method="POST">
+                            <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button id ="edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+                            <input name="_id"  type="hidden" value=<%=user._id%>>
+                            <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
+                            </form>
+                           
+                            <form action="/deletepost" method="POST">
+                            <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button id ="delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+                            <input name="_id"  type="hidden" value=<%=user._id%>>
+                            <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
+                            </form>
+
+                            <form action="/viewpost" method="POST">
+                            <td><p data-placement="top" data-toggle="tooltip" title="View"><button id = "view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
+                            <input name="_id"  type="hidden" value=<%=user._id%>>
+                            <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
+                            </form>
+                            
+                       </tr> 
+                       
+                      <% } %>
+                        
+                  </tbody>
+
+              <!--     <tbody>
+                    <tr>
+                        <td><a href="#" >Ashok Kumar</a></td>
+                        <td>Lights</td>
+                        <td>Don't bother</td>
+                        <td>Chennai</td>
+                    </tr>
+    
+                   <tr>
+                        <td><a href="#" >Ashish Kumar</a></td>
+                        <td>Sound</td>
+                        <td>Don't bother</td>
+                        <td>Bengaluru</td>
+                      </tr>
+                      
+                      
+                  
+                  </tbody>
+         -->
+              </table>
+     
+
+  </div>
+    </div>          
+
+  </div>
+ </div>
+ 
+
+    
+                
+ 
+
+         
+
+   <!-- footer starts-->
+   <div id = "footer"></div>
+
+    
+   <!-- footer ends-->
+    <script type="text/javascript">
+    $("#footer").load("footer.ejs"); 
+    $(document).ready(function(){
+
+      $('#mytable').dataTable();
+    });
+
+    
+    </script>
+  </body>
+</html>
