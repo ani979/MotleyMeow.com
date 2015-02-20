@@ -334,12 +334,7 @@ app.post("/post", function (req, res) {
                 } else {
                    // update the user object found using findOne
                    console.log("req.body.title" + req.body.postTitle);
-                   // db.post ={ $addToSet:  {postTitle:req.body.postTitle,
-                   //          postDetail:req.body.post,
-                   //          city:cityarr,
-                   //          role: rolearr,
-                   //          lang: langarr,
-                   //          date:new Date()}};
+
 
                    var postt ={
                             postTitle:req.body.postTitle,
@@ -647,8 +642,6 @@ app.get( '/viewallposts',  ensureAuthenticated, function(req, res){
                 
                             
                 res.render('browserequests', { user: req.session.user, allposts: posts, rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia"});
-
-                
             });
 
 });
@@ -666,7 +659,7 @@ app.get( '/allEvents',  ensureAuthenticated, function(req, res){
                 
                 console.log("events length is " + events);
                             
-                res.render('search_events', { user: req.session.user, allEvents: events, datearr:"AllDates",cityarr:"AllIndia"});
+                res.render('search_events', { user: req.session.user, allEvents: events});
 
                 
             });

@@ -52,35 +52,33 @@
      </h3>
      
        <div class="row">    
-        <form id = "form_artists" class ="form-control" action="" method="post" style="height:auto">
-          <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement>Select City</button>
+         <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-placeholder="false" data-label-placement>Select City</button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bangalore"><label for="Bengaluru">Bengaluru</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai"><label for="Chennai">Chennai</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"><label for="Delhi">Delhi</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai"><label for="Mumbai">Mumbai</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="AllIndia" name="city" value="AllIndia" checked><label for="AllIndia">All India</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bangalore" onchange="filterme()"><label for="Bengaluru">Bengaluru</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai" onchange="filterme()"><label for="Chennai">Chennai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"onchange="filterme()"><label for="Delhi">Delhi</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" onchange="filterme()"><label for="Mumbai">Mumbai</label></li>
+                  
                   <input type="hidden" name="selectedcity" id="selected" value="">
               </ul>
            </div>
            <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement>Select Date</button>
+              <button type ="button" class="btn btn-primary" data-placeholder="false" data-label-placement>Select Date</button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="one"><label for="Actor">Within one week</label></li>
-                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="Lights"><label for="Lights">Within two weeks</label></li>
-                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="Lights"><label for="Lights">Within this month</label></li>
-                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="AllDates" checked><label for="AllDates" checked>Doesn't natter</label></li>
+                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="twoweeks"><label for="Lights">Within two weeks</label></li>
+                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="onemonth"><label for="Lights">Within this month</label></li>
+                  
               </ul>
            </div>
-
-           
            <div class="btn-group">
-                  <button id = "submit" class="btn btn-default animesh_b" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+              <button type ="button" class="btn btn-primary" data-label-placement onclick = "uncheckAll()">CLEAR ALL</button>
            </div>
-           </form>
+           
+
       </div>
     
     <div class="row col-md-8 col-md-offset-2">
@@ -94,10 +92,10 @@
               <table id="mytable" class="table table-bordered table-striped">
                    
                    <thead>
-                      <th>Event Name</th>
+                      <th class = "ename">Event Name</th>
                       <th>Event cover</th>
-                       <th>Starting date</th>
-                       <th>City</th>
+                       <th class = "eDate">Starting date</th>
+                       <th class = "cityname">City</th>
                    </thead>
                    <tbody class="searchable">
                       
@@ -116,8 +114,8 @@
                                     </a>
                                   </td>
                                   <td><img src="<%=allEvents[i].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive imagedisplay"></img></td>
-                                  <td style = "width:250px; font-size:20px;"><%=displayableDate%></td>
-                                  <td style = "width:250px; font-size:20px;"><%= allEvents[i].city %></td>
+                                  <td  style = "width:250px; font-size:20px;"><%=displayableDate%></td>
+                                  <td  style = "width:250px; font-size:20px;"><%= allEvents[i].city %></td>
                                 </tr> 
                              <%}%>   
                       <% } %>
@@ -166,37 +164,30 @@
     <script type="text/javascript">
     $("#headerloggedin").load("header.ejs");
     $("#headerloggedout").load("headerloggedout.ejs");
-
+    var filterTable;
     $(document).ready(function(){
 
-        var table = $('#mytable').DataTable();
-
-        // Apply the search
-      //table.columns().eq( 0 ).each( function ( colIdx ) {
-          $('input[name=city][type=checkbox]').change(function(){
-          alert("this.value " + this.value);
-          //$('input[name=city][type=checkbox]').each(function(){
-                
-                table
-                    .column(3)
-                    .search(this.value)
-                    .draw();
-           // } );
-          });
-       //});   
-        
+         filterTable = $('#mytable').DataTable();
         
     });
 
-    // $(function() {
-    //   $('input[name=city][type=checkbox]').each(function(){
-    //         alert("hererere");
-    //         table
-    //             .column($this)
-    //             .search( $(this).val() )
-    //             .draw();
-    //     } );
-    // });
+    function filterme() {
+        var colCity = $('.cityname').index();
+        var colDate = $('.eDate').index();
+
+        //build a regex filter string with an or(|) condition
+        var cities = $('input:checkbox[name="city"]:checked').map(function() {
+          return '^' + this.value + '$';
+        }).get().join('|');
+      
+        filterTable
+        .columns( colCity )
+        .search( cities, true, false,false )
+        .draw();
+ 
+    }
+
+  
 
   
 
@@ -221,29 +212,16 @@
         $(this).val(this.getAttribute("value"));
      });
      
-      var values_date = '<%=datearr%>';
-      var dateInitValues = values_date.split(",");
-
-      var values_city = '<%=cityarr%>';
-      var cityInitValues = values_city.split(",");
-
       
 
-      $('input[name=date][type=checkbox]').each(function(){
-        
-        $(this).prop("checked", ($.inArray($(this).val(), dateInitValues) != -1));
+});
+function uncheckAll(){
 
-     });
+  $('input[type="checkbox"]:checked').prop('checked',false);
 
- 
-      $('input[name=city][type=checkbox]').each(function(){
-        
-        $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
+  filterme();
 
-     });
-
-
-    });
+}
     </script>
   </body>
 </html>

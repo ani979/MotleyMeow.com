@@ -8,6 +8,8 @@ TodoS:
 5) pagination - already done by using table
 6) Update all roles and actors in several pages. See if you can commonalize it.
 7) profile edit doesnt have a footer
+8) The main page displays all events but there is a bug wherein if date is older for an event, the slider displays empty space.
+9) If there is no event in fb, add another way to add the event. Ask user to submit three details, picture, when and where
 
 
 
@@ -34,5 +36,6 @@ todo for 19th Feb:
 To read:
 http://www.webdesignerdepot.com/2014/02/how-to-create-horizontal-scrolling-using-display-table-cell/
 http://www.sitepoint.com/use-jquerys-ajax-function/
+http://www.hacksparrow.com/mobile-web-development-in-express-js-node-js.html
 
 

@@ -1,0 +1,1 @@
+1) When posting an event, the event doesnt come to Home page. It needs to be refreshed.

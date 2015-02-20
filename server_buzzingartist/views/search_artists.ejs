@@ -38,44 +38,42 @@
      </h3>
      
        <div class="row">    
-        <form id = "form_artists" class ="form-control" action="/search" method="post" style="height:auto">
           <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement>Select City</button>
+              <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false"> Select City</button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru"><label for="Bengaluru">Bengaluru</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai"><label for="Chennai">Chennai</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"><label for="Delhi">Delhi</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai"><label for="Mumbai">Mumbai</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="AllIndia" name="city" value="AllIndia" checked><label for="AllIndia">All India</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru" onchange="filterme()"><label for="Bengaluru">Bengaluru</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai" onchange="filterme()"><label for="Chennai">Chennai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi" onchange="filterme()"><label for="Delhi">Delhi</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" onchange="filterme()"><label for="Mumbai">Mumbai</label></li>
+       
                   <input type="hidden" name="selectedcity" id="selected" value="">
               </ul>
            </div>
            <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement>Select Artists</button>
+              <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false">Select Artists</button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor"><label for="Actor">Actor</label></li>
-                  <li><input class = "artistscheck" type="checkbox" id="Lights" name="role" value="Lights"><label for="Lights">Lights</label></li>
-                  <li><input class = "artistscheck" type="checkbox" id="AllArtists" name="role" value="AllArtists" checked><label for="AllArtists" checked>All Artists</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" onchange="filterme()"><label for="Actor">Actor</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Lights" name="role" value="Lights" onchange="filterme()"><label for="Lights">Lights</label></li>
+      
               </ul>
            </div>
            <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement>Language comfortability</button>
+              <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false" id="SelectAllLang">Language comfortability</button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi"><label for="Hindi">Hindi</label></li>
-                  <li><input class = "langcheck" type="checkbox" id="Kannada" name="lang" value="Kannada"><label for="Kannada">Kannada</label></li>
-                  <li><input class = "langcheck" type="checkbox" id="Bengali" name="lang" value="Bengali"><label for="Bengali">Bengali</label></li>
-                  <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"><label for="English">English</label></li>
-                  <li><input class = "langcheck" type="checkbox" id="AllLanguage" name="lang" value="AllLanguage" checked><label for="AllLanguage">All Language</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" onchange="filterme()"><label for="Hindi">Hindi</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Kannada" name="lang" value="Kannada"onchange="filterme()"><label for="Kannada">Kannada</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Bengali" name="lang" value="Bengali"onchange="filterme()"><label for="Bengali">Bengali</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"onchange="filterme()"><label for="English">English</label></li>
+                  
               </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement onclick = "uncheckAll()">CLEAR ALL</button>
            </div>
            
-           <div class="btn-group">
-                  <button id = "submit" class="btn btn-default animesh_b" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-           </div>
-           </form>
       </div>
     
     <div class="row col-md-8 col-md-offset-2">
@@ -89,14 +87,14 @@
               <table id="mytable" class="table table-bordered table-striped">
                    
                    <thead>
-                      <th>Name</th>
-                      <th>Contribution in theatre</th>
-                       <th>Comfortable in Language</th>
-                       <th>City</th>
+                      <th class ="arname">Name</th>
+                      <th class ="arrole">Contribution in theatre</th>
+                      <th class ="arlang">Comfortable in Language</th>
+                      <th class ="arcity">City</th>
                    </thead>
                    <tbody class="searchable">
                       
-                      <% users.forEach( function( user ){ %>
+                      <% users.forEach(function(user){ %>
                         <tr>
                           <td><%= user.facebook.name %></td>
                           <td><%= user.local.role %></td>
@@ -149,125 +147,64 @@
     <script type="text/javascript">
     $("#headerloggedin").load("header.ejs");
     $("#headerloggedout").load("headerloggedout.ejs");
-
+    var filterTable;
     $(document).ready(function(){
 
-      $('#mytable').dataTable();
+      filterTable = $('#mytable').DataTable();
     });
 
+
+    function filterme() {
+        var colCity = $('.arcity').index();
+        var colRole = $('.arrole').index();
+        var colLang = $('.arlang').index();
+       
+        //build a regex filter string with an or(|) condition
+        var cities = $('input:checkbox[name="city"]:checked').map(function() {
+
+          return '^' + this.value + '$';
+        }).get().join('|');
+        
+        filterTable
+          .columns( colCity )
+          .search( cities, true, false,false )
+          .draw();
+
+        //build a regex filter string with an or(|) condition
+        var roles = $('input:checkbox[name="role"]:checked').map(function() {
+
+          return this.value + '*';
+        }).get().join('|');
+      
+        filterTable
+        .columns( colRole )
+        .search( roles, true, false,false )
+        .draw();
+
+        //build a regex filter string with an or(|) condition
+        var lang = $('input:checkbox[name="lang"]:checked').map(function() {
+          return this.value + '*';
+        }).get().join('|');
+      
+        filterTable
+        .columns( colLang )
+        .search( lang, true, false,false )
+        .draw();
+ 
+    }
+
+    function uncheckAll(){
+      //alert("here");
+      $('input[type="checkbox"]:checked').prop('checked',false);
+      // var x = document.getElementById("SelectAllLang"); 
+      // alert("x " + x.name);
+      // x.data-placeholder = "None";
+      // $('input[type="button"][id="SelectAll"]').prop("data-placeholder", "Type your answer here");
+      filterme();
+      //$('#SelectAll').prop('data-placeholder',"Nothing");
+    }
     
    $(document).ready(function(){
-
-         var city;
-         var role;
-         var lang;
-          $('#form_artists').submit(function(event){
-                 $('input:checkbox[name=city]:checked').each(function() {
-                              
-                      // this.value = null;   
-                      //var city=null;
-                      if ( $( '#AllIndia' ).prop( "checked" ) ) {
-
-                          this.value = $( ".citycheck" ).map(function() {
-                            if(this.value != "AllIndia") {
-                              return this.value;
-                            } else {
-                              return null;
-                            }
-                          }).get().join();
-                      }   
-                       
-                       //this.value = city;
-                       //alert("city is " + city);
-                       if(this.value != null) {
-                        city = this.value;
-                       } return false;
-
-                  });
-
-
-                 $('input:checkbox[name=lang]:checked').each(function() {
-                              
-                      if ( $( '#AllLanguage' ).prop( "checked" ) ) {
-                          //this.value = null;
-                          this.value = $( ".langcheck" ).map(function() {
-                            if(this.value != "AllLanguage") {
-                              return this.value;
-                            }
-                            }).get().join();
-                       }   
-                       if(this.value != null) {
-                        lang = this.value;
-                        return false;
-                       } 
-                  });
-
-                  $('input:checkbox[name=role]:checked').each(function() {
-                              
-                      if ( $( '#AllArtists' ).prop( "checked" ) ) {
-                          //this.value = null;
-                          this.value = $( ".artistscheck" ).map(function() {
-                            if(this.value != "AllArtists") {
-                              return this.value;
-                            } 
-                            }).get().join();
-                       }  
-                       if(this.value != null) {
-                        role = this.value;
-                        return false; 
-                       } 
-                  });
-
-          });
- });
-
-  $(document).ready(function(){
-            $('[id=searchartists]').on("keyup", function(){
-              
-                        
-                        var rex = new RegExp($(this).val(), 'i');
-                        $('.searchable tr').hide();
-                        $('.searchable tr').filter(function () {
-                            return rex.test($(this).text());
-                        }).show();
-                    //})
-            });
-         }(jQuery));
-
-
-    $(function(){
-      $('select[value]').each(function(){
-        $(this).val(this.getAttribute("value"));
-     });
-     
-      var values_role = '<%=rolearr%>';
-      var roleInitValues = values_role.split(",");
-
-      var values_lang = '<%=langarr%>';
-      var langInitValues = values_lang.split(",");
-
-      var values_city = '<%=cityarr%>';
-      var cityInitValues = values_city.split(",");
-
-      
-
-      $('input[name=role][type=checkbox]').each(function(){
-        
-        $(this).prop("checked", ($.inArray($(this).val(), roleInitValues) != -1));
-
-     });
-
-      $('input[name=lang][type=checkbox]').each(function(){
-        
-        $(this).prop("checked", ($.inArray($(this).val(), langInitValues) != -1));
-
-     });
-
-      $('input[name=city][type=checkbox]').each(function(){
-        
-        $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
-
-     });
 
 
     });
