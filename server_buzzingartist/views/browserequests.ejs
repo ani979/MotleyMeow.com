@@ -89,11 +89,11 @@
                <table id="mytable" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Posted On</th>
-                        <th>Looking for</th>
-                        <th>Artists needed</th>
-                        <th>City or cities</th>
-                        <th>Comfortable in these languages</th>
+                        <th class ="ardate">Posted On</th>
+                        <th class ="arname">Looking for</th>
+                        <th class ="arrole">Artists needed</th>
+                        <th class ="arcity">City or cities</th>
+                        <th class ="arlang">Comfortable in these languages</th>
                         <th>View</th>
                     </tr>
                 </thead>
@@ -104,11 +104,11 @@
                       console.log("user.post.length is " + allposts.length);
                       %>
                     <tr>
-                      <td class ="ardate"><%= allposts[i].date %></td>
-                      <td class ="arname"><%= allposts[i].postTitle %></td>
-                      <td class ="arrole"><%= allposts[i].role %></td>
-                      <td class ="arcity"><%= allposts[i].city %></td>
-                      <td class ="arlang"><%= allposts[i].lang %></td>
+                      <td ><%= allposts[i].date %></td>
+                      <td ><%= allposts[i].postTitle %></td>
+                      <td ><%= allposts[i].role %></td>
+                      <td ><%= allposts[i].city %></td>
+                      <td ><%= allposts[i].lang %></td>
                       <form action="/viewpost" method="POST">
                       <td><p data-placement="top" data-toggle="tooltip" title="View"><button id = "view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
                       <input name="_id"  type="hidden" value=<%=user._id%>>
@@ -176,14 +176,12 @@ function filterme() {
         var colCity = $('.arcity').index();
         var colRole = $('.arrole').index();
         var colLang = $('.arlang').index();
-        var cities = "*";
-        var roles = "*";
-        var lang = "*";
+
        
         //build a regex filter string with an or(|) condition
         var cities = $('input:checkbox[name="city"]:checked').map(function() {
 
-          return '^' + this.value + '$';
+          return this.value + '*';
         }).get().join('|');
         
         filterTable
