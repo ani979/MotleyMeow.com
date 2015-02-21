@@ -39,3 +39,7 @@ http://www.sitepoint.com/use-jquerys-ajax-function/
 http://www.hacksparrow.com/mobile-web-development-in-express-js-node-js.html
 
 
+Bugs:
+1) "Your Posts" link does not work from "Post a Request" page
+
+

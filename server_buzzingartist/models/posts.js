@@ -9,7 +9,9 @@ var postsSchema = mongoose.Schema({
         date         : Date,
         city         :{},
         role         :{},
-        lang         :{}
+        lang         :{},
+        rehearsal_space         :{},
+        props         :{}
 
     }
 

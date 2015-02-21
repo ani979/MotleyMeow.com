@@ -167,6 +167,14 @@
           <input name="role" id="lights" value="Lights" type="checkbox">
           Lights
         </label>
+        <label class="checkbox-inline" for="checkboxes-8">
+          <input name="role" id="props" value="Props" type="checkbox">
+          Props
+        </label>
+        <label class="checkbox-inline" for="checkboxes-9">
+          <input name="role" id="rehearsal_space" value="Rehearsal Space" type="checkbox">
+          Rehearsal Space
+        </label>
       </div>
     </div>
 
@@ -330,6 +338,12 @@
           var values_city = '<%=post.post.city%>';
           var cityInitValues = values_city.split(",");
 
+          var values_props = '<%=post.post.props%>';
+          var propsInitValues = values_props.split(",");
+
+          var values_rehearsal_space = '<%=post.post.rehearsal_space%>';
+          var rehearsal_spaceInitValues = values_rehearsal_space.split(",");
+
           
           // var initValues = [];
           // for (var prop in values) {
@@ -358,6 +372,18 @@
           $('input[name=city][type=checkbox]').each(function(){
             
             $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
+
+         });
+
+          $('input[name=rehearsal_space][type=checkbox]').each(function(){
+            
+            $(this).prop("checked", ($.inArray($(this).val(), rehearsal_spaceInitValues) != -1));
+
+         });
+
+          $('input[name=props][type=checkbox]').each(function(){
+            
+            $(this).prop("checked", ($.inArray($(this).val(), propsInitValues) != -1));
 
          });
      <%}%>     
