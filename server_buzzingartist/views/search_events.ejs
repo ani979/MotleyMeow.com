@@ -61,10 +61,24 @@
                   <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"onchange="filterme()"><label for="Delhi">Delhi</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" onchange="filterme()"><label for="Mumbai">Mumbai</label></li>
                   
-                  <input type="hidden" name="selectedcity" id="selected" value="">
+                  <!-- <input type="hidden" name="selectedcity" id="selected" value=""> -->
               </ul>
            </div>
-           <div class="btn-group">
+
+            <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false">Select Category</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "categorycheck" type="checkbox" id="Play" name="category" value="Play" onchange="filterme()"><label for="Play">Play</label></li>
+                  <li><input class = "categorycheck" type="checkbox" id="Workshop" name="category" value="Workshop" onchange="filterme()"><label for="Workshop">Workshop</label></li>
+                  <li><input class = "categorycheck" type="checkbox" id="Others" name="category" value="Others" onchange="filterme()"><label for="Others">Others</label></li>
+                  
+                  
+                  
+              </ul>
+           </div>
+
+<!--            <div class="btn-group">
               <button type ="button" class="btn btn-primary" data-placeholder="false" data-label-placement>Select Date</button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
@@ -73,7 +87,7 @@
                   <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="onemonth"><label for="Lights">Within this month</label></li>
                   
               </ul>
-           </div>
+           </div> -->
            <div class="btn-group">
               <button type ="button" class="btn btn-primary" data-label-placement onclick = "uncheckAll()">CLEAR ALL</button>
            </div>
@@ -96,13 +110,11 @@
                       <th>Event cover</th>
                        <th class = "eDate">Starting date</th>
                        <th class = "cityname">City</th>
+                       <th class = "categoryname">Kind of Event </th>
                    </thead>
                    <tbody class="searchable">
                       
-                      <% for(var i =0 ; i < allEvents.length; i++) { 
-                            var d = new Date(new Date(allEvents[i].date).toISOString());
-                            
-                            if(d >= new Date()) { %>
+                      <% for(var i =0 ; i < allEvents.length; i++) { %>
                                 <% var isodateString = new Date(allEvents[i].date).toISOString();
                                     var displayableDate = getDate(isodateString) %>
                                 <tr>
@@ -116,8 +128,8 @@
                                   <td><img src="<%=allEvents[i].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive imagedisplay"></img></td>
                                   <td  style = "width:250px; font-size:20px;"><%=displayableDate%></td>
                                   <td  style = "width:250px; font-size:20px;"><%= allEvents[i].city %></td>
+                                  <td  style = "width:250px; font-size:20px;"><%= allEvents[i].eventCategory %></td>
                                 </tr> 
-                             <%}%>   
                       <% } %>
                         
                   </tbody>
@@ -167,13 +179,15 @@
     var filterTable;
     $(document).ready(function(){
 
-         filterTable = $('#mytable').DataTable();
+         filterTable = $('#mytable').DataTable( {
+        "order": [[ $('.eDate').index(), "asc" ]]
+        } );
         
     });
 
     function filterme() {
         var colCity = $('.cityname').index();
-        var colDate = $('.eDate').index();
+        var colCategory = $('.categoryname').index();
 
         //build a regex filter string with an or(|) condition
         var cities = $('input:checkbox[name="city"]:checked').map(function() {
@@ -184,7 +198,18 @@
         .columns( colCity )
         .search( cities, true, false,false )
         .draw();
- 
+
+
+        //build a regex filter string with an or(|) condition
+        var categories = $('input:checkbox[name="category"]:checked').map(function() {
+          return '^' + this.value + '$';
+        }).get().join('|');
+      
+        filterTable
+        .columns( colCategory )
+        .search( categories, true, false,false )
+        .draw();
+
     }
 
   

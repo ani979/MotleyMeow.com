@@ -7,6 +7,7 @@ var express       = require('express'),
     home          = require('./routes/home'),
     ejs           = require('ejs'),
     mongoose      = require('mongoose');
+var moment = require('moment');
 
 
 var cookieParser = require('cookie-parser');
@@ -329,6 +330,7 @@ app.post("/post", function (req, res) {
                     console.log("ERROR NOT A VALID");
                   res.send({ error: error });          
                 } else {
+<<<<<<< HEAD
                   console.log("found post " + db);
                   console.log("message db.post.postTitle: "+db.post.postTitle);
                   console.log("req.body.postTitle:::::::::: "+req.body.postTitle);
@@ -339,6 +341,29 @@ app.post("/post", function (req, res) {
             db.post.city = cityarr;
             db.post.role = rolearr;
             db.post.lang = langarr;
+=======
+                   // update the user object found using findOne
+                   console.log("req.body.title" + req.body.postTitle);
+                   // db.post ={ $addToSet:  {postTitle:req.body.postTitle,
+                   //          postDetail:req.body.post,
+                   //          city:cityarr,
+                   //          role: rolearr,
+                   //          lang: langarr,
+                   //          date:new Date()}};
+
+                   var postt ={
+                            postTitle:req.body.postTitle,
+                            postDetail:req.body.post,
+                            city:cityarr,
+                            role: rolearr,
+                            lang: langarr,
+                            date:new Date()};
+                    console.log("post is " + postt)
+                   db.update({ $push: {post: postt}}, { upsert: true },function (err, user) {
+                       if (err) {
+                            console.log("ERRRORRRR");
+                        }
+>>>>>>> origin/master
 
                    db.save(function (err, user) {
                if (err) {
@@ -509,29 +534,43 @@ app.get( '/home',  ensureAuthenticated, function(req, res){
                         posts = {};
                     }
                     var currDate = new Date(new Date().toUTCString()) ;
-                    
+                    var curr1Date = moment("2010-01-01T05:06:07", moment.ISO_8601);
+                    console.log(" is IOS String " + curr1Date);
                     console.log("Date.now()" + new Date(currDate));
                     console.log("Date current" + currDate);
                     
                     //currDate =   new Date( currDate.getTime() + ( currDate.getTimezoneOffset() * 60000 ) );
                     console.log("current date after format is " + currDate);
                     Event.find({ $and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
-                                    { 'event.date': { $gte: currDate } } ] },
-                                function(err, eventsInDB) {
-
+                                    { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] },
+                                {event:1}, function(err, eventsInDB) {
+                        console.log("Event in DB " + eventsInDB)
                         if(err) {
                             events = {};
                             console.log("Am i here");
                             res.render('Landing', { user: req.session.user, users: allUsers, postss: posts, events: events});
                         }
                         
-
-                        Event.distinct('event', { 'event.eventCategory': "Play" }, function(err, allPlays) {
+                        console.log("eventsInDB " + eventsInDB.length);
+                        Event.distinct('event', {$and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
+                                    { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}
+                                    , function(err, allPlays) {
+                                        
                             playEvents = allPlays;
-                            Event.distinct('event', { 'event.eventCategory': "Workshop" }, function(err, allWorkshops) {
+                            playEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                            console.log("plays length is "  + allPlays.length);
+                            Event.distinct('event', {$and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
+                                    { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Workshop" }]}
+                                    , function(err, allWorkshops) {
+                                        console.log("Workshops length is "  + allWorkshops.length);
                                 workshopEvents = allWorkshops;
-                                Event.distinct('event', { 'event.eventCategory': "Others" }, function(err, allOthers) {
+                                workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                                Event.distinct('event', {$and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
+                                    { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
+                                    , function(err, allOthers) {
+                              
                                     otherEvents = allOthers;
+                                    otherEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
                                     res.render('Landing', 
                                         { user: req.session.user, 
                                             users: allUsers, 
@@ -637,6 +676,8 @@ app.get( '/viewallposts',  ensureAuthenticated, function(req, res){
                 
                             
                 res.render('browserequests', { user: req.session.user, allposts: posts, rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia"});
+
+                
             });
 
 });
@@ -646,13 +687,16 @@ app.get( '/allEvents',  ensureAuthenticated, function(req, res){
             console.log("req.session.user " + req.session.user);
             var allUsers;
             var events; 
-            Event.distinct('event', function(err, eventsinDB) {
+            Event.distinct('event', { 'event.date': { $gte: new Date(new Date().toISOString()) } },function(err, eventsinDB) {
                 console.log("here");
-                if(!err) {
-                    events = eventsinDB;
+                if(err) {
+                    console.log("some error occurred in saving");
+                    res.render('search_events', { user: req.session.user, allEvents: {}});
+                    
                 }
-                
-                console.log("events length is " + events);
+                events = eventsinDB;
+                           
+                console.log("events length is " + events.length);
                             
                 res.render('search_events', { user: req.session.user, allEvents: events});
 

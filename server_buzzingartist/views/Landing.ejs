@@ -133,8 +133,6 @@
                 <div class="carousel-inner">
               
                   <% for(var i = 0; i < plays.length; i=i+4) { 
-                        console.log("event title is " + plays[i].title);
-                        console.log("plays.length" + plays.length)
                   %> 
                       <% if(i <= 3) { %>
                             <div class="item active">
@@ -143,11 +141,10 @@
                       <%}%> 
                                 <div class="row">
                                 <% for(var j = i; j < plays.length && j < i+4; j++) { %>
-                                          <% console.log("j =" + j + " plays[j].title " + plays[j].title) %>
-                                          <%  var d = new Date(new Date(plays[j].date).toISOString());
-                                              var displayableDate = getDate(d);
-                                              if(d >= new Date()) { %>
-                                       
+                                           <%  var d = new Date(new Date(others[j].date).toISOString());
+                                            var displayableDate = getDate(d);
+                                            %>
+                                         
                                           <div class="col-sm-3 imagecarousel">
                                               <a href = "<%=plays[j].link%>" target="_blank">
                                                <img src="<%=plays[j].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive">
@@ -155,7 +152,6 @@
                                                <span style="color:#FFF9F9;"> in <%=plays[j].city%></span></h2>
                                                </a>
                                           </div>
-                                              <%} else { i++; }%>
                                  <%}%>
                                 </div><!-- for row -->
                              </div><!-- for if -->
@@ -182,7 +178,6 @@
                 <div class="carousel-inner">
               
                   <% for(var i = 0; i < workshops.length; i=i+4) { 
-                        console.log("workshop title is " + workshops[i].title);
                   %> 
                       <% if(i <= 3) { %>
                             <div class="item active">
@@ -191,18 +186,16 @@
                       <%}%> 
                                 <div class="row">
                                 <% for(var j = i; j < workshops.length && j < i+ 4; j++) { %>
-                                          <%  var d = new Date(new Date(workshops[j].date).toISOString());
-                                          var displayableDate = getDate(d);
-                                              if(d >= new Date()) { %>
-                                       
-                                          <div class="col-sm-3 imagecarousel">
+                                           <%  var d = new Date(new Date(others[j].date).toISOString());
+                                            var displayableDate = getDate(d);
+                                            %>
+                                            <div class="col-sm-3 imagecarousel">
                                               <a href = "<%=workshops[j].link%>" target="_blank">
                                                <img src="<%=workshops[j].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive">
                                                <span style="color:#FFF9F9;"><%=workshops[j].title%></span><span style="color:#FFF9F9;"> on <%=displayableDate%></span>
                                                <span style="color:#FFF9F9;"> in <%=workshops[j].city%></span></h2>
                                                </a>
                                           </div>
-                                          <%} else { i++; }%>
                                  <%}%>
                                 </div><!-- for row -->
                              </div><!-- for if -->
@@ -228,7 +221,6 @@
                 <div class="carousel-inner">
               
                   <% for(var i = 0; i < others.length; i=i+4) { 
-                        console.log("other event title is " + others[i].title);
                   %> 
                       <% if(i <= 3) { %>
                             <div class="item active">
@@ -239,7 +231,7 @@
                                 <% for(var j = i; j < others.length && j < i+4; j++) { %>
                                             <%  var d = new Date(new Date(others[j].date).toISOString());
                                             var displayableDate = getDate(d);
-                                              if(d >= new Date()) { %>
+                                            %>
                                     
                                           <div class="col-sm-3 imagecarousel">
                                               <a href = "<%=others[j].link%>" target="_blank">
@@ -248,7 +240,6 @@
                                                <span style="color:#FFF9F9;"> in <%=others[j].city%></span></h2>
                                                </a>
                                           </div>
-                                          <%} else { i++; }%>
                                  <%}%>
                                 </div><!-- for row -->
                              </div><!-- for if -->
@@ -308,7 +299,7 @@
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-md-offset-2">
                   <img src="images/m1.jpg" class="img-responsive" >
-                  <h4><a href="/allevents">Events in your city</a></h4>
+                  <h4><a href="/allevents">More events in your city and other places</a></h4>
                  
                 </div>
             </div>
@@ -317,23 +308,6 @@
 </div>
 
 
-  
-
-
-
-             
-<!-- sapce for text        
-<div class="container">
- <div class="row">
-<h2 style="text-align:center "><font style="font-family:timesnewroman" size="100" color="white">Random caption</font></h2>
-</div>
-</div>
-<div class="container">
-  <div>
-  <p><font style="font-family:timesnewroman" size="50" color="white"> Movies will make you famous,Television will make you rich,but the Theartre will make you good at what you are.</font></p>
-</div>
-</div>--> 
-  
 
 
 
