@@ -18,14 +18,6 @@ var userSchema = mongoose.Schema({
         email        : String,
         name         : String
     },
-    post             :[{
-        postTitle         : String,
-        postDetail         : String,
-        date         : Date,
-        city         :{},
-        role         :{},
-        lang         :{}
-    }]
 
 });
 

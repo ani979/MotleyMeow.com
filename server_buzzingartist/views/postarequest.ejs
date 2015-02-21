@@ -106,10 +106,11 @@
     <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
     <div class="control-group">
         <label class="control-label" for="textarea">Title of the request</label>
-        <div class="controls">       
-        <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>   
-         <input name="_postid"  type="hidden" value=<%=post.post[0]._id%>>              
-        <input type="textarea" name="postTitle" id="title" class="input-lg" style="text-align: center; width: 40%;" value= "<%=post.post[0].postTitle%>"> </input>
+        <div class="controls">  
+
+        <% if (typeof post != 'undefined' && post!= null) { %>   
+         <input name="_postid"  type="hidden" value=<%=post._id%>>              
+        <input type="textarea" name="postTitle" id="title" class="input-lg" style="text-align: center; width: 40%;" value= "<%=post.post.postTitle%>"> </input>
         <% } else { %> 
           <input type="textarea" name="postTitle" id="title" class="input-lg" placeholder="Need an actor etc." style="text-align: center; width: 40%;" value=""> </input>
         <% } %>
@@ -120,8 +121,8 @@
         <label class="control-label" for="textarea">Copy paste the requirement from FB or write it down</label>
         
           <div class="controls">                
-        <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>       
-            <textarea id="textarea" name="post" style="width:60%;min-height:300px;" rows=6><%=post.post[0].postDetail%></textarea>
+        <% if (typeof post != 'undefined' && post!= null) { %>       
+            <textarea id="textarea" name="post" style="width:60%;min-height:300px;" rows=6><%=post.post.postDetail%></textarea>
         <%} else { %>   
             <textarea id="textarea" name="post" style="width:60%;min-height:300px;"rows=6></textarea>
         <%}%> 
@@ -318,15 +319,15 @@
 
   $(function(){
     
-      <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>
-          var values_role = '<%=post.post[0].role%>';
+      <% if (typeof post != 'undefined' && post!= null) { %>
+          var values_role = '<%=post.post.role%>';
           console.log("values are " + values_role);
           var roleInitValues = values_role.split(",");
 
-          var values_lang = '<%=post.post[0].lang%>';
+          var values_lang = '<%=post.post.lang%>';
           var langInitValues = values_lang.split(",");
 
-          var values_city = '<%=post.post[0].city%>';
+          var values_city = '<%=post.post.city%>';
           var cityInitValues = values_city.split(",");
 
           

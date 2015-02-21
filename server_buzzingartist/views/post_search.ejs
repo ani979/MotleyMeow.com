@@ -38,7 +38,7 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-            <% if(user!=null) { %>
+            <% if(postdb!=null) { %>
                 <ul class="nav navbar-nav">
                   <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
                    <li ><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
@@ -105,30 +105,30 @@
                    </thead>
                    <tbody class="searchable">
                       
-                      <% var posts = user.post; 
+                      <% var posts = postdb; 
+                      console.log("post length is " + posts.length);
                         for (var i = 0; i < posts.length; i ++) { 
-                        console.log("post length is " + posts.length);
                         console.log("posts[i] " + posts[i]);%>
                         <tr>
-                          <td><%= new Date(posts[i].date) %></td>
-                          <td><%= posts[i].role %></td>
-                          <td><%= posts[i].postTitle %></td>
-                          <td><%= posts[i].city %></td>
+                          <td><%= new Date(posts[i].post.date) %></td>
+                          <td><%= posts[i].post.role %></td>
+                          <td><%= posts[i].post.postTitle %></td>
+                          <td><%= posts[i].post.city %></td>
                            <form action="/editpost" method="POST">
                             <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button id ="edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-                            <input name="_id"  type="hidden" value=<%=user._id%>>
+                            <input name="_id"  type="hidden" value=<%=posts[i].post.userid%>>
                             <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
                             </form>
                            
                             <form action="/deletepost" method="POST">
                             <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button id ="delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
-                            <input name="_id"  type="hidden" value=<%=user._id%>>
+                            <input name="_id"  type="hidden" value=<%=posts[i].post.userid%>>
                             <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
                             </form>
 
                             <form action="/viewpost" method="POST">
                             <td><p data-placement="top" data-toggle="tooltip" title="View"><button id = "view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
-                            <input name="_id"  type="hidden" value=<%=user._id%>>
+                            <input name="_id"  type="hidden" value=<%=posts[i].post.userid%>>
                             <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
                             </form>
                             

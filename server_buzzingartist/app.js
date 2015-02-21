@@ -14,6 +14,7 @@ var bodyParser = require('body-parser');
 var session = require('cookie-session');
 var User = require('./models/user.js');
 var Event = require('./models/event.js');
+var Posts = require('./models/posts.js');
 var app = express();
 // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
@@ -320,69 +321,57 @@ app.post("/post", function (req, res) {
         langarr = lang.toString();
        //x = false;
     }
-
-    User.findOne({ $and:[{ 'facebook.email' : req.session.user.facebook.email }, {'post._id' : req.body._postid}]}, 
-                { post: { $elemMatch: { '_id': req.body._postid } } }
-                ,function(error, db) {
-        if (error || !db) { 
-                console.log("NO POST FOUND");
-                User.findOne({ 'facebook.email' : req.session.user.facebook.email }, function(error, db) {
-                //     console.log("coming 1");
+    console.log("req.body._postid: "+req.body._postid);
+    if(typeof req.body._postid != 'undefined') {
+        console.log("posts already existed");
+        Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
-                    console.log("ERRPRRR NOT A VALID");
+                    console.log("ERROR NOT A VALID");
                   res.send({ error: error });          
                 } else {
-                   // update the user object found using findOne
-                   console.log("req.body.title" + req.body.postTitle);
+                  console.log("found post " + db);
+                  console.log("message db.post.postTitle: "+db.post.postTitle);
+                  console.log("req.body.postTitle:::::::::: "+req.body.postTitle);
 
+            db.post.postTitle = req.body.postTitle;
+            db.post.postDetail = req.body.post;
+            db.post.date = new Date();
+            db.post.city = cityarr;
+            db.post.role = rolearr;
+            db.post.lang = langarr;
 
-                   var postt ={
-                            postTitle:req.body.postTitle,
-                            postDetail:req.body.post,
-                            city:cityarr,
-                            role: rolearr,
-                            lang: langarr,
-                            date:new Date()};
-                    console.log("post is " + postt)
-                   db.update({ $push: {post: postt}}, { upsert: true },function (err, user) {
-                       if (err) {
-                            console.log("ERRRORRRR");
-                        }
-
-                       //req.session.user = user;
-                       //req.session.loggedIn = true;
-                       res.redirect('/searchPosts');
-                   });
+                   db.save(function (err, user) {
+               if (err) {
+                    console.log("ERRRORRRR");
+                    res.json(err) ;
+                    
                 }
-             });   
 
-        }  else {
-            console.log("POST FOUND db " + db);
-
-            var postt ={
-                            _id:req.body._postid,
-                            postTitle:req.body.postTitle,
-                            postDetail:req.body.post,
-                            city:cityarr,
-                            role: rolearr,
-                            lang: langarr,
-                            date:new Date()};
-                         
-                    console.log("posttt is " + req.body._postid);
-            User.update({'facebook.email' : req.session.user.facebook.email, 'post._id':req.body._postid},
-                    { $set: {"post.$": postt}},
-                    function (err, user) {
-                       if (err) {
-                            console.log("ERRRORRRR");
-                        }
-                        console.log("USERRR" + user);
-                       //req.session.user = user;
-                       //req.session.loggedIn = true;
-                       res.redirect('/searchPosts');
+               res.redirect('/searchPosts');
+           });
+                }  
             });
-        }         
-    });
-    
+    } else {
+        console.log("New post");
+            var newPost = new Posts();
+
+            // set all of the facebook information in our user model
+            newPost.post.userid    = req.session.user._id; 
+            newPost.post.postTitle = req.body.postTitle;
+            newPost.post.postDetail = req.body.post;
+            newPost.post.date = new Date();
+            newPost.post.city = cityarr;
+            newPost.post.role = rolearr;
+            newPost.post.lang = langarr;
+            newPost.save(function(err) {
+                       if (err)
+                            throw err;
+                        else {
+                            res.redirect('/searchPosts');
+                        }
+                    });
+    }
+
         
 });
 
@@ -468,14 +457,20 @@ app.get( '/searchPosts',  ensureAuthenticated, function(req, res){
             console.log("req.session.user " + req.session.user);
             var allUsers;
             console.log("req.user.email " + req.session.user.facebook.email);
-            User.findOne({ 'facebook.email' : req.session.user.facebook.email }, function(error, db) {
+
+
+
+            Posts.find({ 'post.userid' : req.session.user._id }, function(error, db) {
                 //     console.log("coming 1");
                 if (error || !req.user) {
                     console.log("ERROR NOT A VALID");
                   res.send({ error: error });          
                 } else {
-                  console.log("found user " + db.facebook.email);
-                  res.render('post_search', { user: db });
+                  // console.log("found user " + db.facebook.email);
+                  console.log("found user: " + db);
+                  // console.log("found user's post: " + db.post);
+                  console.log("found user's post length: " + db.length);
+                  res.render('post_search', { postdb: db });
                 }    
              });   
 
@@ -507,7 +502,7 @@ app.get( '/home',  ensureAuthenticated, function(req, res){
                 allUsers = users;
 
                 //Get all posts
-                User.distinct('post', function(err, postsinDB) {
+                Posts.distinct('post', function(err, postsinDB) {
                     if(!err) {
                         posts = postsinDB;
                     } else {
@@ -611,9 +606,9 @@ app.post('/searchallposts', function (req, res) {
 
     } else {
         console.log("city array selected is " + cityarr);
-        User.distinct('post',{ $and:[{'post.$city':{$in : cityarr.split(",")}}, {'post.role':{$in : rolearr.split(",")}},
+        Posts.distinct('post',{ $and:[{'post.$city':{$in : cityarr.split(",")}}, {'post.role':{$in : rolearr.split(",")}},
             {'post.lang':{$in : langarr.split(",")}}]}, function ( err, posts, count ){
-         // User.distinct('post',{'post.city':{$in : cityarr.split(",")}}, function ( err, posts, count ){   
+         // Posts.distinct('post',{'post.city':{$in : cityarr.split(",")}}, function ( err, posts, count ){   
                     
                     console.log("posts are " + posts);
                     console.log("cityarr is " + err);
@@ -631,7 +626,7 @@ app.get( '/viewallposts',  ensureAuthenticated, function(req, res){
             console.log("req.session.user " + req.session.user);
             var allUsers;
             var posts; 
-            User.distinct('post', function(err, postsinDB) {
+            Posts.distinct('post', function(err, postsinDB) {
                 console.log("here");
                 if(!err) {
                     posts = postsinDB;
@@ -757,18 +752,16 @@ app.get( '/postarequest',  ensureAuthenticated, function(req, res){
 app.post( '/editpost',  ensureAuthenticated, function(req, res){
             console.log("user id " + req.body._id);
             console.log("post id " + req.body._postid);
-            User.findOne({ $and:[{ '_id' : req.body._id }, {'post._id' : req.body._postid}]}, 
-                { post: { $elemMatch: { '_id': req.body._postid } } }
-                ,function(error, db) {
-                //     console.log("coming 1");
+            console.log("req.body._postid::::: "+req.body._postid);
+            Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
                     console.log("ERROR NOT A VALID");
                   res.send({ error: error });          
                 } else {
                   console.log("found post " + db);
                   res.render('postarequest', { post: db, user:req.session.user });
-                }    
-             }); 
+                }  
+            });
 });
 
 app.post( '/viewpost',  ensureAuthenticated, function(req, res){
@@ -782,18 +775,25 @@ app.post( '/deletepost',  ensureAuthenticated, function(req, res){
             console.log("post id " + req.body._postid);
 
 
-            User.update({ '_id' : req.body._id },
-                        { $pull: { 'post': {'_id': req.body._postid}}}
-                ,function(error, db) {
-                //     console.log("coming 1");
+Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
                     console.log("ERROR NOT A VALID");
                   res.send({ error: error });          
                 } else {
                   console.log("found post " + db);
-                  res.redirect('/searchposts');
-                }    
-             }); 
+                  
+                  db.remove(function (err, user) {
+                           if (err) {
+                                console.log("ERRRORRRR");
+                                res.json(err) ;
+                                
+                            }
+
+                           res.redirect('/searchposts');
+                       });
+                  
+                }  
+            });
 });
 
 function ensureAuthenticated(req, res, next) {
