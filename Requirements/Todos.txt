@@ -10,6 +10,7 @@ TodoS:
 7) profile edit doesnt have a footer
 8) The main page displays all events but there is a bug wherein if date is older for an event, the slider displays empty space.
 9) If there is no event in fb, add another way to add the event. Ask user to submit three details, picture, when and where
+10) Globally use the checkbox items from server
 
 
 
@@ -21,10 +22,10 @@ GOOD TO HAVE:
 DESIGN DISCUSSIONS:
 1) Date is stored in DB as Date object, do we have to change to string format or keep it as date.
 2) Check header and footer in each file. - Its in a template. Need to use it for all the pages.
-3) How to display header conditionally - Done by keeping inside template
+3) How to display header conditionally - Done by keeping inside template - DONE
 4) Success and failure messages in the page - Please check how to do.
 5) How to handle the cases of database migration - read in the internet
-6) Use Table.js to manage the ajax query.
+6) Use Table.js to manage the ajax query - DONE
 7) Separate out post from User database. Use user link and update all the pages that has post.
 8) Should we use RedIs sesstion store for storing sessions?
 

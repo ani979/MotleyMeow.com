@@ -15,7 +15,9 @@
         <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
         <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
         <link href="css/style.css" rel="stylesheet">       
-        <link href="css/tab.css" rel="stylesheet">        
+        <link href="css/tab.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+
   </head>
   
 <body>
@@ -91,6 +93,8 @@
                       <th class ="arrole">Contribution in theatre</th>
                       <th class ="arlang">Comfortable in Language</th>
                       <th class ="arcity">City</th>
+                      <th class ="aremail">Email id</th>
+                      <th class ="arlink">FB profile link</th>
                    </thead>
                    <tbody class="searchable">
                       
@@ -100,6 +104,17 @@
                           <td><%= user.local.role %></td>
                           <td><%= user.local.lang %></td>
                           <td><%= user.local.city %></td>
+                          <% if(user.local.emailDisplay) { %>
+                            <td><%= user.facebook.email %></td>
+                          <% } else { %>
+                            <td>Not shared</td>
+                          <% } %>
+                         <% if(user.facebook.link) { %>
+                            <td><a href = "<%= user.facebook.link %>" target="_blank"><i class = "fa fa-facebook-square" ></i></a></td>
+                          <% } else { %>
+                            <td>Not set</td>
+                          <% } %>
+                          
                         </tr> 
                       <% }); %>
                         

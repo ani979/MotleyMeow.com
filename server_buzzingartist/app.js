@@ -137,6 +137,29 @@ passport.use(new FacebookStrategy({
                         //      console.log("got the event", res);
                         //     });
                         console.log("found user");
+                        if (!user.facebook.link) {
+                            console.log("not found fb link");
+                            FB.api(
+                                    '/me?access_token=' + accessToken,
+                                    function (response) {
+                                        console.log("response "  + response);
+                                      if (response && !response.error) {
+                                        console.log(" response.link " + response.link);
+                                        /* handle the result */
+                                        //user.facebook.link = response.link;
+                                        User.update({'facebook.email' : user.facebook.email},
+                                                 { $set: {"facebook.link": response.link}},
+                                                            function (err, user) {
+                                                                if(err) {
+                                                                    console.log("Something went wrong in saving facebook link");
+                                                                }
+                                        });                        
+                                      } else {
+                                        console.log("error in saving FB link " + response.error.message);
+                                      }
+                                    }
+                            );                      
+                        }                        
                         req.session.fbAccessToken = accessToken;
                         return done(null, user); // user found, return that user
                     } else {
@@ -151,7 +174,20 @@ passport.use(new FacebookStrategy({
                         console.log("email id " + newUser.facebook.name);
                         newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
                         newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken;
-                        
+                        FB.api(
+                                    '/me?access_token=' + accessToken,
+                                    function (response) {
+                                        console.log("response "  + response);
+                                      if (response && !response.error) {
+                                        console.log(" response.link " + response.link);
+                                        /* handle the result */
+                                        //user.facebook.link = response.link;
+                                        newUser.facebook.link = response.link;                    
+                                      } else {
+                                        console.log("error in saving FB link " + response.error.message);
+                                      }
+                                    }
+                        );    
                         console.log("email id " + newUser.facebook.email);
                         req.session.fbAccessToken = accessToken;
 
@@ -257,24 +293,43 @@ app.post("/update", function (req, res) {
             console.log("ERRPRRR");
           res.send({ error: error });          
         } else {
-           // update the user object found using findOne
-           db.facebook.name=req.body.fullname;
-           db.local.city = req.body.city;
-           console.log("roles selected " + req.body.role);
-           // now update it in MongoDB
-           db.local.role = req.body.role;
-           db.local.lang = req.body.lang;
-           db.save(function (err, user) {
-               if (err) {
-                    console.log("ERRRORRRR");
-                    res.json(err) ;
-                    
-                }
+            if(req.body.btnvalue == "submit") {
+            console.log("i am submit");
+               // update the user object found using findOne
+               db.facebook.name=req.body.fullname;
+               db.local.city = req.body.city;
+               console.log("roles selected " + req.body.role);
+               // now update it in MongoDB
+               db.local.role = req.body.role;
+               db.local.lang = req.body.lang;
+               console.log("req.body.emailDisplay " + req.body.emailDisplay)
+               if(req.body.emailDisplay) {
+                    if (req.body.emailDisplay == "ok") db.local.emailDisplay = true;
+                     else db.local.emailDisplay = false;
+               }      
+               db.save(function (err, user) {
+                   if (err) {
+                        console.log("ERRRORRRR");
+                        res.json(err) ;
+                        
+                    }
 
-               req.session.user = user;
-               req.session.loggedIn = true;
-               res.redirect('/profile');
-           });
+                   req.session.user = user;
+                   req.session.loggedIn = true;
+                   res.redirect('/profile');
+               });
+            } else if(req.body.btnvalue == "delete") {
+                console.log(" I am in delete");
+                User.remove({ 'facebook.email' : email }, function(error, db) {
+                    if (error) {
+                        console.log("ERRRORRRR");
+                        res.json(err) ;
+                        
+                    }
+                    req.session = null;
+                    res.redirect('/');
+                });         
+            }   
         }
     });
 });
@@ -330,18 +385,18 @@ app.post("/post", function (req, res) {
                     console.log("ERROR NOT A VALID");
                   res.send({ error: error });          
                 } else {
-<<<<<<< HEAD
-                  console.log("found post " + db);
-                  console.log("message db.post.postTitle: "+db.post.postTitle);
-                  console.log("req.body.postTitle:::::::::: "+req.body.postTitle);
 
-            db.post.postTitle = req.body.postTitle;
-            db.post.postDetail = req.body.post;
-            db.post.date = new Date();
-            db.post.city = cityarr;
-            db.post.role = rolearr;
-            db.post.lang = langarr;
-=======
+                    console.log("found post " + db);
+                    console.log("message db.post.postTitle: "+db.post.postTitle);
+                    console.log("req.body.postTitle:::::::::: "+req.body.postTitle);  
+
+                    db.post.postTitle = req.body.postTitle;
+                    db.post.postDetail = req.body.post;
+                    db.post.date = new Date();
+                    db.post.city = cityarr;
+                    db.post.role = rolearr;
+                    db.post.lang = langarr;
+
                    // update the user object found using findOne
                    console.log("req.body.title" + req.body.postTitle);
                    // db.post ={ $addToSet:  {postTitle:req.body.postTitle,
@@ -359,21 +414,20 @@ app.post("/post", function (req, res) {
                             lang: langarr,
                             date:new Date()};
                     console.log("post is " + postt)
-                   db.update({ $push: {post: postt}}, { upsert: true },function (err, user) {
-                       if (err) {
-                            console.log("ERRRORRRR");
-                        }
->>>>>>> origin/master
+                    db.update({ $push: {post: postt}}, { upsert: true },function (err, user) {
+                            if (err) {
+                                console.log("ERRRORRRR");
+                            }
+                            db.save(function (err, user) {
+                                if (err) {
+                                console.log("ERRRORRRR");
+                                res.json(err) ;
+                                
+                                }
 
-                   db.save(function (err, user) {
-               if (err) {
-                    console.log("ERRRORRRR");
-                    res.json(err) ;
-                    
-                }
-
-               res.redirect('/searchPosts');
-           });
+                                res.redirect('/searchPosts');
+                            });
+                     });   
                 }  
             });
     } else {

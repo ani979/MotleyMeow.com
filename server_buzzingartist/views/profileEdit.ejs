@@ -11,6 +11,7 @@
         <link href="css/tab.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet"> 
 
        
           </head>
@@ -38,40 +39,12 @@
 <body>
      
 
-<nav class="navbar navbar-inverse navbar-static-top no-margin">
-  <div class="container-fluid">
+ <% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout"></div>
+  <%}%> 
 
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">BuzzingArtists </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
-               <li ><a href="#">Update profile <span class="sr-only">(current)</span></a></li>
-               <li><a href="#">Need artists? </a></li>
- 
-            </ul>
-            <ul class="nav navbar-right navbar-nav">
-                  
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="/profile">Profile</a></li>
-                      <li><a href="/logout">Logout</a></li>
-                    </ul>
-                  </li>
-             </ul>     
-         
-        </div>
-  </div>
-</nav>
 <section style="background:#efefe9;">
         <div class="container">
             <div class="row">
@@ -169,8 +142,9 @@
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="email" id="card-holder-name" placeholder="Card Holder's Name" 
                                   value = "<%= user.facebook.email %>" readonly >
-                                  <span class="fieldNote">Not made public - only used for notifications, recommendations, etc.</span>
-                                  </div>
+                               <!--    <span class="fieldNote">Not made public - only used for notifications, recommendations, etc.</span>
+                                   -->
+                                 </div>  
                               </div>
                                
                               <div class="form-group">
@@ -185,6 +159,15 @@
                                   <span class="fieldNote">Currently only for Bengaluru, launching soon in other cities</span>
                                 </div>
                               </div>
+                               <div class="form-group">
+                                 <label class="col-sm-3 control-label" for="emailDisplay">Email privacy setting</label>
+                                <div class="col-sm-9">
+                                  <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
+                                  <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK
+                                  <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK
+                                  <br><span class="fieldNote">Please confirm you are ok to display your email id in the search results so that artists looking out for you can contact you. </span>
+                                </div>
+                              </div>
                        </div>
                         <div  class="tab-pane fade" id="tab2primary">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
                           <br>
@@ -194,12 +177,12 @@
                                   <br>
                               <div class = "col-sm-6">
                                 <label class="checkbox-inline col-sm-3">
-                                      <input type="checkbox" id="checkboxinlineActing" name="role" value="Acting" > Actor
+                                      <input type="checkbox" id="checkboxinlineActing" name="role" value="Actor" > Actor
                                 </label>
                              </div>  
                               <div class = "col-sm-6">
                                 <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineDirecting" name="role" value="Directing" > Director
+                                      <input type="checkbox" id="checkboxinlineDirecting" name="role" value="Director" > Director
                                 </label>
                               </div> 
                                <!--<div class="col-sm-3" style= "display:block">
@@ -231,7 +214,7 @@
                               </div> -->
                               <div class = "col-sm-6">
                                 <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineScriptwriting" name="role" value="Scriptwriting" > Scriptwriting
+                                      <input type="checkbox" id="checkboxinlineScriptwriting" name="role" value="Scriptwriter" > Scriptwriting
                                 </label>
                               </div> 
                                <!-- div class="col-sm-6" style= "display:none">
@@ -302,55 +285,72 @@
                                       
                                   </div> 
                                </div>     
-
-                                                      
-                          
                        </div>      
                               
 
                     </div>
-                               
-              
-                    
-                    <div class="form-group">
-                      <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Update</button>
-                    </div>
-                  </div>
             </div>      
                   
              
-        </fieldset>
-   </form>
+        
   
                         
                         
-                    </div>
-                </div>
-            </div>
+         
+  
                   
-                  <div class="panel-footer">
-                        <a title="Mail us" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
-                        
-            <span style="padding-left: 20px;">Please ensure this abides by our <a href="/legal/terms/" target="_blank">Terms of Service</a> and <a href="/help/guidelines" target="_blank">Community Guidelines</a>.</span>
-                        
-                        <span class="pull-right">
-                            <a href="/update" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a>
-                            <a title="Remove me from this site" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
-                        </span>
-                    </div>
-                </div>
-              </div>
+    <div class="panel-footer">
+          
+          <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;">Please ensure this abides by our <a href="/legal/terms/" target="_blank">Terms of Service</a> and <a href="/help/guidelines" target="_blank">Community Guidelines</a>.</span>
+          
+          <!-- <span class="pull-right"> -->
+        <!--       <a href="/update" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a> -->
+
+              <button id = "submit" type="submit" class="btn btn-primary" type="button" name="btnvalue" value="submit"><i class="glyphicon glyphicon-ok-circle">SUBMIT</i>
+              </button>
+              <span class="pull-right"><button id = "delete" type = "submit" title="Remove me from this site" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger" 
+                name="btnvalue" value="delete"><i class="glyphicon glyphicon-remove"></i></button>
+              </span>  
+          <!-- </span> -->
+      </div>
+    </fieldset>
+
+   </form>  
+</div>
+</div>
           </div>
                  
         </div>
       </div>
     </div>
+  </div>
+      <!-- footer starts-->
+   <div id = "footer"></div>
     
    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
      <script type="text/javascript">
- 
+    $(function(){
+      disableSubmit()
+    });
+    function disableSubmit() {
+      document.getElementById("submit").disabled = true;
+    }
+
+    function activateButton(element) {
+
+        if(element.checked) {
+          document.getElementById("submit").disabled = false;
+         }
+         else  {
+          document.getElementById("submit").disabled = true;
+        }
+
+    } 
+    $("#headerloggedin").load("header.ejs");
+    $("#headerloggedout").load("headerloggedout.ejs");
+    $("#footer").load("footer.ejs"); 
+    
     $(function(){
       $('select[value]').each(function(){
         $(this).val(this.getAttribute("value"));
@@ -361,18 +361,8 @@
 
       var values_lang = '<%=user.local.lang%>';
       var langInitValues = values_lang.split(",");
-      // var initValues = [];
-      // for (var prop in values) {
-      //     initValues.push(data[values]);
-      // }
-      //var initValues = _(values).toArray();
-
-       // for(var i = 0; i < initValues.length; i++) { 
-       //    alert("length of array " + initValues.length);
-       //     alert("values[i]" +initValues[i])
-       //    // $("#animesh [value=" + values[i] + "]").prop('checked', true);
-       //  } 
-        
+      var value_emailDisplay = '<%=user.local.emailDisplay%>'
+      
       $('input[name=role][type=checkbox]').each(function(){
         
         $(this).prop("checked", ($.inArray($(this).val(), roleInitValues) != -1));
@@ -385,8 +375,11 @@
 
      });
 
+      if(value_emailDisplay == "true") $('input[name=emailDisplay][type=radio]').val(["ok"]);
+      else $('input[name=emailDisplay][type=radio]').val(["nok"]);
 
-    });
+      
+  });
 
 
 

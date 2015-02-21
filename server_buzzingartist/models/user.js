@@ -10,14 +10,16 @@ var userSchema = mongoose.Schema({
         picture      : String,
         city         : { type: String, default: "Bengaluru" },
         role         :[{}],
-        lang         :[{}]
+        lang         :[{}],
+        emailDisplay : Boolean
     },
     facebook         : {
         id           : String,
         token        : String,
         email        : String,
-        name         : String
-    },
+        name         : String,
+        link         : String
+    }
 
 });
 
