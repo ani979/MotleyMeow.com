@@ -182,7 +182,13 @@ passport.use(new FacebookStrategy({
                                         console.log(" response.link " + response.link);
                                         /* handle the result */
                                         //user.facebook.link = response.link;
-                                        newUser.facebook.link = response.link;                    
+                                        User.update({'facebook.email' : req.session.user.facebook.email},
+                                                 { $set: {"facebook.link": response.link}},
+                                                            function (err, user) {
+                                                                if(err) {
+                                                                    console.log("Something went wrong in saving facebook link");
+                                                                }
+                                        });                        
                                       } else {
                                         console.log("error in saving FB link " + response.error.message);
                                       }
@@ -213,24 +219,24 @@ passport.use(new FacebookStrategy({
 var app = express();
 
 //app.configure(function() {
-        app.set('port', process.env.PORT || 3000);
-        app.set('views', __dirname + '/views');
-        app.set('view engine', 'ejs');
-        //app.use(logger());
-        app.use(cookieParser());
-        app.use(session({ secret: 'secret'}));
-        // parse application/x-www-form-urlencoded
-        app.use(bodyParser.urlencoded({ extended: false }))
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+//app.use(logger());
+app.use(cookieParser());
+app.use(session({ secret: 'secret'}));
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
-        // parse application/json
-        app.use(bodyParser.json())
-        //app.use(express.methodOverride());
-        //app.use(express.session({ secret: 'my_precious' }));
-        app.use(passport.initialize());
-        app.use(passport.session());
-        app.use(flash());
-        //app.use(app.router);
-        app.use(express.static(__dirname + '/views'));
+// parse application/json
+app.use(bodyParser.json())
+//app.use(express.methodOverride());
+//app.use(express.session({ secret: 'my_precious' }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+//app.use(app.router);
+app.use(express.static(__dirname + '/views'));
 //        });
 
 // if ('development' == app.get('env')) {
@@ -351,7 +357,7 @@ app.post("/post", function (req, res) {
         //x= true;
     } else {
         console.log("city selected is " + city);
-        cityarr = city.toString();
+        cityarr = city;
         //x = false;
     }
     
@@ -363,7 +369,7 @@ app.post("/post", function (req, res) {
         //x= true;
     } else {
         console.log("role selected is " + role);
-        rolearr = role.toString();
+        rolearr = role;
        //x = false;
     }
 
@@ -374,7 +380,7 @@ app.post("/post", function (req, res) {
         //x= true;
     } else {
         console.log("lang selected is " + lang);
-        langarr = lang.toString();
+        langarr = lang;
        //x = false;
     }
     console.log("req.body._postid: "+req.body._postid);
@@ -579,22 +585,20 @@ app.get( '/home',  ensureAuthenticated, function(req, res){
                 if(err) res.render('index');
 
                 allUsers = users;
-
+                var then = new Date();
+                then.setDate(then.getDate() - 2);
                 //Get all posts
-                Posts.distinct('post', function(err, postsinDB) {
+                Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
+                                    { 'post.date': { $gte: new Date(then.toISOString()) } } ] } } , {$limit:5}],
+                                    function(err, postsinDB) {
+                    console.log("I am here and err is " + err);
+                    console.log("posts is " + postsinDB.length);
                     if(!err) {
                         posts = postsinDB;
                     } else {
                         posts = {};
                     }
-                    var currDate = new Date(new Date().toUTCString()) ;
-                    var curr1Date = moment("2010-01-01T05:06:07", moment.ISO_8601);
-                    console.log(" is IOS String " + curr1Date);
-                    console.log("Date.now()" + new Date(currDate));
-                    console.log("Date current" + currDate);
-                    
-                    //currDate =   new Date( currDate.getTime() + ( currDate.getTimezoneOffset() * 60000 ) );
-                    console.log("current date after format is " + currDate);
+
                     Event.find({ $and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
                                     { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] },
                                 {event:1}, function(err, eventsInDB) {

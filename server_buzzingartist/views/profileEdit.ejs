@@ -98,19 +98,7 @@
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src=<%= user.local.picture %> class="img-circle"> </div>
-                
-                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
-                  <dl>
-                    <dt>DEPARTMENT:</dt>
-                    <dd>Administrator</dd>
-                    <dt>HIRE DATE</dt>
-                    <dd>11/12/2013</dd>
-                    <dt>DATE OF BIRTH</dt>
-                       <dd>11/12/2013</dd>
-                    <dt>GENDER</dt>
-                    <dd>Male</dd>
-                  </dl>
-                </div>-->
+
   <div class=" col-md-9 col-lg-9 "> 
     <form class="form-horizontal" role="form" action="/update" method="post">
 
@@ -142,15 +130,13 @@
                                 <div class="col-sm-9">
                                   <input type="text" class="form-control" name="email" id="card-holder-name" placeholder="Card Holder's Name" 
                                   value = "<%= user.facebook.email %>" readonly >
-                               <!--    <span class="fieldNote">Not made public - only used for notifications, recommendations, etc.</span>
-                                   -->
                                  </div>  
                               </div>
                                
                               <div class="form-group">
                                  <label class="col-sm-3 control-label" for="city">Location</label>
                                 <div class="col-sm-9">
-                                  <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
+
                                   <select class="form-control" value=<%= user.local.city %> name="city">
                                             <option>Chennai</option>
                                             <option>Bengaluru</option>
@@ -166,7 +152,13 @@
                                   <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK
                                   <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK
                                   <br><span class="fieldNote">Please confirm you are ok to display your email id in the search results so that artists looking out for you can contact you. </span>
-                                </div>
+                                </div>                                
+                              </div>
+                              <div class="form-group col-sm-6">
+<!--                                  <label class="col-sm-3 control-label" for="Stage settings">Update your contribution on stage</label>
+                                <div class="col-sm-9"> -->
+                                    <a href="#tab2primary" data-toggle="tab">Update your profile "on stage"</a>
+                                <!--  </div>  --> 
                               </div>
                        </div>
                         <div  class="tab-pane fade" id="tab2primary">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
@@ -332,6 +324,13 @@
      <script type="text/javascript">
     $(function(){
       disableSubmit()
+    });
+
+    $(function () {
+      $('#tab1primary a').click(function (e) {
+          e.preventDefault();
+          $('a[href="' + $(this).attr('href') + '"]').tab('show');
+      })
     });
     function disableSubmit() {
       document.getElementById("submit").disabled = true;

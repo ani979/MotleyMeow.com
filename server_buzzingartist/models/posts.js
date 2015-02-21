@@ -7,12 +7,9 @@ var postsSchema = mongoose.Schema({
         postTitle         : String,
         postDetail         : String,
         date         : Date,
-        city         :{},
-        role         :{},
-        lang         :{},
-        rehearsal_space         :{},
-        props         :{}
-
+        city         :[{}],
+        role         :[{}],
+        lang         :[{}],
     }
 
 });

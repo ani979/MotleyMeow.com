@@ -8,6 +8,7 @@
     <title></title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="js/utils.js"></script>
         <script src="js/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
@@ -18,7 +19,20 @@
   
   <body>
 
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
 
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+    %>
 <nav class="navbar navbar-inverse navbar-static-top no-margin">
   <div class="container-fluid">
 
@@ -105,21 +119,7 @@
   <br>
      
       
-  <% getDate = function(today) {
-            var dd = today.getDate();
-            var mm = today.getMonth()+1; //January is 0!
 
-            var yyyy = today.getFullYear();
-            if(dd<10){
-                dd='0'+dd
-            } 
-            if(mm<10){
-                mm='0'+mm
-            } 
-            today = dd+'/'+mm+'/'+yyyy;
-            return today;
-          }
-    %>      
   <div class="col-md-6 col-xs-8 no-padding no-margin" style = "padding-left: 20px; padding-right:50px;">
      <div class="well" style="padding-top:5px; background-color:#534B4B;">
     
@@ -141,7 +141,7 @@
                       <%}%> 
                                 <div class="row">
                                 <% for(var j = i; j < plays.length && j < i+4; j++) { %>
-                                           <%  var d = new Date(new Date(others[j].date).toISOString());
+                                           <%  var d = new Date(plays[j].date).toISOString();
                                             var displayableDate = getDate(d);
                                             %>
                                          
@@ -186,7 +186,7 @@
                       <%}%> 
                                 <div class="row">
                                 <% for(var j = i; j < workshops.length && j < i+ 4; j++) { %>
-                                           <%  var d = new Date(new Date(others[j].date).toISOString());
+                                           <%  var d = new Date(workshops[j].date).toISOString();
                                             var displayableDate = getDate(d);
                                             %>
                                             <div class="col-sm-3 imagecarousel">
@@ -229,7 +229,7 @@
                       <%}%> 
                                 <div class="row">
                                 <% for(var j = i; j < others.length && j < i+4; j++) { %>
-                                            <%  var d = new Date(new Date(others[j].date).toISOString());
+                                            <%  var d = new Date(others[j].date).toISOString();
                                             var displayableDate = getDate(d);
                                             %>
                                     
@@ -260,15 +260,15 @@
 </div>
     
     
-<div class="input-group col-md-6" style="vertical-align:top;"> <h2><a href = "/viewallposts">Last 5 Recent requests for artists(Click here for more)</a></h2>
+<div class="input-group col-md-6" style="vertical-align:top;"> <h2><a href = "/viewallposts">Recent requests for artists in your city(Click here for more)</a></h2>
 
     <table id="mytable" class="table table-striped">
       <thead>
           <tr>
-              <th>Posted On</th>
-              <th>Searching for</th>
-              <th>Artists needed</th>
-              <th>City</th>
+              <th style="text-align:left">Posted On</th>
+              <th style="text-align:left">Searching for</th>
+              <th style="text-align:left">Artists needed</th>
+              <th style="text-align:left">City</th>
           </tr>
       </thead>
       <tbody class="searchable">
@@ -276,10 +276,10 @@
         <% 
         for(var i=0; i < postss.length; i++) { %>
           <tr>
-          <td><%= postss[i].date %></td>
-          <td><%= postss[i].postTitle %></td>
-          <td><%= postss[i].role %></td>
-          <td><%= postss[i].city %></td>
+          <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
+          <td><%= postss[i].post.postTitle %></td>
+          <td><%= postss[i].post.role %></td>
+          <td><%= postss[i].post.city %></td>
           </tr>
         <% } %>
           
@@ -325,7 +325,7 @@
 
 $(document).ready(function(){
 
-      $('#mytable').dataTable();
+     // $('#mytable').dataTable();
 });
   
     

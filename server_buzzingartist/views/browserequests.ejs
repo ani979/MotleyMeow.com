@@ -39,17 +39,7 @@
      </h3>
      
        <div class="row">    
-            <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-placeholder="false" data-label-placement>Date when posted</button>
-              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="oneweek"><label for="Actor">In the last one week</label></li>
-                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="twoweeks"><label for="Lights">In the last two weeks</label></li>
-                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="onemonth"><label for="Lights">In the last one month</label></li>
-                  <li><input class = "dateCheck" type="checkbox" id="date" name="date" value="beforeonemonth"><label for="Lights">Before one month</label></li>
-                  
-              </ul>
-           </div>
+
           <div class="btn-group">
               <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false">Select City</button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
@@ -186,6 +176,9 @@ function filterme() {
         var colCity = $('.arcity').index();
         var colRole = $('.arrole').index();
         var colLang = $('.arlang').index();
+        var cities = "*";
+        var roles = "*";
+        var lang = "*";
        
         //build a regex filter string with an or(|) condition
         var cities = $('input:checkbox[name="city"]:checked').map(function() {
