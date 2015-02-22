@@ -866,11 +866,6 @@ app.post( '/editpost',  ensureAuthenticated, function(req, res){
             });
 });
 
-app.post( '/viewpost',  ensureAuthenticated, function(req, res){
-            console.log("event id " + req.body.eventId);
-
-            
-});
 
 app.post( '/deletepost',  ensureAuthenticated, function(req, res){
             console.log("user id " + req.body._id);

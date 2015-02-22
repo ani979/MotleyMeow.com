@@ -1,1 +1,2 @@
 1) When posting an event, the event doesnt come to Home page. It needs to be refreshed.
+2) Post a requirement in multiple lines, view it from "View post", it doesnt appear correctly.

@@ -8,7 +8,7 @@
     <title></title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
        <link href="css/dropdowns-enhancement.css" rel="stylesheet">        
-        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">   
+        <link href="css/bootstrap.min.css" rel="stylesheet">   
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
@@ -85,8 +85,6 @@
      
     
     <div class="row col-md-8 col-md-offset-2">
-    
-        
       <div>
         
         <div class="table-responsive">
@@ -126,11 +124,22 @@
                             <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
                             </form>
 
-                            <form action="/viewpost" method="POST">
-                            <td><p data-placement="top" data-toggle="tooltip" title="View"><button id = "view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
+                            <% var textDetail = posts[i].post.postDetail;
+                               var textsArr = new Array();
+                               var textsDesc = textDetail.split("\r\n");
+                               var arrdesc = textDetail.split("\r\n");
+                               console.log("textsDesc length " + textsDesc.length);
+                               for(var j = 0 ; j < textsDesc.length; j++) {
+                                  textsArr.push(textsDesc[j]);
+                               }
+                            %>
+
+                            <td><p data-placement="top" data-toggle="tooltgetpostip" title="Edit"><button id ="view" 
+                              onclick = "callPostView('<%=posts[i].post.postTitle%>','<%=textsArr%>');"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
                             <input name="_id"  type="hidden" value=<%=posts[i].post.userid%>>
-                            <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
-                            </form>
+                            <input name="post_id"  type="hidden" value=<%=posts[i]._id%>>
+                            
+                            
                             
                        </tr> 
                        
@@ -138,25 +147,7 @@
                         
                   </tbody>
 
-              <!--     <tbody>
-                    <tr>
-                        <td><a href="#" >Ashok Kumar</a></td>
-                        <td>Lights</td>
-                        <td>Don't bother</td>
-                        <td>Chennai</td>
-                    </tr>
-    
-                   <tr>
-                        <td><a href="#" >Ashish Kumar</a></td>
-                        <td>Sound</td>
-                        <td>Don't bother</td>
-                        <td>Bengaluru</td>
-                      </tr>
-                      
-                      
-                  
-                  </tbody>
-         -->
+
               </table>
      
 
@@ -167,23 +158,81 @@
  </div>
  
 
-    
-                
- 
 
-         
 
-   <!-- footer starts-->
-   <div id = "footer"></div>
+  <div id = "footer"></div>
+  <div class="modal fade col-lg-12" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="open-ViewDialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <input type="hidden" name="vewPostTitle" id="vewPostTitle" value=""/>
 
-    
+              <h4 class="modal-title" id="myModalLabel">Post details</h4>
+            </div>
+            <div class="modal-body">
+
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Post Title:</label>
+                      <div class="col-sm-8">
+                        <div >
+                          <label>
+                              <p id = "viewPostTitle" class="form-control-static"></p>
+                          </label>
+                        </div>
+                      </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Post Detail:</label>
+                      <div class="col-sm-8">
+                        <div >
+                          <label>
+                              <p id = "viewPostDesc" class="form-control-static"></p>
+                          </label>
+                        </div>
+                      </div>
+                </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>    
    <!-- footer ends-->
     <script type="text/javascript">
+    // $('#myModal').modal({
+    //     keyboard: false,
+    // )};
+
     $("#footer").load("footer.ejs"); 
     $(document).ready(function(){
 
-      $('#mytable').dataTable();
+      $('#mytable').DataTable();
     });
+
+
+
+    $( "#viewModal" ).submit(function( event ) {
+        alert( "Handler for .submit() called." );
+        alert("post id" + $('#_postid').val());
+        event.preventDefault();
+    });
+
+    function callPostView(postTitle, description) {
+        $('#myModal').modal().show();
+        var title = document.getElementById('viewPostTitle');
+        title.innerHTML = postTitle;
+        var desc = document.getElementById('viewPostDesc');
+        var postDesc;
+        var arryDesc = description;
+        desc.innerHTML = description;
+
+    }
+
 
     
     </script>

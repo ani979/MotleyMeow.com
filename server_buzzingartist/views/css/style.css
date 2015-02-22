@@ -216,7 +216,11 @@ div.srchBox {
   max-height: 300px;
 }
 
-
+#myModal {
+top:5%;
+right:50%;
+outline: none;
+}
 
 
 
