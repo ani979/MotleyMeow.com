@@ -95,84 +95,115 @@
 
 
 
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
-    <form class="form-horizontal" action="/post" method="post">
+  <div class="col-md-12 no-margin no-padding">
+    
     
 
     <!-- Form Name -->
-    <legend>View a post</legend>
+    <legend style="text-align:center">VIEW THE POST YOU REQUESTED</legend>
 
     <!-- Textarea -->
     <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
-    <div class="control-group">
-        <label class="control-label" for="textarea">Title of the request</label>
-        <div class="controls">       
-        <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>   
-         <input name="_postid"  type="hidden" value=<%=post.post[0]._id%>>              
-        <input type="textarea" name="postTitle" id="title" class="input-lg" style="text-align: center; width: 40%;" value= "<%=post.post[0].postTitle%>" readonly > </input>
-        <% } %> 
-          
-        </div>
-     </div>   
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Post Title:</label>
+            <div class="col-sm-8">
+              <div >
+                <label >
+                    <p class="form-control-static"><%=post.post.postTitle%></p>
+                </label>
+              </div>
+            </div>
+         </label>
+       </div>     
+     <div class="form-group">
+        <label class="col-sm-4 control-label">Post Detail:</label>
+            <div class="col-sm-8">
+              <div >
+                <label style="text-align:left">
+                    <p class="form-control-static"><%=post.post.postDetail%></p>
+                </label>
+              </div>
+            </div>
+         </label>
+     </div>     
+     <div class="form-group">
+        <label class="col-sm-4 control-label">For the cities:</label>
+            <div class="col-sm-8">
+              <div >
+                <label>
+                    <p class="form-control-static"><%=post.post.city%></p>
+                </label>
+              </div>
+            </div>
+         </label>
+       </div>     
       
-      <div class="control-group">
-        <label class="control-label" for="textarea">Post Detail</label>
+     <div class="form-group">
+        <label class="col-sm-4 control-label">Need for:</label>
+            <div class="col-sm-8">
+              <div >
+                <label>
+                    <p class="form-control-static"><%=post.post.role%></p>
+                </label>
+              </div>
+            </div>
+         </label>
+      </div>     
+      
+     <div class="form-group">
+        <label class="col-sm-4 control-label">Comfortable in languages:</label>
+            <div class="col-sm-8">
+              <div >
+                <label>
+                    <p class="form-control-static"><%=post.post.lang%></p>
+                </label>
+              </div>
+            </div>
+         </label>
+      </div>     
         
-          <div class="controls">                
-        <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>       
-            <textarea id="textarea" name="post" style="width:60%;min-height:300px;" rows=6 readonly><%=post.post[0].postDetail%></textarea>
-        <%}%> 
-          </div>
-      </div>
-
-      <div class="control-group col-md-12">
-        <label class="control-label" for="checkboxes">For the cities</label>
-        <div class="controls">                
-          <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>       
-              <input type="text" name="city" readonly value = "<%=post.post[0].city%>">
-          <%}%> 
-         </div> 
-       </div>
-
-    <!--</div>-->
-    <!-- Multiple Checkboxes -->
-    <div class="control-group">
-      <label class="control-label" for="checkboxes">Artists needed</label>
-      <div class="controls">                
-          <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>       
-              <input type="text" name="role" readonly value = "<%=post.post[0].role%>">
-          <%}%> 
-      </div>
-    </div>
-
-    <!-- Multiple Checkboxes (inline) -->
-    <div class="control-group col-md-12">
-      <label class="control-label" for="checkboxes">Comfortable in languages</label>
-      <div class="controls">                
-          <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>       
-              <input type="text" name="lang" readonly value = "<%=post.post[0].lang%>">
-          <%}%> 
-      </div>
-    </div>
+      <div class="form-group">
+        <label class="col-sm-4 control-label">Posted by(email id)</label>
+            <div class="col-sm-8">
+              <div>
+                <label>
+                  <% if (typeof user != 'undefined' && user!= null) { %> 
+                      <% if (user.local.emailDisplay) { %>
+                          <p class="form-control-static"><%=user.facebook.email%></p>
+                       <%} else { %>
+                          <p class="form-control-static">Not shared</p>
+                       <%} %>
+                  <% } %>        
+                </label>
+              </div>
+            </div>
+         </label>
+       </div>     
+       
+       <div class="control-group" style="text-align:center">
+  <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser._id == user._id) { %> 
+     <% console.log("same user as logged in so can edit"); %>
+     <form action="/editpost" method="POST">
+        <p data-placement="top" data-toggle="tooltip" title="Edit"><button id ="edit" align="center"><span class="glyphicon glyphicon-pencil">EDIT</span></button></p>
+        <input name="_id"  type="hidden" value=<%=user._id%>>
+        <input name="_postid"  type="hidden" value=<%=post._id%>>
+    </form>
+ <% } %>  
+        <input action="action" type="button" value="Back" onclick="history.go(-1);" style="text-align:center"/>
+    
+       </div>        
+  </div> 
 
 
-    <!-- Button -->
 
                            
     
 
      
     </fieldset>
-    </form>
-    <input action="action" type="button" value="Back" onclick="history.go(-1);" />
-    <!-- <form action="/goback" method="post">
-    <div class="control-group">
-      <label class="control-label" for="cancelbutton">Exit the page</label>
-      <div class="controls">
-        <button id="cancelbutton" name="cancelbutton" class="btn btn-primary">Cancel</button>
-      </div>
-    </div>
-  </form> -->
+
+
 
   </div>  
 </div>    
@@ -213,101 +244,6 @@
    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        
-          // $(function() {
-          //     alert("here");
-              // if ( $( '#allcities' ).prop( "checked" ) ) {
-              //   alert("here");
-              //   $('input:checkbox[name=city]').prop("checked");
-              // }  
-              
-          function checkAllCity(ele) {
-
-               var checkboxes = document.getElementsByName("city");
-               //alert("here" + checkboxes.length);
-               if (ele.checked) {
-                   for (var i = 0; i < checkboxes.length; i++) {
-                       if (checkboxes[i].type == 'checkbox') {
-                           checkboxes[i].checked = true;
-                       }
-                   }
-               } else {
-                   for (var i = 0; i < checkboxes.length; i++) {
-                       console.log(i)
-                       if (checkboxes[i].type == 'checkbox') {
-                           checkboxes[i].checked = false;
-                       }
-                   }
-               }
-           }
-
-           function checkAllLang(ele) {
-
-               var checkboxes = document.getElementsByName("lang");
-               //alert("here" + checkboxes.length);
-               if (ele.checked) {
-                   for (var i = 0; i < checkboxes.length; i++) {
-                       if (checkboxes[i].type == 'checkbox') {
-                           checkboxes[i].checked = true;
-                       }
-                   }
-               } else {
-                   for (var i = 0; i < checkboxes.length; i++) {
-                       console.log(i)
-                       if (checkboxes[i].type == 'checkbox') {
-                           checkboxes[i].checked = false;
-                       }
-                   }
-               }
-           }         
-          //});
-
-  $(function(){
-    
-      <% if (typeof post != 'undefined' && post!= null && post.post.length == 1) { %>
-          var values_role = '<%=post.post[0].role%>';
-          console.log("values are " + values_role);
-          var roleInitValues = values_role.split(",");
-
-          var values_lang = '<%=post.post[0].lang%>';
-          var langInitValues = values_lang.split(",");
-
-          var values_city = '<%=post.post[0].city%>';
-          var cityInitValues = values_city.split(",");
-
-          
-          // var initValues = [];
-          // for (var prop in values) {
-          //     initValues.push(data[values]);
-          // }
-          //var initValues = _(values).toArray();
-
-           // for(var i = 0; i < initValues.length; i++) { 
-           //    alert("length of array " + initValues.length);
-           //     alert("values[i]" +initValues[i])
-           //    // $("#animesh [value=" + values[i] + "]").prop('checked', true);
-           //  } 
-            
-          $('input[name=role][type=checkbox]').each(function(){
-            
-            $(this).prop("checked", ($.inArray($(this).val(), roleInitValues) != -1));
-
-         });
-
-          $('input[name=lang][type=checkbox]').each(function(){
-            
-            $(this).prop("checked", ($.inArray($(this).val(), langInitValues) != -1));
-
-         });
-
-          $('input[name=city][type=checkbox]').each(function(){
-            
-            $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
-
-         });
-     <%}%>     
-
-    });
     </script>
   </body>
 </html>

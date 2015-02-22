@@ -703,7 +703,7 @@ app.post('/searchallposts', function (req, res) {
 
     } else {
         console.log("city array selected is " + cityarr);
-        Posts.distinct('post',{ $and:[{'post.$city':{$in : cityarr.split(",")}}, {'post.role':{$in : rolearr.split(",")}},
+        Posts.distinct('post',{ $and:[{'post.city':{$in : cityarr.split(",")}}, {'post.role':{$in : rolearr.split(",")}},
             {'post.lang':{$in : langarr.split(",")}}]}, function ( err, posts, count ){
          // Posts.distinct('post',{'post.city':{$in : cityarr.split(",")}}, function ( err, posts, count ){   
                     
@@ -719,11 +719,15 @@ app.post('/searchallposts', function (req, res) {
 });
 
 app.get( '/viewallposts',  ensureAuthenticated, function(req, res){
+            var then = new Date();
+            then.setDate(then.getDate() - 7);
+
             console.log("req.session " + req.sesson);
             console.log("req.session.user " + req.session.user);
             var allUsers;
             var posts; 
-            Posts.distinct('post', function(err, postsinDB) {
+            Posts.aggregate([{ $match: { 'post.date': { $gte: new Date(then.toISOString()) } } }],
+                                    function(err, postsinDB) {
                 console.log("here");
                 if(!err) {
                     posts = postsinDB;
@@ -854,10 +858,10 @@ app.get( '/postarequest',  ensureAuthenticated, function(req, res){
 app.post( '/editpost',  ensureAuthenticated, function(req, res){
             console.log("user id " + req.body._id);
             console.log("post id " + req.body._postid);
-            console.log("req.body._postid::::: "+req.body._postid);
+
             Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
-                    console.log("ERROR NOT A VALID");
+                    console.log("ERROR NOT A VALID POST TO EDIT");
                   res.send({ error: error });          
                 } else {
                   console.log("found post " + db);
@@ -866,6 +870,29 @@ app.post( '/editpost',  ensureAuthenticated, function(req, res){
             });
 });
 
+app.post( '/viewpost',  ensureAuthenticated, function(req, res){
+            console.log("user id " + req.body._id);
+            console.log("post id " + req.body._postid);
+            Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
+                if (error || !req.user) {
+                    console.log("ERROR NOT A VALID");
+                  res.send({ error: error });          
+                } else {
+                  console.log("found post " + db);
+                  User.findOne({ '_id' : req.body._id }, function(error, user) {
+                    if(error) {
+                        console.log("Error in retrieving user, something is not correct, check in DB");
+                        res.redirect("/searchposts");
+                    } else {
+                        console.log("user " + user);
+                        res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});    
+                    }
+                  });     
+                  
+                }  
+            });
+            
+});
 
 app.post( '/deletepost',  ensureAuthenticated, function(req, res){
             console.log("user id " + req.body._id);

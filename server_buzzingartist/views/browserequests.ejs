@@ -94,7 +94,8 @@
                         <th class ="arrole">Artists needed</th>
                         <th class ="arcity">City or cities</th>
                         <th class ="arlang">Comfortable in these languages</th>
-                        <th>View</th>
+                        <th class ="arview">View full details</th>
+                       
                     </tr>
                 </thead>
                 <tbody class="searchable">
@@ -104,16 +105,19 @@
                       console.log("user.post.length is " + allposts.length);
                       %>
                     <tr>
-                      <td ><%= allposts[i].date %></td>
-                      <td ><%= allposts[i].postTitle %></td>
-                      <td ><%= allposts[i].role %></td>
-                      <td ><%= allposts[i].city %></td>
-                      <td ><%= allposts[i].lang %></td>
+                      <td ><%= allposts[i].post.date %></td>
+                      <td ><%= allposts[i].post.postTitle %></td>
+                      <td ><%= allposts[i].post.role %></td>
+                      <td ><%= allposts[i].post.city %></td>
+                      <td ><%= allposts[i].post.lang %></td>
                       <form action="/viewpost" method="POST">
-                      <td><p data-placement="top" data-toggle="tooltip" title="View"><button id = "view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
-                      <input name="_id"  type="hidden" value=<%=user._id%>>
-                      <input name="_postid"  type="hidden" value=<%=allposts[i]._id%>>
-                      </form>
+                        <td><p data-placement="top" data-toggle="tooltgetpostip" title="View"><button id ="view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
+                        <input name="_id"  type="hidden" value=<%=allposts[i].post.userid%>>
+                        <input name="_postid"  type="hidden" value=<%=allposts[i]._id%>>
+
+                      </form>  
+                            
+
                     </tr>
                   <% } %>
                     
@@ -159,6 +163,47 @@
         
   
    </footer>
+   <div class="modal fade col-lg-12" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="open-ViewDialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <input type="hidden" name="vewPostTitle" id="vewPostTitle" value=""/>
+
+              <h4 class="modal-title" id="myModalLabel">Post details</h4>
+            </div>
+            <div class="modal-body">
+
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Post Title:</label>
+                      <div class="col-sm-8">
+                        <div >
+                          <label>
+                              <p id = "viewPostTitle" class="form-control-static"></p>
+                          </label>
+                        </div>
+                      </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Post Detail:</label>
+                      <div class="col-sm-8">
+                        <div >
+                          <label>
+                              <p id = "viewPostDesc" class="form-control-static"></p>
+                          </label>
+                        </div>
+                      </div>
+                </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>  
     
    <!-- footer ends-->
 
@@ -232,6 +277,17 @@ function filterme() {
                     //})
             });
   }(jQuery));
+
+  function callPostView(postTitle, description) {
+        $('#myModal').modal().show();
+        var title = document.getElementById('viewPostTitle');
+        title.innerHTML = postTitle;
+        var desc = document.getElementById('viewPostDesc');
+        var postDesc;
+        var arryDesc = description;
+        desc.innerHTML = description;
+
+    }
 
 
 // $(function(){
