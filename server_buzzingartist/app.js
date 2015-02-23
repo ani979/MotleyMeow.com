@@ -117,9 +117,11 @@ passport.use(new FacebookStrategy({
                     // if there is an error, stop everything and return that
                     // ie an error connecting to the database
                     console.log("not found");
+                    console.log("here errrrrr: " + err);
                     if (err) {
+                        req.flash('info', "There is an error connecting to the database")
+                        res.redirect('/error');
                         return done(err);
-                        console.log("here err" + err);
                      }   
                     // if the user is found, then log them in
                     if (user) {
@@ -152,10 +154,14 @@ passport.use(new FacebookStrategy({
                                                             function (err, user) {
                                                                 if(err) {
                                                                     console.log("Something went wrong in saving facebook link");
+                                                                    req.flash('info', "Something went wrong in saving facebook link")
+                                                                    res.redirect('/error');
                                                                 }
                                         });                        
                                       } else {
                                         console.log("error in saving FB link " + response.error.message);
+                                        req.flash('info', "Error in saving FB link")
+                                        res.redirect('/error');
                                       }
                                     }
                             );                      
@@ -187,10 +193,14 @@ passport.use(new FacebookStrategy({
                                                             function (err, user) {
                                                                 if(err) {
                                                                     console.log("Something went wrong in saving facebook link");
+                                                                    req.flash('info', "Something went wrong in saving facebook link")
+                                                                    res.redirect('/error');
                                                                 }
                                         });                        
                                       } else {
                                         console.log("error in saving FB link " + response.error.message);
+                                        req.flash('info', "Error in saving FB link")
+                                        res.redirect('/error');
                                       }
                                     }
                         );    
@@ -200,8 +210,11 @@ passport.use(new FacebookStrategy({
 
                         // save our user to the database
                         newUser.save(function(err) {
-                            if (err)
-                                throw err;
+                            if (err) {
+                                req.flash('info', "Error while saving the user in the database")
+                                res.redirect('/error');
+                                return done(err);
+                            }
 
                             // if successful, return the new user
                             return done(null, newUser);
@@ -297,7 +310,8 @@ app.post("/update", function (req, res) {
         console.log("coming 1");
         if (error || !db) {
             console.log("ERRPRRR");
-          res.send({ error: error });          
+          req.flash('info', "Error while finding facebook email in the database")
+          res.redirect('/error');          
         } else {
             if(req.body.btnvalue == "submit") {
             console.log("i am submit");
@@ -316,8 +330,10 @@ app.post("/update", function (req, res) {
                db.save(function (err, user) {
                    if (err) {
                         console.log("ERRRORRRR");
-                        res.json(err) ;
-                        
+                        // res.json(err) ;
+                        req.flash('info', "Error while saving the new email in the database")
+                        res.redirect('/error');
+                        return done(err);
                     }
 
                    req.session.user = user;
@@ -328,9 +344,9 @@ app.post("/update", function (req, res) {
                 console.log(" I am in delete");
                 User.remove({ 'facebook.email' : email }, function(error, db) {
                     if (error) {
-                        console.log("ERRRORRRR");
-                        res.json(err) ;
-                        
+                        req.flash('info', "Error while removing the facebook email")
+                        res.redirect('/error');
+                        return done(error);
                     }
                     req.session = null;
                     res.redirect('/');
@@ -389,7 +405,9 @@ app.post("/post", function (req, res) {
         Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
                     console.log("ERROR NOT A VALID");
-                  res.send({ error: error });          
+                  // res.send({ error: error }); 
+                    req.flash('info', "Error while finding the user exising post")
+                    res.redirect('/error');         
                 } else {
 
                     console.log("found post " + db);
@@ -405,35 +423,15 @@ app.post("/post", function (req, res) {
 
                    // update the user object found using findOne
                    console.log("req.body.title" + req.body.postTitle);
-                   // db.post ={ $addToSet:  {postTitle:req.body.postTitle,
-                   //          postDetail:req.body.post,
-                   //          city:cityarr,
-                   //          role: rolearr,
-                   //          lang: langarr,
-                   //          date:new Date()}};
-
-                   var postt ={
-                            postTitle:req.body.postTitle,
-                            postDetail:req.body.post,
-                            city:cityarr,
-                            role: rolearr,
-                            lang: langarr,
-                            date:new Date()};
-                    console.log("post is " + postt)
-                    db.update({ $push: {post: postt}}, { upsert: true },function (err, user) {
-                            if (err) {
-                                console.log("ERRRORRRR");
-                            }
-                            db.save(function (err, user) {
+                    db.save(function (err, user) {
                                 if (err) {
-                                console.log("ERRRORRRR");
-                                res.json(err) ;
-                                
+                                // res.json(err) ;
+                                    req.flash('info', "Error while saving the modifications done in the existing post")
+                                    res.redirect('/error');
+                                } else {
+                                    res.redirect('/searchPosts');
                                 }
-
-                                res.redirect('/searchPosts');
                             });
-                     });   
                 }  
             });
     } else {
@@ -449,9 +447,10 @@ app.post("/post", function (req, res) {
             newPost.post.role = rolearr;
             newPost.post.lang = langarr;
             newPost.save(function(err) {
-                       if (err)
-                            throw err;
-                        else {
+                       if (err) {
+                            req.flash('info', "Error while saving the new Post in the database")
+                            res.redirect('/error');  
+                        } else {
                             res.redirect('/searchPosts');
                         }
                     });
@@ -549,7 +548,9 @@ app.get( '/searchPosts',  ensureAuthenticated, function(req, res){
                 //     console.log("coming 1");
                 if (error || !req.user) {
                     console.log("ERROR NOT A VALID");
-                  res.send({ error: error });          
+                  // res.send({ error: error });          
+                  req.flash('info', "Error while trying to find the user's post")
+                  res.redirect('/error'); 
                 } else {
                   // console.log("found user " + db.facebook.email);
                   console.log("found user: " + db);
@@ -582,7 +583,12 @@ app.get( '/home',  ensureAuthenticated, function(req, res){
 
             User.find( function ( err, users, count ){
 
-                if(err) res.render('index');
+                if(err) {
+                    // res.render('index');
+                    req.flash('info', "Error while trying to find the user")
+                    res.redirect('/error'); 
+                    return done(err);
+                }
 
                 allUsers = users;
                 var then = new Date();
@@ -852,17 +858,19 @@ app.get( '/profile', home.profile);
 app.get( '/postarequest',  ensureAuthenticated, function(req, res){
             var allUsers;
             console.log("req.user " + req.user);
-            res.render('postarequest', { user: req.session.user, users: allUsers });
+            res.render('postarequest', { user: req.session.user, users: allUsers });            
 });
 
 app.post( '/editpost',  ensureAuthenticated, function(req, res){
-            console.log("user id " + req.body._id);
-            console.log("post id " + req.body._postid);
+            console.log("user idddddd " + req.body._id);
+            console.log("post iddddddd " + req.body._postid);
 
             Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
-                    console.log("ERROR NOT A VALID POST TO EDIT");
-                  res.send({ error: error });          
+                    console.log("ERROR NOT A VALID POST TO EDIT: "+error);
+                  // res.send({ error: error });
+                  req.flash('info', "Error while trying to find the user's post");
+                  res.redirect('/error');          
                 } else {
                   console.log("found post " + db);
                   res.render('postarequest', { post: db, user:req.session.user });
@@ -876,13 +884,16 @@ app.post( '/viewpost',  ensureAuthenticated, function(req, res){
             Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
                     console.log("ERROR NOT A VALID");
-                  res.send({ error: error });          
+                  req.flash('info', "Error while trying to find the user's post");
+                  res.redirect('/error');
                 } else {
                   console.log("found post " + db);
                   User.findOne({ '_id' : req.body._id }, function(error, user) {
                     if(error) {
                         console.log("Error in retrieving user, something is not correct, check in DB");
-                        res.redirect("/searchposts");
+                        // res.redirect("/searchposts");
+                        req.flash('info', "Error in retrieving user, something is not correct, check in DB");
+                        res.redirect('/error');
                     } else {
                         console.log("user " + user);
                         res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});    
@@ -902,22 +913,29 @@ app.post( '/deletepost',  ensureAuthenticated, function(req, res){
 Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
                     console.log("ERROR NOT A VALID");
-                  res.send({ error: error });          
+                  // res.send({ error: error });         
+                  req.flash('info', "Error while trying to find the user's post in the database");
+                  res.redirect('/error');
                 } else {
                   console.log("found post " + db);
                   
                   db.remove(function (err, user) {
                            if (err) {
                                 console.log("ERRRORRRR");
-                                res.json(err) ;
-                                
+                                // res.json(err) ;
+                                req.flash('info', "Error while trying to remove the user's post from the database");
+                                res.redirect('/error');
+                            } else {
+                                res.redirect('/searchposts');
                             }
-
-                           res.redirect('/searchposts');
                        });
                   
                 }  
             });
+});
+
+app.get('/error', function(req, res){
+  res.render('error', { message: req.flash('info') });
 });
 
 function ensureAuthenticated(req, res, next) {
