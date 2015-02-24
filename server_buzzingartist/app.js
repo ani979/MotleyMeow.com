@@ -418,9 +418,12 @@ app.get('/error', function(req, res){
 });
 
 function ensureAuthenticated(req, res, next) {
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+           
 
 if (req.isAuthenticated()) { 
     console.log("here accessToken " + req.session.fbAccessToken);
+
     return next(); 
 }
 console.log("not authenticated");

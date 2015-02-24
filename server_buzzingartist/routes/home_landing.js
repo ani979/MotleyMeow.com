@@ -28,7 +28,7 @@ exports.index = function(req, res) {
     // }
     var accessToken = req.session.access_token;
     console.log("accesstoken: "+ accessToken);
-
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     if(!accessToken) {
         console.log("isAuthenticatedddddddd: "+ req.isAuthenticated());
         if(req.isAuthenticated()) {
@@ -80,7 +80,6 @@ exports.landing_home = function(req, res) {
             var playEvents=null;;
             var workshopEvents=null;
             var otherEvents=null;
-
 
             User.find( function ( err, users, count ){
 

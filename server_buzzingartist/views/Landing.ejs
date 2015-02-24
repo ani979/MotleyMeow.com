@@ -15,6 +15,7 @@
         <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
         <link href="css/style.css" rel="stylesheet">       
         <link href="css/tab.css" rel="stylesheet">
+        <link href="indexPage/css/font-awesome.min.css" rel="stylesheet">
   </head>
   
   <body>
@@ -33,54 +34,11 @@
             return retDate;
         }
     %>
-<nav class="navbar navbar-inverse navbar-static-top no-margin">
-  <div class="container-fluid">
-
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">BuzzingArtists </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-            <% if(user!=null) { %>
-                <ul class="nav navbar-nav">
-                  <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-                   <li ><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
-                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
-                      <ul class="dropdown-menu" role="menu">
-                          <li><a href="/postarequest">Post a request</a></li>
-                          <li><a href="/artists">Browse</a></li>                      
-                      </ul>
-                   </li> 
-                   <li ><a href="/searchPosts">Your posts<span class="sr-only">(current)</span></a></li>
-                   <li><a href="/postevents">Post event from FB <span class="sr-only">(current)</span></a></li>
-                </ul>
-
-            <ul class="nav navbar-right navbar-nav">                  
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="/profile">Profile</a></li>
-                      <li><a href="/logout">Logout</a></li>
-                      
-                    </ul>
-                  </li>
-             </ul>  
-             <%} else { %>
-             <ul class="nav nav-bar pull-right">
-                        
-                <li><a class="btn btn-primary navbar-btn" href="/signup">Join us</a></li>
-              
-            </ul>
-             <% } %> 
-      </div>
-  </div>
-</nav>
+<% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout">
+  <%}%> 
 
 <div class = "main-container">
   <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
@@ -91,26 +49,28 @@
   
   <div class="container">
     <h2 class="title" style= "text-align:center;">Hi, <strong> <%= user.facebook.name %> <strong></h2>
-    <h3 style= "text-align:center;">Join other artists in your city who are looking out for you</h3>
-    
+    <h3 style= "text-align:center;"><b>Welcome to BuzzingArtists.</b></h3>
+      
 
     <hr class="half-rule">
 
     <div class="row">
-      <div class="col-sm-4">
-        <img src="http://getfuelux.com/assets/img/a-little-a-lot.png" alt="Modular controls" class="img-responsive">
+      <div class="col-sm-3">
+        <i class="homepageicon icon icon-book"></i>
         <h3>Update your profile</h3>
-        <p>How do you contribute to theare? Acting or Lights or Sound or Music or just an audienceetc. <a href="/profile">Update it here</a> </p>
+        <p>How do you contribute to theare? Acting/Lights designing/Music/Set Design etc.. <a href="/profile">Update it here</a> </p>
       </div>
-      <div class="col-sm-4">
-        <img src="http://getfuelux.com/assets/img/daily-dogfooding.png" alt="Documentation &amp; Unit Tests" class="img-responsive">
-        <h3>Post your need for an artists</h3>
-        <p>Post an audition or post a need for Lights etc. <a href="PostANeed.ejs">Post it here</a> 
+      <div class="col-sm-3">
+        <i class="homepageicon icon icon-search"></i><h3>Search Artists</h3>
+        <p>Browse artists <a href="/artists"> here </a>, do an advance search and find out relevant artists who can help you
       </div>
-      <div class="col-sm-4">
-        <img src="http://getfuelux.com/assets/img/umd-everywhere.png" alt="UMD Compliant" class="img-responsive">
-        <h3>Get ready to be buzzed</h3>
-        <p>Get notified for requests posted here and support theatre.</p>
+      <div class="col-sm-3">
+        <i class="homepageicon icon icon-hand-up"></i><h3>Post and help</h3>
+        <p>Post auditions, post a need for artists etc. or help others for requests they have put up here<a href="/postarequest"> Post it here</a>
+      </div>
+      <div class="col-sm-3">
+        <i class="homepageicon icon icon-eye-open"></i><h3>Experience theatre</h3>
+        <p>Find out what event is coming up, search by the category of events<a href="/allevents"> Find out here </a> 
       </div>
     </div>
     <hr class="half-rule">
@@ -260,7 +220,7 @@
 </div>
     
     
-<div class="input-group col-md-6" style="vertical-align:top;"> <h2><a href = "/viewallposts">Recent requests for artists in your city(Click here for more)</a></h2>
+<div class="input-group col-md-6" style="vertical-align:top;"> <h2><a href = "/viewallposts">Recent posts in your city(Click here for more)</a></h2>
 
     <table id="mytable" class="table table-striped">
       <thead>
@@ -274,14 +234,19 @@
       <tbody class="searchable">
         
         <% 
-        for(var i=0; i < postss.length; i++) { %>
-          <tr>
-          <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
-          <td><%= postss[i].post.postTitle %></td>
-          <td><%= postss[i].post.role %></td>
-          <td><%= postss[i].post.city %></td>
-          </tr>
-        <% } %>
+        if(postss.length == 0) { %>
+          <tr> <td colspan="4">No posts in the last two days. Search for more posts <a href = "/viewallposts">here</a></td></tr>
+
+        <%}  else { %>
+                <% for(var i=0; i < postss.length; i++) { %>
+                  <tr>
+                  <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
+                  <td><%= postss[i].post.postTitle %></td>
+                  <td><%= postss[i].post.role %></td>
+                  <td><%= postss[i].post.city %></td>
+                  </tr>
+                <% } %>
+           <%}%>     
           
           
           
@@ -306,12 +271,6 @@
       <!-- </div> -->
   </div>
 </div>
-
-
-
-
-
-
 </div>
 
 
@@ -323,6 +282,7 @@
 
     <script type="text/javascript">
 
+
 $(document).ready(function(){
 
      // $('#mytable').dataTable();
@@ -330,6 +290,8 @@ $(document).ready(function(){
   
     
 $("#footer").load("footer.ejs"); 
+$("#headerloggedin").load("header.ejs");
+$("#headerloggedout").load("headerloggedout.ejs");
 
         $(document).ready(function() {
           $('#myCarousel').carousel({

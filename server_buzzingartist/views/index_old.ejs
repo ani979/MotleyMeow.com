@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+        <script src="//load.sumome.com/" data-sumo-site-id="e1c90e2ebde51d60cda8acbfa43b73aa57428f87906af4050d08f33083250f5b" async></script>
+
+  </head>
+  <script type="text/javascript">
+ 
+    $(document).ready(function() {
+    var panels = $('.user-infos');
+    var panelsButton = $('.dropdown-user');
+    panels.hide();
+
+    //Click dropdown
+    panelsButton.click(function() {
+        //get data-for attribute
+        var dataFor = $(this).attr('data-for');
+        var idFor = $(dataFor);
+
+        //current button
+        var currentButton = $(this);
+        idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+            if(idFor.is(':visible'))
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+            }
+            else
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+            }
+        })
+    });
+   </script> 
+  <body>
+
+
+<nav class="navbar navbar-inverse navbar-static-top no-margin">
+  <div class="container-fluid">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">BuzzingArtists </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+             
+              <!-- <form class="navbar-form navbar-left" role="search" >
+              <div class="form-group" align="center">
+                <input type="text" class="form-control" placeholder="Search">
+              </div>
+              <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            </form> -->
+
+            </ul>
+                      
+        </div>
+  </div>
+</nav>
+
+<div class = "main-container">
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <h3 class = "thtrexplore">
+      EXPLORE. CONNECT. CONTRIBUTE.
+     </h3>
+   </div>
+  
+   <div class="container">
+    <h2 class="title" style= "text-align:center;">Become a part of theatre fraternity</h2>
+   
+    <hr class="half-rule">
+
+    <div class="row">
+      <div class="col-sm-6">
+        <img src="http://getfuelux.com/assets/img/a-little-a-lot.png" alt="Modular controls" class="img-responsive">
+        <h3>Join us as an artist</h3>
+        <p>If you are an artists join us in creating a database of artists and helping other artists who are looking out for artists like you. <a href="profileEdit.ejs">Login through Facebook</a> </p>
+      </div>
+
+      <div class="col-sm-6">
+        <img src="http://getfuelux.com/assets/img/a-little-a-lot.png" alt="Modular controls" class="img-responsive">
+        <h3>Join us as an audience</h3>
+        <p>If you are just an audience, come over and join us to be updated about happening of events in your city <a href="profileEdit.ejs">Login through Facebook</a> </p>
+      </div>
+      
+    </div>
+  <hr class="half-rule">
+    
+  </div>
+      
+ <!-- Carousel
+    ================================================== -->
+  <!-- <div class="col-md-7 col-xs-8 no-padding no-margin">
+      
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+     <!-- <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+       <div class="carousel-inner" role="listbox">
+           <div class="item active"><a href="#">
+             <img src="images/1.jpg" border=0 width=1025 height=356 alt="First slide"></a>
+           </div>
+           <div class="item"><a href="#">
+              <img src="images/2.jpg" border=0 width=1025 height=356 alt="Second slide"></a>
+           </div>
+            <div class="item"><a href="#">
+              <img src="images/5.jpg" border=0 width=1025 height=356  alt="Third slide"></a>
+            </div>
+       </div>
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div><!-- /.carousel -->
+ <!-- </div> -->
+  <div class="col-md-7 col-xs-8 no-padding no-margin" style = "padding-left: 20px; padding-right:100px;">
+      <div class="panel with-nav-tabs panel-primary">
+                    <div class="panel-heading">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab1primary" data-toggle="tab">Plays running during this week</a></li>
+                                <li><a href="#tab2primary" data-toggle="tab">Workshops being held</a></li>
+                                <li><a href="#tab3primary" data-toggle="tab">Auditions running</a></li>
+                                <li><a href="#tab4primary" data-toggle="tab">Other Events, Festivals, Readings etc.</a></li>
+                                
+                            </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab1primary">
+                                  <div id="myCarousel" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+                                       <ol class="carousel-indicators">
+                                          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                          <li data-target="#myCarousel" data-slide-to="1"></li>
+                                          <li data-target="#myCarousel" data-slide-to="2"></li>
+                                          <li data-target="#myCarousel" data-slide-to="3"></li>
+                                          <li data-target="#myCarousel" data-slide-to="4"></li>
+                                        </ol>
+                                         <div class="carousel-inner span6 columns" role="listbox">
+                                             <div class="item active imagecarousel"> <a href="#">
+                                               <img src="images/E1.jpg" border=0  alt="First slide"></a>
+                                             </div>
+                                             <div class="item imagecarousel" ><a href="#">
+                                                <img src="images/E2.jpg" border=0  alt="Second slide"></a>
+                                             </div>
+                                              <div class="item imagecarousel"><a href="#">
+                                                <img src="images/E3.jpg" border=0   alt="Third slide"></a>
+                                              </div>
+                                              <div class="item imagecarousel"><a href="#">
+                                                <img src="images/E4.jpg" border=0   alt="Fourth slide"></a>
+                                              </div>
+                                              <div class="item imagecarousel"><a href="#">
+                                                <img src="images/E5.jpg" border=0   alt="Fifth slide"></a>
+                                              </div>
+                                         </div>
+                                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                  </div>
+
+                            </div><!-- End Item -->
+                            <div class="tab-pane fade" id="tab2primary">
+
+                                  <div id="myCarousel2" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+                                       <ol class="carousel-indicators">
+                                          <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
+                                          <li data-target="#myCarousel2" data-slide-to="1"></li>
+                                          
+                                        </ol>
+                                         <div class="carousel-inner" role="listbox">
+                                             <div class="item active imagecarousel"><a href="#">
+                                               <img src="images/Wo1.jpg" border=0  alt="First slide"></a>
+                                             </div>
+                                             <div class="item imagecarousel"><a href="#">
+                                                <img src="images/Wo2.jpg" border=0  alt="Second slide"></a>
+                                             </div>
+                                              
+                                         </div>
+                                        <a class="left carousel-control" href="#myCarousel2" role="button" data-slide="prev">
+                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#myCarousel2" role="button" data-slide="next">
+                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                  </div>
+
+                            </div><!-- End Item -->
+
+                            <div class="tab-pane fade" id="tab3primary">
+
+                                  <div id="myCarousel3" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+                                       <ol class="carousel-indicators">
+                                          <li data-target="#myCarousel3" data-slide-to="0" class="active"></li>
+                                          <li data-target="#myCarousel3" data-slide-to="1"></li>
+                                          <li data-target="#myCarousel3" data-slide-to="2"></li>
+                                        </ol>
+                                         <div class="carousel-inner" role="listbox">
+                                             <div class="item active imagecarousel"><a href="#">
+                                               <img src="images/1.jpg" border=0 alt="First slide"></a>
+                                             </div>
+                                             <div class="item imagecarousel"><a href="#">
+                                                <img src="images/2.jpg" border=0 alt="Second slide"></a>
+                                             </div>
+                                              <div class="item imagecarousel"><a href="#">
+                                                <img src="images/5.jpg" border=0  alt="Third slide"></a>
+                                              </div>
+                                         </div>
+                                        <a class="left carousel-control" href="#myCarousel3" role="button" data-slide="prev">
+                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#myCarousel3" role="button" data-slide="next">
+                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                  </div>
+
+                            </div><!-- End Item -->
+
+                            <div class="tab-pane fade" id="tab4primary">
+
+                                  <div id="myCarousel4" class="carousel slide" data-ride="carousel" >
+      <!-- Indicators -->
+                                       <ol class="carousel-indicators">
+                                          <li data-target="#myCarousel4" data-slide-to="0" class="active"></li>
+                                          <li data-target="#myCarousel4" data-slide-to="1"></li>
+                                          <li data-target="#myCarousel4" data-slide-to="2"></li>
+                                          <li data-target="#myCarousel4" data-slide-to="3"></li>
+                                          <li data-target="#myCarousel4" data-slide-to="4"></li>
+                                        </ol>
+                                         <div class="carousel-inner" role="listbox">
+                                             <div class="item active imagecarousel"><a href="#">
+                                               <img src="images/Ev1.jpg" border=0 alt="First slide"></a>
+                                             </div>
+                                             <div class="item imagecarousel"><a href="#">
+                                                <img src="images/Ev2.jpg" border=0 alt="Second slide"></a>
+                                             </div>
+                                              <div class="item imagecarousel"><a href="#">
+                                                <img src="images/Ev3.jpg" border=0  alt="Third slide"></a>
+                                              </div>
+                                              <div class="item imagecarousel"><a href="#">
+                                                <img src="images/Ev4.jpg" border=0  alt="Fourth slide"></a>
+                                              </div>
+                                              <div class="item imagecarousel"><a href="#">
+                                                <img src="images/Ev5.jpg" border=0  alt="Fifth slide"></a>
+                                              </div>
+                                         </div>
+                                        <a class="left carousel-control" href="#myCarousel4" role="button" data-slide="prev">
+                                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                          <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#myCarousel4" role="button" data-slide="next">
+                                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                          <span class="sr-only">Next</span>
+                                        </a>
+                                  </div>
+
+                            </div><!-- End Item -->
+
+                  
+                        </div><!-- End Carousel Inner -->
+
+                     </div>
+
+
+
+      </div>   
+</div><!-- End Carousel -->
+    
+
+    <div class="col-md-5 col-xs-2">
+      <div>
+         <form class="form-signin" action="/login" method="post">
+            <h3 class="heading-desc">
+            <button type="button" class="close pull-right" aria-hidden="true"></button>
+            Login to BuzzingArtist through Facebook</h3>
+            <div class="social-box">
+                <div class="row mg-btm">
+                   <div class="col-md-12">
+                      <a class="btn btn-primary btn-block" href="/auth/facebook"
+                        <i class="icon-facebook"></i> &nbsp;&nbsp; Login with Facebook
+                      </a>
+                  </div>
+                </div>
+                
+            </div>
+            <div class="main">      
+               
+     
+                <b>We want to keep it easy for both of us, so just login through FB, no need to create a new account.</b> 
+                <span class="clearfix"></span>    
+            
+ 
+            </div>
+        </form>
+      </div>
+    </div>
+
+
+
+             
+<!-- sapce for text        
+<div class="container">
+ <div class="row">
+<h2 style="text-align:center "><font style="font-family:timesnewroman" size="100" color="white">Random caption</font></h2>
+</div>
+</div>
+<div class="container">
+  <div>
+  <p><font style="font-family:timesnewroman" size="50" color="white"> Movies will make you famous,Television will make you rich,but the Theartre will make you good at what you are.</font></p>
+</div>
+</div>--> 
+  
+
+  <div class="container">
+      <div class="col-md-12 no-margin no-padding">
+            <h1 class="page-header">Buzzing around you </h1>
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 ">
+                  <img src="images/a1.jpg" class="img-responsive" >
+                  <h4><a href="/artists">Artists near you</a></h4>
+                  
+                </div>
+                <div class="col-xs-6 col-sm-6 ">
+                  <img src="images/m1.jpg" class="img-responsive" >
+                  <h4><a href="search_events.ejs">Events in your city</a></h4>
+                 
+                </div>
+               
+            </div>
+      </div>
+  </div>
+
+</div>
+
+         
+
+   <!-- footer starts-->
+<footer class="site-footer">
+     <div class="container">
+        <div class="bottom-footer">
+              <ul class="footer-nav">
+                <li><a href="p2demo.html">What are we</a></li>
+                <li><a href="#">Who are we</a></li>
+                <li><a href="#">Where are we</a></li>
+              </ul>
+        </div>
+    
+        <div class="cp-footer-links cpfl-social col-sm-12 text-center">
+                    <ul class="list-inline">
+                        <li><a href="" target="_blank"><img alt="facebook" src="images/fb.png" style="width:28px"></a></li>
+                        <li><a href="" target="_blank"><img alt="linkedin" src="images/lin.png" style="width:28px"></a></li>
+                        
+                    </ul>
+        </div>
+
+        <div class="row cp-copyright">
+            <div class="col-sm-12 col-xs-12">
+                <small>&copy; 2015 | Buzz'ed Pvt. Ltd.  <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. <a href="/view/user-agreement">User Agreement</a> | <a href="/view/privacy">Privacy Policy</a> | <a class="pressKitLink" data-link-position="footer" href="/static/cupickpresskit.zip" target="_blank" download="cupickpresskit.zip">Press Kit</a></small>
+            </div>
+        </div>
+      </div>  
+        
+  
+   </footer>
+    
+   <!-- footer ends-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+              $(document).ready( function() {
+              $('[id^=mycarousel]').carousel({
+              interval:   4000
+            });
+            
+            var clickEvent = false;
+           $('[id^=mycarousel]').on('click', '.nav a', function() {
+                clickEvent = true;
+                $('.nav li').removeClass('active');
+                $(this).parent().addClass('active');    
+            }).on('slid.bs.carousel', function(e) {
+              if(!clickEvent) {
+                var count = $('.nav').children().length -1;
+                var current = $('.nav li.active');
+                current.removeClass('active').next().addClass('active');
+                var id = parseInt(current.data('slide-to'));
+                if(count == id) {
+                  $('.nav li').first().addClass('active');  
+                }
+              }
+              clickEvent = false;
+            });
+          });
+
+          $('#openBtn').click(function(){
+              $('#myModal').modal({show:true})
+            });
+    </script>
+    <script type="text/javascript">
+    window.doorbellOptions = {
+        appKey: 'YSTK9OR2my1RS3mmACJS3iUrKcl7uldwR6Yv40opthKKgDxa0DzjbYNBOWBdS6H5'
+    };
+    (function(d, t) {
+        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://doorbell.io/button/822';(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
+    }(document, 'script'));
+</script>
+  </body>
+</html>
