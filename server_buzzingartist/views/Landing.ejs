@@ -37,7 +37,7 @@
 <% if(typeof user != 'undefined' && user!=null) { %>
  <div id = "headerloggedin"> </div>
  <% } else { %>
- <div id = "headerloggedout">
+ <div id = "headerloggedout"></div>
   <%}%> 
 
 <div class = "main-container">
@@ -329,5 +329,13 @@ $("#headerloggedout").load("headerloggedout.ejs");
 
           
     </script>
+     <script type="text/javascript">
+    window.doorbellOptions = {
+        appKey: 'YSTK9OR2my1RS3mmACJS3iUrKcl7uldwR6Yv40opthKKgDxa0DzjbYNBOWBdS6H5'
+    };
+    (function(d, t) {
+        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://doorbell.io/button/822';(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
+    }(document, 'script'));
+</script>
   </body>
 </html>

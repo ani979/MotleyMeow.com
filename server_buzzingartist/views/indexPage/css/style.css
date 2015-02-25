@@ -617,7 +617,7 @@ body {
   background-color: #383838;
     box-shadow: 0 0 3px 3px #888;
   border-radius:2px;
-  float:left;
+  
 }
 
 .main {
@@ -677,4 +677,20 @@ body {
 }
 .mg-btm{
     margin-bottom:20px;
+}
+
+.social-icons {
+  list-style: none;
+  padding: 0;
+  margin: 0;  
+  -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s;
+  
+  padding: 0 0 15px;
+}
+
+.social-icons li {
+  display: inline-block;
+  padding-right:20px;
+  font-size:30px;
 }

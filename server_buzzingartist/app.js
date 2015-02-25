@@ -417,6 +417,26 @@ app.get('/error', function(req, res){
   res.render('error', { message: req.flash('info') });
 });
 
+app.get('/aboutus', function(req, res){
+  res.render('AboutUs', { user: req.session.user });
+});
+
+app.get('/theTeam', function(req, res){
+  res.render('AboutUs', { user: req.session.user, hashValue: "slide-3" });
+});
+
+app.get('/whereweare', function(req, res){
+   res.render('AboutUs', { user: req.session.user, hashValue: "slide-5" });
+});
+
+app.get('/faq', function(req, res){
+  res.render('FAQPage', { user: req.session.user });
+});
+
+app.get('/credits', function(req, res){
+  res.render('creditsPage', { user: req.session.user });
+});
+
 function ensureAuthenticated(req, res, next) {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
            

@@ -9,7 +9,6 @@ $(document).ready(function(e) {
 	***************/
 	$('.with-hover-text').hover(
 		function(e) {
-			alert("here");
 			$(this).css('overflow', 'visible');
 			$(this).find('.hover-text')
 				.show()
