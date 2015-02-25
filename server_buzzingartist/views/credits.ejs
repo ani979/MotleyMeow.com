@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	
+	<title>BUZZING ARTISTS. Be a part of the buzz.</title> 
+	<meta name="description" content="BlackTie.co - Free Handsome Bootstrap Themes" />	    
+	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+	<meta property="og:title" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">  
+	
+		
+</head>
+
+<body>
+	<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+	
+	
+
+	<div class="main-container">
+        <div class="container">
+                
+			<h3 class="page-header text-center black-heading">Thanks to some wonderful people who have been helpful in some of the other way getting this site up.<br/>Heartfelt respect and thank you to them.</h3>
+			<ol>
+			    <li>
+			        <a href="https://www.facebook.com/chethan03?fref=ts" target="_blank">Chethan</a>
+			        <br/>
+			        <span>Chethan is currently doing his B.E. in Bangalore. He spent with us during the initial days of the website development and some of this contrubutions can be seen in the website. He had to leave in between because of college sessions but otherwise his contributions were immensely helpful. Thanks Chethan. </span>
+			    </li>
+			    <li>
+			        <a href="https://www.facebook.com/gamebag.in" target="_blank">Daanish and Amit from Gamebag.in</a>
+			        <br/>
+			        <span>Daanish and Amit helped us look at the overall idea from a different perspective. Their pointers on building a MVP and market research helped a lot. </span>
+			    </li>
+			    <li>
+			        <a href="https://www.facebook.com/veerendrashivhare?fref=ts" target="_blank">Veerendra ji</a>
+			        <br/>
+			        <span>Veerendra is the founder of <a href="https://www.facebook.com/HighOnPoem?fref=ts" target="_blank">HighOnPoems</a>. His immense knowledge in web developlment and knowledge sharing in web development has contributed to our learning and also help build this site.  </span>
+			    </li>
+			    <li>
+			        <a href="https://www.facebook.com/aditya.fynst?fref=ts" target="_blank">Aditya Narayana</a>
+			        <br/>
+			        <span>Thanks to Aditya and all the time that development team got to spend with him. It was he who was first contacted to get the answer on "How do we really build a website :)"</span>
+			    </li>
+			    <li>
+			        <a href="https://www.facebook.com/prasanna.k.srinivasan?fref=ts" ttarget="_blank">Prasanna</a>, <a href="https://www.facebook.com/akumar.akumar.735?fref=ts" ttarget="_blank">Ashok</a>, <a href="https://www.facebook.com/sumeet.choudhury?fref=ts" ttarget="_blank">Sumeet</a>
+			        <br/>
+			        <span>These guys from Saarthak has contributed in testing this site and also helped in the initial days doing market research for us.</span>
+			    </li>
+			    <li>
+			        Team at CISCO: Sid, Praveen</a>
+			        <br/>
+			        <span>These guys from CISCO also helped us perform tests and list out the defects which were important to be fixed before launch. Thanks.</span>
+			    </li>
+			</ol>
+		</div>	
+	</div>
+
+   <div id = "footer"></div>
+   <!-- footer ends-->
+
+
+</body>
+
+	
+	<!-- fancybox init -->
+	<script>
+	$(document).ready(function(e) {
+		<% if (typeof hashValue != 'undefined' && hashValue != "") { %>
+			document.location.hash = "<%=hashValue%>";
+	
+		<% } %>
+
+	});
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("header.ejs");
+		$("#headerloggedout").load("headerloggedout.ejs");
+	</script>
+
+</html>

@@ -434,7 +434,11 @@ app.get('/faq', function(req, res){
 });
 
 app.get('/credits', function(req, res){
-  res.render('creditsPage', { user: req.session.user });
+  res.render('credits', { user: req.session.user });
+});
+
+app.get('/privacy', function(req, res){
+  res.render('privacypolicy', { user: req.session.user });
 });
 
 function ensureAuthenticated(req, res, next) {

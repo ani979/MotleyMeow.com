@@ -138,12 +138,13 @@
                                 <div class="col-sm-9">
 
                                   <select class="form-control" value=<%= user.local.city %> name="city">
-                                            <option>Chennai</option>
                                             <option>Bengaluru</option>
+                                            <option>Delhi</option>
+                                            <option>Chennai</option>
                                             <option>Mumbai</option>
+                                            <option>Kolkata</option>
                                   </select> 
-                                  <span class="fieldNote">Currently only for Bengaluru, launching soon in other cities</span>
-                                </div>
+                                  </div>
                               </div>
                                <div class="form-group">
                                  <label class="col-sm-3 control-label" for="emailDisplay">Email privacy setting</label>
@@ -293,7 +294,8 @@
                   
     <div class="panel-footer">
           
-          <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;">Please ensure this abides by our <a href="/legal/terms/" target="_blank">Terms of Service</a> and <a href="/help/guidelines" target="_blank">Community Guidelines</a>.</span>
+          <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;">Please confirm you have read and will abide by our
+          <a href="#myModal" role="button" class="btn" data-toggle="modal">Terms of Service</a> and <a href="#myModal" role="button" class="btn" data-toggle="modal">Community Guidelines</a></span>
           
           <!-- <span class="pull-right"> -->
         <!--       <a href="/update" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a> -->
@@ -318,6 +320,53 @@
   </div>
       <!-- footer starts-->
    <div id = "footer"></div>
+
+   <div class="modal fade col-lg-12" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="open-ViewDialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <input type="hidden" name="vewPostTitle" id="vewPostTitle" value=""/>
+
+              <h4 class="modal-title" id="myModalLabel">Terms of Service  & Community Guidelines</h4>
+            </div>
+            <div class="modal-body">
+
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Terms of service:</label>
+                      <div class="col-sm-8">
+                        <div >
+                          <label>
+                              <p id = "viewPostTitle" class="form-control-static"></p>
+                          </label>
+                        </div>
+                      </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Community Guidelines</label>
+                      <div class="col-sm-8">
+                        <div >
+                          <label>
+                              <p id = "viewPostDesc" class="form-control-static"></p>
+                                <ul>
+                                  <li> BuzzingArtists doesnt monitor posts before submissions. Hence its important that you don't post anything that is profane or if it hurts someone's religious sentiment</li>
+                                  <li> You are expected to prvide correct informtion about your contribution to theatre and languages comfortability. We dont appreciate the idea of others wasting their time on you when your information itself is not correct.</li>
+                                </ul>  
+
+                          </label>
+                        </div>
+                      </div>
+                </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
     
    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>

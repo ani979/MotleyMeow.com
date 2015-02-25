@@ -45,8 +45,8 @@
 }
 .footer-nav li:not(:first-child):before
 {
-	content: '|';
-	padding: 0px 5px;
+	
+	padding: 0px 20px;
 }
 .footer-nav a
 {

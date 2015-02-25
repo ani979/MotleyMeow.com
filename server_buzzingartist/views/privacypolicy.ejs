@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	
+	<title>BUZZING ARTISTS. Be a part of the buzz.</title> 
+	<meta name="description" content="BlackTie.co - Free Handsome Bootstrap Themes" />	    
+	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+	<meta property="og:title" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">  
+	
+		
+</head>
+
+<body>
+	<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+	
+
+
+
+
+
+
+
+<div class="main-container">
+     <div class="container">
+                
+			<h1>Your Privacy</h1>
+
+			<p>We respect every user and are fully committed to protecting and upholding their privacy when they use BuzzingArtists. We never rent or sell your personal information to any third party. <strong>BuzzingArtists also fully supports freedom of speech, as a cornerstone of our policy</strong>.</p>
+
+			<p>This Privacy Policy describes our policies and procedures regarding the use, disclosure and protection of information that apply to our Service. This Privacy Policy applies only to services rendered by BuzzingArtists. We recommend that you review the privacy policy of any other site you visit.</p>
+
+			<h2 class="black-heading responsive-heading">Personally Identifiable Information</h2>
+			<p>You can use BuzzingArtists without having an account with us. We dont provide our own login facility. To register with us we just ask you to login through Facebook which supposedly is the most used social platform for many theatre practitioners and theatre goers. You may also choose to provide additional information like what is your contribution to theatre and languages you are comfortable with. </p>
+
+			<h2 class="black-heading responsive-heading">Non-Personally Identifiable Information:</h2>
+			<p>To better understand how our visitors use our service and to help us provide a better experience for our visitors, we collect and store information that does not identify you as an individual ("Non-Personally Identifiable Information"), either directly in log files and cookies, or via third party vendors that use various standard web tracking technologies including <a href="http://en.wikipedia.org/wiki/HTTP_cookie" target="_blank">cookies</a> and <a href="http://en.wikipedia.org/wiki/Web_bug" target="_blank">web beacons</a>. Examples of non personal information include pages that you have visited, ip address, browser type and operating system. You can choose to disable cookies, but please remember this may mean that parts of the website may not function correctly.</p>
+
+			<p> We don't share your email id to other artists without your consent. You can choose not to share your email in the prpfile update. By default its not shared. However when you are searched by others as an artist, your fb profile link is provided so that if anyone chooses to contact you they can do so by messaging you on facebook.
+
+			<p>We may also use third party vendors to display relevant ads for BuzzingArtists at locations away from our website on the internet. Some of these vendors use cookies to display ads based on your previous visits to the BuzzingArtists site. You can opt out of these cookies by visiting the
+			<a href="http://www.networkadvertising.org/choices" target="_blank">Network Advertising Initiative opt-out page</a>.</p>
+
+			<h2 class="black-heading responsive-heading">Uses</h2>
+			<p>We may need to share certain information with third party vendors for reasons such as manufacturing, printing or logistics. In certain circumstances, we may be obliged or deem it necessary to disclose your Personal Information without your consent in response to a legal process such as a court order, subpoena or lawful discovery request; to prevent or combat fraud; as required by federal or state laws and regulations; to enforce our Terms; to investigate claims of intellectual property infringement, to protect the rights, property or safety of BuzzingArtists, our users, our employees or our affiliates' employees, or others; or to investigate security breaches or otherwise cooperate with authorities pursuant to a legal matter. Keeping with our policy of fairness, we will always notify you of such disclosure unless we deem it necessary to withheld them.</p>
+
+			<p>From time to time we will email you useful information about using our service. You can opt out from receiving certain types of messages in your account settings.</p>
+
+			<p>If you require help with using the BuzzingArtists service, phone numbers and email addresses are provided which you can call and discuss any issue you faced.</p>
+
+			<h2 class="black-heading responsive-heading">Children Under 13</h2>
+			<p>Our Services are not designed for children under 13. If we discover that a child under 13 has provided us with personal information, we will delete such information from our systems.</p>
+
+			<h2 class="black-heading responsive-heading">Contact BuzzingArtists</h2>
+
+			<p>If you have any questions about this Privacy Policy, please email us at any of email ids given in the "Who we are" section of the site footer</a>.</p>
+
+			<h2 class="black-heading responsive-heading">Changes to Privacy Policy</h2>
+			<p>BuzzingArtists may, in its sole discretion, modify or update this Privacy Policy from time to time, and so you should review this page periodically. When we change the policy, we will update the 'last modified' date at the bottom of this page. Your continued use of the Site following the posting of any changes to this policy would mean you accept such changes.</p>
+
+			<p class="black-heading">Last updated: Feb 25, 2014</p>
+		</div>
+                
+     </div><!-- main-container End -->
+       
+<div id = "footer"></div>
+ <!-- footer ends-->
+
+
+</body>
+
+	
+	<!-- fancybox init -->
+	<script>
+	$(document).ready(function(e) {
+		<% if (typeof hashValue != 'undefined' && hashValue != "") { %>
+			document.location.hash = "<%=hashValue%>";
+	
+		<% } %>
+
+	});
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("header.ejs");
+		$("#headerloggedout").load("headerloggedout.ejs");
+	</script>
+
+</html>
