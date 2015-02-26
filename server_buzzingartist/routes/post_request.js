@@ -122,7 +122,7 @@ exports.searchPosts = function (req, res) {
                   console.log("found user: " + db);
                   // console.log("found user's post: " + db.post);
                   console.log("found user's post length: " + db.length);
-                  res.render('post_search', { postdb: db });
+                  res.render('post_search', { postdb: db,  user:req.session.user});
                 }    
              });   
 };
