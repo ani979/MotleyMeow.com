@@ -1,8 +1,9 @@
-
+var argv = require('optimist').argv;
 var config = { };
 
 // should end in /
 config.rootUrl  = process.env.ROOT_URL                  || 'http://localhost:3000/';
+// config.rootUrl  = process.env.ROOT_URL                  || 'http://' + localhost + ':8080/';
 
 config.facebook = {
     appId:          process.env.FACEBOOK_APPID          || '1580350615516688',
