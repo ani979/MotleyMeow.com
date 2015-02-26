@@ -42,54 +42,11 @@
   <body>
 
 
-<nav class="navbar navbar-inverse navbar-static-top no-margin">
-  <div class="container-fluid">
-    
-
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">BuzzingArtists </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-            <% if(user!=null) { %>
-                <ul class="nav navbar-nav">
-                  <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
-                   <li ><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
-                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Need artists? </a>
-                      <ul class="dropdown-menu" role="menu">
-                          <li><a href="/postarequest">Post a request</a></li>
-                          <li><a href="/browserequests">Browse</a></li>                      
-                      </ul>
-                   </li> 
-                   <li ><a href="#">Your posts<span class="sr-only">(current)</span></a></li>
-                </ul>
-
-            <ul class="nav navbar-right navbar-nav">                  
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="/profile">Profile</a></li>
-                      <li><a href="/logout">Logout</a></li>
-                      
-                    </ul>
-                  </li>
-             </ul>  
-             <%} else { %>
-             <ul class="nav nav-bar pull-right">
-                        
-                <li><a class="btn btn-primary navbar-btn" href="/auth/facebook">Join us</a></li>
-              
-            </ul>
-             <% } %> 
-      </div>
-  </div>
-</nav>
+<% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout"></div>
+<%}%> 
 
 <div class = "main-container">
 
@@ -242,40 +199,17 @@
 
          
 
-   <!-- footer starts-->
-<footer class="site-footer">
-     <div class="container">
-        <div class="bottom-footer">
-              <ul class="footer-nav">
-                <li><a href="p2demo.html">What are we</a></li>
-                <li><a href="#">Who are we</a></li>
-                <li><a href="#">Where are we</a></li>
-              </ul>
-        </div>
-    
-        <div class="cp-footer-links cpfl-social col-sm-12 text-center">
-                    <ul class="list-inline">
-                        <li><a href="" target="_blank"><img alt="facebook" src="images/fb.png" style="width:28px"></a></li>
-                        <li><a href="" target="_blank"><img alt="linkedin" src="images/lin.png" style="width:28px"></a></li>
-                        
-                    </ul>
-        </div>
-
-        <div class="row cp-copyright">
-            <div class="col-sm-12 col-xs-12">
-                <small>&copy; 2015 | Buzz'ed Pvt. Ltd.  <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. <a href="/view/user-agreement">User Agreement</a> | <a href="/view/privacy">Privacy Policy</a> | <a class="pressKitLink" data-link-position="footer" href="/static/cupickpresskit.zip" target="_blank" download="cupickpresskit.zip">Press Kit</a></small>
-            </div>
-        </div>
-      </div>  
-        
-  
-   </footer>
+    <!-- footer starts-->
+   <div id = "footer"></div>
     
    <!-- footer ends-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
+    $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("header.ejs");
+    $("#headerloggedout").load("headerloggedout.ejs");
         
           // $(function() {
           //     alert("here");
