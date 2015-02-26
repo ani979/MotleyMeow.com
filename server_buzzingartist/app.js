@@ -11,6 +11,7 @@ var express       = require('express'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist');
 var moment = require('moment');
+var argv = require('optimist').argv;
 
 
 var cookieParser = require('cookie-parser');
@@ -457,3 +458,7 @@ res.redirect('/')
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
 });
+
+// console.log("argv.fe_ippp: "+argv.fe_ip);
+// app.listen(8080,argv.fe_ip);
+// console.log("Express serverrrr listening on port 8080");
