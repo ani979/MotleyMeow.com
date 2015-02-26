@@ -239,6 +239,15 @@ outline: none;
 }
 i {
     font-size: 15px;
-    color: white;
+    color: #151414;
   }
 
+ifooter {
+    font-size: 15px;
+    color: #6474CB;
+  }
+
+iheader {
+    font-size: 20px;
+    color: #6474CB;
+  }

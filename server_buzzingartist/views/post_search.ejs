@@ -118,8 +118,8 @@
                             <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
                             </form>
                            
-                            <form action="/deletepost" method="POST">
-                            <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button id ="delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+                            <form action="/deletepost" method="POST" id="deleteMeremovePost<%=posts[i]._id%>">
+                            <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button id ="delete" name="removePost<%=posts[i]._id%>" type="submit"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                             <input name="_id"  type="hidden" value=<%=posts[i].post.userid%>>
                             <input name="_postid"  type="hidden" value=<%=posts[i]._id%>>
                             </form>
@@ -194,7 +194,27 @@
             </div>
           </div>
         </div>
-      </div>    
+      </div> 
+     </div> 
+
+
+    <div class="modal fade col-lg-12" id="deleteModal">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  Confirm Delete
+              </div>
+              <div class="modal-body">
+                  Are you sure you want to delete the post?
+              </div>
+              <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-primary" id="deleteModal">Delete</button>
+                <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+              </div>
+          </div>
+        </div>  
+    </div>
+       
    <!-- footer ends-->
     <script type="text/javascript">
     // $('#myModal').modal({
@@ -205,6 +225,18 @@
     $(document).ready(function(){
 
       $('#mytable').DataTable();
+    });
+
+    $('button[id="delete"]').on('click', function(e){
+      var deletename = $(this).attr('name');
+      var formname = "deleteMe" + deletename;
+      e.preventDefault();
+      $('#deleteModal').modal({ backdrop: 'static', keyboard: false })
+          .one('click', '#deleteModal', function() {
+
+              document.getElementById(formname).submit(); // submit the form
+      });
+        
     });
 
 
