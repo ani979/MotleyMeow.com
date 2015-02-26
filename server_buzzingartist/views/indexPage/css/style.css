@@ -685,6 +685,7 @@ body {
   margin: 0;  
   -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
     transition: height 1s;
+  background-color: #121314;
 }
 
 .social-icons li {
