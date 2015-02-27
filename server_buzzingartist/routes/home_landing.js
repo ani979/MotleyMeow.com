@@ -1,14 +1,14 @@
-var FB              = require('fb'),
-    config          = require('../config');
+var FB              = require('fb');
+    // config          = require('../config');
 var User = require('../models/user');
 var Posts = require('../models/posts.js');
 var Event = require('../models/event.js');
 
-FB.options({
+/*FB.options({
     appId:          config.facebook.appId,
     appSecret:      config.facebook.appSecret,
     redirectUri:    config.facebook.redirectUri
-});
+});*/
 
 var profile = {
     firstName:'',
@@ -34,10 +34,8 @@ exports.index = function(req, res) {
         if(req.isAuthenticated()) {
             res.redirect('/home');
         } else {
-                res.render('index', {
-                title: 'Express',
-                loginUrl: FB.getLoginUrl({ scope: 'user_about_me' })                
-            });
+                res.render('index');            
+            
         }
     } else {
         // res.render('home');
