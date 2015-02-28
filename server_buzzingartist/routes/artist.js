@@ -48,7 +48,7 @@ exports.update = function (req, res) {
 
                    req.session.user = user;
                    req.session.loggedIn = true;
-                   res.redirect('/profile');
+                   res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful"});
                });
             } else if(req.body.btnvalue == "delete") {
                 console.log(" I am in delete");

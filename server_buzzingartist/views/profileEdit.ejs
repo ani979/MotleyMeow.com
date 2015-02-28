@@ -38,6 +38,10 @@
  <% } else { %>
  <div id = "headerloggedout"></div>
   <%}%> 
+<% if (typeof infomessage != 'undefined' && infomessage != "") { %>
+  <h4 style="text-align:center"><strong> <%=infomessage%> </strong></h4>
+<%}%>
+<div> 
 
 <section style="background:#efefe9;">
         <div class="container">

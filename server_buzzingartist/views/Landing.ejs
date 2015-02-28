@@ -37,7 +37,7 @@
  <% } else { %>
  <div id = "headerloggedout"></div>
 <%}%> 
-
+<% var citysel = user.local.city %>
 <div class = "main-container">
   <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
     <h3 class = "thtrexplore">
@@ -48,7 +48,9 @@
   <div class="container">
     <h2 class="title" style= "text-align:center;">Hi, <strong> <%= user.facebook.name %> <strong></h2>
     <h3 style= "text-align:center;"><b>Welcome to BuzzingArtists.</b></h3>
-      
+    <% if (typeof citysel == 'undefined' || citysel == "") { %>
+    <h4 style= "text-align:center;"> Your location is not set currently. Choose your location through <a href="/profile">"update profile"</a> link and view happenings in your city only.</h4>
+    <% } %>  
 
     <hr class="half-rule">
 
