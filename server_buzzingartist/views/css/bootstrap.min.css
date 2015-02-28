@@ -4497,7 +4497,7 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 	float:left;
 	height:50px;
 	padding:15px 15px;
-	font-size:18px;
+	font-size:20px;
 	line-height:20px
 }
 
@@ -4863,7 +4863,7 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 }
 
 .navbar-inverse .navbar-brand{
-	color:#9d9d9d
+	color:#FFFCFC;
 }
 
 .navbar-inverse .navbar-brand:focus,.navbar-inverse .navbar-brand:hover{

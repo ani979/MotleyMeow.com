@@ -1,17 +1,18 @@
 
 TodoS:
 
-1) refactor to keep stuff at different places
-2) ensure no email id is changed in profile update. It cannot be updated. Its currently readable - nothing to be done
-3) Update button need to corrected in profile edit. -
-4) number of artists in your city
-5) pagination - already done by using table
+1) refactor to keep stuff at different places - DONE
+2) ensure no email id is changed in profile update. It cannot be updated. Its currently readable - nothing to be done - DONE
+3) Update button need to corrected in profile edit. - DONE
+4) number of artists in your city - NOT RIGHT NOW
+5) pagination - already done by using table  DONE
 6) Update all roles and actors in several pages. See if you can commonalize it.
-7) profile edit doesnt have a footer
-8) The main page displays all events but there is a bug wherein if date is older for an event, the slider displays empty space.
-9) If there is no event in fb, add another way to add the event. Ask user to submit three details, picture, when and where
-10) Globally use the checkbox items from server
-11) Posting guidelines
+7) profile edit doesnt have a footer - DONE
+8) The main page displays all events but there is a bug wherein if date is older for an event, the slider displays empty space. 
+9) If there is no event in fb, add another way to add the event. Ask user to submit three details, picture, when and where - NOT YET
+10) Globally use the checkbox items from server - NOT YET
+11) Posting guidelines - DONE
+12) Add coming soon 
 
 
 
@@ -40,5 +41,6 @@ http://www.webdesignerdepot.com/2014/02/how-to-create-horizontal-scrolling-using
 http://www.sitepoint.com/use-jquerys-ajax-function/
 http://www.hacksparrow.com/mobile-web-development-in-express-js-node-js.html
 https://www.flickr.com/photos/hayderhoozeer/7523536168/in/photostream/
+http://stackoverflow.com/questions/7716883/use-facebook-app-authentication-to-automatically-login-to-mobile-website
 
-
+http://104.154.49.31:8080/
