@@ -13,6 +13,9 @@ TodoS:
 10) Globally use the checkbox items from server - NOT YET
 11) Posting guidelines - DONE
 12) Add coming soon 
+13) event end date to be added
+14) Add an event view in the landing page.
+15) need to change images
 
 
 

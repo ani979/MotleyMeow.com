@@ -8,7 +8,7 @@ var userSchema = mongoose.Schema({
 
     local            : {
         picture      : String,
-        city         : { type: String, default: "Bengaluru" },
+        city         : String,
         role         :[{}],
         lang         :[{}],
         emailDisplay : Boolean

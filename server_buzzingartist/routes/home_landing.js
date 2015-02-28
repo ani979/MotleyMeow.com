@@ -71,82 +71,157 @@ exports.profile = function (req, res) {
 
 exports.landing_home = function(req, res) {
 	console.log("req.session " + req.sesson);
-            console.log("req.session.user " + req.session.user);
-            var allUsers;
-            var posts; 
-            var events;
-            var playEvents=null;;
-            var workshopEvents=null;
-            var otherEvents=null;
+    console.log("req.session.user " + req.session.user);
+    var posts; 
+    var events;
+    var playEvents=null;;
+    var workshopEvents=null;
+    var otherEvents=null;
+    var foundUser = req.session.user
+    var then = new Date();
 
-            User.find( function ( err, users, count ){
+    // User.find( function ( err, users, count ){
 
+    //     if(err) {
+    //         // res.render('index');
+    //         req.flash('info', "Error while trying to find the user")
+    //         res.redirect('/error'); 
+    //         return done(err);
+    //     }
+
+    //     allUsers = users;
+    //     var then = new Date();
+    then.setDate(then.getDate() - 2);
+    var selectedCity = new Array();
+    console.log(" foundUser.local.city " + foundUser.local.city)
+    if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
+        selectedCity.push(foundUser.local.city);
+    }
+    if(selectedCity == "Bengaluru" || selectedCity == "Bangalore") {
+        selectedCity.push("Bangalore", "Bengaluru");
+    }
+    console.log("selected city " + selectedCity)
+    console.log("selected City length " + selectedCity.length)
+    //Get all posts
+    if(typeof selectedCity != undefined && selectedCity.length != 0) {
+        Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                            { 'post.date': { $gte: new Date(then.toISOString()) } } ] } } , {$limit:5}],
+                            function(err, postsinDB) {
+             if (err || typeof postsinDB == 'undefined') {
+                console.log("Error while getting posts");
+                // res.send({ error: error }); 
+                req.flash('info', "Error while retrieving posts")
+                res.redirect('/error'); 
+                return;       
+             }    
+
+            console.log("posts is " + postsinDB.length);
+            if(!err) {
+                posts = postsinDB;
+            } else {
+                posts = {};
+            }
+
+            Event.find({ $and: [ { 'event.city': { $in: selectedCity } }, 
+                            { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] },
+                        {event:1}, function(err, eventsInDB) {
                 if(err) {
-                    // res.render('index');
-                    req.flash('info', "Error while trying to find the user")
-                    res.redirect('/error'); 
-                    return done(err);
+                    events = {};
+                    console.log("Am i here");
+                    res.render('Landing', { user: req.session.user, postss: posts, events: events});
                 }
-
-                allUsers = users;
-                var then = new Date();
-                then.setDate(then.getDate() - 2);
-                //Get all posts
-                Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
-                                    { 'post.date': { $gte: new Date(then.toISOString()) } } ] } } , {$limit:5}],
-                                    function(err, postsinDB) {
-                    console.log("I am here and err is " + err);
-                    console.log("posts is " + postsinDB.length);
-                    if(!err) {
-                        posts = postsinDB;
-                    } else {
-                        posts = {};
-                    }
-
-                    Event.find({ $and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
-                                    { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] },
-                                {event:1}, function(err, eventsInDB) {
-                        console.log("Event in DB " + eventsInDB)
-                        if(err) {
-                            events = {};
-                            console.log("Am i here");
-                            res.render('Landing', { user: req.session.user, users: allUsers, postss: posts, events: events});
-                        }
-                        
-                        console.log("eventsInDB " + eventsInDB.length);
-                        Event.distinct('event', {$and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
-                                    { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}
-                                    , function(err, allPlays) {
-                                        
-                            playEvents = allPlays;
-                            playEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                            console.log("plays length is "  + allPlays.length);
-                            Event.distinct('event', {$and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
-                                    { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Workshop" }]}
-                                    , function(err, allWorkshops) {
-                                        console.log("Workshops length is "  + allWorkshops.length);
-                                workshopEvents = allWorkshops;
-                                workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                                Event.distinct('event', {$and: [ { 'event.city': { $in: [ "Bengaluru", "Bangalore" ] } }, 
-                                    { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
-                                    , function(err, allOthers) {
-                              
-                                    otherEvents = allOthers;
-                                    otherEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                                    res.render('Landing', 
-                                        { user: req.session.user, 
-                                            users: allUsers, 
-                                            postss: posts, events: eventsInDB,
-                                            plays:playEvents, workshops:workshopEvents,others:otherEvents
-                                            });
-                                });
-                            });        
-                        });    
-
-                        
-                    });
-
+                
+                console.log("eventsInDB " + eventsInDB.length);
+                Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
+                            { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}
+                            , function(err, allPlays) {
+                                
+                    playEvents = allPlays;
+                    playEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                    console.log("plays length is "  + allPlays.length);
+                    Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
+                            { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Workshop" }]}
+                            , function(err, allWorkshops) {
+                                console.log("Workshops length is "  + allWorkshops.length);
+                        workshopEvents = allWorkshops;
+                        workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                        Event.distinct('event', {$and: [ { 'event.city': { $in: [ selectedCity ] } }, 
+                            { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
+                            , function(err, allOthers) {
+                      
+                            otherEvents = allOthers;
+                            otherEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                            res.render('Landing', 
+                                { user: req.session.user, 
+                                    postss: posts, events: eventsInDB,
+                                    plays:playEvents, workshops:workshopEvents,others:otherEvents
+                                    });
+                        });
+                    });        
                 });    
 
+                
             });
+
+        });    
+    } else {
+            Posts.aggregate([{ $match: { 'post.date': { $gte: new Date(then.toISOString()) } } } , {$limit:5}],
+                            function(err, postsinDB) {
+             if (err || typeof postsinDB == 'undefined') {
+                console.log("Error while getting posts");
+                // res.send({ error: error }); 
+                req.flash('info', "Error while retrieving posts")
+                res.redirect('/error'); 
+                return;       
+             }    
+
+            console.log("posts is " + postsinDB.length);
+            if(!err) {
+                posts = postsinDB;
+            } else {
+                posts = {};
+            }
+
+            Event.find({ 'event.date': { $gte: new Date(new Date().toISOString()) } },
+                        {event:1}, function(err, eventsInDB) {
+                if(err) {
+                    events = {};
+                    console.log("Am i here");
+                    res.render('Landing', { user: req.session.user, postss: posts, events: events});
+                    return;
+                }
+                
+                console.log("eventsInDB " + eventsInDB.length);
+                Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}
+                            , function(err, allPlays) {
+                                
+                    playEvents = allPlays;
+                    playEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                    console.log("plays length is "  + allPlays.length);
+                    Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Workshop" }]}
+                            , function(err, allWorkshops) {
+                                console.log("Workshops length is "  + allWorkshops.length);
+                        workshopEvents = allWorkshops;
+                        workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                        Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
+                            , function(err, allOthers) {
+                      
+                            otherEvents = allOthers;
+                            otherEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                            res.render('Landing', 
+                                { user: req.session.user, 
+                                    postss: posts, events: eventsInDB,
+                                    plays:playEvents, workshops:workshopEvents,others:otherEvents
+                                    });
+                        });
+                    });        
+                });    
+
+                
+            });
+
+        });
+    }
+
+        //});
 };

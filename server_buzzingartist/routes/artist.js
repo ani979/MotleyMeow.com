@@ -28,6 +28,7 @@ exports.update = function (req, res) {
                db.facebook.name=req.body.fullname;
                db.local.city = req.body.city;
                console.log("roles selected " + req.body.role);
+               console.log("city selected " + req.body.city);
                // now update it in MongoDB
                db.local.role = req.body.role;
                db.local.lang = req.body.lang;

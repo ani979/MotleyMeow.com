@@ -89,23 +89,28 @@
       <label class="control-label" for="checkboxes">Select the city</label>
       <div class="controls">
         <label class="checkbox-inline" for="checkboxes-0">
-          <input name="city" id="checkboxes-0" type="checkbox" value="Bengaluru">
+          <input name="city" id="checkboxes-0" type="checkbox" value="Bengaluru" class ="citycheckbox">
          Bengaluru
         </label>
         <label class="checkbox-inline" for="checkboxes-1">
-          <input name="city" id="checkboxes-1" type="checkbox"  value="Chennai">
+          <input name="city" id="checkboxes-1" type="checkbox"  value="Chennai"  class ="citycheckbox">
          Chennai
         </label>
         <label class="checkbox-inline" for="checkboxes-3">
-          <input name="city" id="checkboxes-3" type="checkbox" value="Mumbai">
+          <input name="city" id="checkboxes-3" type="checkbox" value="Mumbai" class ="citycheckbox">
           Mumbai
         </label>
         <label class="checkbox-inline" for="checkboxes-4">
-          <input name="city" id="checkboxes-4" type="checkbox" value="Delhi">
+          <input name="city" id="checkboxes-4" type="checkbox" value="Delhi" class ="citycheckbox">
           Delhi
         </label>
         <label class="checkbox-inline" for="checkboxes-5">
-          <input name="cityAll" class = "allcities" id="checkboxes-5" value="5" type="checkbox" onchange="checkAllCity(this)">
+          <input name="city" id="checkboxes-5" type="checkbox" value="Kolkata" class ="citycheckbox">
+          Kolkata
+        </label>
+  
+        <label class="checkbox-inline" for="allcities">
+          <input name="cityAll" class = "allcities" id="allcities" value="6" type="checkbox" onchange="checkAllCity(this)">
           Select All
         </label>
       </div>
@@ -114,7 +119,7 @@
     <!--</div>-->
     <!-- Multiple Checkboxes -->
     <div class="control-group">
-      <label class="control-label" for="checkboxes">Select artists you need</label>
+      <label class="control-label" for="checkboxes">Select your need</label>
       <div class="controls">
         <label class="checkbox-inline" for="checkboxes-6">
           <input name="role" id="actor" value="Actor" type="checkbox">
@@ -122,16 +127,49 @@
         </label>
         <label class="checkbox-inline" for="checkboxes-7">
           <input name="role" id="lights" value="Lights" type="checkbox">
-          Lights
+          Lights Design
         </label>
         <label class="checkbox-inline" for="checkboxes-8">
+        <input name="role" id="director" value="Director" type="checkbox">
+          Director
+        </label>
+        <label class="checkbox-inline" for="checkboxes-9">
+        <input name="role" id="sound" value="Sound" type="checkbox">
+          Sound
+        </label>
+        <label class="checkbox-inline" for="checkboxes-10">
+        <input name="role" id="music" value="Music" type="checkbox">
+          Music
+        </label>
+        <label class="checkbox-inline" for="checkboxes-11">
+        <input name="role" id="" value="Lights" type="checkbox">
+          Scriptwriting or translation
+        </label>
+        <label class="checkbox-inline" for="checkboxes-12">
+        <input name="role" id="costumeDesign" value="Costume" type="checkbox">
+          Constime Design
+        </label>
+        <label class="checkbox-inline" for="checkboxes-13">
+        <input name="role" id="setDesign" value="SetDesign" type="checkbox">
+          Set Design
+        </label>
+       </div> 
+     </diV>
+     <div class = "control-group">
+      <label class="control-label" for="checkboxes">You can also choose if you need some off-stage help</label>
+        <div class="controls">
+        <label class="checkbox-inline" for="checkboxes-14">
           <input name="role" id="props" value="Props" type="checkbox">
           Props
         </label>
-        <label class="checkbox-inline" for="checkboxes-9">
-          <input name="role" id="rehearsal_space" value="Rehearsal Space" type="checkbox">
+        <label class="checkbox-inline" for="checkboxes-15">
+          <input name="role" id="rehearsalSpace" value="RehearsalSpace" type="checkbox">
           Rehearsal Space
         </label>
+        <label class="checkbox-inline" for="checkboxes-16">
+          <input name="role" id="backstageSupport" value="BackStage" type="checkbox">
+          Backstage support
+        </label>        
       </div>
     </div>
 
@@ -140,31 +178,31 @@
       <label class="control-label" for="checkboxes">Comfortable in languages</label>
       <div class="controls">
         <label class="checkbox-inline" for="checkboxes-8">
-          <input name="lang" id="hindi" value="Hindi" type="checkbox">
+          <input name="lang" id="hindi" value="Hindi" type="checkbox" class ="langcheckbox">
           Hindi
         </label>
         <label class="checkbox-inline" for="checkboxes-9">
-          <input name="lang" id="kannada" value="Kannada" type="checkbox">
+          <input name="lang" id="kannada" value="Kannada" type="checkbox" class ="langcheckbox">
          Kannada
         </label>
         <label class="checkbox-inline" for="checkboxes-10">
-          <input name="lang" id="bengali" value="Bengali" type="checkbox">
+          <input name="lang" id="bengali" value="Bengali" type="checkbox" class ="langcheckbox">
           Bengali
         </label>
         <label class="checkbox-inline" for="checkboxes-11">
-          <input name="lang" id="malayalam" value="Malayalam" type="checkbox">
+          <input name="lang" id="marathi" value="Marathi" type="checkbox" class ="langcheckbox">
           Malayalam
         </label>
         <label class="checkbox-inline" for="checkboxes-12">
-          <input name="lang" id="tamil" value="Tamil" type="checkbox">
+          <input name="lang" id="tamil" value="Tamil" type="checkbox" class ="langcheckbox">
           Tamil
         </label>
         <label class="checkbox-inline" for="checkboxes-13">
-          <input name="lang" id="english" value="English" type="checkbox">
+          <input name="lang" id="english" value="English" type="checkbox" class ="langcheckbox">
           English
         </label>
-        <label class="checkbox-inline" for="checkboxes-14">
-          <input name="langAll" id="checkboxes-14" value="5" type="checkbox" onchange="checkAllLang(this)">
+        <label class="checkbox-inline" for="allLang">
+          <input name="langAll" class ="allLang" id="allLang" value="14" type="checkbox" onchange="checkAllLang(this)">
           Select ALL
         </label>
       </div>
@@ -184,7 +222,10 @@
      
     </fieldset>
     </form>
-    <input action="action" type="button" value="Back" onclick="history.go(-1);" />
+
+    <a href="/searchPosts">
+      <input type="button" value="Back" />
+    </a>
     <!-- <form action="/goback" method="post">
     <div class="control-group">
       <label class="control-label" for="cancelbutton">Exit the page</label>
@@ -257,6 +298,24 @@
                    }
                }
            }         
+
+           $(function() {
+              $(".citycheckbox").click(function(){
+                if($(".citycheckbox").length==$(".citycheckbox:checked").length){
+                  $("#allcities").attr("checked","checked");
+                }else{
+                  $("#allcities").removeAttr("checked");
+                }
+              });
+              $(".langcheckbox").click(function(){
+                if($(".langcheckbox").length==$(".langcheckbox:checked").length){
+                  $("#allLang").attr("checked","checked");
+                }else{
+                  $("#allLang").removeAttr("checked");
+                }
+              });
+
+            });
           //});
 
   $(function(){
