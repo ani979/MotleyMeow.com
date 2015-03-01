@@ -95,11 +95,18 @@ exports.landing_home = function(req, res) {
     var selectedCity = new Array();
     console.log(" foundUser.local.city " + foundUser.local.city)
     if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
-        selectedCity.push(foundUser.local.city);
+        if(foundUser.local.city == "Bengaluru" || foundUser.local.city == "Bangalore") {
+            selectedCity.push("Bangalore", "Bengaluru");
+        } else if(foundUser.local.city == "Calcutta" || foundUser.local.city == "Kolkata") {
+            selectedCity.push("Calcutta", "Kolkata");
+        } else if(foundUser.local.city == "Mumbai" || foundUser.local.city == "Bombay") {
+            selectedCity.push("Mumbai", "Bombay");
+        } else {
+            selectedCity.push(foundUser.local.city);
+        }
     }
-    if(selectedCity == "Bengaluru" || selectedCity == "Bangalore") {
-        selectedCity.push("Bangalore", "Bengaluru");
-    }
+    
+    
     console.log("selected city " + selectedCity)
     console.log("selected City length " + selectedCity.length)
     //Get all posts
@@ -145,7 +152,7 @@ exports.landing_home = function(req, res) {
                                 console.log("Workshops length is "  + allWorkshops.length);
                         workshopEvents = allWorkshops;
                         workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                        Event.distinct('event', {$and: [ { 'event.city': { $in: [ selectedCity ] } }, 
+                        Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
                             { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
                             , function(err, allOthers) {
                       
