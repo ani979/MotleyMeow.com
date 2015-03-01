@@ -432,7 +432,7 @@ app.get('/whereweare', function(req, res){
 });
 
 app.get('/faq', function(req, res){
-  res.render('FAQPage', { user: req.session.user });
+  res.render('faqPage', { user: req.session.user });
 });
 
 app.get('/credits', function(req, res){
