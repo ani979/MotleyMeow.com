@@ -68,20 +68,52 @@ exports.post = function (req, res) {
                     console.log("found post " + db);
                     console.log("message db.post.postTitle: "+db.post.postTitle);
                     console.log("req.body.postTitle:::::::::: "+req.body.postTitle);  
+                    console.log("req.files " + JSON.stringify(req.files));
                     db.post.postTitle = req.body.postTitle;
                     db.post.postDetail = req.body.post;
-                    if(typeof db.post.imagePath != 'undefined' || typeof db.post.imagePath != "") {
-                        console.log("found an image " + db.post.imagePath);
-                        app.fsExtra.unlink('./views/uploads/'+db.post.imagePath, function (err) {
-                          if (err) { console.log("cannto delete as file not present"); return; }
-                          console.log('successfully deleted');
-                        });
-                    }
-                    if(typeof req.files == 'undefined' || typeof req.files.imagePost == 'undefined') {
-                        db.post.imagePath = "";
+                    // managing images. If image pat in DB is not defined
+                    console.log("req.body.postedImage value = " + req.body.postedImage);
+                    // if(req.body.postedImage == "true") {
+                    //     db.post.imagePath = req.files.imagePost.name;
+                    // } else {
+
+                    // }
+                    if(typeof db.post.imagePath != 'undefined' || db.post.imagePath != "") {
+                        // Check if request has some files. If it has check if both the files are same, if yes dont do anthing else delete file from tmp folder
+                        // if both the files are same, dont do anything. Set db image to imagePath
+                        // if req.files is undefined, dont do anything it means user has not selectedt any new image and has just posted as it is. 
+                        if(typeof req.files != 'undefined' && typeof req.files.imagePost != 'undefined') {
+                            if(db.post.imagePath != req.files.imagePost.name) {
+                                console.log("found an image " + db.post.imagePath);
+                                app.fsExtra.unlink('./views/uploads/'+db.post.imagePath, function (err) {
+                                    if (err) { console.log("cannto delete as file not present"); return; }
+                                        console.log('successfully deleted');
+                                });
+                            } else {
+                                console.log("No change in image " + db.post.imagePath);
+                            }
+                            db.post.imagePath = req.files.imagePost.name;
+                        }  else {
+                            // We are here when db has an image but req doesnt have. Then dont do anything
+                            // Dont do anything db.post.imagePath = "";
+                            if(req.body.postedImage == "removed") {
+                                db.post.imagePath = "";
+                                app.fsExtra.unlink('./views/uploads/'+db.post.imagePath, function (err) {
+                                    if (err) { console.log("cannto delete as file not present"); return; }
+                                        console.log('successfully deleted');
+                                });
+ 
+                            }
+                        }
+                       
                     } else {
-                        db.post.imagePath = req.files.imagePost.name;
-                    }   
+                        // We come here when image is not in DB. If req.files is undefined, the n set image path to empty else set it to whatever req.files has.
+                        if(typeof req.files == 'undefined' || typeof req.files.imagePost == 'undefined') {
+                            db.post.imagePath = "";
+                        } else {
+                            db.post.imagePath = req.files.imagePost.name;
+                        }   
+                    }
                     db.post.date = new Date();
                     db.post.city = cityarr;
                     db.post.role = rolearr;

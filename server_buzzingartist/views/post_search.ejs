@@ -28,7 +28,20 @@
  <% } else { %>
  <div id = "headerloggedout"></div>
 <%}%> 
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
 
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2+" - "+$5+":"+$6 + "hrs"
+                  }
+                ); 
+            return retDate;
+        }
+%>
 <div class = "main-container">
   <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
     <h3 class = "thtrexplore">
@@ -59,9 +72,12 @@
             <% var posts = postdb; 
             
               for (var i = 0; i < posts.length; i ++) { 
+
               %>
+              <% var isodateString = new Date(posts[i].post.date).toISOString();
+                                    var displayableDate = getDate(isodateString) %>
                 <tr>
-                  <td><%= new Date(posts[i].post.date) %></td>
+                  <td><%=displayableDate%></td>
                   <td><%= posts[i].post.role %></td>
                   <td><%= posts[i].post.postTitle %></td>
                   <td><%= posts[i].post.city %></td>

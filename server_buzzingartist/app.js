@@ -431,6 +431,11 @@ app.get('/error', function(req, res){
   res.render('error', { message: req.flash('info'),  user: req.session.user});
 });
 
+app.get('/header', function(req, res){
+  console.log(" FOR HEADER");
+  res.render('header', { user: req.session.user});
+});
+
 app.get('/aboutus', function(req, res){
   res.render('AboutUs', { user: req.session.user });
 });

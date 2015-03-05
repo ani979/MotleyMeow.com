@@ -114,3 +114,5 @@ server_buzzingartist/db.js
 server_buzzingartist/app.out
 *.jpg
 *.jpeg
+server_buzzingartist/views/images/COMM_CONTRACT_20150305_71410034.PDF.zip
+*.png

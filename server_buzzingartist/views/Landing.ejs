@@ -297,7 +297,16 @@ $(document).ready(function(){
   
     
 $("#footer").load("footer.ejs"); 
-$("#headerloggedin").load("header.ejs");
+$("#headerloggedin").load("/header");
+// $("#headerloggedin").ajax({
+//    type: "GET",
+//    url: "/header",
+//    success: function(msg){
+//      alert( "Loaded ");
+//    }
+//  }); 
+
+
 $("#headerloggedout").load("headerloggedout.ejs");
 
         $(document).ready(function() {

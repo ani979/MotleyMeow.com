@@ -56,7 +56,7 @@
  <% } else { %>
  <div id = "headerloggedout"></div>
 <%}%> 
-
+   
 <div class = "main-container">
 
 
@@ -87,12 +87,12 @@
             <div class="col-sm-8">
               <div >
                 <label style="text-align:left">
-                    <p class="form-control-static"><%=post.post.postDetail%></p>
+                    <p class="form-control-static" data-linkify="this" ><%=post.post.postDetail%></p>
                 </label>
               </div>
             </div>
          </label>
-     </div>     
+     </div> 
      <div class="form-group">
         <label class="col-sm-4 control-label">For the cities:</label>
             <div class="col-sm-8">
@@ -152,7 +152,7 @@
             <div class="col-sm-8">
               <% if(typeof post!= 'undefined' && typeof post.post != 'undefined' && post.post.imagePath != "") { %>
               <div>
-                  <a href="uploads/<%=post.post.imagePath%>" data-lightbox="IMAGE(Something is wrong)" data-title="Post's image"><img src="uploads/<%=post.post.imagePath%>" alt="No Image set" style="max-wdth:50px;max-height:50px"/></a>
+                  <a href="uploads/<%=post.post.imagePath%>" data-lightbox="IMAGE(Something is wrong)" data-title="Post's image"><img src="uploads/<%=post.post.imagePath%>" alt="No Image set" style="max-width:400px;max-height:400px"/></a>
               </div>
               <% } else { %>    
               <div>
@@ -201,6 +201,7 @@
    <script src="js/jquery.js"></script>
    <script src="js/lightbox.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/linkified-min.js"></script>
     <script type="text/javascript">
     $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("header.ejs");

@@ -215,14 +215,15 @@
       <div class="control-group col-md-12"  >
               <label class="control-label" for="checkboxes">Current post image</label><br>
 
-              <a href="uploads/<%=post.post.imagePath%>" data-lightbox="No Image set" data-title="Post's image"><img id="updatedImage" src="uploads/<%=post.post.imagePath%>" alt="No image set" style="max-width:150px;max-height:150px"/></a>
+              <a href="uploads/<%=post.post.imagePath%>" data-lightbox="No Image set" data-title="Post's image"><img id="updatedImage" src="uploads/<%=post.post.imagePath%>" alt="No image set" style="max-width:400px;max-height:400px"/></a>
 
              
-              <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" style="display:none"/>
+              <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" value = "<%=post.post.imagePath%>" style="display:none"/>
               <div style= "vertical-align:top;">
                 <a href = "" id="updateImage">Update this image</a>
                 <p><a href = "" id="deleteImage">Remove this image</a></p>
               </div>
+              <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged"> 
 
       </div> 
     <% } else  { %>
@@ -231,12 +232,12 @@
             <label class="control-label" for="checkboxes">Select an image</label><br>
               <span class="btn btn-default btn-file">
               <a href="" data-lightbox="No Image set" data-title="Post's image">
-              <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-wdth:150px;max-height:150px"/></a>
+              <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:400px;max-height:400px"/></a>
               <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost"/>
               
                 <a href = "" id="updateImage" style="display:none">Update this image</a>
                 <a href = "" id="deleteImage" style="display:none">Remove this image</a>
-              
+                <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
               </span>
       </div>    
     <% } %>    
@@ -434,6 +435,7 @@
           $("#updatedImage").parents("a").attr("href", "");
           $("#updatedImage").parents("a").hide();
           $("#imagePost").val("");
+          $("#postedImage").val("removed");
       });
 
       $('input[id=imagePost]').change(function(e){
@@ -464,6 +466,7 @@
               $("#updateImage").show();
               $("#deleteImage").show();
               $("#updatedImage").show();
+              $("#postedImage").val("changed");
            },
 
             error: function() {
