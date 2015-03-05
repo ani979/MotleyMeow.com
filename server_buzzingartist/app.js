@@ -9,10 +9,14 @@ var express       = require('express'),
     mongoose      = require('mongoose'),
     post_request  = require('./routes/post_request'),
     post_event  = require('./routes/post_event'),
-    artists  = require('./routes/artist');
+    artists  = require('./routes/artist'),
+    multer  = require('multer');
+
 var moment = require('moment');
 var argv = require('optimist').argv;
-
+var crypto = require('crypto');
+var fsExtra = require('fs')
+exports.fsExtra = fsExtra;
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -105,7 +109,8 @@ passport.use(new FacebookStrategy({
          clientID: config.facebook.clientID,
          clientSecret: config.facebook.clientSecret,
          callbackURL: config.facebook.callbackURL,
-         passReqToCallback: true
+         passReqToCallback: true,
+         enableProof: true
          
 },
     function(req,accessToken, refreshToken, profile, done) {
@@ -141,10 +146,12 @@ passport.use(new FacebookStrategy({
                         //      console.log("got the event", res);
                         //     });
                         console.log("found user");
+                        hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
+                        req.session.hashValue = hash;
                         if (!user.facebook.link) {
                             console.log("not found fb link");
                             FB.api(
-                                    '/me?access_token=' + accessToken,
+                                    '/me?access_token=' + accessToken + '&appsecret_proof=' + req.session.hashValue,
                                     function (response) {
                                         console.log("response "  + response);
                                       if (response && !response.error) {
@@ -169,11 +176,15 @@ passport.use(new FacebookStrategy({
                             );                      
                         }                        
                         req.session.fbAccessToken = accessToken;
+                        
+                        console.log("hash is " + hash);
                         return done(null, user); // user found, return that user
                     } else {
                         console.log("i am here");
                         // if there is no user found with that facebook id, create them
                         var newUser            = new User();
+                        hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
+                        req.session.hashValue = hash;
 
                         // set all of the facebook information in our user model
                         newUser.facebook.id    = profile.id; // set the users facebook id                   
@@ -181,9 +192,9 @@ passport.use(new FacebookStrategy({
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                         console.log("email id " + newUser.facebook.name);
                         newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-                        newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken;
+                        newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
                         FB.api(
-                                    '/me?access_token=' + accessToken,
+                                    '/me?access_token=' + accessToken + '&appsecret_proof=' + req.session.hashValue,
                                     function (response) {
                                         console.log("response "  + response);
                                       if (response && !response.error) {
@@ -245,6 +256,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+//app.use(multer({  dest: './views/tempUploads' }))
 //app.use(express.methodOverride());
 //app.use(express.session({ secret: 'my_precious' }));
 app.use(passport.initialize());
@@ -394,16 +406,16 @@ app.post('/search', function (req, res) {
 app.get( '/home',  ensureAuthenticated, home.landing_home);
 app.get( '/profile', home.profile);
 app.get('/logout', home.logout);
-
-app.post( '/post',  post_request.post);
+var mwMulter1 = multer({ dest: './views/uploads' });
+app.post( '/post',  mwMulter1, post_request.post);
 app.post( '/searchallposts',  post_request.searchallposts);
-app.post( '/editpost', ensureAuthenticated, post_request.editpost);
-app.post( '/viewpost', ensureAuthenticated, post_request.viewpost);
-app.post( '/deletepost', ensureAuthenticated, post_request.deletepost);
+app.post( '/editpost', ensureAuthenticated, mwMulter1,post_request.editpost);
+app.post( '/viewpost', ensureAuthenticated, mwMulter1,post_request.viewpost);
+app.post( '/deletepost', ensureAuthenticated, mwMulter1, post_request.deletepost);
 
 app.get( '/searchPosts', ensureAuthenticated, post_request.searchPosts);
 app.get( '/viewallposts', ensureAuthenticated, post_request.viewallposts);
-app.get( '/postarequest', ensureAuthenticated, post_request.postarequest);
+app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequest);
 
 
 app.get( '/artists', artists.artist);
@@ -442,6 +454,9 @@ app.get('/credits', function(req, res){
 app.get('/privacy', function(req, res){
   res.render('privacypolicy', { user: req.session.user });
 });
+
+var mwMulter2 = multer({ dest: './views/tempUploads' });
+app.post('/postPhotos', mwMulter2, post_request.postPhoto);
 
 function ensureAuthenticated(req, res, next) {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');

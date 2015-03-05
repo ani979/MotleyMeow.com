@@ -1,6 +1,6 @@
 var Posts = require('../models/posts.js');
 var User = require('../models/user.js');
-
+var app = require('../app.js');
 
 exports.post = function (req, res) {
     console.log("User is " + req.session.user.facebook.email)
@@ -44,6 +44,16 @@ exports.post = function (req, res) {
         langarr = lang;
        //x = false;
     }
+    // app.fsExtra.remove('./views/tempUploads', function(err) {
+    //           if (err) return console.error(err)
+              
+    //           console.log("successfully removed!")
+    // })
+
+    app.fsExtra.readdirSync('./views/tempUploads').forEach(function(fileName) {
+        console.log("Removing file " + fileName);
+        app.fsExtra.unlinkSync('./views/tempUploads/'+fileName);
+    });
     console.log("req.body._postid: "+req.body._postid);
     if(typeof req.body._postid != 'undefined') {
         console.log("posts already existed");
@@ -58,9 +68,20 @@ exports.post = function (req, res) {
                     console.log("found post " + db);
                     console.log("message db.post.postTitle: "+db.post.postTitle);
                     console.log("req.body.postTitle:::::::::: "+req.body.postTitle);  
-
                     db.post.postTitle = req.body.postTitle;
                     db.post.postDetail = req.body.post;
+                    if(typeof db.post.imagePath != 'undefined' || typeof db.post.imagePath != "") {
+                        console.log("found an image " + db.post.imagePath);
+                        app.fsExtra.unlink('./views/uploads/'+db.post.imagePath, function (err) {
+                          if (err) { console.log("cannto delete as file not present"); return; }
+                          console.log('successfully deleted');
+                        });
+                    }
+                    if(typeof req.files == 'undefined' || typeof req.files.imagePost == 'undefined') {
+                        db.post.imagePath = "";
+                    } else {
+                        db.post.imagePath = req.files.imagePost.name;
+                    }   
                     db.post.date = new Date();
                     db.post.city = cityarr;
                     db.post.role = rolearr;
@@ -91,6 +112,11 @@ exports.post = function (req, res) {
             newPost.post.city = cityarr;
             newPost.post.role = rolearr;
             newPost.post.lang = langarr;
+            if(typeof req.files == 'undefined' || typeof req.files.imagePost == 'undefined') {
+                newPost.post.imagePath = "";    
+            } else {
+                newPost.post.imagePath = req.files.imagePost.name;
+            }
             newPost.save(function(err) {
                        if (err) {
                             req.flash('info', "Error while saving the new Post in the database")
@@ -295,3 +321,9 @@ exports.deletepost = function (req, res) {
                 }  
             });
 };
+
+exports.postPhoto = function(req,res) {
+    console.log(JSON.stringify(req.files));
+    console.log("image name is " + req.files.image.name);
+    res.send({path: req.files.image.name});
+}

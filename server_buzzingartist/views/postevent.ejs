@@ -19,7 +19,9 @@
  <% } else { %>
  <div id = "headerloggedout">
   <%}%> 
-
+<% if (typeof infomessage != 'undefined' && infomessage != "") { %>
+  <h4 style="text-align:center"><strong> <%=infomessage%> </strong></h4>
+<%}%>
 <div class = "main-container">
 
 
@@ -61,6 +63,20 @@
         </label>
         
       </div>
+    </div>
+
+    <div class="control-group col-md-12">
+       <label class="control-label" for="city">In which city</label>
+       <div class="controls col-md-offset-5" style="width:20%;">
+
+          <select class="form-control" name="city">
+                    <option>Bengaluru</option>
+                    <option>Chennai</option>
+                    <option>Delhi</option>
+                    <option>Mumbai</option>
+                    <option>Kolkata</option>
+          </select> 
+        </div>
     </div>
 
       <div class="control-group">

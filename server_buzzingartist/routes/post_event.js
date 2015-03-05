@@ -12,20 +12,21 @@ exports.posteventDetails = function (req, res) {
             console.log("req.body.eventid " + req.body.eventId);
            
                 FB.api(
-                            '/' + req.body.eventId + '?access_token=' + req.session.fbAccessToken,
+                            '/' + req.body.eventId + '?access_token=' + req.session.fbAccessToken + '&appsecret_proof=' + req.session.hashValue,
                             function (response) {
                                 if (response) {
 
                                     Event.findOne({ 'event.eventId' : req.body.eventId }, function(err, event) {
                                             if (err) {
-                                                return done(err);
                                                 console.log("Error in retrieving" + err);
-                                             }   
+                                                return done(err);
+                                            }   
                                             // if the user is found, then log them in
                                             if (event) {
                                              console.log("sorry that Event is already registered");
+//                                             res.render('postevent', {user: req.session.user, infomessage: "Sorry, something went wrong, This event is already in our DB. Please call inform us if its a mistake from our side. Thanks."});
                                             } else {
-
+                                              console.log("req.body.city is " + req.body.city);
                                             
                                                 var newEvent            = new Event();
                                                 
@@ -33,8 +34,9 @@ exports.posteventDetails = function (req, res) {
                                                 newEvent.event.userid    = req.session.user._id; 
                                                 newEvent.event.eventId    = req.body.eventId;
                                                 newEvent.event.date    = response.start_time;
-                                                newEvent.event.city = response.venue.city; 
+                                                newEvent.event.city = req.body.city; 
                                                 newEvent.event.eventCategory = req.body.category; 
+                                                console.log(" response.name;  " + response.name);
                                                 newEvent.event.title = response.name; 
                                                 newEvent.event.link = "https://www.facebook.com/events/" + req.body.eventId; 
 

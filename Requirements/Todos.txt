@@ -16,6 +16,7 @@ TodoS:
 13) event end date to be added
 14) Add an event view in the landing page.
 15) need to change images
+16) Add picture in the right most corner.
 
 
 
@@ -45,5 +46,5 @@ http://www.sitepoint.com/use-jquerys-ajax-function/
 http://www.hacksparrow.com/mobile-web-development-in-express-js-node-js.html
 https://www.flickr.com/photos/hayderhoozeer/7523536168/in/photostream/
 http://stackoverflow.com/questions/7716883/use-facebook-app-authentication-to-automatically-login-to-mobile-website
-
+http://markdawson.tumblr.com/post/18359176420/asynchronous-file-uploading-using-express-and
 http://104.154.49.31:8080/

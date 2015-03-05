@@ -9,6 +9,8 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">       
         <link href="css/tab.css" rel="stylesheet">
+        <link href="css/lightbox.css" rel="stylesheet" />
+        
   </head>
   <script type="text/javascript">
  
@@ -53,7 +55,7 @@
 
 
   <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
-    <form class="form-horizontal" action="/post" method="post">
+    <form class="form-horizontal" enctype="multipart/form-data" action="/post" method="post">
     
 
     <!-- Form Name -->
@@ -207,10 +209,37 @@
         </label>
       </div>
     </div>
-
-
+    
     <!-- Button -->
+    <% if(typeof post!= 'undefined' && typeof post.post != 'undefined' && post.post.imagePath != "") { %>
+      <div class="control-group col-md-12"  >
+              <label class="control-label" for="checkboxes">Current post image</label><br>
 
+              <a href="uploads/<%=post.post.imagePath%>" data-lightbox="No Image set" data-title="Post's image"><img id="updatedImage" src="uploads/<%=post.post.imagePath%>" alt="No image set" style="max-width:150px;max-height:150px"/></a>
+
+             
+              <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" style="display:none"/>
+              <div style= "vertical-align:top;">
+                <a href = "" id="updateImage">Update this image</a>
+                <p><a href = "" id="deleteImage">Remove this image</a></p>
+              </div>
+
+      </div> 
+    <% } else  { %>
+
+      <div class="control-group col-md-12">
+            <label class="control-label" for="checkboxes">Select an image</label><br>
+              <span class="btn btn-default btn-file">
+              <a href="" data-lightbox="No Image set" data-title="Post's image">
+              <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-wdth:150px;max-height:150px"/></a>
+              <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost"/>
+              
+                <a href = "" id="updateImage" style="display:none">Update this image</a>
+                <a href = "" id="deleteImage" style="display:none">Remove this image</a>
+              
+              </span>
+      </div>    
+    <% } %>    
                            
     <div class="control-group">
       <label class="control-label" for="submitbutton">Submit your request</label>
@@ -222,7 +251,14 @@
      
     </fieldset>
     </form>
-
+<!--     <form id="uploadForm"
+        enctype="multipart/form-data"
+        action="/postPhotos"
+        method="post"> 
+  -->      
+<!--       </form>  
+      <span id="status" />
+      <img id="uploadedImage" /> -->
     <a href="/searchPosts">
       <input type="button" value="Back" />
     </a>
@@ -244,9 +280,11 @@
    <div id = "footer"></div>
     
    <!-- footer ends-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
+    <script src="js/lightbox.min.js"></script>
     <script type="text/javascript">
     $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("header.ejs");
@@ -382,6 +420,109 @@
      <%}%>     
 
     });
+
+
+    $(function(){
+      $("#updateImage").on('click', function(e){
+          e.preventDefault();
+          $("#imagePost").trigger('click');
+      });
+
+      $("#deleteImage").on('click', function(e){
+          e.preventDefault();
+          $("#updatedImage").attr("src","");
+          $("#updatedImage").parents("a").attr("href", "");
+          $("#updatedImage").parents("a").hide();
+          $("#imagePost").val("");
+      });
+
+      $('input[id=imagePost]').change(function(e){
+          var data = new FormData();
+          data.append('image', $('input[id=imagePost]')[0].files[0]); 
+          // alert("Data is " + data);
+          $.ajax({
+            url: "/postPhotos",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: data,
+            complete: function() {
+              console.log('process complete');
+            },
+
+            success: function(data) {
+               if(data.error) {
+                console.log('Opps, something bad happened');
+                return;
+                }
+              console.log("here success");  
+              console.log("Data.path is" + data.path);
+              
+              $("#updatedImage").attr("src","tempUploads/"+data.path);
+              $("#updatedImage").parents("a").attr("href", "tempUploads/"+data.path)
+              $("#updatedImage").siblings("a").show();
+              $("#updateImage").show();
+              $("#deleteImage").show();
+              $("#updatedImage").show();
+           },
+
+            error: function() {
+              console.log('process error');
+            },
+          });
+      });
+    });
+
+
+    // $(document).ready(function() {
+     
+    //   status('Choose a file :)');
+    //   alert("coming here");
+       
+    //   // Check to see when a user has selected a file
+    //   var timerId;
+    //   timerId = setInterval(function() {
+    //      if($('#imagePost').val() != "") {
+    //       alert("image value " + $('#imagePost').val());
+    //       clearInterval(timerId);
+    //       alert("after clearing the interval"); 
+    //       $('#uploadForm').submit();
+    //       alert("form submitted");
+    //     }
+    //   }, 5000);
+       
+    //   $('#uploadForm').submit(function() {
+    //     alert("submitting here");
+    //     status('uploading the file ...');
+         
+    //     $(this).ajaxSubmit({
+         
+    //       error: function(xhr) {
+    //         status('Error: ' + xhr.status);
+    //       },
+         
+    //       success: function(response) {
+    //        if(response.error) {
+    //           status('Opps, something bad happened');
+    //           return;
+    //           }
+               
+    //           var imageUrlOnServer = response.path;
+               
+    //           status('Success, file uploaded to:' + imageUrlOnServer);
+    //           $('<img/>').attr('src', imageUrlOnServer).appendTo($('body'));
+    //         } 
+    //     });
+       
+    //     // Have to stop the form from submitting and causing
+    //     // a page refresh - don't forget this
+    //     return false;
+    //   });
+       
+    //   function status(message) {
+    //   $('#status').text(message);
+    //   }
+    // }); 
     </script>
   </body>
 </html>
