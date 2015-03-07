@@ -78,7 +78,7 @@ exports.getEmails = function (req, res) {
     User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
                                               {"local.role": { $in: selectedRoles } },
                                               {"local.lang": { $in: selectedLang } },
-                                              {"local.emailDisplay": true} ] } ,
+                                              {"local.emailDisplay": { $in: ["true", null] } } ] } ,
                             function(err, emails) {
         //console.log("all users " + users);
         

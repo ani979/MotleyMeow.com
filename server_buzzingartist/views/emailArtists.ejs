@@ -56,7 +56,7 @@
      
        <div class="row">    
           <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement > Select City</button>
+              <button type ="button" class="btn btn-primary" data-label-placement id="citySel"> </button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru" ><label for="Bengaluru">Bengaluru</label></li>
@@ -69,7 +69,7 @@
               </ul>
            </div>
            <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement >Select Artists</button>
+              <button type ="button" class="btn btn-primary" data-label-placement id = "artistSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" ><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" ><label for="Actor">Actor</label></li>
@@ -84,7 +84,7 @@
               </ul>
            </div>
            <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement  id="SelectAllLang">Language comfortability</button>
+              <button type ="button" class="btn btn-primary" data-label-placement  id = "languageSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" ><label for="Hindi">Hindi</label></li>
@@ -126,47 +126,74 @@
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
     var filterTable;
-    $(document).ready(function(){
-
-      
-    });
-
+    var selectCity = "Select City";
+    var selectRole = "Select Artists";
+    var selectLang = "Language comfortability";
 
     function getEmail() {
-
+        var roles, lang;
        
+        var selectedCitiesValue, selectedLangValue, selectedRoleValue;
         // //build a regex filter string with an or(,) condition
         var cities = $('input:checkbox[name="city"]:checked').map(function() {
            return this.value;
          }).get().join(',');
-        
+        selectedCitiesValue = cities;
+
+        if(cities == "") {
+          cities = $('input:checkbox[name="city"]').map(function() {
+           return this.value;
+         }).get().join(',');
+          cities = cities + ",null";
+          selectedCitiesValue = "All Cities"
+        }
+        //alert("cities " + cities);
        
 
         // //build a regex filter string with an or(,) condition
         if($('#AllRoles').prop('checked')) {
-          var roles = $('input:checkbox[name="role"]').map(function() {
+          roles = $('input:checkbox[name="role"]').map(function() {
             return this.value;
           }).get().join(',');
         } else {
-          var roles = $('input:checkbox[name="role"]:checked').map(function() {
+          roles = $('input:checkbox[name="role"]:checked').map(function() {
           return this.value;
           }).get().join(',');
         }
+        selectedRoleValue = roles;
+
+        if(roles == "") {
+          roles = $('input:checkbox[name="role"]').map(function() {
+            return this.value;
+          }).get().join(',');
+          roles = roles + ",null";
+          selectedRoleValue = "All roles selected"
+        }
         
+        //alert(" roles " + roles);
       
         
 
         // //build a regex filter string with an or(,) condition
         if($('#AllLanguages').prop('checked')) {
-          var lang = $('input:checkbox[name="lang"]').map(function() {
+          lang = $('input:checkbox[name="lang"]').map(function() {
             return this.value;
           }).get().join(',');
         } else {
-          var lang = $('input:checkbox[name="lang"]:checked').map(function() {
+          lang = $('input:checkbox[name="lang"]:checked').map(function() {
             return this.value;
           }).get().join(',');
         }  
+        selectedLangValue = lang;
 
+        if(lang == "") {
+          lang = $('input:checkbox[name="lang"]').map(function() {
+            return this.value;
+          }).get().join(',');
+          lang = lang + ",null";
+          selectedLangValue = "All Languages";
+        }
+        //alert("lang " + lang);
 
         $.ajax({
             url: "/getEmails",
@@ -175,14 +202,16 @@
             success: function (data) {
                 console.log("retrieved email ids " + data.selectedEmails);
                 if(data.selectedEmails.length == 0 ) {
-                  $("#emailDisplayField").val("City selected :" + cities + "\n" + 
-                                               "Roles selected :" + roles + "\n" +
-                                               "Languages selected :" + lang + "\n" +
+                  $("#emailDisplayField").val("City selected :" + selectedCitiesValue + "\n" + 
+                                               "Roles selected :" + selectedRoleValue + "\n" +
+                                               "Languages selected :" + selectedLangValue + "\n" +
+                                               "Email privacy value : true " + "\n" +
                                                "No Data retrieved. Check your query again. If its happening repeatedly, do inform us.");
                 } else {
-                  $("#emailDisplayField").val("City selected :" + cities + "\n" + 
-                                               "Roles selected :" + roles + "\n" +
-                                               "Languages selected :" + lang + "\n" +
+                  $("#emailDisplayField").val("City selected :" + selectedCitiesValue + "\n" + 
+                                               "Roles selected :" + selectedRoleValue + "\n" +
+                                               "Languages selected :" + selectedLangValue + "\n" +
+                                               "Email privacy value : true " + "\n" +
                                                "Email ids based on above query : " + data.selectedEmails);
                 }
             },
@@ -196,14 +225,19 @@
 
     function uncheckAll(){
       $('input[type="checkbox"]:checked').prop('checked',false);
-      filterme();
+      $('button[id="citySel"]').html(selectCity);
+      $('button[id="artistSel"]').html(selectRole);
+      $('button[id="languageSel"]').html(selectLang);
+      
     }
 
     
      
     
    $(document).ready(function(){
-
+      $('button[id="citySel"]').html(selectCity);
+      $('button[id="artistSel"]').html(selectRole);
+      $('button[id="languageSel"]').html(selectLang);
 
     });
     </script>
