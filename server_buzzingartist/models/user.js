@@ -11,7 +11,8 @@ var userSchema = mongoose.Schema({
         city         : String,
         role         :[{}],
         lang         :[{}],
-        emailDisplay : Boolean
+        emailDisplay : {type:Boolean, default:true},
+        privelege         : {type:String, default:"somebody"}
     },
     facebook         : {
         id           : String,

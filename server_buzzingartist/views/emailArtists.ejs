@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/dropdowns-enhancement.js"></script>
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+
+       
+    </head>
+
+  
+
+<body>
+     
+
+ <% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout"></div>
+  <%}%> 
+  <% console.log("user.local.privelege " + user.local.privelege) %>
+
+<div class = "main-container">
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <h3 class = "thtrexplore">
+      EXPLORE. CONNECT. CONTRIBUTE.
+     </h3>
+  </div>
+  <% if (typeof user.local.privelege == 'undefined' || user.local.privelege == "somebody") { %>
+  <h2 class="black-heading" style="text-align:center">Contact Artists</h2>
+  <h4 style="text-align:center">Contacting artists requires authorization from us</h4>
+  <div class = "artistsCheck">
+    <div class = "authmessage">
+      <p style="text-align:center"><strong> You can browse artists but to contact you need to have <strong><b><u>an authorization from us</u></b></strong></p>
+      <p style="text-align:center"> Call us on any of the phone numbers given below, get yourself verified as someone really looking for a theatre production or something similar. </p>
+      <p style="text-align:center">Once our team verifies, we grant you the role to access this feature. Come back to the same page and you can query artists on their emails and contact them.</p> 
+      <p style = "text-align:center">If an artist has not shared their email, you wont be able to retrieve that. </p>
+    </div>  
+  </div>  
+  <%} else { %>
+  <div class="col-md-12 no-margin no-padding" style = "text-align: center;" id = "searchartists">
+    <h3>
+      CONTACT ARTISTS
+     </h3>
+     
+       <div class="row">    
+          <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement > Select City</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru" ><label for="Bengaluru">Bengaluru</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai" ><label for="Chennai">Chennai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi" ><label for="Delhi">Delhi</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" ><label for="Mumbai">Mumbai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Kolkata" name="city" value="Kolkata" ><label for="Kolkata">Kolkata</label></li>
+                  
+                  <input type="hidden" name="selectedcity" id="selected" value="">
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement >Select Artists</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" ><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" ><label for="Actor">Actor</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Director" name="role" value="Director" ><label for="Director">Director</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Lights" name="role" value="Lights" ><label for="Lights">Lights Designer</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Sound" name="role" value="Sound" ><label for="Sound">Sound</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Music" name="role" value="Music" ><label for="Music">Music</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Scriptwriter" name="role" value="Scriptwriter" ><label for="Scriptwriter">Scriptwriter/Translator</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="CostumeDesign" name="role" value="Costume" ><label for="Costume">Costume Designer</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="SetDesign" name="role" value="SetDesign" ><label for="SetDesign">Set Design</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="AllRoles" name="allRole" value="AllRoles"><label for="AllRoles">Any role</label></li>
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement  id="SelectAllLang">Language comfortability</button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" ><label for="Hindi">Hindi</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Kannada" name="lang" value="Kannada"><label for="Kannada">Kannada</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Marathi" name="lang" value="Marathi"><label for="Marathi">Marathi</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Bengali" name="lang" value="Bengali"><label for="Bengali">Bengali</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Tamil" name="lang" value="Tamil"><label for="Tamil">Tamil</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"><label for="English">English</label></li>
+                 <li><input class = "langcheck" type="checkbox" id="AllLanguages" name="allLang" value="AllLanguages"><label for="AllLanguages">Doesn't matter</label></li>
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement onclick = "uncheckAll()">CLEAR ALL</button>
+           </div>
+
+            <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement onclick = "getEmail()">GET EMAIL IDs</button>
+           </div>
+           
+      </div>
+      <br>
+      <label class="control-label" for="textarea">Email ids based on your query</label>
+        
+          <div class="controls">                
+        
+            <textarea id="emailDisplayField" name="emailDisplayField" style="width:60%;min-height:300px;" readonly rows=6></textarea>
+        
+          
+          </div>
+  </div>    
+<% } %>
+</div>  
+
+
+<div id = "footer"></div>
+
+<script type="text/javascript">
+     $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
+    var filterTable;
+    $(document).ready(function(){
+
+      
+    });
+
+
+    function getEmail() {
+
+       
+        // //build a regex filter string with an or(,) condition
+        var cities = $('input:checkbox[name="city"]:checked').map(function() {
+           return this.value;
+         }).get().join(',');
+        
+       
+
+        // //build a regex filter string with an or(,) condition
+        if($('#AllRoles').prop('checked')) {
+          var roles = $('input:checkbox[name="role"]').map(function() {
+            return this.value;
+          }).get().join(',');
+        } else {
+          var roles = $('input:checkbox[name="role"]:checked').map(function() {
+          return this.value;
+          }).get().join(',');
+        }
+        
+      
+        
+
+        // //build a regex filter string with an or(,) condition
+        if($('#AllLanguages').prop('checked')) {
+          var lang = $('input:checkbox[name="lang"]').map(function() {
+            return this.value;
+          }).get().join(',');
+        } else {
+          var lang = $('input:checkbox[name="lang"]:checked').map(function() {
+            return this.value;
+          }).get().join(',');
+        }  
+
+
+        $.ajax({
+            url: "/getEmails",
+            type: "POST",
+            data: { cities: cities, roles: roles, lang:lang },
+            success: function (data) {
+                console.log("retrieved email ids " + data.selectedEmails);
+                if(data.selectedEmails.length == 0 ) {
+                  $("#emailDisplayField").val("City selected :" + cities + "\n" + 
+                                               "Roles selected :" + roles + "\n" +
+                                               "Languages selected :" + lang + "\n" +
+                                               "No Data retrieved. Check your query again. If its happening repeatedly, do inform us.");
+                } else {
+                  $("#emailDisplayField").val("City selected :" + cities + "\n" + 
+                                               "Roles selected :" + roles + "\n" +
+                                               "Languages selected :" + lang + "\n" +
+                                               "Email ids based on above query : " + data.selectedEmails);
+                }
+            },
+            error: function (data) {
+                console.log("some error " + data);
+            }
+            
+        });
+       
+    }
+
+    function uncheckAll(){
+      $('input[type="checkbox"]:checked').prop('checked',false);
+      filterme();
+    }
+
+    
+     
+    
+   $(document).ready(function(){
+
+
+    });
+    </script>
+  </body>
+</html>

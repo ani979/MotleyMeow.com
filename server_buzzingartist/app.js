@@ -420,6 +420,8 @@ app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequ
 
 app.get( '/artists', artists.artist);
 app.post( '/update', artists.update);
+app.get( '/contactArtists', artists.contactArtists);
+app.post( '/getEmails', artists.getEmails);
 
 app.get( '/postevents',ensureAuthenticated, post_event.postevents);
 app.get( '/allEvents', ensureAuthenticated, post_event.allEvents);

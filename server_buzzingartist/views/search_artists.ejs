@@ -83,7 +83,9 @@
            <div class="btn-group">
               <button type ="button" class="btn btn-primary" data-label-placement onclick = "uncheckAll()">CLEAR ALL</button>
            </div>
-           
+           <div class="btn-group">
+           <a class="btn btn-success" href="/contactArtists" role="button">Contact artists</a>
+           </div>
       </div>
     
     <div class="row col-md-8 col-md-offset-2">
@@ -101,7 +103,7 @@
                       <th class ="arrole">Contribution in theatre</th>
                       <th class ="arlang">Comfortable in Language</th>
                       <th class ="arcity">City</th>
-                      <th class ="aremail">Email id</th>
+                      <!-- <th class ="aremail">Email id</th> -->
                       <th class ="arlink">FB profile link</th>
                    </thead>
                    <tbody class="searchable">
@@ -112,11 +114,7 @@
                           <td><%= user.local.role %></td>
                           <td><%= user.local.lang %></td>
                           <td><%= user.local.city %></td>
-                          <% if(user.local.emailDisplay) { %>
-                            <td><%= user.facebook.email %></td>
-                          <% } else { %>
-                            <td>Not shared</td>
-                          <% } %>
+
                          <% if(user.facebook.link) { %>
                             <td><a href = "<%= user.facebook.link %>" target="_blank"><i class = "fa fa-facebook-square" ></i></a></td>
                           <% } else { %>
@@ -130,6 +128,7 @@
               </table>
         </div>
     </div>
+    
   </div>
  </div>
   

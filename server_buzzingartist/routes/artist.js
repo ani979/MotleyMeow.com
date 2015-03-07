@@ -2,7 +2,6 @@ var User = require('../models/user.js');
 
 exports.artist = function (req, res) {
 	 var allUsers;
-            console.log("req.user " + req.user);
             User.find( function ( err, users, count ){
                 //console.log("all users " + users);
                 allUsers = users
@@ -64,4 +63,34 @@ exports.update = function (req, res) {
             }   
         }
     });
+};
+
+exports.getEmails = function (req, res) {
+    var allUsers;
+
+    console.log("coming here cities " + req.body.cities);
+     console.log("coming here lang " + req.body.roles);
+      console.log("coming here roles " + req.body.lang);
+    var selectedCity = req.body.cities.split(",");
+    var selectedRoles = req.body.roles.split(",");
+    var selectedLang = req.body.lang.split(",");
+
+    User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
+                                              {"local.role": { $in: selectedRoles } },
+                                              {"local.lang": { $in: selectedLang } },
+                                              {"local.emailDisplay": true} ] } ,
+                            function(err, emails) {
+        //console.log("all users " + users);
+        
+                
+        res.send({selectedEmails: emails});
+
+    });
+   
+
+
+};
+
+exports.contactArtists = function (req, res) {
+    res.render('emailArtists', { user: req.session.user});
 };

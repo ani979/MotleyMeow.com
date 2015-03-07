@@ -261,3 +261,10 @@ html, body {
 imageUpdateField {
   display: none;
 }
+
+.artistsCheck .authmessage {
+    background: none repeat scroll 0% 0% #F6F6F6;
+    border: 1px solid #EEE;
+    padding: 40px;
+    margin-top: 30px;
+    min-height: 280px;
