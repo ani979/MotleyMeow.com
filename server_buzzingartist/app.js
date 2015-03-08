@@ -422,6 +422,7 @@ app.get( '/artists', artists.artist);
 app.post( '/update', artists.update);
 app.get( '/contactArtists', artists.contactArtists);
 app.post( '/getEmails', artists.getEmails);
+app.post( '/getCity', artists.updateCityAndRoles);
 
 app.get( '/postevents',ensureAuthenticated, post_event.postevents);
 app.get( '/allEvents', ensureAuthenticated, post_event.allEvents);

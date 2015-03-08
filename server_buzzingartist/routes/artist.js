@@ -94,3 +94,38 @@ exports.getEmails = function (req, res) {
 exports.contactArtists = function (req, res) {
     res.render('emailArtists', { user: req.session.user});
 };
+
+exports.updateCityAndRoles = function (req, res) {
+            console.log("req.user " + req.user);
+            var email = req.user.facebook.email;
+            console.log("emaillllllll: "+email);
+            User.findOne({ 'facebook.email' : email }, function(error, db) {
+        console.log("coming 1");
+        if (error || !db) {
+            console.log("ERRPRRR");
+          req.flash('info', "Error while finding facebook email in the database")
+          res.redirect('/error');          
+        } else {
+            console.log("city is going to be updated");
+               console.log("city selected " + req.body.city);
+               console.log("role selected " + req.body.role);
+               db.local.city = req.body.city;
+               db.local.role = req.body.role;
+
+               db.save(function (err, user) {
+                   if (err) {
+                        console.log("ERRRORRRR");
+                        // res.json(err) ;
+                        req.flash('info', "Error while saving the new email in the database")
+                        res.redirect('/error');
+                        return done(err);
+                    }
+
+                   req.session.user = user;
+                   req.session.loggedIn = true;
+                   // res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful"});
+                   res.send();
+               });
+        }
+    });
+};

@@ -11,9 +11,12 @@
         <script src="js/utils.js"></script>
         <script src="js/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-dialog.js"></script>
         <link href="css/style.css" rel="stylesheet">       
         <link href="css/tab.css" rel="stylesheet">
         <link href="indexPage/css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/bootstrap-dialog.css" rel="stylesheet">
+        <link href="css/bootstrap.css" rel="stylesheet">
   </head>
   
   <body>
@@ -280,6 +283,55 @@
 </div>
 </div>
 
+<div class="form-group" id="myCity">
+  <label class="col-sm-3 control-label" for="city">Location</label>
+    <div class="col-sm-9"><select class="form-control" id="myCityForm" value="<%= user.local.city %>" name="city"><option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option></select>
+    </div>
+  <div id="myRole" class="form-group" style = "margin-left:1px; margin-right=1px; ">
+    <label class="control-label">Your association or interests in theatre:</label> 
+                                  <br>
+                              <div class = "col-sm-6">
+                                <label class="checkbox-inline col-sm-3">
+                                      <input type="checkbox" id="checkboxinlineActing" name="role" value="Actor" > Acting
+                                </label>
+                             </div>  
+                              <div class = "col-sm-6">
+                                <label class="checkbox-inline">
+                                      <input type="checkbox" id="checkboxinlineDirecting" name="role" value="Director" > Direction
+                                </label>
+                              </div> 
+                              <div class = "col-sm-6">
+                                <label class="checkbox-inline">
+                                      <input type="checkbox" id="checkboxinlineSound" name="role" value="Sound" > Sound
+                                </label>
+                               </div> 
+                              <div class = "col-sm-6">
+                                <label class="checkbox-inline">
+                                      <input type="checkbox" id="checkboxinlineLights" name="role" value="Lights" > Lights Design
+                                </label>
+                               </div> 
+                              <div class = "col-sm-6">
+                                <label class="checkbox-inline">
+                                      <input type="checkbox" id="checkboxinlineMusic" name="role" value="Music" > Music
+                                </label>
+                               </div> 
+                              <div class = "col-sm-6">
+                                <label class="checkbox-inline">
+                                      <input type="checkbox" id="checkboxinlineScriptwriting" name="role" value="Scriptwriter" > Scriptwriting
+                                </label>
+                              </div> 
+                             <div class = "col-sm-6">
+                                <label class="checkbox-inline">
+                                      <input type="checkbox" id="checkboxinlineCostume" name="role" value="Costume" > Costume Designing
+                                </label>
+                               </div> 
+                              <div class = "col-sm-6">
+                                <label class="checkbox-inline">
+                                      <input type="checkbox" id="checkboxinlineSetDesign" name="role"  value="SetDesign" > Set Designing
+                                </label>
+                              </div> 
+                          </div>
+                  </div>
 
          
 
@@ -287,9 +339,59 @@
    <div id = "footer"></div>
    <!-- footer ends-->
 
-    <script type="text/javascript">
+<% var city = user.local.city;
+     console.log("cityyyyyyyy: "+city);
+     if(city === 'None') { %>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            var dialog = new BootstrapDialog({
+            message: function(dialogRef){
+                var $message = $('<div>Please update the profile with city and role: </div>');
+                var $button = $('<button class="btn btn-primary btn-lg btn-block">Submit</button>');
+                
+                
+                $button.on('click', {dialogRef: dialogRef}, function(event){
+                  var roles = $('input:checkbox[name="role"]:checked').map(function() {
+                              return this.value;
+                                }).get().join(',');
+                  console.log("rolesssssssssssssss: "+roles);
+                  var citiesss = $('select[name="city"]');
+                  console.log("citiesssssssss: "+citiesss[0].value);
+                  event.data.dialogRef.close();
+                     $.ajax({
+            url: "/getCity",
+            type: "POST",
+            data: {role: roles,city: citiesss[0].value},
+            // data: {$("#myCityForm").serialize(), role: roles},
+            success: function (data) {
+                console.log("City and role saved ");
+            },
+            error: function (data) {
+                console.log("some error " + data);
+            }
+            
+        });
+                });
+                // $message.append($selectedCity).append($button);
+                $message.append($('#myCity')).append($button);
+        
+                return $message;
+            },
+            closable: false
+        });
+        dialog.realize();
+        dialog.getModalHeader().hide();
+        dialog.getModalFooter().hide();
+        dialog.getModalBody().css('background-color', '#0088cc');
+        dialog.getModalBody().css('color', '#fff');
+        dialog.open();
+});
+          
+        </script>      
+     <% } %>
 
 
+<script type="text/javascript">
 $(document).ready(function(){
 
      // $('#mytable').dataTable();
