@@ -96,14 +96,14 @@
         <div class="table-responsive">
 
                 
-              <table id="mytable" class="table table-bordered table-striped">
+              <table id="mytable">
                    
                    <thead>
-                      <th class ="arname">Name</th>
-                      <th class ="arrole">Contribution in theatre</th>
-                      <th class ="arlang">Comfortable in Language</th>
-                      <th class ="arcity">City</th>
-                      <!-- <th class ="aremail">Email id</th> -->
+                      <th class ="arname" style="text-align:center">Name</th>
+                      <th class ="arrole" style="text-align:center">Contribution in theatre</th>
+                      <th class ="arlang" style="text-align:center">Comfortable in Language</th>
+                      <th class ="arcity" style="text-align:center">City</th>
+                      <!--<th class ="aremail">profile pic</th>-->
                       <th class ="arlink">FB profile link</th>
                    </thead>
                    <tbody class="searchable">
@@ -113,10 +113,13 @@
                           <td><%= user.facebook.name %></td>
                           <td><%= user.local.role %></td>
                           <td><%= user.local.lang %></td>
-                          <td><%= user.local.city %></td>
-
+                          <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
+                            <td>Not Set</td>
+                          <% } else { %>  
+                            <td><%= user.local.city %></td>
+                          <% } %>  
                          <% if(user.facebook.link) { %>
-                            <td><a href = "<%= user.facebook.link %>" target="_blank"><i class = "fa fa-facebook-square" ></i></a></td>
+                            <td><a href = "<%= user.facebook.link %>" target="_blank"><img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:100px;"></a></td>
                           <% } else { %>
                             <td>Not set</td>
                           <% } %>

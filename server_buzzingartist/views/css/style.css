@@ -262,9 +262,21 @@ imageUpdateField {
   display: none;
 }
 
+.artistsCheck {
+  width:1170px;
+  text-align: center;
+  margin-left:auto;
+  margin-right:auto;
+
+}
+
 .artistsCheck .authmessage {
     background: none repeat scroll 0% 0% #F6F6F6;
     border: 1px solid #EEE;
     padding: 40px;
     margin-top: 30px;
     min-height: 280px;
+    font-style: normal;
+    font-family: sans-serif;
+    font-size: 20px;
+}    
