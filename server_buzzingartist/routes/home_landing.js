@@ -101,7 +101,7 @@ exports.landing_home = function(req, res) {
             selectedCity.push("Calcutta", "Kolkata");
         } else if(foundUser.local.city == "Mumbai" || foundUser.local.city == "Bombay") {
             selectedCity.push("Mumbai", "Bombay");
-        } else {
+        } else if (foundUser.local.city != "None") {
             selectedCity.push(foundUser.local.city);
         }
     }

@@ -283,55 +283,7 @@
 </div>
 </div>
 
-<div class="form-group" id="myCity">
-  <label class="col-sm-3 control-label" for="city">Location</label>
-    <div class="col-sm-9"><select class="form-control" id="myCityForm" value="<%= user.local.city %>" name="city"><option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option></select>
-    </div>
-  <div id="myRole" class="form-group" style = "margin-left:1px; margin-right=1px; ">
-    <label class="control-label">Your association or interests in theatre:</label> 
-                                  <br>
-                              <div class = "col-sm-6">
-                                <label class="checkbox-inline col-sm-3">
-                                      <input type="checkbox" id="checkboxinlineActing" name="role" value="Actor" > Acting
-                                </label>
-                             </div>  
-                              <div class = "col-sm-6">
-                                <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineDirecting" name="role" value="Director" > Direction
-                                </label>
-                              </div> 
-                              <div class = "col-sm-6">
-                                <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineSound" name="role" value="Sound" > Sound
-                                </label>
-                               </div> 
-                              <div class = "col-sm-6">
-                                <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineLights" name="role" value="Lights" > Lights Design
-                                </label>
-                               </div> 
-                              <div class = "col-sm-6">
-                                <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineMusic" name="role" value="Music" > Music
-                                </label>
-                               </div> 
-                              <div class = "col-sm-6">
-                                <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineScriptwriting" name="role" value="Scriptwriter" > Scriptwriting
-                                </label>
-                              </div> 
-                             <div class = "col-sm-6">
-                                <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineCostume" name="role" value="Costume" > Costume Designing
-                                </label>
-                               </div> 
-                              <div class = "col-sm-6">
-                                <label class="checkbox-inline">
-                                      <input type="checkbox" id="checkboxinlineSetDesign" name="role"  value="SetDesign" > Set Designing
-                                </label>
-                              </div> 
-                          </div>
-                  </div>
+
 
          
 
@@ -339,56 +291,138 @@
    <div id = "footer"></div>
    <!-- footer ends-->
 
-<% var city = user.local.city;
+  <% var city = user.local.city;
      console.log("cityyyyyyyy: "+city);
-     if(city === 'None') { %>
+     if(city == 'None') { %>
+        <div class="form-group panel-body" id="myCity" style="margin:0px;padding:0px;">
+            <label class="col-sm-3 control-label" for="city" style="padding:0px;">Location</label>
+            <div class="col-sm-9"><select class="form-control" id="myCityForm" value="<%= user.local.city %>" name="city"><option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>
+            </div>
+            <div id="myRole" class="form-group">
+              <label class="control-label">Your association or interests in theatre:</label> 
+              <br>
+                <div class = "col-sm-6">
+                  <label class="checkbox-inline col-sm-3">
+                        <input type="checkbox" id="checkboxinlineActing" name="role" value="Actor" > Acting
+                  </label>
+               </div>  
+                <div class = "col-sm-6">
+                  <label class="checkbox-inline">
+                        <input type="checkbox" id="checkboxinlineDirecting" name="role" value="Director" > Direction
+                  </label>
+                </div> 
+                <div class = "col-sm-6">
+                  <label class="checkbox-inline">
+                        <input type="checkbox" id="checkboxinlineSound" name="role" value="Sound" > Sound
+                  </label>
+                 </div> 
+                <div class = "col-sm-6">
+                  <label class="checkbox-inline">
+                        <input type="checkbox" id="checkboxinlineLights" name="role" value="Lights" > Lights Design
+                  </label>
+                 </div> 
+                <div class = "col-sm-6">
+                  <label class="checkbox-inline">
+                        <input type="checkbox" id="checkboxinlineMusic" name="role" value="Music" > Music
+                  </label>
+                 </div> 
+                <div class = "col-sm-6">
+                  <label class="checkbox-inline">
+                        <input type="checkbox" id="checkboxinlineScriptwriting" name="role" value="Scriptwriter" > Scriptwriting
+                  </label>
+                </div> 
+               <div class = "col-sm-6">
+                  <label class="checkbox-inline">
+                        <input type="checkbox" id="checkboxinlineCostume" name="role" value="Costume" > Costume Designing
+                  </label>
+                 </div> 
+                <div class = "col-sm-6">
+                  <label class="checkbox-inline">
+                        <input type="checkbox" id="checkboxinlineSetDesign" name="role"  value="SetDesign" > Set Designing
+                  </label>
+                </div>
+                <div class = "col-sm-12 col-md-12">
+                  <label class="checkbox-inline">
+                        <input type="checkbox" id="checkboxinlineAudience" name="role"  value="audience"> <strong><b>What? Theatre? But, i am just here to browse!!</b>
+                  </label>
+                </div>
+              
+                
+            </div>
+            
+            <button id="donebtn" class="btn btn-primary pull-left" style="margin-top:30px;">DONE</button>
+            <button id="closebtn" class="btn btn-warning pull-right" style="margin-top:30px;">Don't bore me now, will fill later</button>
+        </div>
         <script type="text/javascript">
           $(document).ready(function(){
             var dialog = new BootstrapDialog({
             message: function(dialogRef){
-                var $message = $('<div>Please update the profile with city and role: </div>');
-                var $button = $('<button class="btn btn-primary btn-lg btn-block">Submit</button>');
-                
+                var $message = $('<div></div>');
+                var $button = $('#donebtn');
+                var $closeButton = $('#closebtn');
                 
                 $button.on('click', {dialogRef: dialogRef}, function(event){
                   var roles = $('input:checkbox[name="role"]:checked').map(function() {
                               return this.value;
                                 }).get().join(',');
                   console.log("rolesssssssssssssss: "+roles);
-                  var citiesss = $('select[name="city"]');
-                  console.log("citiesssssssss: "+citiesss[0].value);
+                  var citiesss = $('select[name="city"]')[0].value;
+                  console.log("citiesssssssss: "+citiesss);
+                  if(citiesss == "None Of the above") citiesss = "";
+                  console.log("citiesssssssss: "+citiesss);
                   event.data.dialogRef.close();
-                     $.ajax({
-            url: "/getCity",
-            type: "POST",
-            data: {role: roles,city: citiesss[0].value},
-            // data: {$("#myCityForm").serialize(), role: roles},
-            success: function (data) {
-                console.log("City and role saved ");
-            },
-            error: function (data) {
-                console.log("some error " + data);
-            }
-            
-        });
+                  $.ajax({
+                        url: "/getCity",
+                        type: "POST",
+                        data: {role: roles,city: citiesss},
+                        // data: {$("#myCityForm").serialize(), role: roles},
+                        success: function (data) {
+                            console.log("City and role saved ");
+                            location.reload();
+                        },
+                        error: function (data) {
+                            console.log("some error " + data);
+                        }
+                        
+                  });
+
+                });
+
+                $closeButton.on('click', {dialogRef: dialogRef}, function(event){
+                    $.ajax({
+                        url: "/getCity",
+                        type: "POST",
+                        data: {city: ""},
+                        // data: {$("#myCityForm").serialize(), role: roles},
+                        success: function (data) {
+                            console.log("City and role saved ");
+                        },
+                        error: function (data) {
+                            console.log("some error " + data);
+                        }
+                        
+                    });
+                    event.data.dialogRef.close();
                 });
                 // $message.append($selectedCity).append($button);
-                $message.append($('#myCity')).append($button);
+                $message.append($('#myCity'));
         
                 return $message;
-            },
-            closable: false
+              },
+              closable: false
+          });
+          dialog.realize();
+          dialog.setTitle("Just very quickly add these basic info about yourself. You can change it in your profile section anytime");
+          dialog.getModalHeader().show();
+          dialog.getModalHeader().css('padding', '10px');
+
+          dialog.getModalBody().css('background-color', '#1E485D');
+          dialog.getModalBody().css('color', '#fff');
+          dialog.open();
         });
-        dialog.realize();
-        dialog.getModalHeader().hide();
-        dialog.getModalFooter().hide();
-        dialog.getModalBody().css('background-color', '#0088cc');
-        dialog.getModalBody().css('color', '#fff');
-        dialog.open();
-});
           
         </script>      
-     <% } %>
+  <% } %>
 
 
 <script type="text/javascript">
@@ -400,13 +434,7 @@ $(document).ready(function(){
     
 $("#footer").load("footer.ejs"); 
 $("#headerloggedin").load("/header");
-// $("#headerloggedin").ajax({
-//    type: "GET",
-//    url: "/header",
-//    success: function(msg){
-//      alert( "Loaded ");
-//    }
-//  }); 
+
 
 
 $("#headerloggedout").load("headerloggedout.ejs");
