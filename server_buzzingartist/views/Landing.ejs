@@ -79,10 +79,10 @@
     <hr class="half-rule">
     
   </div>
-  <br>
+  
   <div class="col-md-6" style="vertical-align:top;"> <h2><a href = "/viewallposts">Recent posts (Click here for more)</a></h2>
 
-    <table id="mytable" class="table table-striped">
+    <table id="postsTable" class="table table-striped">
       <thead>
           <tr>
               <th style="text-align:left">Posted On</th>
@@ -92,7 +92,7 @@
               <th style="text-align:left">View in full</th>
           </tr>
       </thead>
-      <tbody class="searchable">
+      <tbody class="searchablewe">
         
         <% 
         if(postss.length == 0) { %>
@@ -121,16 +121,18 @@
     </table>
   </div>
 
-  <div id="recentArtists">
+  <div id="recentArtists" class="col-md-6" style="vertical-align:top;"> 
+    
+
   </div>     
     
+  <h2 style="text-align:center"><a href="/allevents" >Buzzing Events(Search all events)</a></h2>
+  <div id="slide-3" style="clear:both;">
+    
+    <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
   
-  <div class = "col-md-12" style = "text-align:center;float:none;">
-    <h2><a href="/allevents">Buzzing Events(Search all events)</a></h2>
-  </div>
-  <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
   
-  <div class="slide story" id="slide-3" data-slide="3">
+      
     
 
         <!-- === Arrows === -->
@@ -165,9 +167,9 @@
             
         <% }  %>
         </div><!-- /row -->
-    </div><!-- /slide3 -->
-    <% } %>    
     
+    <% } %>    
+    </div><!-- /slide3 -->
    
     
 

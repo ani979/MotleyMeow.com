@@ -1,6 +1,5 @@
-<div class="col-md-6" id="recentArtists" style="vertical-align:top;"> <h2><a href = "/viewallposts">Recent artists joined (Browse them all)</a></h2>
-
-    <table id="mytable" class="table table-striped">
+<h2><a href = "/artists">Recent artists joined (Browse them all)</a></h2>
+    <table id="artistsTable" class="table table-striped">
       <thead>
           <tr>
               <th style="text-align:left">Name</th>
@@ -18,7 +17,7 @@
                     <td><%= users[i].local.role %></td>
                     <td><%= users[i].local.city %></td>
                         <% if(users[i].facebook.link) { %>
-                            <td><a href = "<%=users[i].facebook.link %>" target="_blank"><img alt="User Pic" src=<%= users[i].local.picture %> class="img-circle" style="max-height:30px;max-width:30px"></a></td>
+                            <td><a href = "<%=users[i].facebook.link%>" target="_blank"><img alt="User Pic" src=<%= users[i].local.picture %> class="img-circle" style="max-height:30px;max-width:30px"></a></td>
                         <% } else { %>
                             <td>Not shared</td>
                         <% } %>
@@ -31,4 +30,4 @@
           
       </tbody>
      </table>
-  </div>     
+    

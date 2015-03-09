@@ -1,7 +1,7 @@
 
 $(document).ready(function(e) {
 	$('.with-hover-text, .regular-link').click(function(e){
-		//e.stopPropagation();
+		e.stopPropagation();
 	});
 	//enable_arrows( 3 );
 	
