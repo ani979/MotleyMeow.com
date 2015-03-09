@@ -91,6 +91,14 @@ exports.getEmails = function (req, res) {
 
 };
 
+exports.getRecentArtists = function (req, res) {
+    User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , {$limit:5}],
+                            function(err, recentUsers) {
+                              console.log("users " + recentUsers.length);
+                              res.render("recentArtistsPage", {users:recentUsers})
+                            });  
+};
+
 exports.contactArtists = function (req, res) {
     res.render('emailArtists', { user: req.session.user});
 };

@@ -148,6 +148,17 @@ passport.use(new FacebookStrategy({
                         console.log("found user");
                         hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
                         req.session.hashValue = hash;
+                        if(typeof user.local.joiningDate == 'undefined' || user.local.joiningDate == "") {
+                            User.update({'facebook.email' : user.facebook.email},
+                                                 { $set: {"local.joiningDate": new Date()}},
+                                                            function (err, user) {
+                                                                if(err) {
+                                                                    console.log("Something went wrong in saving date");
+                                                                    req.flash('info', "Something went wrong in saving joining date")
+                                                                    res.redirect('/error');
+                                                                }
+                            });                        
+                        }
                         if (!user.facebook.link) {
                             console.log("not found fb link");
                             FB.api(
@@ -193,6 +204,7 @@ passport.use(new FacebookStrategy({
                         console.log("email id " + newUser.facebook.name);
                         newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
                         newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
+                        newUser.local.joiningDate    = new Date(); 
                         FB.api(
                                     '/me?access_token=' + accessToken + '&appsecret_proof=' + req.session.hashValue,
                                     function (response) {
@@ -419,6 +431,7 @@ app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequ
 
 
 app.get( '/artists', artists.artist);
+app.get( '/getRecentArtists', artists.getRecentArtists);
 app.post( '/update', artists.update);
 app.get( '/contactArtists', artists.contactArtists);
 app.post( '/getEmails', artists.getEmails);

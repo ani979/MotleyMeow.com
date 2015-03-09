@@ -80,150 +80,7 @@
     
   </div>
   <br>
-     
-      
-
-  <div class="col-md-6 col-xs-8 no-padding no-margin" style = "padding-left: 20px; padding-right:50px;">
-     <div class="well" style="padding-top:5px; background-color:#534B4B;">
-    
-      <h3 style="margin-top:0px; color:#FFF9F9;">Upcoming plays</h3>
-      <% if (typeof plays != 'undefined' && plays != null && plays.length != null) { 
-                      %>
-            <div id="myCarousel" class="carousel slide">
-
-                
-                <!-- Carousel items -->
-                <div class="carousel-inner">
-              
-                  <% for(var i = 0; i < plays.length; i=i+4) { 
-                  %> 
-                      <% if(i <= 3) { %>
-                            <div class="item active">
-                      <%} else { %>         
-                            <div class="item">
-                      <%}%> 
-                                <div class="row">
-                                <% for(var j = i; j < plays.length && j < i+4; j++) { %>
-                                           <%  var d = new Date(plays[j].date).toISOString();
-                                            var displayableDate = getDate(d);
-                                            %>
-                                         
-                                          <div class="col-sm-3 imagecarousel">
-                                              <a href = "<%=plays[j].link%>" target="_blank">
-                                               <img src="<%=plays[j].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive">
-                                               <span style="color:#FFF9F9;"><%=plays[j].title%></span><span style="color:#FFF9F9;"> on <%=displayableDate%></span>
-                                               <span style="color:#FFF9F9;"> in <%=plays[j].city%></span></h2>
-                                               </a>
-                                          </div>
-                                 <%}%>
-                                </div><!-- for row -->
-                             </div><!-- for if -->
-                    <%}%> <!-- For loop ends -->
-
-                        
-
-                    </div> <!-- carousel inner -->
-                 
-                 <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                 <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-              </div><!-- my carousel -->   
-           <%}%> <!-- If condition ends -->    
-        </div><!-- well ends -->
-        
-     <div class="well" style="padding-top:5px; background-color:#534B4B;">
-      <h3 style="margin-top:0px; color:#FFF9F9;">Upcoming workshops</h3>
-       <% if (typeof workshops != 'undefined' && workshops != null && workshops.length !=0) { 
-                      %> 
-            <div id="myCarousel1" class="carousel slide">
-
-              
-                <!-- Carousel items -->
-                <div class="carousel-inner">
-              
-                  <% for(var i = 0; i < workshops.length; i=i+4) { 
-                  %> 
-                      <% if(i <= 3) { %>
-                            <div class="item active">
-                      <%} else { %>         
-                            <div class="item">
-                      <%}%> 
-                                <div class="row">
-                                <% for(var j = i; j < workshops.length && j < i+ 4; j++) { %>
-                                           <%  var d = new Date(workshops[j].date).toISOString();
-                                            var displayableDate = getDate(d);
-                                            %>
-                                            <div class="col-sm-3 imagecarousel">
-                                              <a href = "<%=workshops[j].link%>" target="_blank">
-                                               <img src="<%=workshops[j].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive">
-                                               <span style="color:#FFF9F9;"><%=workshops[j].title%></span><span style="color:#FFF9F9;"> on <%=displayableDate%></span>
-                                               <span style="color:#FFF9F9;"> in <%=workshops[j].city%></span></h2>
-                                               </a>
-                                          </div>
-                                 <%}%>
-                                </div><!-- for row -->
-                             </div><!-- for if -->
-                    <%}%> <!-- For loop ends -->
-
-                    </div> <!-- carousel inner -->
-                
-                 
-                 <a class="left carousel-control" href="#myCarousel1" data-slide="prev">‹</a>
-                 <a class="right carousel-control" href="#myCarousel1" data-slide="next">›</a>
-              </div><!-- my carousel -->   
-             <%}%> <!-- If condition ends -->      
-        </div><!-- well ends -->
-
-     <div class="well" style="padding-top:5px; background-color:#534B4B;">
-      <h3 style="margin-top:0px;color:#FFF9F9;">Other upcoming events</h3>
-      <% if (typeof others != 'undefined' && others != null && others.length != 0) { 
-                      %>
-            <div id="myCarousel2" class="carousel slide">
-
-                
-                <!-- Carousel items -->
-                <div class="carousel-inner">
-              
-                  <% for(var i = 0; i < others.length; i=i+4) { 
-                  %> 
-                      <% if(i <= 3) { %>
-                            <div class="item active">
-                      <%} else { %>         
-                            <div class="item">
-                      <%}%> 
-                                <div class="row">
-                                <% for(var j = i; j < others.length && j < i+4; j++) { %>
-                                            <%  var d = new Date(others[j].date).toISOString();
-                                            var displayableDate = getDate(d);
-                                            %>
-                                    
-                                          <div class="col-sm-3 imagecarousel">
-                                              <a href = "<%=others[j].link%>" target="_blank">
-                                               <img src="<%=others[j].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive">
-                                                <span style="color:#FFF9F9;"><%=others[j].title%></span><span style="color:#FFF9F9;"> on <%=displayableDate%></span>
-                                               <span style="color:#FFF9F9;"> in <%=others[j].city%></span></h2>
-                                               </a>
-                                          </div>
-                                 <%}%>
-                                </div><!-- for row -->
-                             </div><!-- for if -->
-                    <%}%> <!-- For loop ends -->
-
-                     
-
-                    </div> <!-- carousel inner -->
-                      
-                 
-                 <a class="left carousel-control" href="#myCarousel2" data-slide="prev">‹</a>
-                 <a class="right carousel-control" href="#myCarousel2" data-slide="next">›</a>
-              </div><!-- my carousel -->   
-            <%}%> <!-- If condition ends -->    
-        </div><!-- well ends -->
-
-           
-</div>
-    
-    
-<div class="col-md-6" style="vertical-align:top;"> <h2><a href = "/viewallposts">Recent posts (Click here for more)</a></h2>
+  <div class="col-md-6" style="vertical-align:top;"> <h2><a href = "/viewallposts">Recent posts (Click here for more)</a></h2>
 
     <table id="mytable" class="table table-striped">
       <thead>
@@ -261,26 +118,59 @@
           
           
       </tbody>
-  </table>
-    <!-- <div class="container" > -->
-      <div class="col-md-6 no-margin no-padding" style="height:100%">
-            <h1 class="page-header">Buzzing around you </h1>
-
-            <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-6">
-                  <img src="images/a1.jpg" class="img-responsive" >
-                  <h4><a href="/artists">Buzzing Artists</a></h4>
-                  
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6">
-                  <img src="images/m1.jpg" class="img-responsive" >
-                  <h4><a href="/allevents">Buzzing Events</a></h4>
-                 
-                </div>
-            </div>
-      <!-- </div> -->
+    </table>
   </div>
-</div>
+
+  <div id="recentArtists">
+  </div>     
+    
+  
+  <div class = "col-md-12" style = "text-align:center;float:none;">
+    <h2><a href="/allevents">Buzzing Events(Search all events)</a></h2>
+  </div>
+  <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
+  
+  <div class="slide story" id="slide-3" data-slide="3">
+    
+
+        <!-- === Arrows === -->
+      <div id="arrows">
+        <div id="arrow-left"></div>
+        <div id="arrow-right"></div>
+      </div><!-- /.arrows -->
+      <!-- <div class="btn-group" style="float:right;">
+        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" style="z-index:1000;">Event Category <span class="caret"></span></button>
+       <ul class="dropdown-menu">
+            <li><a href="#">Play</a></li>
+            <li><a href="#">Workshop</a></li>
+            <li><a href="#">Storytelling</a></li>
+            <li><a href="#">Others</a></li>
+        </ul>
+      </div> -->
+        <div class="row" style="position:relative">
+        <% for(var i = 0; i < events.length; i++) {%>
+            <%  var d = new Date(events[i].event.date).toISOString();
+                  var displayableDate = getDate(d);
+            %>
+            <div class="col-12" style="padding-left:30px;">
+                  <a href = "<%=events[i].event.link%>" target="_blank" style="max-width:300px;max-height:200px;text-decoration: none;">
+                    <img src="<%=events[i].event.eventcover%>" border=0   style="max-width:300px;max-height:200px;"/>
+                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
+                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> on <%=displayableDate%></span>
+                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
+
+                  </a>
+
+            </div>
+            
+        <% }  %>
+        </div><!-- /row -->
+    </div><!-- /slide3 -->
+    <% } %>    
+    
+   
+    
+
 </div>
 
 
@@ -415,7 +305,6 @@
           dialog.setTitle("Just very quickly add these basic info about yourself. You can change it in your profile section anytime");
           dialog.getModalHeader().show();
           dialog.getModalHeader().css('padding', '10px');
-
           dialog.getModalBody().css('background-color', '#1E485D');
           dialog.getModalBody().css('color', '#fff');
           dialog.open();
@@ -424,55 +313,31 @@
         </script>      
   <% } %>
 
+  <script src="js/jquery-1.10.2.min.js"></script>
+  <script src="js/jquery-migrate-1.2.1.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/imageCarousel.js"></script>
+  <script type="text/javascript">
 
-<script type="text/javascript">
-$(document).ready(function(){
-
-     // $('#mytable').dataTable();
-});
-  
     
 $("#footer").load("footer.ejs"); 
 $("#headerloggedin").load("/header");
-
-
-
 $("#headerloggedout").load("headerloggedout.ejs");
 
         $(document).ready(function() {
-          $('#myCarousel').carousel({
-          interval: 10000
-          })
-          $('#myCarousel1').carousel({
-          interval: 10000
-          })
-          $('#myCarousel2').carousel({
-          interval: 10000
-          })
-            
-            $('#myCarousel').on('slid.bs.carousel', function() {
-              //alert("slid");
-          });
+          var form = $('#recentArtists');
+          
+          $("#recentArtists").load("/getRecentArtists");
+          // Check to see every 10 mins..if a new user has joined
+          var timerId;
+          timerId = setInterval(function() {
+            $("#recentArtists").load("/getRecentArtists");
+          }, 10000); 
             
             
         });
         
-        $(document).ready(function(){
-          $('[id=filter]').on("keyup", function(){
-                      
-                      var rex = new RegExp($(this).val(), 'i');
-                      $('.searchable tr').hide();
-                      $('.searchable tr').filter(function () {
-                          return rex.test($(this).text());
-                      }).show();
-                  //})
-          });
-         }(jQuery));
-
-          $('#openBtn').click(function(){
-              $('#myModal').modal({show:true})
-            });
-
+        
           
     </script>
      <script type="text/javascript">
