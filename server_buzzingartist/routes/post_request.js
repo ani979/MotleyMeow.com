@@ -185,6 +185,44 @@ exports.searchPosts = function (req, res) {
              });   
 };
 
+exports.getRecentPosts = function (req, res) {
+     var selectedCity = new Array();
+     console.log(" foundUser.local.city " + req.session.user.local.city)
+    if(typeof req.session.user.local.city != 'undefined' && req.session.user.local.city != "") {
+        if(req.session.user.local.city == "Bengaluru" || req.session.user.local.city == "Bangalore") {
+            selectedCity.push("Bangalore", "Bengaluru");
+        } else if(req.session.user.local.city == "Calcutta" || req.session.user.local.city == "Kolkata") {
+            selectedCity.push("Calcutta", "Kolkata");
+        } else if(req.session.user.local.city == "Mumbai" || req.session.user.local.city == "Bombay") {
+            selectedCity.push("Mumbai", "Bombay");
+        } else if (rreq.session.user.local.city != "None") {
+            selectedCity.push(req.session.user.local.city);
+        } 
+    
+    
+    
+        console.log("selected city " + selectedCity[0])
+        console.log("selected City length " + selectedCity.length)
+         
+        Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                                { 'post.date': { $lte: new Date() } } ] } } , {$limit:5}, { $sort : { 'post.date' : -1 } } ],
+                                function(err, recentPosts) {
+                                  if(typeof recentPosts != 'undefined') {
+                                      console.log("recentPosts " + recentPosts.length);
+                                      res.render("recentPostsPage", {postss:recentPosts})
+                                  }    
+                                });  
+    } else {
+         Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , {$limit:5}, { $sort : { 'post.date' : -1 } } ],
+                                function(err, recentPosts) {
+                                  if(typeof recentPosts != 'undefined') {
+                                      console.log("recentPosts " + recentPosts.length);
+                                      res.render("recentPostsPage", {postss:recentPosts})
+                                  }    
+                                });
+    }    
+};
+
 exports.searchallposts = function (req, res) {
 	var city = req.body.city;
     var lang = req.body.lang;

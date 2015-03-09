@@ -1,4 +1,4 @@
-<h2><a href = "/artists">Recent artists joined (Browse them all)</a></h2>
+<h2><a href = "/artists">Recent artists joined all locations (Browse them all)</a></h2>
     <table id="artistsTable" class="table table-striped">
       <thead>
           <tr>
@@ -14,8 +14,17 @@
                   for(var i=0; i < users.length; i++) { %>
                     <tr>
                     <td><%= users[i].facebook.name%></td>
-                    <td><%= users[i].local.role %></td>
-                    <td><%= users[i].local.city %></td>
+                      <% if(typeof users[i].local.role == 'undefined' || users[i].local.role.length == 0) { %>
+                            <td>Not updated yet</td>
+                      <% } else { %>  
+                            <td><%= users[i].local.role %></td>
+                      <% } %>            
+
+                       <% if(typeof users[i].local.city == 'undefined' || users[i].local.city == "") { %>
+                            <td>Not Set</td>
+                          <% } else { %>  
+                            <td><%= users[i].local.city %></td>
+                          <% } %> 
                         <% if(users[i].facebook.link) { %>
                             <td><a href = "<%=users[i].facebook.link%>" target="_blank"><img alt="User Pic" src=<%= users[i].local.picture %> class="img-circle" style="max-height:30px;max-width:30px"></a></td>
                         <% } else { %>

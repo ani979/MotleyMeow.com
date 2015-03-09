@@ -1,0 +1,53 @@
+<h2><a href = "/viewallposts">Recent posts in your city(Click here for more)</a></h2>
+<table id="postsTable" class="table table-striped">
+      <thead>
+          <tr>
+              <th style="text-align:left">Posted On</th>
+              <th style="text-align:left">Searching for</th>
+              <th style="text-align:left">the need</th>
+              <th style="text-align:left">City</th>
+              <th style="text-align:left">Details</th>
+          </tr>
+      </thead>
+      <tbody class="searchablewe">
+        
+        <% 
+        if(typeof postss == 'undefined' || postss.length == 0) { %>
+          <tr> <td colspan="4">No posts in the last few days. Search for more posts <a href = "/viewallposts">here</a></td></tr>
+
+        <%}  else { %>
+                <% for(var i=0; i < postss.length; i++) { %>
+                  <tr>
+                  <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
+                  <td><%= postss[i].post.postTitle %></td>
+                  <td><%= postss[i].post.role %></td>
+                  <td><%= postss[i].post.city %></td>
+                  <form action="/viewpost" method="POST">
+                        <td><p data-placement="top" data-toggle="tooltgetpostip" title="View"><button id ="view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
+                        <input name="_id"  type="hidden" value=<%=postss[i].post.userid%>>
+                        <input name="_postid"  type="hidden" value=<%=postss[i]._id%>>
+
+                </form>  
+                  </tr>
+                <% } %>
+           <%}%>     
+          
+          
+          
+      </tbody>
+    </table>
+
+    <% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+    %>

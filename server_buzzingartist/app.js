@@ -431,6 +431,7 @@ app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequ
 
 
 app.get( '/artists', artists.artist);
+app.get( '/getRecentPosts', post_request.getRecentPosts);
 app.get( '/getRecentArtists', artists.getRecentArtists);
 app.post( '/update', artists.update);
 app.get( '/contactArtists', artists.contactArtists);

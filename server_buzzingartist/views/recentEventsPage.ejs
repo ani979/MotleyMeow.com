@@ -1,0 +1,35 @@
+<div id="slide-3" style="clear:both;">
+    <h2 style="text-align:center;"><a href="/allevents" >Buzzing Events in your city(Search all here)</a></h2>
+    <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
+  
+  
+      
+    
+
+        <!-- === Arrows === -->
+      <div id="arrows">
+        <div id="arrow-left"></div>
+        <div id="arrow-right"></div>
+      </div><!-- /.arrows -->
+
+        <div class="row" style="position:relative">
+        <% for(var i = 0; i < events.length; i++) {%>
+            <%  var d = new Date(events[i].event.date).toISOString();
+                  var displayableDate = getDate(d);
+            %>
+            <div class="col-12" style="padding-left:30px;">
+                  <a href = "<%=events[i].event.link%>" target="_blank" style="max-width:300px;max-height:200px;text-decoration: none;">
+                    <img src="<%=events[i].event.eventcover%>" border=0   style="max-width:300px;max-height:200px;"/>
+                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
+                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> on <%=displayableDate%></span>
+                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
+
+                  </a>
+
+            </div>
+            
+        <% }  %>
+        </div><!-- /row -->
+    
+    <% } %>    
+    </div><!-- /slide3 -->

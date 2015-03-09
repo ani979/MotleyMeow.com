@@ -111,8 +111,16 @@
                       <% users.forEach(function(user){ %>
                         <tr>
                           <td><%= user.facebook.name %></td>
-                          <td><%= user.local.role %></td>
-                          <td><%= user.local.lang %></td>
+                          <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
+                            <td>Not updated yet</td>
+                          <% } else { %>  
+                            <td><%= user.local.role %></td>
+                          <% } %>
+                          <% if(typeof user.local.lang == 'undefined' || user.local.lang.length == 0) { %>
+                            <td>Not updated yet</td>
+                          <% } else { %>  
+                            <td><%= user.local.lang %></td>
+                          <% } %>
                           <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
                             <td>Not Set</td>
                           <% } else { %>  

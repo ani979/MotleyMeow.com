@@ -80,97 +80,44 @@
     
   </div>
   
-  <div class="col-md-6" style="vertical-align:top;"> <h2><a href = "/viewallposts">Recent posts (Click here for more)</a></h2>
-
-    <table id="postsTable" class="table table-striped">
-      <thead>
-          <tr>
-              <th style="text-align:left">Posted On</th>
-              <th style="text-align:left">Searching for</th>
-              <th style="text-align:left">the need</th>
-              <th style="text-align:left">City</th>
-              <th style="text-align:left">View in full</th>
-          </tr>
-      </thead>
-      <tbody class="searchablewe">
-        
-        <% 
-        if(postss.length == 0) { %>
-          <tr> <td colspan="4">No posts in the last two days. Search for more posts <a href = "/viewallposts">here</a></td></tr>
-
-        <%}  else { %>
-                <% for(var i=0; i < postss.length; i++) { %>
-                  <tr>
-                  <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
-                  <td><%= postss[i].post.postTitle %></td>
-                  <td><%= postss[i].post.role %></td>
-                  <td><%= postss[i].post.city %></td>
-                  <form action="/viewpost" method="POST">
-                        <td><p data-placement="top" data-toggle="tooltgetpostip" title="View"><button id ="view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
-                        <input name="_id"  type="hidden" value=<%=postss[i].post.userid%>>
-                        <input name="_postid"  type="hidden" value=<%=postss[i]._id%>>
-
-                </form>  
-                  </tr>
-                <% } %>
-           <%}%>     
-          
-          
-          
-      </tbody>
-    </table>
+  <div id = "recentPosts" class="col-md-6" style="vertical-align:top;"> 
   </div>
+  
 
   <div id="recentArtists" class="col-md-6" style="vertical-align:top;"> 
-    
-
   </div>     
-    
-  <h2 style="text-align:center"><a href="/allevents" >Buzzing Events(Search all events)</a></h2>
+  
+  
   <div id="slide-3" style="clear:both;">
-    
-    <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
-  
-  
+      <h2 style="text-align:center;"><a href="/allevents" >Buzzing Events in your city(Search all here)</a></h2>
+      <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
+        <div id="arrows">
+          <div id="arrow-left"></div>
+          <div id="arrow-right"></div>
+        </div><!-- /.arrows -->
+
+          <div class="row" style="position:relative">
+          <% for(var i = 0; i < events.length; i++) {%>
+              <%  var d = new Date(events[i].event.date).toISOString();
+                    var displayableDate = getDate(d);
+              %>
+              <div class="col-12" style="padding-left:30px;">
+                    <a href = "<%=events[i].event.link%>" target="_blank" style="max-width:300px;max-height:200px;text-decoration: none;">
+                      <img src="<%=events[i].event.eventcover%>" border=0   style="max-width:300px;max-height:200px;"/>
+                      <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
+                      <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> on <%=displayableDate%></span>
+                      <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
+
+                    </a>
+
+              </div>
+              
+          <% }  %>
+          </div><!-- /row -->
       
-    
-
-        <!-- === Arrows === -->
-      <div id="arrows">
-        <div id="arrow-left"></div>
-        <div id="arrow-right"></div>
-      </div><!-- /.arrows -->
-      <!-- <div class="btn-group" style="float:right;">
-        <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle" style="z-index:1000;">Event Category <span class="caret"></span></button>
-       <ul class="dropdown-menu">
-            <li><a href="#">Play</a></li>
-            <li><a href="#">Workshop</a></li>
-            <li><a href="#">Storytelling</a></li>
-            <li><a href="#">Others</a></li>
-        </ul>
-      </div> -->
-        <div class="row" style="position:relative">
-        <% for(var i = 0; i < events.length; i++) {%>
-            <%  var d = new Date(events[i].event.date).toISOString();
-                  var displayableDate = getDate(d);
-            %>
-            <div class="col-12" style="padding-left:30px;">
-                  <a href = "<%=events[i].event.link%>" target="_blank" style="max-width:300px;max-height:200px;text-decoration: none;">
-                    <img src="<%=events[i].event.eventcover%>" border=0   style="max-width:300px;max-height:200px;"/>
-                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
-                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> on <%=displayableDate%></span>
-                    <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
-
-                  </a>
-
-            </div>
-            
-        <% }  %>
-        </div><!-- /row -->
-    
-    <% } %>    
+      <% } %>    
     </div><!-- /slide3 -->
-   
+  
     
 
 </div>
@@ -179,10 +126,8 @@
 
          
 
-   <!-- footer starts-->
    <div id = "footer"></div>
-   <!-- footer ends-->
-
+ 
   <% var city = user.local.city;
      console.log("cityyyyyyyy: "+city);
      if(city == 'None') { %>
@@ -330,10 +275,12 @@ $("#headerloggedout").load("headerloggedout.ejs");
           var form = $('#recentArtists');
           
           $("#recentArtists").load("/getRecentArtists");
+          $("#recentPosts").load("/getRecentPosts");
           // Check to see every 10 mins..if a new user has joined
           var timerId;
           timerId = setInterval(function() {
             $("#recentArtists").load("/getRecentArtists");
+            $("#recentPosts").load("/getRecentPosts");
           }, 10000); 
             
             
