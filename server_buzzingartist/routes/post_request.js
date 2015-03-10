@@ -196,7 +196,7 @@ exports.getRecentPosts = function (req, res) {
             selectedCity.push("Calcutta", "Kolkata");
         } else if(req.session.user.local.city == "Mumbai" || req.session.user.local.city == "Bombay") {
             selectedCity.push("Mumbai", "Bombay");
-        } else if (rreq.session.user.local.city != "None") {
+        } else if (req.session.user.local.city != "None") {
             selectedCity.push(req.session.user.local.city);
         } 
     

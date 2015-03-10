@@ -49,7 +49,7 @@ exports.posteventDetails = function (req, res) {
                                                         },
                                                         function(response) {
 
-                                                            if (response && !response.error) {
+                                                            if (typeof response.data != 'undefined' && !response.error) {
                                                                 newEvent.event.eventcover = response.data.url; 
                                                                 console.log("event picture url " + response.data.url);
                                                                 newEvent.save(function(err) {
