@@ -112,7 +112,7 @@ exports.landing_home = function(req, res) {
     //Get all posts
     if(typeof selectedCity != undefined && selectedCity.length != 0) {
         Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                            { 'post.date': { $gte: new Date(then.toISOString()) } } ] } } , {$limit:5}],
+                            { 'post.date': { $lte: new Date() } } ] } } , {$limit:5},{ $sort : { 'post.date' : -1 } }],
                             function(err, postsinDB) {
              if (err || typeof postsinDB == 'undefined') {
                 console.log("Error while getting posts");
@@ -172,7 +172,7 @@ exports.landing_home = function(req, res) {
 
         });    
     } else {
-            Posts.aggregate([{ $match: { 'post.date': { $gte: new Date(then.toISOString()) } } } , {$limit:5}],
+            Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , {$limit:5},{ $sort : { 'post.date' : -1 } }],
                             function(err, postsinDB) {
              if (err || typeof postsinDB == 'undefined') {
                 console.log("Error while getting posts");

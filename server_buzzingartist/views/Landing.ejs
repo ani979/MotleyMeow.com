@@ -80,16 +80,62 @@
     
   </div>
   
-  <div id = "recentPosts" class="col-md-6" style="vertical-align:top;"> 
+  <div id = "recentPosts" class="col-md-6" style="vertical-align:top;">
+    <% if (typeof citysel == 'undefined' || citysel == "") { %>
+        <h2><a href = "/viewallposts">Recent posts in all locations(Click here for more)</a></h2> 
+     <% } else { %>
+        <h2><a href = "/viewallposts">Recent posts in <%=citysel%> (Click here for more)</a></h2>    
+     <% } %>   
+    <table id="postsTable" class="table table-striped">
+      <thead>
+          <tr>
+              <th style="text-align:left">Posted On</th>
+              <th style="text-align:left">Searching for</th>
+              <th style="text-align:left">City</th>
+              <th style="text-align:left">Details</th>
+          </tr>
+      </thead>
+      <tbody class="searchablewe">
+        
+        <% 
+        if(typeof postss == 'undefined' || postss.length == 0) { %>
+          <tr> <td colspan="4">No posts in the last few days. Search for more posts <a href = "/viewallposts">here</a></td></tr>
+
+        <%}  else { %>
+                <% for(var i=0; i < postss.length; i++) { %>
+                  <tr>
+                  <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
+                  <td><%= postss[i].post.postTitle %></td>
+                  <td><%= postss[i].post.role %></td>
+                  <form action="/viewpost" method="POST">
+                        <td><button id ="view"><span class="glyphicon glyphicon-info-sign"></span></button></td>
+                        <input name="_id"  type="hidden" value=<%=postss[i].post.userid%>>
+                        <input name="_postid"  type="hidden" value=<%=postss[i]._id%>>
+
+                </form>  
+                  </tr>
+                <% } %>
+           <%}%>     
+          
+          
+          
+      </tbody>
+    </table>
   </div>
   
 
   <div id="recentArtists" class="col-md-6" style="vertical-align:top;"> 
+    
   </div>     
   
   
   <div id="slide-3" style="clear:both;">
-      <h2 style="text-align:center;"><a href="/allevents" >Buzzing Events in your city(Search all here)</a></h2>
+    <% if (typeof citysel == 'undefined' || citysel == "") { %>
+        <h2 style="text-align:center;"><a href="/allevents" >Buzzing Events in all locations(Search all here)</a></h2>
+     <% } else { %>
+        <h2 style="text-align:center;"><a href="/allevents" >Buzzing Events in <%=citysel%> (Search all here)</a></h2>   
+     <% } %>
+      
       <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
         <div id="arrows">
           <div id="arrow-left"></div>
@@ -270,17 +316,18 @@
 $("#footer").load("footer.ejs"); 
 $("#headerloggedin").load("/header");
 $("#headerloggedout").load("headerloggedout.ejs");
+$("#recentArtists").load("/getRecentArtists");
+
+
 
         $(document).ready(function() {
-          var form = $('#recentArtists');
+          //var form = $('#recentArtists');
           
-          $("#recentArtists").load("/getRecentArtists");
-          $("#recentPosts").load("/getRecentPosts");
-          // Check to see every 10 mins..if a new user has joined
+          // Check to see every 10 seconds..if a new user has joined
           var timerId;
           timerId = setInterval(function() {
             $("#recentArtists").load("/getRecentArtists");
-            $("#recentPosts").load("/getRecentPosts");
+            //$("#recentPosts").load("/getRecentPosts");
           }, 10000); 
             
             

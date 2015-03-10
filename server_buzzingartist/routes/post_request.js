@@ -186,6 +186,7 @@ exports.searchPosts = function (req, res) {
 };
 
 exports.getRecentPosts = function (req, res) {
+    console.log(" here in recent posts");
      var selectedCity = new Array();
      console.log(" foundUser.local.city " + req.session.user.local.city)
     if(typeof req.session.user.local.city != 'undefined' && req.session.user.local.city != "") {
@@ -209,7 +210,7 @@ exports.getRecentPosts = function (req, res) {
                                 function(err, recentPosts) {
                                   if(typeof recentPosts != 'undefined') {
                                       console.log("recentPosts " + recentPosts.length);
-                                      res.render("recentPostsPage", {postss:recentPosts})
+                                      res.render("recentPostsPage", {postss:recentPosts, citysel:req.session.user.local.city})
                                   }    
                                 });  
     } else {
@@ -357,7 +358,9 @@ exports.viewpost = function (req, res) {
                         res.redirect('/error');
                     } else {
                         console.log("user " + user);
-                        res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});    
+                        if(user != null) {
+                            res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});   
+                        }     
                     }
                   });     
                   

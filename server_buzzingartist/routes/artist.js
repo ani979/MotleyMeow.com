@@ -92,6 +92,7 @@ exports.getEmails = function (req, res) {
 };
 
 exports.getRecentArtists = function (req, res) {
+    console.log("here in recent artists");
     User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , {$limit:5}, { $sort : { 'local.joiningDate' : -1 } } ],
                             function(err, recentUsers) {
                               console.log("users " + recentUsers.length);
