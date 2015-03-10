@@ -186,9 +186,9 @@ exports.searchPosts = function (req, res) {
 };
 
 exports.getRecentPosts = function (req, res) {
-    console.log(" here in recent posts");
+    //console.log(" here in recent posts");
      var selectedCity = new Array();
-     console.log(" foundUser.local.city " + req.session.user.local.city)
+     //console.log(" foundUser.local.city " + req.session.user.local.city)
     if(typeof req.session.user.local.city != 'undefined' && req.session.user.local.city != "") {
         if(req.session.user.local.city == "Bengaluru" || req.session.user.local.city == "Bangalore") {
             selectedCity.push("Bangalore", "Bengaluru");
@@ -202,19 +202,22 @@ exports.getRecentPosts = function (req, res) {
     
     
     
-        console.log("selected city " + selectedCity[0])
-        console.log("selected City length " + selectedCity.length)
-         
+        // console.log("selected city " + selectedCity[0])
+        // console.log("selected City length " + selectedCity.length)
+         console.log("new Date() " + new Date())
         Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                { 'post.date': { $lte: new Date() } } ] } } , {$limit:5}, { $sort : { 'post.date' : -1 } } ],
+                                { 'post.date': { $lte: new Date() } } ] } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
                                 function(err, recentPosts) {
                                   if(typeof recentPosts != 'undefined') {
-                                      console.log("recentPosts " + recentPosts.length);
+                                    for(var i = 0; i < recentPosts.length; i++) {
+                                        console.log("recentPosts in city " + recentPosts[i].post.postTitle);
+                                    }
+                                      
                                       res.render("recentPostsPage", {postss:recentPosts, citysel:req.session.user.local.city})
                                   }    
                                 });  
     } else {
-         Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , {$limit:5}, { $sort : { 'post.date' : -1 } } ],
+         Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, , {$limit:5} ],
                                 function(err, recentPosts) {
                                   if(typeof recentPosts != 'undefined') {
                                       console.log("recentPosts " + recentPosts.length);
@@ -346,21 +349,25 @@ exports.viewpost = function (req, res) {
             Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
                 if (error || !req.user) {
                     console.log("ERROR NOT A VALID");
-                  req.flash('info', "Error while trying to find the user's post");
+                  req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
                   res.redirect('/error');
                 } else {
                   console.log("found post " + db);
                   User.findOne({ '_id' : req.body._id }, function(error, user) {
                     if(error) {
-                        console.log("Error in retrieving user, something is not correct, check in DB");
+                        console.log("Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
                         // res.redirect("/searchposts");
-                        req.flash('info', "Error in retrieving user, something is not correct, check in DB");
+                        req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
                         res.redirect('/error');
                     } else {
                         console.log("user " + user);
                         if(user != null) {
                             res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});   
-                        }     
+                        } else {
+                                                    // res.redirect("/searchposts");
+                            req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
+                            res.redirect('/error');
+                        }    
                     }
                   });     
                   

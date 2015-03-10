@@ -81,47 +81,13 @@
   </div>
   
   <div id = "recentPosts" class="col-md-6" style="vertical-align:top;">
-    <% if (typeof citysel == 'undefined' || citysel == "") { %>
-        <h2><a href = "/viewallposts">Recent posts in all locations(Click here for more)</a></h2> 
-     <% } else { %>
-        <h2><a href = "/viewallposts">Recent posts in <%=citysel%> (Click here for more)</a></h2>    
-     <% } %>   
-    <table id="postsTable" class="table table-striped">
-      <thead>
-          <tr>
-              <th style="text-align:left">Posted On</th>
-              <th style="text-align:left">Searching for</th>
-              <th style="text-align:left">City</th>
-              <th style="text-align:left">Details</th>
-          </tr>
-      </thead>
-      <tbody class="searchablewe">
-        
-        <% 
-        if(typeof postss == 'undefined' || postss.length == 0) { %>
-          <tr> <td colspan="4">No posts in the last few days. Search for more posts <a href = "/viewallposts">here</a></td></tr>
-
-        <%}  else { %>
-                <% for(var i=0; i < postss.length; i++) { %>
-                  <tr>
-                  <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
-                  <td><%= postss[i].post.postTitle %></td>
-                  <td><%= postss[i].post.role %></td>
-                  <form action="/viewpost" method="POST">
-                        <td><button id ="view"><span class="glyphicon glyphicon-info-sign"></span></button></td>
-                        <input name="_id"  type="hidden" value=<%=postss[i].post.userid%>>
-                        <input name="_postid"  type="hidden" value=<%=postss[i]._id%>>
-
-                </form>  
-                  </tr>
-                <% } %>
-           <%}%>     
-          
-          
-          
-      </tbody>
-    </table>
+    
   </div>
+  <form id="viewPost" action="/viewpost" method="POST">
+  
+  <input id="_id" name="_id"  type="hidden" >
+  <input id = "_postid" name="_postid"  type="hidden">
+  </form>
   
 
   <div id="recentArtists" class="col-md-6" style="vertical-align:top;"> 
@@ -317,7 +283,7 @@ $("#footer").load("footer.ejs");
 $("#headerloggedin").load("/header");
 $("#headerloggedout").load("headerloggedout.ejs");
 $("#recentArtists").load("/getRecentArtists");
-
+$("#recentPosts").load("/getRecentPosts");
 
 
         $(document).ready(function() {
@@ -327,8 +293,8 @@ $("#recentArtists").load("/getRecentArtists");
           var timerId;
           timerId = setInterval(function() {
             $("#recentArtists").load("/getRecentArtists");
-            //$("#recentPosts").load("/getRecentPosts");
-          }, 10000); 
+            $("#recentPosts").load("/getRecentPosts");
+          }, 20000); 
             
             
         });

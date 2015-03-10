@@ -444,8 +444,10 @@ app.post( '/posteventDetails', post_event.posteventDetails);
 
 
 app.get('/error', function(req, res){
-    console.log("ERROR OCCURRED " + req.flash('info') + "for User" + req.session.user.facebook.email);
-  res.render('error', { message: req.flash('info'),  user: req.session.user});
+    //console.log("ERROR OCCURRED " + req.flash('info') + "for User" + req.session.user.facebook.email);
+    //var msg = req.flash('info');
+    //console.log(" msg is " + req.flash('info'));
+  res.render('error', { message: req.flash('info')});
 });
 
 app.get('/header', function(req, res){

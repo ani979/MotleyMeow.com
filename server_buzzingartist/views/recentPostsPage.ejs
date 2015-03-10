@@ -54,22 +54,19 @@
     </table>
     <script>
     $('button[id="view"]').on('click', function(e){
-      alert("here in the view");
+     
       var buttonname = $(this).attr('name');
       var postusername = '_id' + buttonname;
       var postname = '_postid' + buttonname;
       var postval = $('#'+ postname).val();
       var postUserVal = $('#' + postusername).val();
-      alert(postval);
+      
      
 
-      var form;
-    form = $('<form />', {
-        action: "/viewpost",
-        method: "POST",
-        style: 'display: none;'
-    });
-    form.submit();
+      var form = $('#viewPost');
+      $('#_id').val(postUserVal);
+      $('#_postid').val(postval)
+      form.submit();
       
         
     });

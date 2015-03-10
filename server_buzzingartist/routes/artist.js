@@ -80,8 +80,6 @@ exports.getEmails = function (req, res) {
                                               {"local.lang": { $in: selectedLang } },
                                               {"local.emailDisplay": { $in: ["true", null] } } ] } ,
                             function(err, emails) {
-        //console.log("all users " + users);
-        
                 
         res.send({selectedEmails: emails});
 
@@ -92,7 +90,7 @@ exports.getEmails = function (req, res) {
 };
 
 exports.getRecentArtists = function (req, res) {
-   User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , {$limit:5}, { $sort : { 'local.joiningDate' : -1 } } ],
+   User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             function(err, recentUsers) {
                               res.render("recentArtistsPage", {users:recentUsers})
                             });  
