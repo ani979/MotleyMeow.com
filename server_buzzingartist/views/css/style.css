@@ -289,7 +289,7 @@ imageUpdateField {
   overflow: hidden;
   padding: 0;
   text-align: left;
-  width: auto;
+  width: 90%;
 }
   
   #slide-3 .col-12 {
@@ -321,6 +321,7 @@ imageUpdateField {
     margin: 0;
     width: 100% !important;
     overflow: hidden;
+
   }
   
   #slide-3 .col-12 {
@@ -334,17 +335,19 @@ imageUpdateField {
     display: inline-block;
     height: auto;   
     width: auto;
+    -webkit-transform: translate3d(0,0,0);
+    oveflow-x:scroll;
   }
 }
 
 #arrows {
-  height: 80px;
-  position: absolute;
-  width: 80px;
-  z-index: 1000;
-  right:20px;
-  bottom:95px;
-}
+    height: 80px;
+    position: absolute;
+    width: 80px;
+    z-index: 1000;
+    right: 90px;
+    bottom: 260px;
+ }   
 
 #arrows div {
   background-image: url('../images/website-arrows.png');

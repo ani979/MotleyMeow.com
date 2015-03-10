@@ -204,14 +204,14 @@ exports.getRecentPosts = function (req, res) {
     
         // console.log("selected city " + selectedCity[0])
         // console.log("selected City length " + selectedCity.length)
-         console.log("new Date() " + new Date())
+         //console.log("new Date() " + new Date())
         Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
                                 { 'post.date': { $lte: new Date() } } ] } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
                                 function(err, recentPosts) {
                                   if(typeof recentPosts != 'undefined') {
-                                    for(var i = 0; i < recentPosts.length; i++) {
-                                        console.log("recentPosts in city " + recentPosts[i].post.postTitle);
-                                    }
+                                    // for(var i = 0; i < recentPosts.length; i++) {
+                                    //     console.log("recentPosts in city " + recentPosts[i].post.postTitle);
+                                    // }
                                       
                                       res.render("recentPostsPage", {postss:recentPosts, citysel:req.session.user.local.city})
                                   }    

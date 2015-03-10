@@ -18,6 +18,8 @@ TodoS:
 15) need to change images - DONE
 16) Add picture in the right most corner. - DONE
 17) Check the header for profile update. Doesnt look right. Also check why the highlight doesnt move in the header
+18) Sometimes event.url is undefined and hence throws an error.
+19) 
 
 
 GOOD TO HAVE:

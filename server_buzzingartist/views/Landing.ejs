@@ -36,9 +36,81 @@
         }
     %>
 <% if(typeof user != 'undefined' && user!=null) { %>
- <div id = "headerloggedin"> </div>
+ <div id = "headerloggedin"> <nav class="navbar navbar-inverse navbar-static-top no-margin">
+  <div class="container-fluid">
+    
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/home">BuzzingArtists </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+            
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
+                   <li><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
+                   <li><a href="/postarequest">Post a request<span class="sr-only">(current)</span></a></li>
+                   </li> 
+                   <li ><a href="/searchPosts">Your posts<span class="sr-only">(current)</span></a></li>
+                   <li><a href="/postevents">Post event from FB <span class="sr-only">(current)</span></a></li>
+                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse</a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a href="/artists">Browse Artists</a></li>
+                          <li><a href="/viewallposts">Browse Posts</a></li> 
+                          <li><a href="/allevents">Browse Events</a></li>            
+                      </ul>           
+                   </li>
+                </ul>
+
+            <ul class="nav navbar-right navbar-nav">                  
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/profile">Profile</a></li>
+                      <li><a href="/logout">Logout</a></li>
+                      
+                    </ul>
+                  </li>
+             </ul>  
+          </div>
+    </div>
+  </nav>
+</div>
  <% } else { %>
- <div id = "headerloggedout"></div>
+ <div id = "headerloggedout">
+  <nav class="navbar navbar-inverse navbar-fixed-top no-margin">
+    <div class="container-fluid">
+      
+
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">BuzzingArtists </a>
+          </div>
+
+          <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+              
+
+               <ul class="nav nav-bar pull-right">
+                          
+                  <li><a class="btn btn-default"  href="/auth/facebook">Login with facebook</a></li>
+                
+              </ul>
+                
+        </div>
+    </div>
+  </nav>
+ </div>
 <%}%> 
 <% var citysel = user.local.city %>
 <div class = "main-container">
@@ -81,7 +153,64 @@
   </div>
   
   <div id = "recentPosts" class="col-md-6" style="vertical-align:top;">
-    
+    <% if (typeof citysel == 'undefined' || citysel == "") { %>
+        <h2><a href = "/viewallposts">Recent posts in all locations(Click here for more)</a></h2> 
+     <% } else { %>
+        <h2><a href = "/viewallposts">Recent posts in <%=citysel%> (Click here for more)</a></h2>    
+     <% } %>   
+    <table id="postsTable" class="table table-striped">
+      <thead>
+          <tr>
+              <th style="text-align:left">Last Updated On</th>
+              <th style="text-align:left">Searching for</th>
+              <th style="text-align:left">City</th>
+              <th style="text-align:left">Details</th>
+          </tr>
+      </thead>
+      <tbody class="searchablewe">
+        
+        <% 
+        if(typeof postss == 'undefined' || postss.length == 0) { %>
+          <tr> <td colspan="4">No posts in the last few days. Search for more posts <a href = "/viewallposts">here</a></td></tr>
+
+        <%}  else { %>
+                <% for(var i=0; i < postss.length; i++) { %>
+                  <tr>
+                  <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
+                  <td><%= postss[i].post.role %></td>
+                  <td><%= postss[i].post.city %></td>
+                  
+                        <td><button id ="view" name="<%=postss[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></button></td>
+                        <input id="_id<%=postss[i]._id%>" name="_id"  type="hidden" value=<%=postss[i].post.userid%>>
+                        <input id="_postid<%=postss[i]._id%>"  type="hidden" value=<%=postss[i]._id%>>
+                   
+                  </tr>
+                <% } %>
+           <%}%>     
+          
+          
+          
+      </tbody>
+    </table>
+    <script>
+    $('button[id="view"]').on('click', function(e){
+     
+      var buttonname = $(this).attr('name');
+      var postusername = '_id' + buttonname;
+      var postname = '_postid' + buttonname;
+      var postval = $('#'+ postname).val();
+      var postUserVal = $('#' + postusername).val();
+      
+     
+
+      var form = $('#viewPost');
+      $('#_id').val(postUserVal);
+      $('#_postid').val(postval)
+      form.submit();
+      
+        
+    });
+    </script>
   </div>
   <form id="viewPost" action="/viewpost" method="POST">
   
@@ -91,22 +220,62 @@
   
 
   <div id="recentArtists" class="col-md-6" style="vertical-align:top;"> 
-    
+    <h2><a href = "/artists">Recent artists joined all locations (Browse them all)</a></h2>
+    <table id="artistsTable" class="table table-striped">
+      <thead>
+          <tr>
+              <th style="text-align:left">Name</th>
+              <th style="text-align:left">Contribution in Theatre</th>
+              <th style="text-align:left">City</th>
+              <th style="text-align:left">FB profile</th>
+          </tr>
+      </thead>
+      <tbody class="searchable">
+        
+                <% if (typeof users != 'undefined') { 
+                  for(var i=0; i < users.length; i++) { %>
+                    <tr>
+                    <td><%= users[i].facebook.name%></td>
+                      <% if(typeof users[i].local.role == 'undefined' || users[i].local.role.length == 0) { %>
+                            <td>Not updated yet</td>
+                      <% } else { %>  
+                            <td><%= users[i].local.role %></td>
+                      <% } %>            
+
+                       <% if(typeof users[i].local.city == 'undefined' || users[i].local.city == "") { %>
+                            <td>Not Set</td>
+                          <% } else { %>  
+                            <td><%= users[i].local.city %></td>
+                          <% } %> 
+                        <% if(users[i].facebook.link) { %>
+                            <td><a href = "<%=users[i].facebook.link%>" target="_blank"><img alt="" src=<%= users[i].local.picture %> class="img-circle" style="max-height:30px;max-width:30px"></a></td>
+                        <% } else { %>
+                            <td>Not shared</td>
+                        <% } %>
+                    
+                    </tr>
+                  <%}%>     
+                <%}%>  
+          
+          
+          
+      </tbody>
+     </table>
   </div>     
   
   
   <div id="slide-3" style="clear:both;">
     <% if (typeof citysel == 'undefined' || citysel == "") { %>
-        <h2 style="text-align:center;"><a href="/allevents" >Buzzing Events in all locations(Search all here)</a></h2>
+        <h2 style="text-align:center;"><a href="/allevents" >Top 5 Buzzing Events in all locations(Browse all here)</a></h2>
      <% } else { %>
-        <h2 style="text-align:center;"><a href="/allevents" >Buzzing Events in <%=citysel%> (Search all here)</a></h2>   
+        <h2 style="text-align:center;"><a href="/allevents" >Top 5 Buzzing Events in <%=citysel%> (Browse all here)</a></h2>   
      <% } %>
       
       <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
         <div id="arrows">
           <div id="arrow-left"></div>
           <div id="arrow-right"></div>
-        </div><!-- /.arrows -->
+        </div>
 
           <div class="row" style="position:relative">
           <% for(var i = 0; i < events.length; i++) {%>
@@ -114,8 +283,8 @@
                     var displayableDate = getDate(d);
               %>
               <div class="col-12" style="padding-left:30px;">
-                    <a href = "<%=events[i].event.link%>" target="_blank" style="max-width:300px;max-height:200px;text-decoration: none;">
-                      <img src="<%=events[i].event.eventcover%>" border=0   style="max-width:300px;max-height:200px;"/>
+                    <a href = "<%=events[i].event.link%>" target="_blank" style="max-width:250px;max-height:200px;text-decoration: none;">
+                      <img src="<%=events[i].event.eventcover%>" border=0   style="max-width:250px;max-height:200px;"/>
                       <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
                       <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> on <%=displayableDate%></span>
                       <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
@@ -127,7 +296,9 @@
           <% }  %>
           </div><!-- /row -->
       
-      <% } %>    
+      <% } else { %>  
+      <h3 style="text-align:center;"><a href="/allevents" >Sorry, no recent events posted in <%=citysel%>, click here to search events in other locations</a></h3>   
+      <% } %>
     </div><!-- /slide3 -->
   
     
@@ -280,16 +451,13 @@
 
     
 $("#footer").load("footer.ejs"); 
-$("#headerloggedin").load("/header");
-$("#headerloggedout").load("headerloggedout.ejs");
-$("#recentArtists").load("/getRecentArtists");
-$("#recentPosts").load("/getRecentPosts");
+// $("#headerloggedin").load("/header");
+// $("#headerloggedout").load("headerloggedout.ejs");
+// $("#recentArtists").load("/getRecentArtists");
+// $("#recentPosts").load("/getRecentPosts");
 
 
         $(document).ready(function() {
-          //var form = $('#recentArtists');
-          
-          // Check to see every 10 seconds..if a new user has joined
           var timerId;
           timerId = setInterval(function() {
             $("#recentArtists").load("/getRecentArtists");

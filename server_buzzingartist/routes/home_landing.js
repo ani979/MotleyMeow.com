@@ -112,13 +112,13 @@ exports.landing_home = function(req, res) {
     //Get all posts
     if(typeof selectedCity != undefined && selectedCity.length != 0) {
         Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                            { 'post.date': { $lte: new Date() } } ] } } , {$limit:5},{ $sort : { 'post.date' : -1 } }],
+                            { 'post.date': { $lte: new Date() } } ] } } , { $sort : { 'post.date' : -1 } }, {$limit:5}],
                             function(err, postsinDB) {
              if (err || typeof postsinDB == 'undefined') {
                 console.log("Error while getting posts");
                 // res.send({ error: error }); 
                 req.flash('info', "Error while retrieving posts")
-                res.redirect('/error'); 
+                res.render('Landing', { user: req.session.user, postss: {}, events: {}});
                 return;       
              }    
 
@@ -129,56 +129,61 @@ exports.landing_home = function(req, res) {
                 posts = {};
             }
 
-            Event.find({ $and: [ { 'event.city': { $in: selectedCity } }, 
-                            { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] },
-                        {event:1}, function(err, eventsInDB) {
+            Event.aggregate([{ $match: { $and: [ { 'event.city': { $in: selectedCity } }, 
+                            { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] } }, { $sort : { 'event.date' : 1 } }, {$limit:5}]
+                        , function(err, eventsInDB) {
                 if(err) {
                     events = {};
                     console.log("Am i here");
                     res.render('Landing', { user: req.session.user, postss: posts, events: events});
-                }
+                } 
+                    User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
+                            function(err, recentUsers) {
+                              res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers})
+                    });
+
                 
-                console.log("eventsInDB " + eventsInDB.length);
-                Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
-                            { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}
-                            , function(err, allPlays) {
+                // console.log("eventsInDB " + eventsInDB.length);
+                // Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
+                //             { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}
+                //             , function(err, allPlays) {
                                 
-                    playEvents = allPlays;
-                    playEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                    console.log("plays length is "  + allPlays.length);
-                    Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
-                            { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Workshop" }]}
-                            , function(err, allWorkshops) {
-                                console.log("Workshops length is "  + allWorkshops.length);
-                        workshopEvents = allWorkshops;
-                        workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                        Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
-                            { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
-                            , function(err, allOthers) {
+                //     playEvents = allPlays;
+                //     playEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                //     console.log("plays length is "  + allPlays.length);
+                //     Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
+                //             { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Workshop" }]}
+                //             , function(err, allWorkshops) {
+                //                 console.log("Workshops length is "  + allWorkshops.length);
+                //         workshopEvents = allWorkshops;
+                //         workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                //         Event.distinct('event', {$and: [ { 'event.city': { $in: selectedCity } }, 
+                //             { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
+                //             , function(err, allOthers) {
                       
-                            otherEvents = allOthers;
-                            otherEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                            res.render('Landing', 
-                                { user: req.session.user, 
-                                    postss: posts, events: eventsInDB,
-                                    plays:playEvents, workshops:workshopEvents,others:otherEvents
-                                    });
-                        });
-                    });        
-                });    
+                //             otherEvents = allOthers;
+                //             otherEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                //             res.render('Landing', 
+                //                 { user: req.session.user, 
+                //                     postss: posts, events: eventsInDB,
+                //                     plays:playEvents, workshops:workshopEvents,others:otherEvents
+                //                     });
+                //         });
+                //     });        
+                // });    
 
                 
             });
 
         });    
     } else {
-            Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , {$limit:5},{ $sort : { 'post.date' : -1 } }],
+            Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, {$limit:5}],
                             function(err, postsinDB) {
              if (err || typeof postsinDB == 'undefined') {
                 console.log("Error while getting posts");
                 // res.send({ error: error }); 
                 req.flash('info', "Error while retrieving posts")
-                res.redirect('/error'); 
+                res.render('Landing', { user: req.session.user, postss: {}, events: {} } );
                 return;       
              }    
 
@@ -189,40 +194,43 @@ exports.landing_home = function(req, res) {
                 posts = {};
             }
 
-            Event.find({ 'event.date': { $gte: new Date(new Date().toISOString()) } },
-                        {event:1}, function(err, eventsInDB) {
+            Event.aggregate([{ $match: { 'event.date': { $gte: new Date() } } }, { $sort : { 'event.date' : 1 } }, {$limit:5}],
+                        function(err, eventsInDB) {
                 if(err) {
                     events = {};
                     console.log("Am i here");
                     res.render('Landing', { user: req.session.user, postss: posts, events: events});
                     return;
                 }
-                
-                console.log("eventsInDB " + eventsInDB.length);
-                Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}
-                            , function(err, allPlays) {
+                    User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
+                            function(err, recentUsers) {
+                              res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers})
+                    });
+                // console.log("eventsInDB " + eventsInDB.length);
+                // Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}
+                //             , function(err, allPlays) {
                                 
-                    playEvents = allPlays;
-                    playEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                    console.log("plays length is "  + allPlays.length);
-                    Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Workshop" }]}
-                            , function(err, allWorkshops) {
-                                console.log("Workshops length is "  + allWorkshops.length);
-                        workshopEvents = allWorkshops;
-                        workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                        Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
-                            , function(err, allOthers) {
+                //     playEvents = allPlays;
+                //     playEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                //     console.log("plays length is "  + allPlays.length);
+                //     Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Workshop" }]}
+                //             , function(err, allWorkshops) {
+                //                 console.log("Workshops length is "  + allWorkshops.length);
+                //         workshopEvents = allWorkshops;
+                //         workshopEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                //         Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Others" }]}
+                //             , function(err, allOthers) {
                       
-                            otherEvents = allOthers;
-                            otherEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
-                            res.render('Landing', 
-                                { user: req.session.user, 
-                                    postss: posts, events: eventsInDB,
-                                    plays:playEvents, workshops:workshopEvents,others:otherEvents
-                                    });
-                        });
-                    });        
-                });    
+                //             otherEvents = allOthers;
+                //             otherEvents.sort(function(a,b) { return Date.parse(a.date) - Date.parse(b.date) } );
+                //             res.render('Landing', 
+                //                 { user: req.session.user, 
+                //                     postss: posts, events: eventsInDB,
+                //                     plays:playEvents, workshops:workshopEvents,others:otherEvents
+                //                     });
+                //         });
+                //     });        
+                // });    
 
                 
             });

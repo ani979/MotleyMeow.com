@@ -46,7 +46,7 @@ $(function() {
 					images_per_row = gallery_images.length / 2 + 1;
 				}
 				//alert(" $('#slide-3 img').width() " + $('#slide-3 img').width() + " and length " + $('#slide-3 img').length)
-				var gallery_width = $('#slide-3 img').width() * $('#slide-3 img').length + 100 * $('#slide-3 img').length;
+				var gallery_width = $('#slide-3 img').width() * $('#slide-3 img').length + 50 * $('#slide-3 img').length;
 				// gallery_width /= 2;
 				// if ( $('#slide-3 img').length % 2 != 0 ) {
 				// 	gallery_width += $('#slide-3 img').width();
