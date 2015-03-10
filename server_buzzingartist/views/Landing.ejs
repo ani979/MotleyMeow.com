@@ -193,6 +193,7 @@
       </tbody>
     </table>
     <script>
+
     $('button[id="view"]').on('click', function(e){
      
       var buttonname = $(this).attr('name');
@@ -272,7 +273,7 @@
      <% } %>
       
       <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
-        <div id="arrows">
+        <div id="arrows" style="display:none">
           <div id="arrow-left"></div>
           <div id="arrow-right"></div>
         </div>
@@ -374,6 +375,8 @@
             <button id="closebtn" class="btn btn-warning pull-right" style="margin-top:30px;">Don't bore me now, will fill later</button>
         </div>
         <script type="text/javascript">
+
+           
           $(document).ready(function(){
             var dialog = new BootstrapDialog({
             message: function(dialogRef){
@@ -451,6 +454,26 @@
 
     
 $("#footer").load("footer.ejs"); 
+  var isMobile = {
+                Android: function() {
+                return navigator.userAgent.match(/Android/i);
+                },
+                BlackBerry: function() {
+                return navigator.userAgent.match(/BlackBerry/i);
+                },
+                iOS: function() {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+                },
+                Opera: function() {
+                return navigator.userAgent.match(/Opera Mini/i);
+                },
+                Windows: function() {
+                return navigator.userAgent.match(/IEMobile/i);
+                },
+                any: function() {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+                }
+            };
 // $("#headerloggedin").load("/header");
 // $("#headerloggedout").load("headerloggedout.ejs");
 // $("#recentArtists").load("/getRecentArtists");
@@ -458,6 +481,9 @@ $("#footer").load("footer.ejs");
 
 
         $(document).ready(function() {
+          if(isMobile.any()) {
+            $('#arrows').show();
+          }  
           var timerId;
           timerId = setInterval(function() {
             $("#recentArtists").load("/getRecentArtists");

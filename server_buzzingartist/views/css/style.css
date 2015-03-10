@@ -341,13 +341,13 @@ imageUpdateField {
 }
 
 #arrows {
-    height: 80px;
-    position: absolute;
-    width: 80px;
-    z-index: 1000;
-    right: 90px;
-    bottom: 260px;
- }   
+  height: 80px;
+  position: absolute;
+  width: 80px;
+  z-index: 1000;
+  right:20px;
+  bottom:95px;
+}
 
 #arrows div {
   background-image: url('../images/website-arrows.png');
