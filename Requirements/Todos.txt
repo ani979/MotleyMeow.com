@@ -19,7 +19,7 @@ TodoS:
 16) Add picture in the right most corner. - DONE
 17) Check the header for profile update. Doesnt look right. Also check why the highlight doesnt move in the header
 18) Sometimes event.url is undefined and hence throws an error.
-19) 
+19) try to use user-agent to make a differnece between mobile and system (laptop) so as not to display the scrolling image over event images on the landing page
 
 
 GOOD TO HAVE:
