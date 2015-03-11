@@ -161,8 +161,8 @@
     <table id="postsTable" class="table table-striped">
       <thead>
           <tr>
-              <th style="text-align:left">Last Updated On</th>
-              <th style="text-align:left">Searching for</th>
+              <th style="text-align:left">Looking for</th>
+              <th style="text-align:left">artists required</th>
               <th style="text-align:left">City</th>
               <th style="text-align:left">Details</th>
           </tr>
@@ -176,7 +176,7 @@
         <%}  else { %>
                 <% for(var i=0; i < postss.length; i++) { %>
                   <tr>
-                  <td><%= getDate(new Date(postss[i].post.date).toISOString()) %></td>
+                  <td><%= postss[i].post.postTitle %></td>
                   <td><%= postss[i].post.role %></td>
                   <td><%= postss[i].post.city %></td>
                   
@@ -267,9 +267,9 @@
   
   <div id="slide-3" style="clear:both;">
     <% if (typeof citysel == 'undefined' || citysel == "") { %>
-        <h2 style="text-align:center;"><a href="/allevents" >Upcoming Buzzing Events in all locations(Browse all here)</a></h2>
+        <h2 style="text-align:center;"><a href="/allevents" >Upcoming Events in all locations(Browse all here)</a></h2>
      <% } else { %>
-        <h2 style="text-align:center;"><a href="/allevents" >Upcoming Buzzing Events in <%=citysel%> (Browse all here)</a></h2>   
+        <h2 style="text-align:center;"><a href="/allevents" >Upcoming Events in <%=citysel%> (Browse all here)</a></h2>   
      <% } %>
       
       <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
