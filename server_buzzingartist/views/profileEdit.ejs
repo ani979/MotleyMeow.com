@@ -113,8 +113,9 @@
                              <div class="form-group">
                                  <label class="col-sm-3 control-label" for="email">Email address</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="email" id="card-holder-name" placeholder="Card Holder's Name" 
-                                  value = "<%= user.facebook.email %>" readonly >
+                                  <input type="text" class="form-control" name="email" id="card-holder-name" placeholder="Email id" 
+                                  value = "<%= user.facebook.email %>" >
+                                  <input type="hidden" name = "userId" value = <%= user.facebook.id %> >
                                  </div>  
                               </div>
                                

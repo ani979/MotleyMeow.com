@@ -20,7 +20,9 @@ TodoS:
 17) Check the header for profile update. Doesnt look right. Also check why the highlight doesnt move in the header
 18) Sometimes event.url is undefined and hence throws an error. - FIXED by checking
 19) Header is currently loaded aja way...any other way to load it.
-
+20) When deleting a user - you must remove his/her posts too...
+21) Add in all res.redirect(error), the message.
+22) Ajax query in the landing page.ejs goes on even if user moves out of the page or logs out..etc..
 
 GOOD TO HAVE:
 1) Add theatre group details also.. - TBD

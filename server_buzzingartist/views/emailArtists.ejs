@@ -144,7 +144,7 @@
           cities = $('input:checkbox[name="city"]').map(function() {
            return this.value;
          }).get().join(',');
-          cities = cities + ",null";
+          
           selectedCitiesValue = "All Cities"
         }
         //alert("cities " + cities);
@@ -166,7 +166,7 @@
           roles = $('input:checkbox[name="role"]').map(function() {
             return this.value;
           }).get().join(',');
-          roles = roles + ",null";
+          
           selectedRoleValue = "All roles selected"
         }
         
@@ -190,7 +190,7 @@
           lang = $('input:checkbox[name="lang"]').map(function() {
             return this.value;
           }).get().join(',');
-          lang = lang + ",null";
+          
           selectedLangValue = "All Languages";
         }
         //alert("lang " + lang);

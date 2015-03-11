@@ -188,7 +188,7 @@ exports.searchPosts = function (req, res) {
 exports.getRecentPosts = function (req, res) {
     //console.log(" here in recent posts");
      var selectedCity = new Array();
-     //console.log(" foundUser.local.city " + req.session.user.local.city)
+     //console.log(" req.session.user " + req.session.user)
     if(typeof req.session.user.local.city != 'undefined' && req.session.user.local.city != "") {
         if(req.session.user.local.city == "Bengaluru" || req.session.user.local.city == "Bangalore") {
             selectedCity.push("Bangalore", "Bengaluru");
@@ -217,7 +217,7 @@ exports.getRecentPosts = function (req, res) {
                                   }    
                                 });  
     } else {
-         Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, , {$limit:5} ],
+         Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
                                 function(err, recentPosts) {
                                   if(typeof recentPosts != 'undefined') {
                                       console.log("recentPosts " + recentPosts.length);
