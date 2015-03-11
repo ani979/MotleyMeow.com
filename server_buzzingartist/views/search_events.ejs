@@ -53,10 +53,10 @@
      
        <div class="row">    
          <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-placeholder="false" data-label-placement>Select City</button>
+              <button type ="button" class="btn btn-primary" data-label-placement id="citySel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bangalore" onchange="filterme()"><label for="Bengaluru">Bengaluru</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bangalore" onchange="filterme()" ><label for="Bengaluru">Bengaluru</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai" onchange="filterme()"><label for="Chennai">Chennai</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"onchange="filterme()"><label for="Delhi">Delhi</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" onchange="filterme()"><label for="Mumbai">Mumbai</label></li>
@@ -67,7 +67,7 @@
            </div>
 
             <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false">Select Category</button>
+              <button type ="button" class="btn btn-primary" data-label-placement id = "categorySel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input class = "categorycheck" type="checkbox" id="Play" name="category" value="Play" onchange="filterme()"><label for="Play">Play</label></li>
@@ -126,7 +126,7 @@
                                       </div>
                                     </a>
                                   </td>
-                                  <td><img src="<%=allEvents[i].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive imagedisplay"></img></td>
+                                  <td><img src="<%=allEvents[i].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive imagedisplay" style="max-width:300px;max-height:300px;"></img></td>
                                   <td  style = "width:250px; font-size:20px;"><%=displayableDate%></td>
                                   <td  style = "width:250px; font-size:20px;"><%= allEvents[i].city %></td>
                                   <td  style = "width:250px; font-size:20px;"><%= allEvents[i].eventCategory %></td>
@@ -153,8 +153,11 @@
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
     var filterTable;
+    var selectCity = "Select City";
+    var selectCategory = "Select Category";
     $(document).ready(function(){
-
+        $('button[id="citySel"]').html(selectCity);
+        $('button[id="categorySel"]').html(selectCategory);
          filterTable = $('#mytable').DataTable( {
         "order": [[ $('.eDate').index(), "asc" ]]
         } );
@@ -219,6 +222,9 @@
 function uncheckAll(){
 
   $('input[type="checkbox"]:checked').prop('checked',false);
+  $('button[id="citySel"]').html(selectCity);
+  $('button[id="categorySel"]').html(selectCategory);
+
 
   filterme();
 

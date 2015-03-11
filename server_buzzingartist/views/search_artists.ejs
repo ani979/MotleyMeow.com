@@ -41,7 +41,7 @@
      
        <div class="row">    
           <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false"> Select City</button>
+              <button type ="button" class="btn btn-primary" data-label-placement id="citySel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru" onchange="filterme()"><label for="Bengaluru">Bengaluru</label></li>
@@ -54,7 +54,7 @@
               </ul>
            </div>
            <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false">Select Artists</button>
+              <button type ="button" class="btn btn-primary" data-label-placement id = "artistSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" onchange="filterme()"><label for="Actor">Actor</label></li>
@@ -68,7 +68,7 @@
               </ul>
            </div>
            <div class="btn-group">
-              <button type ="button" class="btn btn-primary" data-label-placement data-placeholder="false" id="SelectAllLang">Language comfortability</button>
+              <button type ="button" class="btn btn-primary" data-label-placement id="languageSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" onchange="filterme()"><label for="Hindi">Hindi</label></li>
@@ -155,10 +155,16 @@
      $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
+    var selectCity = "Select City";
+    var selectRole = "Select Artists";
+    var selectLang = "Language comfortability";
     var filterTable;
     $(document).ready(function(){
 
       filterTable = $('#mytable').DataTable();
+      $('button[id="citySel"]').html(selectCity);
+      $('button[id="artistSel"]').html(selectRole);
+      $('button[id="languageSel"]').html(selectLang);
     });
 
 
@@ -204,12 +210,10 @@
     function uncheckAll(){
       //alert("here");
       $('input[type="checkbox"]:checked').prop('checked',false);
-      // var x = document.getElementById("SelectAllLang"); 
-      // alert("x " + x.name);
-      // x.data-placeholder = "None";
-      // $('input[type="button"][id="SelectAll"]').prop("data-placeholder", "Type your answer here");
+      $('button[id="citySel"]').html(selectCity);
+      $('button[id="artistSel"]').html(selectRole);
+      $('button[id="languageSel"]').html(selectLang);
       filterme();
-      //$('#SelectAll').prop('data-placeholder',"Nothing");
     }
     
    $(document).ready(function(){
