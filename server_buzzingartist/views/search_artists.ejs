@@ -29,12 +29,12 @@
   <%}%> 
 
 <div class = "main-container">
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+  <div class="col-md-12" style = "text-align: center;">
     <h3 class = "thtrexplore">
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
   </div>
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;" id = "searchartists">
+  <div class="col-md-12" style = "text-align: center;" id = "searchartists">
     <h3>
       ARTISTS AROUND YOU
      </h3>
@@ -44,11 +44,16 @@
               <button type ="button" class="btn btn-primary" data-label-placement id="citySel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
+                  <% var cities = dropdowns.alldropdowns.citiesForPost;
+                    for(var i = 0; i < cities.length; i ++) {   %>
+                      <li><input class = "citycheck" type="checkbox" id="<%=cities[i].city%>" name="city" value="<%=cities[i].city%>" onchange="filterme()"><label for="<%=cities[i].city%>"><%=cities[i].text%></label></li>
+                    <% } %>  
+                <!-- <ul class="dropdown-menu">
                   <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru" onchange="filterme()"><label for="Bengaluru">Bengaluru</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai" onchange="filterme()"><label for="Chennai">Chennai</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi" onchange="filterme()"><label for="Delhi">Delhi</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" onchange="filterme()"><label for="Mumbai">Mumbai</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="Kolkata" name="city" value="Kolkata" onchange="filterme()"><label for="Kolkata">Kolkata</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Kolkata" name="city" value="Kolkata" onchange="filterme()"><label for="Kolkata">Kolkata</label></li> -->
                   
                   <input type="hidden" name="selectedcity" id="selected" value="">
               </ul>
@@ -57,26 +62,34 @@
               <button type ="button" class="btn btn-primary" data-label-placement id = "artistSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" onchange="filterme()"><label for="Actor">Actor</label></li>
+                  <% var roles = dropdowns.alldropdowns.roles;
+                    for(var i = 0; i < roles.length; i ++) {   %>
+                      <li><input class = "artistscheck" type="checkbox" id="<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" onchange="filterme()"><label for="<%=roles[i].role%>"><%=roles[i].text%></label></li>
+                    <% } %>
+                  <!-- <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" onchange="filterme()"><label for="Actor">Actor</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="Director" name="role" value="Director" onchange="filterme()"><label for="Director">Director</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="Lights" name="role" value="Lights" onchange="filterme()"><label for="Lights">Lights Designer</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="Sound" name="role" value="Sound" onchange="filterme()"><label for="Sound">Sound</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="Music" name="role" value="Music" onchange="filterme()"><label for="Music">Music</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="Scriptwriter" name="role" value="Scriptwriter" onchange="filterme()"><label for="Scriptwriter">Scriptwriter/Translator</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="CostumeDesign" name="role" value="Costume" onchange="filterme()"><label for="CostumeDesign">Costume Designer</label></li>
-                  <li><input class = "artistscheck" type="checkbox" id="SetDesign" name="role" value="SetDesign" onchange="filterme()"><label for="SetDesign">Set Design</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="SetDesign" name="role" value="SetDesign" onchange="filterme()"><label for="SetDesign">Set Design</label></li> -->
               </ul>
            </div>
            <div class="btn-group">
               <button type ="button" class="btn btn-primary" data-label-placement id="languageSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" onchange="filterme()"><label for="Hindi">Hindi</label></li>
+                  <% var languages = dropdowns.alldropdowns.languages;
+                    for(var i = 0; i < languages.length; i ++) {   %>
+                      <li><input class = "langcheck" type="checkbox" id="<%=languages[i]%>" name="lang" value="<%=languages[i]%>" onchange="filterme()"><label for="<%=languages[i]%>"><%=languages[i]%></label></li>
+                  <% } %>
+                  <!-- <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" onchange="filterme()"><label for="Hindi">Hindi</label></li>
                   <li><input class = "langcheck" type="checkbox" id="Kannada" name="lang" value="Kannada"onchange="filterme()"><label for="Kannada">Kannada</label></li>
                   <li><input class = "langcheck" type="checkbox" id="Marathi" name="lang" value="Marathi"onchange="filterme()"><label for="Marathi">Marathi</label></li>
                   <li><input class = "langcheck" type="checkbox" id="Bengali" name="lang" value="Bengali"onchange="filterme()"><label for="Bengali">Bengali</label></li>
                   <li><input class = "langcheck" type="checkbox" id="Tamil" name="lang" value="Tamil"onchange="filterme()"><label for="Tamil">Tamil</label></li>
-                  <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"onchange="filterme()"><label for="English">English</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"onchange="filterme()"><label for="English">English</label></li> -->
                  
               </ul>
            </div>

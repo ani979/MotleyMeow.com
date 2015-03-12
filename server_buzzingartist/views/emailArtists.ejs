@@ -59,12 +59,16 @@
               <button type ="button" class="btn btn-primary" data-label-placement id="citySel"> </button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru" ><label for="Bengaluru">Bengaluru</label></li>
+                  <% var cities = dropdowns.alldropdowns.citiesForPost;
+                    for(var i = 0; i < cities.length; i ++) {   %>
+                      <li><input class = "citycheck" type="checkbox" id="<%=cities[i].city%>" name="city" value="<%=cities[i].city%>"><label for="<%=cities[i].city%>"><%=cities[i].text%></label></li>
+                    <% } %> 
+                 <!--  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru" ><label for="Bengaluru">Bengaluru</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai" ><label for="Chennai">Chennai</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi" ><label for="Delhi">Delhi</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" ><label for="Mumbai">Mumbai</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Kolkata" name="city" value="Kolkata" ><label for="Kolkata">Kolkata</label></li>
-                  
+                   -->
                   <input type="hidden" name="selectedcity" id="selected" value="">
               </ul>
            </div>
@@ -72,7 +76,11 @@
               <button type ="button" class="btn btn-primary" data-label-placement id = "artistSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" ><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" ><label for="Actor">Actor</label></li>
+                  <% var roles = dropdowns.alldropdowns.roles;
+                    for(var i = 0; i < roles.length; i ++) {   %>
+                      <li><input class = "artistscheck" type="checkbox" id="<%=roles[i].role%>" name="role" value="<%=roles[i].role%>"><label for="<%=roles[i].role%>"><%=roles[i].text%></label></li>
+                    <% } %>
+                  <!-- <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" ><label for="Actor">Actor</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="Director" name="role" value="Director" ><label for="Director">Director</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="Lights" name="role" value="Lights" ><label for="Lights">Lights Designer</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="Sound" name="role" value="Sound" ><label for="Sound">Sound</label></li>
@@ -80,20 +88,24 @@
                   <li><input class = "artistscheck" type="checkbox" id="Scriptwriter" name="role" value="Scriptwriter" ><label for="Scriptwriter">Scriptwriter/Translator</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="CostumeDesign" name="role" value="Costume" ><label for="CostumeDesign">Costume Designer</label></li>
                   <li><input class = "artistscheck" type="checkbox" id="SetDesign" name="role" value="SetDesign" ><label for="SetDesign">Set Design</label></li>
-                  <li><input class = "artistscheck" type="checkbox" id="AllRoles" name="allRole" value="AllRoles"><label for="AllRoles">Any role</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="AllRoles" name="allRole" value="AllRoles"><label for="AllRoles">Any role</label></li> -->
               </ul>
            </div>
            <div class="btn-group">
               <button type ="button" class="btn btn-primary" data-label-placement  id = "languageSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" ><label for="Hindi">Hindi</label></li>
+                  <% var languages = dropdowns.alldropdowns.languages;
+                    for(var i = 0; i < languages.length; i ++) {   %>
+                      <li><input class = "langcheck" type="checkbox" id="<%=languages[i]%>" name="lang" value="<%=languages[i]%>"><label for="<%=languages[i]%>"><%=languages[i]%></label></li>
+                  <% } %>
+                 <!--  <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" ><label for="Hindi">Hindi</label></li>
                   <li><input class = "langcheck" type="checkbox" id="Kannada" name="lang" value="Kannada"><label for="Kannada">Kannada</label></li>
                   <li><input class = "langcheck" type="checkbox" id="Marathi" name="lang" value="Marathi"><label for="Marathi">Marathi</label></li>
                   <li><input class = "langcheck" type="checkbox" id="Bengali" name="lang" value="Bengali"><label for="Bengali">Bengali</label></li>
                   <li><input class = "langcheck" type="checkbox" id="Tamil" name="lang" value="Tamil"><label for="Tamil">Tamil</label></li>
                   <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"><label for="English">English</label></li>
-                 <li><input class = "langcheck" type="checkbox" id="AllLanguages" name="allLang" value="AllLanguages"><label for="AllLanguages">Doesn't matter</label></li>
+                 <li><input class = "langcheck" type="checkbox" id="AllLanguages" name="allLang" value="AllLanguages"><label for="AllLanguages">Doesn't matter</label></li> -->
               </ul>
            </div>
            <div class="btn-group">

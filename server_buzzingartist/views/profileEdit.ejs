@@ -145,12 +145,16 @@
                                 <div class="col-sm-9">
 
                                   <select class="form-control" value="<%= user.local.city %>" name="city">
-                                            <option>Bengaluru</option>
+                                    <% var cities = dropdowns.alldropdowns.cities;
+                                        for(var i = 0; i < cities.length; i ++) {   %> 
+                                            <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
+                                            <!-- <option>Bengaluru</option>
                                             <option>Chennai</option>
                                             <option>Delhi</option>
                                             <option>Mumbai</option>
                                             <option>Kolkata</option>
-                                            <option value="Other">None of the above</option>
+                                            <option value="">None of the above</option> -->
+                                         <% } %>   
                                   </select> 
                                   </div>
                               </div>
@@ -186,12 +190,16 @@
                             <div id="animesh" class="form-group" style = "margin-left:1px; margin-right=1px; ">
                                 <label class="control-label">Your association or interests in theatre:</label> 
                                   <br>
-                              <div class = "col-sm-6">
-                                <label class="checkbox-inline col-sm-3">
-                                      <input type="checkbox" id="checkboxinlineActing" name="role" value="Actor" > Acting
-                                </label>
-                             </div>  
-                              <div class = "col-sm-6">
+
+                              <% var roles = dropdowns.alldropdowns.roles;
+                              for(var i = 0; i < roles.length; i ++) {   %> 
+                                <div class = "col-sm-6">
+                                  <label class="checkbox-inline">
+                                        <input type="checkbox" id="checkboxinline<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" ><%=roles[i].text%>
+                                  </label>
+                               </div>  
+                             <% } %>
+                             <!--  <div class = "col-sm-6">
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineDirecting" name="role" value="Director" > Direction
                                 </label>
@@ -225,17 +233,20 @@
                                 <label class="checkbox-inline">
                                       <input type="checkbox" id="checkboxinlineSetDesign" name="role"  value="SetDesign" > Set Designing
                                 </label>
-                              </div> 
+                              </div>  -->
                           </div>        
 
                             <div class="form-group" style = "margin-left:1px; margin-right:1px; margin-bottom:5px;"><b>What languages are you most comfortable with:</b>
                               <div class="panel-body" style = "padding-top:5px; padding-bottom:5px;">
+                                      <% var languages = dropdowns.alldropdowns.languages;
+                                        for(var i = 0; i < languages.length; i ++) {   %> 
                                       <div class = "col-sm-3">
                                           <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="kannadalang" value="Hindi" name="lang"/> Hindi
+                                              <input type="checkbox" id="<%=languages[i]%>lang" value="<%=languages[i]%>" name="lang"/> <%=languages[i]%>
                                           </label>
                                       </div>
-                                      <div class = "col-sm-3">
+                                      <% } %>
+                                     <!--  <div class = "col-sm-3">
                                           <label class="checkbox-inline" style="padding-left:5px;">
                                               <input type="checkbox" id="hindilang" value="Kannada" name="lang"/> Kannada
                                           </label>
@@ -260,7 +271,7 @@
                                           <label class="checkbox-inline" style="padding-left:5px;">
                                               <input type="checkbox" id="englishlang" value="English" name="lang"/> English
                                           </label>
-                                      </div>
+                                      </div> -->
                                       
                                   </div> 
                                </div>     

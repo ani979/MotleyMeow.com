@@ -1,5 +1,6 @@
 var User = require('../models/user.js');
 var Post = require('../models/posts.js');
+var dropdowns = require('../views/js/theatreContrib.js');
 
 
 exports.artist = function (req, res) {
@@ -55,7 +56,7 @@ exports.update = function (req, res) {
 
                    req.session.user = user;
                    req.session.loggedIn = true;
-                   res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful"});
+                   res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful", dropdowns:dropdowns});
                });
             } else if(req.body.btnvalue == "delete") {
                 console.log(" I am in delete");

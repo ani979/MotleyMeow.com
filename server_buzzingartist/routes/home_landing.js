@@ -3,6 +3,7 @@ var FB              = require('fb');
 var User = require('../models/user');
 var Posts = require('../models/posts.js');
 var Event = require('../models/event.js');
+var dropdowns = require('../views/js/theatreContrib.js');
 
 /*FB.options({
     appId:          config.facebook.appId,
@@ -58,7 +59,7 @@ exports.profile = function (req, res) {
         if(req.isAuthenticated()) {
             console.log("req.user city " + req.session.user.local.city);
             console.log("req.user name " + req.session.user.facebook.name);
-            res.render('profileEdit', { user: req.session.user });
+            res.render('profileEdit', { user: req.session.user, dropdowns:dropdowns});
         } else {
                 res.redirect('/');
             

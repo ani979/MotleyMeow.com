@@ -27,7 +27,7 @@
   <%}%> 
 
 <div class = "main-container">
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+  <div class="col-md-12" style = "text-align: center;">
     <h3 class = "thtrexplore">
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
@@ -46,7 +46,7 @@
             return retDate;
         }
     %>    
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;" id = "searchevents">
+  <div class="col-md-12" style = "text-align: center;" id = "searchevents">
     <h3>
       EVENTS PLAYING
      </h3>
@@ -56,11 +56,15 @@
               <button type ="button" class="btn btn-primary" data-label-placement id="citySel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bangalore" onchange="filterme()" ><label for="Bengaluru">Bengaluru</label></li>
+                  <% var cities = dropdowns.alldropdowns.citiesForPost;
+                    for(var i = 0; i < cities.length; i ++) {   %>
+                      <li><input class = "citycheck" type="checkbox" id="<%=cities[i].city%>" name="city" value="<%=cities[i].city%>" onchange="filterme()"><label for="<%=cities[i].city%>"><%=cities[i].text%></label></li>
+                    <% } %>
+                 <!--  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bangalore" onchange="filterme()" ><label for="Bengaluru">Bengaluru</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai" onchange="filterme()"><label for="Chennai">Chennai</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi"onchange="filterme()"><label for="Delhi">Delhi</label></li>
                   <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" onchange="filterme()"><label for="Mumbai">Mumbai</label></li>
-                  <li><input class = "citycheck" type="checkbox" id="Kolkata" name="city" value="Kolkata" onchange="filterme()"><label for="Kolkata">Kolkata</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Kolkata" name="city" value="Kolkata" onchange="filterme()"><label for="Kolkata">Kolkata</label></li> -->
                   
                   <!-- <input type="hidden" name="selectedcity" id="selected" value=""> -->
               </ul>
@@ -70,9 +74,13 @@
               <button type ="button" class="btn btn-primary" data-label-placement id = "categorySel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input class = "categorycheck" type="checkbox" id="Play" name="category" value="Play" onchange="filterme()"><label for="Play">Play</label></li>
+                  <% var eventCats = dropdowns.alldropdowns.eventCategories;
+                    for(var i = 0; i < eventCats.length; i ++) {   %>
+                      <li><input class = "categorycheck" type="checkbox" id="<%=eventCats[i].category%>" name="category" value="<%=eventCats[i].category%>" onchange="filterme()"><label for="<%=eventCats[i].category%>"><%=eventCats[i].text%></label></li>
+                    <% } %>
+                  <!-- <li><input class = "categorycheck" type="checkbox" id="Play" name="category" value="Play" onchange="filterme()"><label for="Play">Play</label></li>
                   <li><input class = "categorycheck" type="checkbox" id="Workshop" name="category" value="Workshop" onchange="filterme()"><label for="Workshop">Workshop</label></li>
-                  <li><input class = "categorycheck" type="checkbox" id="Others" name="category" value="Others" onchange="filterme()"><label for="Others">Others</label></li>
+                  <li><input class = "categorycheck" type="checkbox" id="Others" name="category" value="Others" onchange="filterme()"><label for="Others">Others</label></li> -->
                   
                   
                   
@@ -126,7 +134,7 @@
                                       </div>
                                     </a>
                                   </td>
-                                  <td><img src="<%=allEvents[i].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive imagedisplay" style="max-width:300px;max-height:300px;"></img></td>
+                                  <td><img src="<%=allEvents[i].eventcover%>" border=0  alt="First slide" alt="Image" class="img-responsive imagedisplay" ></img></td>
                                   <td  style = "width:250px; font-size:20px;"><%=displayableDate%></td>
                                   <td  style = "width:250px; font-size:20px;"><%= allEvents[i].city %></td>
                                   <td  style = "width:250px; font-size:20px;"><%= allEvents[i].eventCategory %></td>

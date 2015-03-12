@@ -39,17 +39,23 @@
     <!-- Textarea -->
     <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
     <div class="control-group">
-        <label class="control-label" for="textarea">EVENT ID:</label>
-        <div class="controls">       
-           
-        <input type="textarea" name="eventId" id="eventId" class="input-lg" style="text-align: center; width: 40%;" value= "">
+        <label id="eventurl" class="control-label" for="textarea">EVENT URL:</label>
+        <div class="controls" >       
+        <input type="textarea" name="eventId" id="eventId" class="input-lg" style="text-align: center; width: 40%;">
         </div>
      </div>   
 
-     <div class="control-group col-md-12">
-      <label class="control-label" for="checkboxes">Select the event category</label>
+     <div class="control-group">
+      <label class="control-label" id= "checkkind" for="checkboxes">Select the kind of event</label><br>
       <div class="controls">
-        <label class="checkbox-inline" for="checkboxes-0">
+      <% var eventCats = dropdowns.alldropdowns.eventCategories;
+            for(var i = 0; i < eventCats.length; i ++) {   %>
+              <label class="checkbox-inline" for="checkboxes-<%=eventCats[i].category%>">
+                <input name="category" id="checkboxes-<%=eventCats[i].category%>" type="checkbox" value="<%=eventCats[i].category%>"><%=eventCats[i].text%>
+              </label>  
+         <% } %>
+      
+        <!-- <label class="checkbox-inline" for="checkboxes-0">
           <input name="category" id="checkboxes-0" type="checkbox" value="Play">
          Play
         </label>
@@ -60,7 +66,7 @@
         <label class="checkbox-inline" for="checkboxes-4">
           <input name="category" id="checkboxes-4" type="checkbox" value="Others">
           Other events or festivals
-        </label>
+        </label> -->
         
       </div>
     </div>
@@ -70,11 +76,21 @@
        <div class="controls col-md-offset-5" style="width:20%;">
 
           <select class="form-control" name="city">
-                    <option>Bengaluru</option>
+            <% var cities = dropdowns.alldropdowns.cities;
+              for(var i = 0; i < cities.length; i ++) {   %> 
+                <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
+                                            <!-- <option>Bengaluru</option>
+                                            <option>Chennai</option>
+                                            <option>Delhi</option>
+                                            <option>Mumbai</option>
+                                            <option>Kolkata</option>
+                                            <option value="">None of the above</option> -->
+            <% } %>  
+            <!--         <option>Bengaluru</option>
                     <option>Chennai</option>
                     <option>Delhi</option>
                     <option>Mumbai</option>
-                    <option>Kolkata</option>
+                    <option>Kolkata</option> -->
           </select> 
         </div>
     </div>
@@ -82,7 +98,7 @@
       <div class="control-group">
       <label class="control-label" for="submitbutton">Submit your request</label>
       <div class="controls">
-        <button id="submitbutton" name="submitbutton" class="btn btn-primary">Submit</button>
+        <button id="submitbutton" name="submitbutton" class="btn btn-primary" type="submit">Submit</button>
       </div>
     </div>
 
@@ -110,17 +126,21 @@
     
    <!-- footer ends-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-   <script src="js/jquery.js"></script>
+    <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-validate.js"></script>
     <script type="text/javascript">
+    
     $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
-    $('#eventform').submit(function(event){
+    $('#eventform').submit(function(event) {
+     
       var eventDetails = document.getElementById("eventId").value;
       var splitEventbyEvent = eventDetails.split("/events/");
       var splitEventbyId;
       var idOfEvent;
+      
       var lengthofSplitEvent = splitEventbyEvent.length;
       
       if(lengthofSplitEvent > 1) {
@@ -139,6 +159,33 @@
 
       
 
+    });
+
+    $('#eventform').validate({
+            rules: {
+                eventId: {
+                  required: true
+                },
+                category: {
+                  required: true
+                }                                
+               
+            },
+
+            errorPlacement: function(error, element) {
+              if (element.attr("type") == "checkbox") {
+                  error.insertAfter($(element).closest('div').prev($('.checkkind')));
+              } else {
+                  error.insertAfter($(element).closest('div').prev($('.eventurl')));
+              }
+            },  
+            
+            highlight: function (element) {
+                $(element).closest('.control-group').removeClass('success').addClass('error');
+            },
+            success: function (element) {
+                $(element).closest('.control-group').removeClass('error').addClass('success');
+            }
     });
 
     </script>  

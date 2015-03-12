@@ -1,6 +1,7 @@
 var Posts = require('../models/posts.js');
 var User = require('../models/user.js');
 var app = require('../app.js');
+var dropdowns = require('../views/js/theatreContrib.js');
 
 exports.post = function (req, res) {
     console.log("User is " + req.session.user.facebook.email)
@@ -276,7 +277,7 @@ exports.searchallposts = function (req, res) {
                     
                     console.log("cities are " + cities);
                     console.log("err is " + err);
-                    res.render('browserequests', { user: req.session.user, allposts: posts });
+                    res.render('browserequests', { user: req.session.user, allposts: posts, dropdowns: dropdowns });
 
         });
 
@@ -288,7 +289,7 @@ exports.searchallposts = function (req, res) {
                     
                     console.log("posts are " + posts);
                     console.log("cityarr is " + err);
-                    res.render('browserequests', { user: req.session.user, allposts: posts, cityarr:cityarr, rolearr:rolearr, langarr:langarr });
+                    res.render('browserequests', { user: req.session.user, allposts: posts, cityarr:cityarr, rolearr:rolearr, langarr:langarr, dropdowns: dropdowns });
 
         }); 
 
@@ -314,7 +315,7 @@ exports.viewallposts = function (req, res) {
                 console.log("req.user " + req.user);
                 
                             
-                res.render('browserequests', { user: req.session.user, allposts: posts, rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia"});
+                res.render('browserequests', { user: req.session.user, allposts: posts, rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia", dropdowns:dropdowns});
 
                 
             });

@@ -443,5 +443,16 @@ imageUpdateField {
 .form-group.error .checkbox,.form-group.error .radio,.form-group.error input,.form-group.error select,.form-group.error textarea{color:#b94a48;}
 .form-group.error input,.form-group.error select,.form-group.error textarea{border-color:#b94a48;-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);-moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);}.form-group.error input:focus,.form-group.error select:focus,.form-group.error textarea:focus{border-color:#953b39;-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 6px #d59392;-moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 6px #d59392;box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 6px #d59392;}
 .form-group.error .input-prepend .add-on,.form-group.error .input-append .add-on{color:#b94a48;background-color:#f2dede;border-color:#b94a48;}
+table{
+    border-collapse:collapse;
+    table-layout: fixed;
+    width: 100%;
 
+}    
+
+th, td {
+    overflow-x:auto;
+    word-wrap:break-word;
+    width: 100px;
+}
 
