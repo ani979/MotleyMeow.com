@@ -1,4 +1,6 @@
 var User = require('../models/user.js');
+var Post = require('../models/posts.js');
+
 
 exports.artist = function (req, res) {
 	 var allUsers;
@@ -36,7 +38,12 @@ exports.update = function (req, res) {
                if(req.body.emailDisplay) {
                     if (req.body.emailDisplay == "ok") db.local.emailDisplay = true;
                      else db.local.emailDisplay = false;
-               }      
+               }   
+               if(req.body.receiveNotif) {
+                    if (req.body.receiveNotif == "ok") db.local.receiveNotif = true;
+                     else db.local.receiveNotif = false;
+               }
+
                db.save(function (err, user) {
                    if (err) {
                         console.log("ERRRORRRR");
@@ -52,14 +59,23 @@ exports.update = function (req, res) {
                });
             } else if(req.body.btnvalue == "delete") {
                 console.log(" I am in delete");
-                User.remove({ 'facebook.id' : id }, function(error, db) {
+                Post.remove({ 'post.userid' : id }, function(error, db) {
                     if (error) {
+                        console.log('info', "Error while removing the posts")
+                        req.session = null;
+                        res.redirect('/');
+                        return done(error);
+                    }
+                    User.remove({ 'facebook.id' : id }, function(error, db) {
+                      if (error) {
                         req.flash('info', "Error while removing the facebook user")
                         res.redirect('/error');
                         return done(error);
-                    }
-                    req.session = null;
-                    res.redirect('/');
+                      }
+                      console.log("User removed");
+                      req.session = null;
+                      res.redirect('/');
+                    });  
                 });         
             }   
         }

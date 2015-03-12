@@ -13,7 +13,8 @@ var userSchema = mongoose.Schema({
         lang         :[{}],
         emailDisplay : {type:Boolean, default:true},
         privelege    : {type:String, default:"somebody"},
-        joiningDate  :Date
+        joiningDate  :Date,
+        receiveNotif : {type:Boolean, default:true}
     },
     facebook         : {
         id           : String,

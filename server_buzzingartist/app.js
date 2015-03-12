@@ -49,61 +49,6 @@ passport.deserializeUser(function(id, done) {
 });
 
 
-
-// passport.use(new LocalStrategy(
-// {
-//         // by default, local strategy uses username and password, we will override with email
-//         usernameField : 'email',
-//         passwordField : 'password',
-//         passReqToCallback : true // allows us to pass back the entire request to the callback
-//     },
-//     function(req, email, password, done) {
-//         console.log("hereerere");
-
-//         // asynchronous
-//         // User.findOne wont fire unless data is sent back
-//         process.nextTick(function() {
-
-//             // find a user whose email is the same as the forms email
-//             // we are checking to see if the user trying to login already exists
-//             User.findOne({ 'local.email' :  email }, function(err, user) {
-//                 console.log("hereerere111");
-//                 // if there are any errors, return the error
-//                 if (err)
-//                     return done(err);
-
-//                 // check to see if theres already a user with that email
-//                 if (user) {
-//                     console.log("hereerereavc");
-//                     return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-//                 } else {
-//                     console.log("hereerere going for creation");
-
-
-//                     // if there is no user with that email
-//                     // create the user
-//                     var newUser            = new User();
-
-//                     // set the user's local credentials
-//                     newUser.local.email    = email;
-//                     newUser.local.password = newUser.generateHash(password);
-
-//                     // save the user
-//                     newUser.save(function(err) {
-//                         if (err)
-//                             throw err;
-//                         return done(null, newUser);
-//                     });
-//                 }
-
-//             });    
-
-//         });
-
-//   }));
-
-
-
 // config
 passport.use(new FacebookStrategy({
          clientID: config.facebook.clientID,
@@ -133,19 +78,7 @@ passport.use(new FacebookStrategy({
                     // if the user is found, then log them in
                     if (user) {
 
-                        // FB.api(
-                        //     '/890660314318987?access_token=' + accessToken,
-                        //     function (response) {
-                        //       if (response) {
-                        //         /* handle the result */
-                        //         console.log("came here" + response.name);
-                        //       }
-                        //     }
-                        // );
-                        // app.get('https://graph.facebook.com/events/350654041784862', function(req, res) {
-                        //      console.log("got the event", res);
-                        //     });
-                        console.log("found user");
+                     console.log("found user");
                         hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
                         req.session.hashValue = hash;
                         if(typeof user.local.joiningDate == 'undefined' || user.local.joiningDate == "") {
@@ -268,22 +201,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
-//app.use(multer({  dest: './views/tempUploads' }))
-//app.use(express.methodOverride());
-//app.use(express.session({ secret: 'my_precious' }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 //app.use(app.router);
 app.use(express.static(__dirname + '/views'));
-//        });
-
-// if ('development' == app.get('env')) {
-//   app.use(express.errorHandler());
-// }
-// app.configure('development', function() {
-//     app.use(express.errorHandler());
-// });
 
 
 
@@ -320,100 +243,6 @@ app.get('/auth/facebook/callback',
      res.redirect('/home');
 });
 
-// app.get( '/signup',          home.signup);
-// app.post( '/signup',         passport.authenticate('local', {
-//         failureRedirect: '/',
-//         failureFlash : true  
-//     }), function(req, res) {
-//             console.log("coming here");
-//             res.redirect('/');
-// });
-
-app.post('/search', function (req, res) {
-    var city = req.body.city;
-    var lang = req.body.lang;
-    var role = req.body.role;
-    var x= false;
-    if(!city && !lang && !role) {
-        x=true;
-    } else {
-        x = false;
-    }
-
-    if(!city) {
-        var cityarr = {}.toString();
-        //x= true;
-    } else {
-        console.log("city selected is " + city);
-        var cityarr = city.toString();
-        //x = false;
-    }
-    
-
-    var role = req.body.role;
-    if (!role) {
-        console.log("role selected is " + role);
-        var rolearr = {}.toString();
-        //x= true;
-    } else {
-        console.log("role selected is " + role);
-       var rolearr = role.toString();
-       //x = false;
-    }
-
-    var lang = req.body.lang;
-    if (!lang) {
-        console.log("lang selected is " + lang);
-        var langarr = {}.toString();
-        //x= true;
-    } else {
-        console.log("lang selected is " + lang);
-       var langarr = lang.toString();
-       //x = false;
-    }
-    
-    if(x) {
-        console.log("coming here as x is true");
-        User.find(function ( err, cities, count ){
-                    
-                    console.log("cities are " + cities);
-                    console.log("err is " + err);
-                    res.render('search_artists', { user: req.session.user, users: cities });
-
-        });
-
-    } else {
-        console.log("city array selected is " + cityarr);
-        User.find({ $and:[{'local.city':{$in : cityarr.split(",")}}, {'local.role':{$in : rolearr.split(",")}},
-            {'local.lang':{$in : langarr.split(",")}}]}, function ( err, artists, count ){
-                    
-                    console.log("artists are " + artists);
-                    console.log("cityarr is " + err);
-                    res.render('search_artists', { user: req.session.user, users: artists, cityarr:cityarr, rolearr:rolearr, langarr:langarr });
-
-        }); 
-
-// User.find({ $and:[{'local.city':{$in : cityarr.split(",")}}]}, function ( err, artists, count ){
-                    
-//                     console.log("artists are " + artists);
-//                     console.log("err is " + err);
-//                     res.render('search_artists', { user: req.session.user, users: artists });
-
-//         }); 
-    }   
-    
-
-});
-
-
-            
-            // User.find( function ( err, users, count ){
-                
-            //     allUsers = users
-                        
-            //     res.render('Landing', { user: req.session.user, users: allUsers });
-
-            // });
 
 app.get( '/home',  ensureAuthenticated, home.landing_home);
 app.get( '/profile', home.profile);
@@ -444,9 +273,6 @@ app.post( '/posteventDetails', post_event.posteventDetails);
 
 
 app.get('/error', function(req, res){
-    //console.log("ERROR OCCURRED " + req.flash('info') + "for User" + req.session.user.facebook.email);
-    //var msg = req.flash('info');
-    //console.log(" msg is " + req.flash('info'));
   res.render('error', { message: req.flash('info')});
 });
 
@@ -499,6 +325,3 @@ http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
 });
 
-// console.log("argv.fe_ippp: "+argv.fe_ip);
-// app.listen(8080,argv.fe_ip);
-// console.log("Express serverrrr listening on port 8080");

@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
+
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">       
         <link href="css/tab.css" rel="stylesheet">
@@ -55,7 +56,7 @@
 
 
   <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
-    <form class="form-horizontal" enctype="multipart/form-data" action="/post" method="post">
+    <form id="requestForm" class="form-horizontal" enctype="multipart/form-data" action="/post" method="post">
     
 
     <!-- Form Name -->
@@ -64,20 +65,20 @@
     <!-- Textarea -->
     <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
     <div class="control-group">
-        <label class="control-label" for="textarea">Title of the request</label>
+        <label class="control-label" for="postTitle">Title of the request</label>
         <div class="controls">  
 
         <% if (typeof post != 'undefined' && post!= null) { %>   
          <input name="_postid"  type="hidden" value=<%=post._id%>>              
-        <input type="textarea" name="postTitle" id="title" class="input-lg" style="text-align: center; width: 40%;" value= "<%=post.post.postTitle%>"> </input>
+        <input type="textarea" name="postTitle" id="postTitle" class="input-lg" style="text-align: center; width: 40%;" value= "<%=post.post.postTitle%>"> </input>
         <% } else { %> 
-          <input type="textarea" name="postTitle" id="title" class="input-lg" placeholder="Need an actor etc." style="text-align: center; width: 40%;" value=""> </input>
+          <input type="textarea" name="postTitle" id="postTitle" class="input-lg" placeholder="Need an actor etc." style="text-align: center; width: 40%;" value=""> </input>
         <% } %>
         </div>
      </div>   
       
       <div class="control-group">
-        <label class="control-label" for="textarea">Copy paste the requirement from FB or write it down</label>
+        <label class="control-label" for="post">Copy paste the requirement from FB or write it down</label>
         
           <div class="controls">                
         <% if (typeof post != 'undefined' && post!= null) { %>       
@@ -246,7 +247,10 @@
       <label class="control-label" for="submitbutton">Submit your request</label>
       <div class="controls">
         <button id="submitbutton" name="submitbutton" class="btn btn-primary">Submit</button>
+            <a href="/searchPosts"><input type="button" class="btn btn-primary" value="Back" />
+            </a>
       </div>
+
     </div>
 
      
@@ -260,9 +264,7 @@
 <!--       </form>  
       <span id="status" />
       <img id="uploadedImage" /> -->
-    <a href="/searchPosts">
-      <input type="button" value="Back" />
-    </a>
+
     <!-- <form action="/goback" method="post">
     <div class="control-group">
       <label class="control-label" for="cancelbutton">Exit the page</label>
@@ -286,10 +288,13 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
     <script src="js/lightbox.min.js"></script>
+    <script src="js/jquery-validate.js"></script>
     <script type="text/javascript">
     $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
+
+    
         
           // $(function() {
           //     alert("here");
@@ -477,8 +482,24 @@
     });
 
 
-    // $(document).ready(function() {
-     
+    $(document).ready(function() {
+        $('#requestForm').validate({
+            rules: {
+                postTitle: {
+                    required: true
+                }
+            },
+            highlight: function (element) {
+                $(element).closest('.control-group').removeClass('success').addClass('error');
+            },
+            success: function (element) {
+                element.text('OK!').addClass('valid')
+                    .closest('.control-group').removeClass('error').addClass('success');
+            }
+        });
+    }); 
+
+
     //   status('Choose a file :)');
     //   alert("coming here");
        

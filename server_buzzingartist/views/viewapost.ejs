@@ -164,7 +164,7 @@
        </div>         
        
        <div class="control-group" style="text-align:center">
-  <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser._id == user._id) { %> 
+  <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
      <% console.log("same user as logged in so can edit"); %>
      <form action="/editpost" method="POST">
         <p data-placement="top" data-toggle="tooltip" title="Edit"><button id ="edit" align="center"><span class="glyphicon glyphicon-pencil">EDIT</span></button></p>

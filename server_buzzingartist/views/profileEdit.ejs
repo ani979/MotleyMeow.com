@@ -9,7 +9,8 @@
         <link href="css/tab.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet"> 
-
+        <link href="css/bootstrap-dialog.css" rel="stylesheet">
+        <script src="js/bootstrap-dialog.js"></script>
        
           </head>
 
@@ -36,7 +37,26 @@
  <div id = "headerloggedout"></div>
   <%}%> 
 <% if (typeof infomessage != 'undefined' && infomessage != "") { %>
-  <h4 style="text-align:center"><strong> <%=infomessage%> </strong></h4>
+      <script type="text/javascript">
+          
+      </script>
+  <!-- <h4 style="text-align:center"><strong> <%=infomessage%> </strong></h4> -->
+        
+      <div class="modal fade col-lg-12" id="successprofile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="open-ViewDialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+
+              <h4 class="modal-title" id="myModalLabel">Profile updated successfully</h4>
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
 <%}%>
 <div> 
 
@@ -85,7 +105,7 @@
                 <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:180px;padding-bottom:0px;"> </div>
 
   <div class=" col-md-9 col-lg-9 "> 
-    <form class="form-horizontal" role="form" action="/update" method="post">
+    <form id = "profileUpdateForm" class="form-horizontal" role="form" action="/update" method="post">
 
 
         <fieldset>
@@ -113,10 +133,11 @@
                              <div class="form-group">
                                  <label class="col-sm-3 control-label" for="email">Email address</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="email" id="card-holder-name" placeholder="Email id" 
+                                  <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
                                   value = "<%= user.facebook.email %>" >
+                                  <p><span class="fieldNote">We currently don't do validation of emails. Please ensure you key in the right one else you are easy to miss on improtant notifications.</span></p>
+                                </div>
                                   <input type="hidden" name = "userId" value = <%= user.facebook.id %> >
-                                 </div>  
                               </div>
                                
                               <div class="form-group">
@@ -129,6 +150,7 @@
                                             <option>Delhi</option>
                                             <option>Mumbai</option>
                                             <option>Kolkata</option>
+                                            <option value="Other">None of the above</option>
                                   </select> 
                                   </div>
                               </div>
@@ -136,11 +158,21 @@
                                  <label class="col-sm-3 control-label" for="emailDisplay">Email privacy setting</label>
                                 <div class="col-sm-9">
                                   <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
-                                  <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK
-                                  <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK
-                                  <br><span class="fieldNote">Please confirm you are ok to share your email id to the artists to mail you regarding their audition or needs in their production. The emails are shared to artists only after authenticated by BuzzingArtists.</span>
+                                  <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK to share
+                                  <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK to share
+                                  <br><span class="fieldNote">Please confirm you are ok to share your email id to the artists to mail you regarding their audition or needs in their production. The emails are shared after authenticated by BuzzingArtists.</span>
                                 </div>                                
                               </div>
+                              <div class="form-group">
+                                 <label class="col-sm-3 control-label" for="receiveNotif">Receive newsletters from us</label>
+                                
+                                <div class="col-sm-9">
+                                  <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
+                                  <input id="receiveNotif" type="radio" name="receiveNotif" value = "ok"> OK to receive mails
+                                  <input id="receiveNotif" type="radio" name="receiveNotif" value = "nok"> Not OK to receive mails
+                                  <br><span class="fieldNote">BuzzingArtists may share some notificiations time to time on whats buzzing in the city.</span>
+                                </div> 
+                              </div>  
                               <div class="form-group col-sm-6">
 <!--                                  <label class="col-sm-3 control-label" for="Stage settings">Update your contribution on stage</label>
                                 <div class="col-sm-9"> -->
@@ -313,11 +345,30 @@
         </div>
       </div>
     
-   <script src="js/jquery.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-validate.js"></script>
     <script src="js/bootstrap.min.js"></script>
      <script type="text/javascript">
+     $(window).ready(function(){
+              $('#successprofile').modal('show');
+          });
     $(function(){
+
       disableSubmit()
+      $('#profileUpdateForm').validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            highlight: function (element) {
+                $(element).closest('.form-group').removeClass('success').addClass('error');
+            },
+            success: function (element) {
+                $(element).closest('.form-group').removeClass('error').addClass('success');
+            }
+        });
     });
 
     $(function () {
@@ -355,6 +406,7 @@
       var values_lang = '<%=user.local.lang%>';
       var langInitValues = values_lang.split(",");
       var value_emailDisplay = '<%=user.local.emailDisplay%>'
+      var value_receiveNotif = '<%=user.local.receiveNotif%>'
       
       $('input[name=role][type=checkbox]').each(function(){
         
@@ -370,6 +422,9 @@
 
       if(value_emailDisplay == "true") $('input[name=emailDisplay][type=radio]').val(["ok"]);
       else $('input[name=emailDisplay][type=radio]').val(["nok"]);
+
+      if(value_receiveNotif == "true") $('input[name=receiveNotif][type=radio]').val(["ok"]);
+      else $('input[name=receiveNotif][type=radio]').val(["nok"]);
 
       
   });
@@ -397,15 +452,15 @@ $(function(){
     $('a[title]').tooltip();
 });
 
-$('[id^=radioBtn] a').on("click", function() {
-    var sel = $(this).data('title');
-    var tog = $(this).data('toggle');
+// $('[id^=radioBtn] a').on("click", function() {
+//     var sel = $(this).data('title');
+//     var tog = $(this).data('toggle');
     
-    $('#'+tog).prop('value', sel);
+//     $('#'+tog).prop('value', sel);
     
-    $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
-    $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
-});
+//     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+//     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+// });
     </script>
   </body>
 </html>

@@ -4,8 +4,8 @@ var postsSchema = mongoose.Schema({
 
     post             :{
         userid          : String,
-        postTitle         : String,
-        postDetail         : String,
+        postTitle         : {type: String,default:'Not mentioned'},
+        postDetail         : {type: String,default:'Not mentioned'},
         date         : Date,
         city         :[{}],
         role         :[{}],

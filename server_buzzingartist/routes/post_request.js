@@ -137,7 +137,7 @@ exports.post = function (req, res) {
             var newPost = new Posts();
 
             // set all of the facebook information in our user model
-            newPost.post.userid    = req.session.user._id; 
+            newPost.post.userid    = req.session.user.facebook.id; 
             newPost.post.postTitle = req.body.postTitle;
             newPost.post.postDetail = req.body.post;
             newPost.post.date = new Date();
@@ -163,26 +163,26 @@ exports.post = function (req, res) {
 
 
 exports.searchPosts = function (req, res) {
-	 console.log("req.session " + req.sesson);
-            console.log("req.session.user " + req.session.user);
-            var allUsers;
-            console.log("req.user.email " + req.session.user.facebook.email);
+	 //console.log("req.session " + req.sesson);
+    //console.log("req.session.user " + req.session.user);
+    var allUsers;
+    //console.log("req.user.email " + req.session.user.facebook.email);
 
-            Posts.find({ 'post.userid' : req.session.user._id }, function(error, db) {
-                //     console.log("coming 1");
-                if (error || !req.user) {
-                    console.log("ERROR NOT A VALID");
-                  // res.send({ error: error });          
-                  req.flash('info', "Error while trying to find the user's post")
-                  res.redirect('/error'); 
-                } else {
-                  // console.log("found user " + db.facebook.email);
-                  console.log("found user: " + db);
-                  // console.log("found user's post: " + db.post);
-                  console.log("found user's post length: " + db.length);
-                  res.render('post_search', { postdb: db,  user:req.session.user});
-                }    
-             });   
+    Posts.find({ 'post.userid' : req.session.user.facebook.id }, function(error, db) {
+        //     console.log("coming 1");
+        if (error || !req.user) {
+            console.log("ERROR NOT A VALID");
+          // res.send({ error: error });          
+          req.flash('info', "Error while trying to find the user's post")
+          res.redirect('/error'); 
+        } else {
+          // console.log("found user " + db.facebook.email);
+          console.log("found user: " + db);
+          // console.log("found user's post: " + db.post);
+          console.log("found user's post length: " + db.length);
+          res.render('post_search', { postdb: db,  user:req.session.user});
+        }    
+     });   
 };
 
 exports.getRecentPosts = function (req, res) {
@@ -353,7 +353,7 @@ exports.viewpost = function (req, res) {
                   res.redirect('/error');
                 } else {
                   console.log("found post " + db);
-                  User.findOne({ '_id' : req.body._id }, function(error, user) {
+                  User.findOne({ 'facebook.id' : req.body._id }, function(error, user) {
                     if(error) {
                         console.log("Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
                         // res.redirect("/searchposts");
