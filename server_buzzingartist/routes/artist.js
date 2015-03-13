@@ -1,6 +1,7 @@
 var User = require('../models/user.js');
 var Post = require('../models/posts.js');
 var dropdowns = require('../views/js/theatreContrib.js');
+var deletedArtists = require('../models/deletedArtists.js');
 
 
 exports.artist = function (req, res) {
@@ -59,30 +60,44 @@ exports.update = function (req, res) {
                    req.session.loggedIn = true;
                    res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful", dropdowns:dropdowns});
                });
-            } else if(req.body.btnvalue == "delete") {
-                console.log(" I am in delete");
-                Post.remove({ 'post.userid' : id }, function(error, db) {
-                    if (error) {
-                        console.log('info', "Error while removing the posts")
-                        req.session = null;
-                        res.redirect('/');
-                        return done(error);
-                    }
-                    User.remove({ 'facebook.id' : id }, function(error, db) {
-                      if (error) {
-                        req.flash('info', "Error while removing the facebook user")
-                        res.redirect('/error');
-                        return done(error);
-                      }
-                      console.log("User removed");
-                      req.session = null;
-                      res.redirect('/');
-                    });  
-                });         
-            }   
+            } 
         }
     });
 };
+
+exports.deleteArtist = function (req, res) {
+  var id = req.body.facebookID;  
+  var deletedArtist  = new deletedArtists();
+  deletedArtist.facebook.id = id;
+  deletedArtist.local.reason = req.body.deletedFeedback;
+  deletedArtist.local.email = req.body.email;
+  // save our user to the database
+  deletedArtist.save(function(err) {
+    if (err) {
+        console.log('info', "Error while saving the deletedArtist in the database")
+    }
+    console.log("A artist deleted");
+  });
+  Post.remove({ 'post.userid' : id }, function(error, db) {
+          if (error) {
+              console.log('info', "Error while removing the posts")
+              req.session = null;
+              res.redirect('/');
+              return done(error);
+          }
+          User.remove({ 'facebook.id' : id }, function(error, db) {
+            if (error) {
+              req.flash('info', "Error while removing the facebook user")
+              res.redirect('/error');
+              return done(error);
+            }
+            console.log("User removed");
+            req.session = null;
+            res.redirect('/');
+          });  
+  });  
+}  
+
 
 exports.getEmails = function (req, res) {
     var allUsers;

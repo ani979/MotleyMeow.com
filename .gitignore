@@ -117,3 +117,4 @@ server_buzzingartist/app.out
 server_buzzingartist/views/images/COMM_CONTRACT_20150305_71410034.PDF.zip
 *.png
 server_buzzingartist/views/searchArtists.ejs
+server_buzzingartist/views/testModals.html

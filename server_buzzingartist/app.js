@@ -260,6 +260,7 @@ app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequ
 
 
 app.get( '/artists', artists.artist);
+app.post('/deleteArtist', artists.deleteArtist);
 app.get( '/getRecentPosts', post_request.getRecentPosts);
 app.get( '/getRecentArtists', artists.getRecentArtists);
 app.post( '/update', artists.update);

@@ -11,7 +11,7 @@
         <link href="css/style.css" rel="stylesheet"> 
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
         <script src="js/bootstrap-dialog.js"></script>
-       
+
           </head>
 
   <script type="text/javascript">
@@ -299,15 +299,18 @@
 
               <button id = "submit" type="submit" class="btn btn-primary" type="button" name="btnvalue" value="submit"><i class="glyphicon glyphicon-ok-circle">SUBMIT</i>
               </button>
-              <span class="pull-right"><button id = "delete" type = "submit" title="Remove me from this site" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger" 
-                name="btnvalue" value="delete"><i class="glyphicon glyphicon-remove"></i></button>
-              </span>  
+              
           <!-- </span> -->
       </div>
     </fieldset>
 
    </form>  
-</div>
+
+         <span class="pull-right"><button id = "delete" type = "submit" title="Remove me from this site" type="button" class="btn btn-sm btn-danger" name="btnvalue" value="delete" data-toggle="modal" data-target="#deleteModal"><i class="glyphicon glyphicon-remove"></i></button>
+         </span>
+        <!-- <button class="btn btn-danger" >Delete Me</button> -->
+   </span>  
+  </div>
 </div>
           </div>
                  
@@ -318,7 +321,7 @@
       <!-- footer starts-->
    <div id = "footer"></div>
 
-   <div class="modal fade col-lg-12" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="open-ViewDialog">
+   <div class="modal fade col-lg-12" id="myModal" role="dialog" aria-labelledby="myModal" aria-hidden="true" class="open-ViewDialog">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -355,17 +358,91 @@
           </div>
         </div>
       </div>
+    </div>  
+
+
+
+  <div class="modal fade multi-step" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+    <form action="/deleteArtist" method="post" id="deleteForm">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                  <h4 class="modal-title step-1" data-step="1">DELETE ME</h4>
+                  <h4 class="modal-title step-2" data-step="2">DELETE ME</h4>
+                   <h4 class="modal-title step-3" data-step="2">DELETE ME</h4>
+              </div>
+              <div class="modal-body step step-1">
+                  Oops!! You seem to have clicked a wrong button. Please close this.
+              </div>
+              <div class="modal-body hero step step-2">
+                  OK, So you have decided to leave us. But why? 
+                  
+                                <p id = "OptionsNotToDelete" class="form-control-static"></p>
+                                  <strong>If its only a matter of time, you can choose to remain in passive mode which is, "No receieve notifications" and "No email display". This way you you won't be troubled by our emails or even mails regarding requests from artists</strong>
+                                
+                            
+              </div>
+              <div class="modal-body step step-3">
+                  OK, So you insist!!
+                  
+                                <p id = "Delete" class="form-control-static"></p>
+                                  <strong>Please tell us one reason why you want to leave this site</strong>
+                                  <div class="form-group">
+                                          <fieldset>            
+
+                                                <textarea placeholder="Tell us one reason what makes you leave. Its a feedback for us." class="form-control" id="deleteFeedback" name = "deletedFeedback"></textarea>            
+                                                <input type="hidden" id="email" name = "email" value="<%=user.facebook.email %>">
+                                                <input type="hidden" id="facebookID" name = "facebookID" value="<%=user.facebook.id %>">  
+                                        
+                                  </div>
+                                
+                            
+              </div>
+              <div class="modal-footer step-1" data-step="1">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default" onclick="sendEvent('#deleteModal', 2)">Really?!?</button></span>
+                  
+              </div>
+              <div class="modal-footer step-2" data-step="2">
+                  <span class="pull-right"><button type="button" class="btn btn-primary" data-dismiss="modal">Thanks, I choose to remain passive</button></span>
+                  <span class="pull-left"><button type="button" class="btn btn-default" onclick="sendEvent('#deleteModal', 3)">I insist</button></span>
+              </div>
+              <div class="modal-footer step-3" data-step="3">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">I choose to stay back</button></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default" onclick="submitForDelete()">DELETE ME NOW</button></span>
+              </div>
+          </div>
+      </div>
+    </form>
+  </div>  
+
     
     <script src="js/jquery.js"></script>
     <script src="js/jquery-validate.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/multiple-modals.js"></script>
+    <script src="js/doorbell-custom.js"></script>
+ 
      <script type="text/javascript">
-     $(window).ready(function(){
-              $('#successprofile').modal('show');
-          });
-    $(function(){
 
-      disableSubmit()
+     sendEvent = function(sel, step) {
+          $(sel).trigger('next.m.' + step);
+      }
+
+      $('#deleteForm').validate({
+            rules: {
+                deletedFeedback: {
+                    required: true
+                }
+            },
+            highlight: function (element) {
+                $(element).closest('.form-group').removeClass('success').addClass('error');
+            },
+            success: function (element) {
+                $(element).closest('.form-group').removeClass('error').addClass('success');
+            }
+        });
+
       $('#profileUpdateForm').validate({
             rules: {
                 email: {
@@ -379,7 +456,18 @@
             success: function (element) {
                 $(element).closest('.form-group').removeClass('error').addClass('success');
             }
-        });
+      });
+
+      submitForDelete = function() {
+          $('#deleteForm').submit();
+      }
+
+     $(window).ready(function(){
+              $('#successprofile').modal('show');
+     });
+
+    $(function(){
+      disableSubmit()
     });
 
     $(function () {
@@ -388,6 +476,7 @@
           $('a[href="' + $(this).attr('href') + '"]').tab('show');
       })
     });
+
     function disableSubmit() {
       document.getElementById("submit").disabled = true;
     }
@@ -442,36 +531,36 @@
 
 
 
-$('[id^=checkboxinline]').click(function(){
-  
-  if($(this).prop('checked')){
-    $(this).closest('div').find('input').show();
-  } else {
-    $(this).closest('div').find('input.form-control').hide();
-    $(this).closest('div').find('input.form-control').prop("value", null);
-    $(this).closest('div').find('input.form-control').prop("placeholder", "exp. in years");
-  }
-});
+      $('[id^=checkboxinline]').click(function(){
+        
+        if($(this).prop('checked')){
+          $(this).closest('div').find('input').show();
+        } else {
+          $(this).closest('div').find('input.form-control').hide();
+          $(this).closest('div').find('input.form-control').prop("value", null);
+          $(this).closest('div').find('input.form-control').prop("placeholder", "exp. in years");
+        }
+      });
 
 
-    $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip();
+      $(function(){
+          $('a[title]').tooltip();
+      });
 
-    
+      $('#deleteModal').on('hide.bs.modal', function () {
+        $('.step-1').hide();
+        $('.step-2').hide();
+        $('.step-3').hide();
+      })
 
-
-$(function(){
-    $('a[title]').tooltip();
-});
-
-// $('[id^=radioBtn] a').on("click", function() {
-//     var sel = $(this).data('title');
-//     var tog = $(this).data('toggle');
-    
-//     $('#'+tog).prop('value', sel);
-    
-//     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
-//     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
-// });
+      $('#deleteModal').on('show.bs.modal', function () {
+        $('.step-1').show();
+        $('.step-2').hide();
+        $('.step-3').hide();
+      })
+      
     </script>
+
   </body>
 </html>
