@@ -4,6 +4,7 @@ var User = require('../models/user');
 var Posts = require('../models/posts.js');
 var Event = require('../models/event.js');
 var dropdowns = require('../views/js/theatreContrib.js');
+var config        = require('../oauth.js')
 
 /*FB.options({
     appId:          config.facebook.appId,
@@ -119,7 +120,7 @@ exports.landing_home = function(req, res) {
                 console.log("Error while getting posts");
                 // res.send({ error: error }); 
                 req.flash('info', "Error while retrieving posts")
-                res.render('Landing', { user: req.session.user, postss: {}, events: {}});
+                res.render('Landing', { user: req.session.user, postss: {}, events: {}, appId:config.facebook.clientID});
                 return;       
              }    
 
@@ -136,11 +137,12 @@ exports.landing_home = function(req, res) {
                 if(err) {
                     events = {};
                     console.log("Am i here");
-                    res.render('Landing', { user: req.session.user, postss: posts, events: events});
+                    res.render('Landing', { user: req.session.user, postss: posts, events: events, appId:config.facebook.clientID});
                 } 
                     User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             function(err, recentUsers) {
-                              res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers})
+                              res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
+                              appId:config.facebook.clientID})
                     });
 
                 
@@ -184,7 +186,7 @@ exports.landing_home = function(req, res) {
                 console.log("Error while getting posts");
                 // res.send({ error: error }); 
                 req.flash('info', "Error while retrieving posts")
-                res.render('Landing', { user: req.session.user, postss: {}, events: {} } );
+                res.render('Landing', { user: req.session.user, postss: {}, events: {}, appId:config.facebook.clientID } );
                 return;       
              }    
 
@@ -200,12 +202,13 @@ exports.landing_home = function(req, res) {
                 if(err) {
                     events = {};
                     console.log("Am i here");
-                    res.render('Landing', { user: req.session.user, postss: posts, events: events});
+                    res.render('Landing', { user: req.session.user, postss: posts, events: events, appId:config.facebook.clientID});
                     return;
                 }
                     User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             function(err, recentUsers) {
-                              res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers})
+                              res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
+                              appId:config.facebook.clientID})
                     });
                 // console.log("eventsInDB " + eventsInDB.length);
                 // Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}

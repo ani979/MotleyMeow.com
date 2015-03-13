@@ -17,9 +17,10 @@
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
         <link href="css/bootstrap.css" rel="stylesheet">
         <script src="http://connect.facebook.net/en_US/all.js"></script>
+        <script src="../oauth.js"></script>
         <script>
         FB.init({
-        appId:'1580350615516688',
+        appId:<%=appId%>,
         cookie:true,
         status:true,
         xfbml:true
@@ -59,18 +60,19 @@
     
 
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+                data-target="#bs-project2-navbar-collapse-1" style = "outline: 0px none;">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/home">BuzzingArtists </a>
+          <a class="navbar-brand" href="/home" style = "color: #FBF7F7; font-size: 20px;">BuzzingArtists </a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
             
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" id="headerlist">
                   <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
                    <li><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
                    <li><a href="/postarequest">Post a request<span class="sr-only">(current)</span></a></li>
@@ -84,10 +86,11 @@
                           <li><a href="/allevents">Browse Events</a></li>            
                       </ul>           
                    </li>
-                   <li><a href='#' onclick="FacebookInviteFriends();"> Invite your Friends<span class="sr-only">(current)</span></a></li>
+                   
                 </ul>
 
-            <ul class="nav navbar-right navbar-nav">                  
+            <ul class="nav navbar-right navbar-nav">           
+                  <li><a class="btn btn-primary" onclick="FacebookInviteFriends();" style = "font-size: 18px;color: #F5F5F5; background-color: #132290;"> Invite your Friends<span class="sr-only">(current)</span></a></li>       
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
                     <ul class="dropdown-menu">
@@ -517,10 +520,10 @@ $("#footer").load("footer.ejs");
     </script>
      <script type="text/javascript">
     window.doorbellOptions = {
-        appKey: 'YSTK9OR2my1RS3mmACJS3iUrKcl7uldwR6Yv40opthKKgDxa0DzjbYNBOWBdS6H5'
+        appKey: 'RBfxeEyxzCGspIWdwQo1gsvxmz18EdLX6cFO9Zw4ZFz0uKzuL2Z2e46hbl5WGpRH'
     };
     (function(d, t) {
-        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://doorbell.io/button/822';(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
+        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://doorbell.io/button/978?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
     }(document, 'script'));
 </script>
   </body>
