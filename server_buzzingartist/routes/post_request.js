@@ -324,7 +324,7 @@ exports.viewallposts = function (req, res) {
 exports.postarequest = function (req, res) {
 	var allUsers;
     console.log("req.user " + req.user);
-    res.render('postarequest', { user: req.session.user, users: allUsers }); 
+    res.render('postarequest', { user: req.session.user, users: allUsers, dropdowns:dropdowns }); 
 };
 
 exports.editpost = function (req, res) {
@@ -339,7 +339,7 @@ exports.editpost = function (req, res) {
                   res.redirect('/error');          
                 } else {
                   console.log("found post " + db);
-                  res.render('postarequest', { post: db, user:req.session.user });
+                  res.render('postarequest', { post: db, user:req.session.user,dropdowns:dropdowns });
                 }  
             });
 };
