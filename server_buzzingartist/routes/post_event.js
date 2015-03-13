@@ -1,10 +1,11 @@
 var User = require('../models/user.js');
 var FB            = require('fb');
 var Event = require('../models/event.js');
+var dropdowns = require('../views/js/theatreContrib.js');
 
 exports.postevents = function (req, res) {
 	console.log("coming here posting an event");
-    res.render('postevent', { user: req.session.user});
+    res.render('postevent', { user: req.session.user, dropdowns:dropdowns});
 };
 
 exports.posteventDetails = function (req, res) {
@@ -86,7 +87,7 @@ exports.allEvents = function (req, res) {
                            
                 console.log("events length is " + events.length);
                             
-                res.render('search_events', { user: req.session.user, allEvents: events});
+                res.render('search_events', { user: req.session.user, allEvents: events, dropdowns:dropdowns});
 
                 
             });

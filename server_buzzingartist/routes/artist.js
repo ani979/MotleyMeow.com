@@ -9,7 +9,8 @@ exports.artist = function (req, res) {
                 //console.log("all users " + users);
                 allUsers = users
                         
-                res.render('search_artists', { user: req.session.user, users: allUsers,rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia" });
+                res.render('search_artists', { user: req.session.user, users: allUsers,rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia",
+                dropdowns:dropdowns });
 
             });
 };
