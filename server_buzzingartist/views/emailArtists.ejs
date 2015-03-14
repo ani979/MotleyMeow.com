@@ -76,7 +76,7 @@
               <button type ="button" class="btn btn-primary" data-label-placement id = "artistSel"></button>
               <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" ><span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <% var roles = dropdowns.alldropdowns.roles;
+                  <% var roles = dropdowns.alldropdowns.rolesForSearch;
                     for(var i = 0; i < roles.length; i ++) {   %>
                       <li><input class = "artistscheck" type="checkbox" id="<%=roles[i].role%>" name="role" value="<%=roles[i].role%>"><label for="<%=roles[i].role%>"><%=roles[i].text%></label></li>
                     <% } %>
@@ -139,7 +139,7 @@
     $("#headerloggedout").load("headerloggedout.ejs");
     var filterTable;
     var selectCity = "Select City";
-    var selectRole = "Select Artists";
+    var selectRole = "Select Artists/Audience";
     var selectLang = "Language comfortability";
 
     function getEmail() {
@@ -153,9 +153,9 @@
         selectedCitiesValue = cities;
 
         if(cities == "") {
-          cities = $('input:checkbox[name="city"]').map(function() {
-           return this.value;
-         }).get().join(',');
+         //  cities = $('input:checkbox[name="city"]').map(function() {
+         //   return this.value;
+         // }).get().join(',');
           
           selectedCitiesValue = "All Cities"
         }
@@ -163,21 +163,16 @@
        
 
         // //build a regex filter string with an or(,) condition
-        if($('#AllRoles').prop('checked')) {
-          roles = $('input:checkbox[name="role"]').map(function() {
-            return this.value;
-          }).get().join(',');
-        } else {
-          roles = $('input:checkbox[name="role"]:checked').map(function() {
+        roles = $('input:checkbox[name="role"]:checked').map(function() {
           return this.value;
           }).get().join(',');
-        }
+        //}
         selectedRoleValue = roles;
 
         if(roles == "") {
-          roles = $('input:checkbox[name="role"]').map(function() {
-            return this.value;
-          }).get().join(',');
+          // roles = $('input:checkbox[name="role"]').map(function() {
+          //   return this.value;
+          // }).get().join(',');
           
           selectedRoleValue = "All roles selected"
         }
@@ -187,21 +182,21 @@
         
 
         // //build a regex filter string with an or(,) condition
-        if($('#AllLanguages').prop('checked')) {
-          lang = $('input:checkbox[name="lang"]').map(function() {
+        // if($('#AllLanguages').prop('checked')) {
+        //   lang = $('input:checkbox[name="lang"]').map(function() {
+        //     return this.value;
+        //   }).get().join(',');
+        // } else {
+        lang = $('input:checkbox[name="lang"]:checked').map(function() {
             return this.value;
           }).get().join(',');
-        } else {
-          lang = $('input:checkbox[name="lang"]:checked').map(function() {
-            return this.value;
-          }).get().join(',');
-        }  
+        //}  
         selectedLangValue = lang;
 
         if(lang == "") {
-          lang = $('input:checkbox[name="lang"]').map(function() {
-            return this.value;
-          }).get().join(',');
+          // lang = $('input:checkbox[name="lang"]').map(function() {
+          //   return this.value;
+          // }).get().join(',');
           
           selectedLangValue = "All Languages";
         }

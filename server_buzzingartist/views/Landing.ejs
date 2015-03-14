@@ -183,10 +183,10 @@
     <table id="postsTable" class="table table-striped">
       <thead>
           <tr>
-              <th style="text-align:left">Looking for</th>
-              <th style="text-align:left">artists required</th>
-              <th style="text-align:left">City</th>
-              <th style="text-align:left">Details</th>
+              <th class ="titlecol" style="text-align:left">Looking for</th>
+              <th class ="contribcol" style="text-align:left">artists required</th>
+              <th class ="citycol" style="text-align:left">in the city</th>
+              <th class ="fbprofilecol" style="text-align:left">Details</th>          
           </tr>
       </thead>
       <tbody class="searchablewe">
@@ -247,10 +247,10 @@
     <table id="artistsTable" class="table table-striped">
       <thead>
           <tr>
-              <th style="text-align:left">Name</th>
-              <th style="text-align:left">Contribution in Theatre</th>
-              <th style="text-align:left">City</th>
-              <th style="text-align:left">FB profile</th>
+              <th class ="namecol" style="text-align:left">Name</th>
+              <th class ="contribcol" style="text-align:left">Contribution in Theatre</th>
+              <th class ="citycol" style="text-align:left">City</th>
+              <th class ="fbprofilecol" style="text-align:left">FB profile</th>
           </tr>
       </thead>
       <tbody class="searchable">
@@ -338,13 +338,26 @@
      console.log("cityyyyyyyy: "+city);
      if(city == 'None') { %>
         <div class="form-group panel-body" id="myCity" style="margin:0px;padding:0px;">
-            <label class="col-sm-3 control-label" for="city" style="padding:0px;">Location</label>
-            <div class="col-sm-9"><select class="form-control" id="myCityForm" value="<%= user.local.city %>" name="city"><option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>
-            </div>
+            <label class="col-sm-6 control-label" for="city" style="padding:0px;">Location</label>
+            <div class="col-sm-6"><select class="form-control" id="myCityForm" value="<%= user.local.city %>" name="city">
+              <% var cities = dropdowns.alldropdowns.cities;
+                  for(var i = 0; i < cities.length; i ++) {   %> 
+                        <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
+              <!-- <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select> -->
+              <% } %>
+            </select></div>
             <div id="myRole" class="form-group">
-              <label class="control-label">Your association or interests in theatre:</label> 
+              <label class="control-label">What kind of Artist are you?</label> 
               <br>
-                <div class = "col-sm-6">
+              <% var roles = dropdowns.alldropdowns.rolesForPost;
+                for(var i = 0; i < roles.length; i ++) {   %> 
+                  <div class = "col-sm-6">
+                    <label class="checkbox-inline">
+                          <input type="checkbox" id="checkboxinline<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" ><%=roles[i].text%>
+                    </label>
+                 </div>  
+               <% } %>
+                <!-- <div class = "col-sm-6">
                   <label class="checkbox-inline col-sm-3">
                         <input type="checkbox" id="checkboxinlineActing" name="role" value="Actor" > Acting
                   </label>
@@ -383,10 +396,10 @@
                   <label class="checkbox-inline">
                         <input type="checkbox" id="checkboxinlineSetDesign" name="role"  value="SetDesign" > Set Designing
                   </label>
-                </div>
+                </div> -->
                 <div class = "col-sm-12 col-md-12">
                   <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineAudience" name="role"  value="audience"> <strong><b>What? Theatre? But, i am just here to browse!!</b>
+                        <input type="checkbox" id="checkboxinlineAudience" name="role"  value="Audience"> <strong  style="font-size:16px;"><b>I am mostly a member of audience</b>
                   </label>
                 </div>
               

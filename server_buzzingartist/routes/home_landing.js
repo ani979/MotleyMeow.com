@@ -120,7 +120,7 @@ exports.landing_home = function(req, res) {
                 console.log("Error while getting posts");
                 // res.send({ error: error }); 
                 req.flash('info', "Error while retrieving posts")
-                res.render('Landing', { user: req.session.user, postss: {}, events: {}, appId:config.facebook.clientID});
+                res.render('Landing', { user: req.session.user, postss: {}, events: {}, appId:config.facebook.clientID, dropdowns:dropdowns});
                 return;       
              }    
 
@@ -137,12 +137,12 @@ exports.landing_home = function(req, res) {
                 if(err) {
                     events = {};
                     console.log("Am i here");
-                    res.render('Landing', { user: req.session.user, postss: posts, events: events, appId:config.facebook.clientID});
+                    res.render('Landing', { user: req.session.user, postss: posts, events: events, appId:config.facebook.clientID, dropdowns:dropdowns});
                 } 
                     User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             function(err, recentUsers) {
                               res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
-                              appId:config.facebook.clientID})
+                              appId:config.facebook.clientID, dropdowns:dropdowns})
                     });
 
                 
@@ -186,7 +186,7 @@ exports.landing_home = function(req, res) {
                 console.log("Error while getting posts");
                 // res.send({ error: error }); 
                 req.flash('info', "Error while retrieving posts")
-                res.render('Landing', { user: req.session.user, postss: {}, events: {}, appId:config.facebook.clientID } );
+                res.render('Landing', { user: req.session.user, postss: {}, events: {}, appId:config.facebook.clientID, dropdowns:dropdowns } );
                 return;       
              }    
 
@@ -208,7 +208,7 @@ exports.landing_home = function(req, res) {
                     User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             function(err, recentUsers) {
                               res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
-                              appId:config.facebook.clientID})
+                              appId:config.facebook.clientID, dropdowns:dropdowns})
                     });
                 // console.log("eventsInDB " + eventsInDB.length);
                 // Event.distinct('event', {$and: [ { 'event.date': { $gte: new Date(new Date().toISOString()) } }, { 'event.eventCategory': "Play" }]}

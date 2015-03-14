@@ -13,11 +13,16 @@ module.exports = {alldropdowns: {
                             { role: "Lights", text:"Lighting Designer"},{ role: "Sound", text:"Sound Designer"},
                             { role: "Music", text:"Music Composer"},{ role: "Costume", text:"Costume Designer"},
                             { role: "SetDesign", text:"Set Designer"},{ role: "StageManager", text:"Production Manager"}, 
-                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Training"} ,{ role: "Props", text:"Props"},
+                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"} ,{ role: "Props", text:"Props"},
     						{ role: "RehearsalSpace", text:"Rehearsal Space"}],
     				languages:["Hindi", "Kannada", "Marathi", "Tamil", "Malayalam", "Bengali", "English"],
     				eventCategories:[{ category: "Play", text:"Play"}, { category: "Workshop", text:"Training or Workshop"}, 
     							   { category: "Storytelling", text:"Storytelling event"}, {category: "Reading", text:"Reading"},
-    							   {category: "Others", text:"Other Events"}]
+    							   {category: "Others", text:"Other Events"}],
+                    rolesForSearch: [{ role: "Actor", text:"Actor"}, { role: "Director", text:"Director"}, { role: "Playwright", text:"Playwright"},
+                            { role: "Lights", text:"Lighting Designer"},{ role: "Sound", text:"Sound Designer"},
+                            { role: "Music", text:"Music Composer"},{ role: "Costume", text:"Costume Designer"},
+                            { role: "SetDesign", text:"Set Designer"},{ role: "StageManager", text:"Production Manager"}, 
+                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"} ,{ role: "Audience", text:"Audience"}]
     			}
 }

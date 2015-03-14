@@ -100,27 +100,56 @@ exports.deleteArtist = function (req, res) {
 
 
 exports.getEmails = function (req, res) {
-    var allUsers;
+  var allUsers;
 
-    console.log("coming here cities " + req.body.cities);
-     console.log("coming here lang " + req.body.roles);
-      console.log("coming here roles " + req.body.lang);
+ if(req.body.cities == "") {
+    console.log("All cities selected")
+    var cityarr = dropdowns.alldropdowns.citiesForPost;
+    var selectedCity = new Array();
+    for(var i =0; i < cityarr.length; i++) {
+      selectedCity.push(cityarr[i].city)
+    }
+    selectedCity.push(null);  
+
+  } else {
     var selectedCity = req.body.cities.split(",");
-    selectedCity.push(null);
+  }
+
+  if(req.body.roles == "") {
+    console.log("All roles selected")
+    var rolearr = dropdowns.alldropdowns.rolesForSearch;
+    var selectedRoles = new Array();
+    for(var i =0; i < rolearr.length; i++) {
+      selectedRoles.push(rolearr[i].role)
+    }
+    selectedRoles.push(null);  
+
+  } else {
     var selectedRoles = req.body.roles.split(",");
-    selectedRoles.push(null)
+  }
+
+  if(req.body.lang == "") {
+    console.log("All lang selected")
+    var langarr = dropdowns.alldropdowns.languages;
+    var selectedLang = new Array();
+    for(var i =0; i < langarr.length; i++) {
+      selectedLang.push(langarr[i])
+    }
+    selectedLang.push(null);  
+
+  } else {
     var selectedLang = req.body.lang.split(",");
-    selectedLang.push(null)
+  }  
 
-    User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
-                                              {"local.role": { $in: selectedRoles } },
-                                              {"local.lang": { $in: selectedLang } },
-                                              {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
-                            function(err, emails) {
-                
-        res.send({selectedEmails: emails});
+  User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
+                                            {"local.role": { $in: selectedRoles } },
+                                            {"local.lang": { $in: selectedLang } },
+                                            {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
+                          function(err, emails) {
+              
+      res.send({selectedEmails: emails});
 
-    });
+  });
    
 
 
@@ -134,7 +163,7 @@ exports.getRecentArtists = function (req, res) {
 };
 
 exports.contactArtists = function (req, res) {
-    res.render('emailArtists', { user: req.session.user});
+    res.render('emailArtists', { user: req.session.user, dropdowns:dropdowns});
 };
 
 exports.updateCityAndRoles = function (req, res) {

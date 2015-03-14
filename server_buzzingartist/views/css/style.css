@@ -467,3 +467,21 @@ body.modal-open .supreme-container{
 .blur {
     opacity:0.5;
 }
+
+/* Column widths are based on these cells */
+.fbprofilecol {
+  width: 10%;
+}
+.contribcol {
+  width: 40%;
+}
+.citycol {
+  width: 20%;
+}
+.namecol {
+  width: 30%;
+}
+
+.titlecol {
+  width: 30%;
+}
