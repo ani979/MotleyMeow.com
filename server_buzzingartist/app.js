@@ -195,7 +195,10 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 //app.use(logger());
 app.use(cookieParser());
-app.use(session({ secret: 'secret'}));
+app.use(session({
+ name: 'artistSession',
+ secret: 'eg[isfd-8gG10]-7w2315df{}}}+I;li;;t;uy',
+}));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
