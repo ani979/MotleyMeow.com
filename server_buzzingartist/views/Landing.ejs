@@ -514,7 +514,6 @@ $("#footer").load("footer.ejs");
 // $("#recentArtists").load("/getRecentArtists");
 // $("#recentPosts").load("/getRecentPosts");
 
-
         $(document).ready(function() {
           if(isMobile.any()) {
             $('#arrows').show();
@@ -524,9 +523,18 @@ $("#footer").load("footer.ejs");
             $("#recentArtists").load("/getRecentArtists");
             $("#recentPosts").load("/getRecentPosts");
           }, 20000); 
-            
-            
+          var myEvent = window.attachEvent || window.addEventListener;
+          var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+
+          myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+              console.log("Clearing the interval")
+              clearInterval(timerId);
+          });
+          
         });
+
+        
+        
         
         
           
