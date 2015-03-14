@@ -115,7 +115,10 @@ server_buzzingartist/app.out
 *.jpg
 *.jpeg
 server_buzzingartist/views/images/COMM_CONTRACT_20150305_71410034.PDF.zip
-*.png
 server_buzzingartist/views/searchArtists.ejs
 server_buzzingartist/views/testModals.html
 server_buzzingartist/views/index_html.html
+server_buzzingartist/views/uploads/26f21c780462ec169235e273d98334ed.png
+server_buzzingartist/views/uploads/98c94cadbabaa9bea93b8ecf8128ece4.png
+server_buzzingartist/views/uploads/9ba3862721b0df51bc2f61466308c84d.png
+server_buzzingartist/views/uploads/a04476de46d9bf32996dacc7c825c00e.png
