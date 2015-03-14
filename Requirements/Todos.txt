@@ -2,7 +2,7 @@
 TodoS:
 
 1) refactor to keep stuff at different places - DONE
-2) ensure no email id is changed in profile update. It cannot be updated. Its currently readable - nothing to be done - DONE
+2) ensure no email id is changed in profile update. It cannot be updated. Its currently readable - nothing to be done - NOT NEEDED
 3) Update button need to corrected in profile edit. - DONE
 4) number of artists in your city - NOT RIGHT NOW
 5) pagination - already done by using table  DONE
@@ -22,7 +22,7 @@ TodoS:
 19) Header is currently loaded aja way...any other way to load it.
 20) When deleting a user - you must remove his/her posts too... DONE
 21) Add in all res.redirect(error), the message. - To be tested
-22) Ajax query in the landing page.ejs goes on even if user moves out of the page or logs out..etc..
+22) Ajax query in the landing page.ejs goes on even if user moves out of the page or logs out..etc.. - DONE. To be tested
 23) try to use user-agent to make a differnece between mobile and system (laptop) so as not to display the scrolling image over event images on the landing page
 24) May have to register a new app id for motleymeow.com
 25) In viewapost we need to use website address for commenting or liking..right now its localhost or googlecloud's
