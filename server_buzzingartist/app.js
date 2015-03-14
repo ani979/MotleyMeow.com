@@ -10,7 +10,8 @@ var express       = require('express'),
     post_request  = require('./routes/post_request'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
-    multer  = require('multer');
+    multer  = require('multer'),
+    var argv = require('optimist').argv;
 
 var moment = require('moment');
 var argv = require('optimist').argv;
@@ -328,4 +329,8 @@ res.redirect('/')
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
 });
+
+// console.log("argv.fe_ippp: "+argv.fe_ip);
+// app.listen(8080,argv.fe_ip);
+// console.log("Express serverrrr listening on port 8080");
 
