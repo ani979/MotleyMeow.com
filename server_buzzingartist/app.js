@@ -11,7 +11,7 @@ var express       = require('express'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
     multer  = require('multer'),
-    var argv = require('optimist').argv;
+    argv = require('optimist').argv;
 
 var moment = require('moment');
 var argv = require('optimist').argv;
