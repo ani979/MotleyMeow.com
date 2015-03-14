@@ -24,6 +24,8 @@ TodoS:
 21) Add in all res.redirect(error), the message. - To be tested
 22) Ajax query in the landing page.ejs goes on even if user moves out of the page or logs out..etc..
 23) try to use user-agent to make a differnece between mobile and system (laptop) so as not to display the scrolling image over event images on the landing page
+24) May have to register a new app id for motleymeow.com
+25) In viewapost we need to use website address for commenting or liking..right now its localhost or googlecloud's
 
 GOOD TO HAVE:
 1) Add theatre group details also.. - TBD

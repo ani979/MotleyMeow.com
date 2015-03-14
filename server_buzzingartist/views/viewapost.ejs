@@ -42,15 +42,15 @@
       });
    </script> 
   <body>
-<!-- <div id="fb-root"></div>
+<div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1402977930010661&version=v2.0";
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1381852852123169&version=v2.0";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
- -->
+
 <% if(typeof user != 'undefined' && user!=null) { %>
  <div id = "headerloggedin"> </div>
  <% } else { %>
@@ -172,12 +172,12 @@
         <input name="_postid"  type="hidden" value=<%=post._id%>>
     </form>
  <% } %>  
-        <input action="action" type="button" value="Back" onclick="history.go(-1);" style="text-align:center"/>
+        <input action="action" type="button" value="Back" onclick="history.go(-1);"/>
     
        </div>        
   </div> 
-<!-- <div class="fb-like col-md-8 col-md-offset-4" data-href="http://localhost:3000/viewpost" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
-<div class="fb-comments col-md-8 col-md-offset-4" data-href="http://localhost:3000/viewpost" data-numposts="5" data-colorscheme="light"></div> -->
+<div class="fb-like col-md-8 col-md-offset-4" data-href="http://104.154.49.31:8080/viewpost" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+<div class="fb-comments col-md-8 col-md-offset-4" data-href="http://104.154.49.31:8080/viewpost" data-numposts="5" data-colorscheme="light"></div>
 
                            
     
