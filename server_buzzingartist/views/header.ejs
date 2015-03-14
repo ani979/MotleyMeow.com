@@ -1,20 +1,41 @@
-<nav class="navbar navbar-inverse navbar-static-top no-margin">
+ <nav class="navbar navbar-inverse navbar-static-top no-margin">
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script>
+
+
+    function FacebookInviteFriends()
+    {
+      FB.init({
+          appId:1402977930010661,
+          cookie:true,
+          status:true,
+          xfbml:true
+        });
+      FB.ui({
+          method: 'send',
+          name: 'Check out this site!',
+          description: 'EXPLORE. CONNECT. CONTRIBUTE!',
+          link: 'http://104.154.49.31:8080/',
+      });
+    }
+    </script>
   <div class="container-fluid">
     
 
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+                data-target="#bs-project2-navbar-collapse-1" style = "outline: 0px none;">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/home">BuzzingArtists </a>
+          <a class="navbar-brand" href="/home" style = "color: #FBF7F7; font-size: 20px;">MotleyMeow </a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
             
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" id="headerlist">
                   <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
                    <li><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
                    <li><a href="/postarequest">Post a request<span class="sr-only">(current)</span></a></li>
@@ -28,9 +49,11 @@
                           <li><a href="/allevents">Browse Events</a></li>            
                       </ul>           
                    </li>
+                   
                 </ul>
 
-            <ul class="nav navbar-right navbar-nav">                  
+            <ul class="nav navbar-right navbar-nav">           
+                  <li><a class="btn btn-primary" onclick="FacebookInviteFriends();" style = "font-size: 18px;color: #F5F5F5; background-color: #132290;"> Invite your Friends<span class="sr-only">(current)</span></a></li>       
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
                     <ul class="dropdown-menu">
@@ -40,14 +63,6 @@
                     </ul>
                   </li>
              </ul>  
-             
-
-              
-      </div>
-  </div>
-</nav>
-<link href="css/style.css" rel="stylesheet"> 
-<script>
-   
-    
-</script>
+          </div>
+    </div>
+  </nav>

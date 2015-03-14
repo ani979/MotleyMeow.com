@@ -16,26 +16,7 @@
         <link href="indexPage/css/font-awesome.min.css" rel="stylesheet">
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
         <link href="css/bootstrap.css" rel="stylesheet">
-        <script src="http://connect.facebook.net/en_US/all.js"></script>
-        <script src="../oauth.js"></script>
-        <script>
-        FB.init({
-        appId:<%=appId%>,
-        cookie:true,
-        status:true,
-        xfbml:true
-        });
-
-        function FacebookInviteFriends()
-        {
-        FB.ui({
-            method: 'send',
-            name: 'Check out this site!',
-            description: 'EXPLORE. CONNECT. CONTRIBUTE!',
-            link: 'http://104.154.49.31:8080/',
-        });
-        }
-        </script>
+ 
   </head>
   
   <body>
@@ -55,7 +36,27 @@
         }
     %>
 <% if(typeof user != 'undefined' && user!=null) { %>
- <div id = "headerloggedin"> <nav class="navbar navbar-inverse navbar-static-top no-margin">
+ <div id = "headerloggedin"> 
+  <nav class="navbar navbar-inverse navbar-static-top no-margin">
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script>
+        FB.init({
+          appId:1402977930010661,
+          cookie:true,
+          status:true,
+          xfbml:true
+        });
+
+    function FacebookInviteFriends()
+    {
+    FB.ui({
+        method: 'send',
+        name: 'Check out this site!',
+        description: 'EXPLORE. CONNECT. CONTRIBUTE!',
+        link: 'http://104.154.49.31:8080/',
+    });
+    }
+    </script>
   <div class="container-fluid">
     
 
@@ -67,7 +68,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/home" style = "color: #FBF7F7; font-size: 20px;">BuzzingArtists </a>
+          <a class="navbar-brand" href="/home" style = "color: #FBF7F7; font-size: 20px;">MotleyMeow </a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
@@ -117,7 +118,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">BuzzingArtists </a>
+            <a class="navbar-brand" href="#">MotleyMeow </a>
           </div>
 
           <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
@@ -144,7 +145,7 @@
   
   <div class="container">
     <h2 class="title" style= "text-align:center;">Hi, <strong> <%= user.facebook.name %> <strong></h2>
-    <h3 style= "text-align:center;"><b>Welcome to BuzzingArtists.</b></h3>
+    <h3 style= "text-align:center;"><b>Welcome to MotleyMeow.</b></h3>
     <% if (typeof citysel == 'undefined' || citysel == "") { %>
     <h4 style= "text-align:center;"> Your location is not set currently. Choose your location through <a href="/profile">"update profile"</a> link and view happenings in your city only.</h4>
     <% } %>  

@@ -1,3 +1,4 @@
 1) When posting an event, the event doesnt come to Home page. It needs to be refreshed.
 2) Must not be able to post if no title. ( Validation on title) - DONE
 3) Validation added in "Post event from FB " is fine but for the event ID it doesnt get removed even when the user keys in texts
+4) BG Image on first page need to be changed - Check with Shaurya on that
