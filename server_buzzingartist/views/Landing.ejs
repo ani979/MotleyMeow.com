@@ -176,7 +176,7 @@
   </div>
   
   <div id = "recentPosts" class="col-md-6" style="vertical-align:top;">
-    <% if (typeof citysel == 'undefined' || citysel == "") { %>
+    <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
         <h2><a href = "/viewallposts">Recent posts in all locations(Click here for more)</a></h2> 
      <% } else { %>
         <h2><a href = "/viewallposts">Recent posts in <%=citysel%> (Click here for more)</a></h2>    
@@ -289,7 +289,7 @@
   
   
   <div id="slide-3" style="clear:both;">
-    <% if (typeof citysel == 'undefined' || citysel == "") { %>
+    <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
         <h2 style="text-align:center;"><a href="/allevents" >Upcoming Events in all locations(Browse all here)</a></h2>
      <% } else { %>
         <h2 style="text-align:center;"><a href="/allevents" >Upcoming Events in <%=citysel%> (Browse all here)</a></h2>   
