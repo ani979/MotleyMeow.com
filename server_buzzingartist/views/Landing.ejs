@@ -137,17 +137,17 @@
 <%}%> 
 <% var citysel = user.local.city %>
 <div class = "main-container">
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+    <!--<div class="col-md-12" style = "text-align: center;">
     <h3 class = "thtrexplore">
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
-  </div>
+  </div>-->
   
   <div class="container">
     <h2 class="title" style= "text-align:center;">Hi, <strong> <%= user.facebook.name %> <strong></h2>
     <h3 style= "text-align:center;"><b>Welcome to MotleyMeow.</b></h3>
-    <% if (typeof citysel == 'undefined' || citysel == "") { %>
-    <h4 style= "text-align:center;"> Your location is not set currently. Choose your location through <a href="/profile">"update profile"</a> link and view happenings in your city only.</h4>
+    <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
+    <h4 style= "text-align:center;"><small> Your location is not set currently. Choose your location through <a href="/profile">"update profile"</a> link and view happenings in your city only.</small></h4>
     <% } %>  
 
     <hr class="half-rule">
@@ -486,6 +486,16 @@
   <script src="js/jquery-migrate-1.2.1.min.js"></script>
   <script src="js/jquery.easing.1.3.js"></script>
   <script src="js/imageCarousel.js"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60761327-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
   <script type="text/javascript">
 
     
@@ -532,11 +542,9 @@ $("#footer").load("footer.ejs");
               clearInterval(timerId);
           });
           
-        });
+    });
 
-        
-        
-        
+   
         
           
     </script>

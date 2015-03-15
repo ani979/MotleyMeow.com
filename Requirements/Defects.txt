@@ -4,3 +4,5 @@
 4) BG Image on first page need to be changed - Check with Shaurya on that
 5) Header is currently loaded ajax way...any other way to load it.
 6) In mobile we must be able to browse events by touch.
+7) When images in "Who we are" are clicked... the page loads fresh. It should instead hover.
+8) In "Invite your friends" we still have Buzzng Artists and Black Tie etc..

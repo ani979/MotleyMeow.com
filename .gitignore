@@ -112,8 +112,8 @@ server_buzzingartist/oauth.js
 server_buzzingartist/views/index_old.ejs
 server_buzzingartist/db.js
 server_buzzingartist/app.out
-*.jpg
-*.jpeg
+server_buzzingartist/uploads/*.*
+server_buzzingartist/views/uploads/*.*
 server_buzzingartist/views/images/COMM_CONTRACT_20150305_71410034.PDF.zip
 server_buzzingartist/views/searchArtists.ejs
 server_buzzingartist/views/testModals.html

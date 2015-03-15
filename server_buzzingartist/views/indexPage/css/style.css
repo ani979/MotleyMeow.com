@@ -258,9 +258,40 @@ body {
 }
 
 #slide-2 {
+	background: url(../images/bg1.jpg) no-repeat center center fixed; 
 	background-color: #1abc9c;
 	color: #e4e6e5;
 	padding-top: 90px;
+	background-size: 100%;
+	  display: table;
+	  height: 100%;
+	  position: relative;
+	  width: 100%;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;
+}
+
+#slide-2 .container {
+	width:100%;
+	height:100%;
+  
+}
+
+#slide-8 .container {
+/*	  z-index: 1;
+  background: rgba(0, 0, 0, 0.7); */
+  
+}
+
+#slide-5 .container {
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.7); 
+  padding-bottom:0px;
+  width:100%;
+  min-height:100%;
+  
 }
 
 	.title-row {
@@ -408,15 +439,42 @@ body {
 #slide-5 {
 	background-color: #f39c12;
 	color: #e4e6e5;
-	padding-top: 90px;
+	padding-top: 0px;
+	padding-bottom:0px;
+	background: url(../images/WhereWeAre.jpg) no-repeat center center fixed; 
+	background-size: 100%;
+	
+	  height: 100%;
+	  position: relative;
+	  width: 100%;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;
 }
 
-#slide-8 {
+/*#slide-8 {
 	background-color: #2f2f2f;
 	color: #e4e6e5;
 	padding-bottom: 350px;
 	padding-top: 90px;
-}
+}*/
+#slide-8 {
+	background: url(../images/WhoWeAre.jpg) no-repeat center center fixed; 
+	background-color: #2f2f2f;
+	color: #e4e6e5;
+	padding-bottom: 350px;
+	padding-top: 90px;
+	background-size: 100%;
+	  display: table;
+	  height: 100%;
+	  position: relative;
+	  width: 100%;
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;
+}	  
 
 @media (max-width: 767px) {
 	#slide-8 {

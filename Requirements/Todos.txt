@@ -26,6 +26,7 @@ TodoS:
 23) try to use user-agent to make a differnece between mobile and system (laptop) so as not to display the scrolling image over event images on the landing page
 24) May have to register a new app id for motleymeow.com
 25) In viewapost we need to use website address for commenting or liking..right now its localhost or googlecloud's
+26) Add keywork in idex page for google search
 
 GOOD TO HAVE:
 1) Add theatre group details also.. - TBD

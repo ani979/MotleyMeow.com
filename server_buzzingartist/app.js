@@ -291,7 +291,7 @@ app.get('/aboutus', function(req, res){
 });
 
 app.get('/theTeam', function(req, res){
-  res.render('AboutUs', { user: req.session.user, hashValue: "slide-3" });
+  res.render('AboutUs', { user: req.session.user, hashValue: "slide-8" });
 });
 
 app.get('/whereweare', function(req, res){
