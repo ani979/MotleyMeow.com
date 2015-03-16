@@ -301,6 +301,10 @@ app.get('/supportUs', function(req, res){
    res.render('SupportUs', { user: req.session.user});
 });
 
+app.get('/comingsoon', function(req, res){
+   res.render('comingsoon', { user: req.session.user});
+});
+
 app.get('/faq', function(req, res){
   res.render('faqPage', { user: req.session.user });
 });

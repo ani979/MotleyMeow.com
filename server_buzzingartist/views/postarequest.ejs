@@ -10,6 +10,8 @@
         <link href="css/style.css" rel="stylesheet">       
         <link href="css/tab.css" rel="stylesheet">
         <link href="css/lightbox.css" rel="stylesheet" />
+        <link href="css/bootstrap-dialog.css" rel="stylesheet">
+        <script src="js/bootstrap-dialog.js"></script>
         
   </head>
   <script type="text/javascript">
@@ -240,7 +242,8 @@
     <% } %>    
                            
     <div class="control-group">
-      <label class="control-label" for="submitbutton">Submit your request</label>
+      <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;color: #FF1919;"><b>Please confirm you have read and will abide by our<a href="#guidelinesModal" role="button" class="btn" data-toggle="modal">Posting Guidelines.</a></b></span>
+      
       <div class="controls">
         <button id="submitbutton" name="submitbutton" class="btn btn-primary">Submit</button>
             <a href="/searchPosts"><input type="button" class="btn btn-primary" value="Back" />
@@ -252,27 +255,35 @@
      
     </fieldset>
     </form>
-<!--     <form id="uploadForm"
-        enctype="multipart/form-data"
-        action="/postPhotos"
-        method="post"> 
-  -->      
-<!--       </form>  
-      <span id="status" />
-      <img id="uploadedImage" /> -->
 
-    <!-- <form action="/goback" method="post">
-    <div class="control-group">
-      <label class="control-label" for="cancelbutton">Exit the page</label>
-      <div class="controls">
-        <button id="cancelbutton" name="cancelbutton" class="btn btn-primary">Cancel</button>
-      </div>
-    </div>
-  </form> -->
 
   </div>  
 </div>    
-
+<div class="modal fade" id="guidelinesModal" role="dialog" aria-labelledby="guidelinesModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                  <h4 class="modal-title" data-step="1">Posting guidelines</h4>
+                  
+              </div>
+              <div class="modal-body" style="text-align:left;">
+                              
+                                <ol>
+                                    <li> Our goal is to create a connected environment where every theatre artists can request for or provide help. These Community Guidelines are here to help you understand what it means to be a member of MotleyMeow</li>
+                                    <li> Don't post commercial messages. Do not promote commercial activities, including related links. Be respectful to each other. Do not vent your frustrations at other members, through any post in the site. There is zero tolerance for predatory behaviour, disparaging or defamatory comments, threats, harassment, illegal activities, invading privacy, propaganda, racial hatred, offensive cultural behaviour, vulgar or obscene content, or other inappropriate behaviour or the revealing of other members' personal information. MotleyMeow reserves the right to remove such a post and also take action against them.</li>
+                                    <li>Please bring to our notice any such inappropriate content.</li>
+                                    <li>We will update these Community Guidelines from time to time, so please check this page regularly.</li>
+                                </ol>  
+                          
+              </div>
+              
+              <div class="modal-footer">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">DONE</button></span>
+              </div>
+              
+          </div>
+      </div>
+  </div>  
          
 
     <!-- footer starts-->
@@ -479,6 +490,7 @@
 
 
     $(document).ready(function() {
+        disableSubmit();
         $('#requestForm').validate({
             rules: {
                 postTitle: {
@@ -494,6 +506,21 @@
             }
         });
     }); 
+
+    function disableSubmit() {
+      document.getElementById("submitbutton").disabled = true;
+    }
+
+    function activateButton(element) {
+
+        if(element.checked) {
+          document.getElementById("submitbutton").disabled = false;
+         }
+         else  {
+          document.getElementById("submitbutton").disabled = true;
+        }
+
+    } 
 
 
     //   status('Choose a file :)');
