@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/dropdowns-enhancement.js"></script>
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+
+       
+    </head>
+
+  
+
+<body>
+     
+
+ <% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout"></div>
+  <%}%> 
+  
+<div class="jumbotron">
+  <div class = "main-container">
+    <h2 class="black-heading" style="text-align:center"><u>Support US</u></h2>
+    <h3 style="text-align:center">Thanks for coming to this page</h3>
+    <div class = "artistsCheck">
+      <div class = "authmessage">
+        <p style="text-align:center">You can support us in many ways. One of it is passing this message across your friends circle, who are into theatre, about <a href = "www.motleymeow.com" >MotleyMeow</a>. <strong>Let them too join this community that thrives in building and supporting the theatre fraterntiy</strong>.  
+        <p style="text-align:center"> One other way is to work with us. We work after office hours and weekends to manage, maintain this site. The code is in javascript and we use Node.js platform with MongoDB as the database. If you know these you are welcome, if you don't know you are more than welcome to learn and enjoy working on it.</p>
+        <p style="text-align:center">Do contact us in the email/numbers given below in the footer.</p> 
+      </div>  
+    </div>  
+    
+  </div>  
+</div>  
+
+
+<div id = "footer"></div>
+
+<script type="text/javascript">
+     $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
+</script>
+</body>
+</html>

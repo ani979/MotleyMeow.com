@@ -297,6 +297,9 @@ app.get('/theTeam', function(req, res){
 app.get('/whereweare', function(req, res){
    res.render('AboutUs', { user: req.session.user, hashValue: "slide-5" });
 });
+app.get('/supportUs', function(req, res){
+   res.render('SupportUs', { user: req.session.user});
+});
 
 app.get('/faq', function(req, res){
   res.render('faqPage', { user: req.session.user });
