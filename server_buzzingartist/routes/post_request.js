@@ -345,16 +345,28 @@ exports.editpost = function (req, res) {
 };
 
 exports.viewpost = function (req, res) {
-	console.log("user id " + req.body._id);
-            console.log("post id " + req.body._postid);
-            Posts.findOne({ '_id' : req.body._postid }, function(error, db) {
-                if (error || !req.user) {
-                    console.log("ERROR NOT A VALID");
+    if(typeof req.session == 'undefined' || typeof req.session.user == 'undefined') {
+        console.log("req.query.postid " + req.query.postid)
+        Posts.findOne({ '_id' : req.query.postid }, function(error, db) {
+                if (error) {
+                    console.log("ERROR NOT A VALID POST. FROM LOGGED OUT USER");
                   req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
                   res.redirect('/error');
                 } else {
                   console.log("found post " + db);
-                  User.findOne({ 'facebook.id' : req.body._id }, function(error, user) {
+                  res.render("viewapost", {post:db}); 
+                }  
+        });
+     } else {
+	        console.log("post id " + req.query.postid);
+            Posts.findOne({ '_id' : req.query.postid }, function(error, db) {
+                if (error) {
+                    console.log("ERROR NOT A VALID. FROM LOGGED IN USER");
+                  req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
+                  res.redirect('/error');
+                } else {
+                  console.log("found post " + db);
+                  User.findOne({ 'facebook.id' : db.post.userid }, function(error, user) {
                     if(error) {
                         console.log("Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
                         // res.redirect("/searchposts");
@@ -374,6 +386,7 @@ exports.viewpost = function (req, res) {
                   
                 }  
             });
+        }
 };
 
 exports.deletepost = function (req, res) {

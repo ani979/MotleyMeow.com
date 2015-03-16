@@ -26,28 +26,28 @@
 
 
 
-  <div class="col-md-12 no-margin no-padding" style = "text-align: center;">
+  <div class="col-md-12 no-margin no-padding">
     <form id = "eventform" class="form-horizontal" action="/posteventDetails" method="post">
     <%if (typeof errorMessage != 'undefined' && errorMessage == 1) { %>
     <h3>Sorry that Event is already registered in our database. If its not appearing in the front page slider, please call us on the number provided in "Where we are" section. It was a mistake, Try again below</h3>
      <%}%>
 
     <!-- Form Name -->
-    <legend>Post an event in our main page</legend>
-     <span class="fieldNote"><h4>Just copy paste the event url from facebook. Eg. of an event URL https://www.facebook.com/events/1234567/?ref_dashboard_filter....."</h4> </span>
+    <legend style = "text-align: center;">Post an event in our main page</legend>
+     <span class="fieldNote" style = "text-align: center;"><h4>Just copy paste the event url from facebook. Eg. of an event URL https://www.facebook.com/events/1234567/?ref_dashboard_filter....."</h4> </span>
 
     <!-- Textarea -->
     <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
-    <div class="control-group">
-        <label id="eventurl" class="control-label" for="textarea">EVENT URL:</label>
-        <div class="controls" >       
-        <input type="textarea" name="eventId" id="eventId" class="input-lg" style="text-align: center; width: 40%;">
+    <div class="control-group col-md-12">
+        <label id="eventurl" class="control-label col-md-3" for="textarea">EVENT URL:</label>
+        <div class="controls col-md-9" >       
+        <input type="textarea" name="eventId" id="eventId" class="input-lg" style="text-align: center; width: 80%;">
         </div>
      </div>   
-
-     <div class="control-group">
-      <label class="control-label" id= "checkkind" for="checkboxes">Select the kind of event</label><br>
-      <div class="controls">
+     <div>&nbsp;</div>
+     <div class="control-group col-md-12">
+      <label class="control-label col-md-3" id= "checkkind" for="checkboxes">Select the kind of event:</label>
+      <div class="controls col-md-9">
       <% var eventCats = dropdowns.alldropdowns.eventCategories;
             for(var i = 0; i < eventCats.length; i ++) {   %>
               <label class="checkbox-inline" for="checkboxes-<%=eventCats[i].category%>">
@@ -70,13 +70,13 @@
         
       </div>
     </div>
-
+    <div>&nbsp;</div>
     <div class="control-group col-md-12">
-       <label class="control-label" for="city">In which city</label>
-       <div class="controls col-md-offset-5" style="width:20%;">
+       <label class="control-label col-md-3" for="city">In which city</label>
+       <div class="controls col-md-9" style="width:20%;">
 
           <select class="form-control" name="city">
-            <% var cities = dropdowns.alldropdowns.cities;
+            <% var cities = dropdowns.alldropdowns.citiesForPost;
               for(var i = 0; i < cities.length; i ++) {   %> 
                 <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
                                             <!-- <option>Bengaluru</option>
@@ -94,19 +94,23 @@
           </select> 
         </div>
     </div>
-
-      <div class="control-group">
-      <label class="control-label" for="submitbutton">Submit your request</label>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+      <div class="control-group col-md-12" style = "text-align:center;">
+      <label class="control-label" for="submitbutton" style= "font-size:20px;"><strong>Submit your request</strong></label>
       <div class="controls">
-        <button id="submitbutton" name="submitbutton" class="btn btn-primary" type="submit">Submit</button>
+        <button id="submitbutton" name="submitbutton" class="btn btn-primary" type="submit">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/searchPosts"><input type="button" class="btn btn-primary" value="Back" />
+            </a>
       </div>
+
     </div>
 
 
         
   
     </form>
-    <input action="action" type="button" value="Back" onclick="history.go(-1);" />
+    
     <!-- <form action="/goback" method="post">
     <div class="control-group">
       <label class="control-label" for="cancelbutton">Exit the page</label>

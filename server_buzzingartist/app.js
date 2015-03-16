@@ -255,7 +255,7 @@ var mwMulter1 = multer({ dest: './views/uploads' });
 app.post( '/post',  mwMulter1, post_request.post);
 app.post( '/searchallposts',  post_request.searchallposts);
 app.post( '/editpost', ensureAuthenticated, mwMulter1,post_request.editpost);
-app.post( '/viewpost', ensureAuthenticated, mwMulter1,post_request.viewpost);
+app.get( '/viewpost', mwMulter1,post_request.viewpost);
 app.post( '/deletepost', ensureAuthenticated, mwMulter1, post_request.deletepost);
 
 app.get( '/searchPosts', ensureAuthenticated, post_request.searchPosts);

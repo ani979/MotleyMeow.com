@@ -228,18 +228,15 @@
      
 
       var form = $('#viewPost');
-      $('#_id').val(postUserVal);
-      $('#_postid').val(postval)
+      $('#postid').val(postval)
       form.submit();
       
         
     });
     </script>
   </div>
-  <form id="viewPost" action="/viewpost" method="POST">
-  
-  <input id="_id" name="_id"  type="hidden" >
-  <input id = "_postid" name="_postid"  type="hidden">
+  <form id="viewPost" action="/viewpost" method="GET">
+    <input id = "postid" name="postid"  type="hidden">
   </form>
   
 

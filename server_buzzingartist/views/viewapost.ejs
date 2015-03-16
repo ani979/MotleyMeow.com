@@ -140,6 +140,8 @@
                        <%} else { %>
                           <p class="form-control-static">Not shared</p>
                        <%} %>
+                  <% } else { %>
+                            <p class="form-control-static">Not viewable</p>
                   <% } %>        
                 </label>
               </div>
@@ -167,12 +169,13 @@
   <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
      <% console.log("same user as logged in so can edit"); %>
      <form action="/editpost" method="POST">
-        <p data-placement="top" data-toggle="tooltip" title="Edit"><button id ="edit" align="center"><span class="glyphicon glyphicon-pencil">EDIT</span></button></p>
+        <button id ="edit" align="center" class="btn btn-primary"><span class="glyphicon glyphicon-pencil">EDIT</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input name="_id"  type="hidden" value=<%=user._id%>>
         <input name="_postid"  type="hidden" value=<%=post._id%>>
+        <input action="action" type="button" value="Back" onclick="history.go(-1);" class="btn btn-primary"/>
     </form>
  <% } %>  
-        <input action="action" type="button" value="Back" onclick="history.go(-1);"/>
+        
     
        </div>        
   </div> 
