@@ -466,3 +466,7 @@ body.modal-open .supreme-container{
 .titlecol {
   width: 30%;
 }
+
+#doorbell-button {
+  display:none;
+}
