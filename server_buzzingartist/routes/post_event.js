@@ -20,11 +20,15 @@ exports.posteventDetails = function (req, res) {
                                     Event.findOne({ 'event.eventId' : req.body.eventId }, function(err, event) {
                                             if (err) {
                                                 console.log("Error in retrieving" + err);
+                                                req.flash('info', "Error while retrieving the event.")
+                                                res.redirect('/error')
                                                 return done(err);
                                             }   
                                             // if the user is found, then log them in
                                             if (event) {
                                              console.log("sorry that Event is already registered");
+                                             req.flash('info', "Sorry that event is already registered.")
+                                             res.redirect('/error')
 //                                             res.render('postevent', {user: req.session.user, infomessage: "Sorry, something went wrong, This event is already in our DB. Please call inform us if its a mistake from our side. Thanks."});
                                             } else {
                                               console.log("req.body.city is " + req.body.city);
@@ -54,11 +58,17 @@ exports.posteventDetails = function (req, res) {
                                                                 newEvent.event.eventcover = response.data.url; 
                                                                 console.log("event picture url " + response.data.url);
                                                                 newEvent.save(function(err) {
-                                                                    if (err)
-                                                                        throw err;
+                                                                    if (err) {
+                                                                        req.flash('info', "Error while saving the event. Either its already present or some error in retrieving details from Facebook.")
+                                                                        res.redirect('/error');
+                                                                    }
+                                                                        
+                                                                    res.redirect('/home');   
                                                                 });   
                                                              } else {
                                                                 console.log("error");
+                                                                req.flash('info', "Error while saving the event. Either its already present or some error in retrieving details from Facebook.")
+                                                                res.redirect('/error');
                                                              }   
                                                          }        
                                                );
@@ -68,7 +78,7 @@ exports.posteventDetails = function (req, res) {
  
                         });               
         
-            res.redirect('/home');
+            
 };
 
 exports.allEvents = function (req, res) {
