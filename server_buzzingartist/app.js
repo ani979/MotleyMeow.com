@@ -317,6 +317,10 @@ app.get('/privacy', function(req, res){
   res.render('privacypolicy', { user: req.session.user });
 });
 
+app.get('/terms', function(req, res){
+  res.render('terms', { user: req.session.user });
+});
+
 var mwMulter2 = multer({ dest: './views/tempUploads' });
 app.post('/postPhotos', mwMulter2, post_request.postPhoto);
 
