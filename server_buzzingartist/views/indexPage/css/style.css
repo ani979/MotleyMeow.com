@@ -307,7 +307,7 @@ body {
 	}
 	
 	.subtitle-row {
-		font-size: 35px;
+		font-size: 25px;
 		padding-bottom: 40px;
 		padding-top: 40px;
 	}
@@ -528,9 +528,9 @@ body {
 	}
 
 
-	#contact-row-1 {
+/*	#contact-row-1 {
 		padding-top: 125px;
-	}
+	}*/
 	
 	#contact-row-1 .col-12 {
 		height: 175px;
