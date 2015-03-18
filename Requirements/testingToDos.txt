@@ -1,0 +1,8 @@
+Todo for testing
+1) Create 10 users for each 10 testers
+2) Give details on posts
+3) Give 4 events to each
+4) In the credits page, add names of people who supported.
+5) tests on mobile and web.
+6) Change the password of motleymeow@gmail.com
+7) List of known issues

@@ -83,7 +83,7 @@ passport.use(new FacebookStrategy({
                         hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
                         req.session.hashValue = hash;
                         if(typeof user.local.joiningDate == 'undefined' || user.local.joiningDate == "") {
-                            User.update({'facebook.email' : user.facebook.email},
+                            User.update({'facebook.id' : user.facebook.id},
                                                  { $set: {"local.joiningDate": new Date()}},
                                                             function (err, user) {
                                                                 if(err) {
@@ -103,7 +103,7 @@ passport.use(new FacebookStrategy({
                                         console.log(" response.link " + response.link);
                                         /* handle the result */
                                         //user.facebook.link = response.link;
-                                        User.update({'facebook.email' : user.facebook.email},
+                                        User.update({'facebook.id' : user.facebook.id},
                                                  { $set: {"facebook.link": response.link}},
                                                             function (err, user) {
                                                                 if(err) {
@@ -282,7 +282,7 @@ app.post( '/posteventDetails', post_event.posteventDetails);
 
 
 app.get('/error', function(req, res){
-  res.render('error', { message: req.flash('info')});
+  res.render('error', { message: req.flash('info'), user:req.session.user});
 });
 
 app.get('/header', function(req, res){

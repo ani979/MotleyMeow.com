@@ -350,7 +350,7 @@ exports.viewpost = function (req, res) {
         Posts.findOne({ '_id' : req.query.postid }, function(error, db) {
                 if (error) {
                     console.log("ERROR NOT A VALID POST. FROM LOGGED OUT USER");
-                  req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
+                  req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
                   res.redirect('/error');
                 } else {
                   console.log("found post " + db);
@@ -362,15 +362,15 @@ exports.viewpost = function (req, res) {
             Posts.findOne({ '_id' : req.query.postid }, function(error, db) {
                 if (error) {
                     console.log("ERROR NOT A VALID. FROM LOGGED IN USER");
-                  req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
+                  req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
                   res.redirect('/error');
                 } else {
                   console.log("found post " + db);
                   User.findOne({ 'facebook.id' : db.post.userid }, function(error, user) {
                     if(error) {
-                        console.log("Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
+                        console.log("Error in retrieving post, something is not correct. Please try again.");
                         // res.redirect("/searchposts");
-                        req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
+                        req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
                         res.redirect('/error');
                     } else {
                         console.log("user " + user);
@@ -378,7 +378,7 @@ exports.viewpost = function (req, res) {
                             res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});   
                         } else {
                                                     // res.redirect("/searchposts");
-                            req.flash('info', "Error in retrieving post, something is not correct. Please try again or contact us if it happens repeatedly");
+                            req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
                             res.redirect('/error');
                         }    
                     }

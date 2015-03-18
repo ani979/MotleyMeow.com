@@ -91,8 +91,8 @@
                 </ul>
 
             <ul class="nav navbar-right navbar-nav">           
-                  <li style = "padding-right:30px;"><a class="btn" href="#" onclick="doorbell.show(); return false;" style="background-color: #F5F5F5;color: #1B1A1A;">Send us a Feedback</a></li>
-                  <li><a class="btn btn-primary" onclick="FacebookInviteFriends();" style = "font-size: 18px;color: #F5F5F5; background-color: #132290;"> Invite your Friends<span class="sr-only">(current)</span></a></li>       
+                  <li style = "padding-right:30px;"><a class="btn" href="#" onclick="doorbell.show(); return false;" style="background-color: #F5F5F5;color: #1B1A1A;">Send us a quick meow</a></li>
+                  <li><a class="btn btn-primary" onclick="FacebookInviteFriends();" style = "font-size: 18px;color: #F5F5F5; background-color: #132290;"> Invite other cats<span class="sr-only">(current)</span></a></li>       
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
                     <ul class="dropdown-menu">
@@ -145,7 +145,7 @@
   </div>-->
   
   <div class="container">
-    <h2 class="title" style= "text-align:center;">Hi, <strong> <%= user.facebook.name %> <strong></h2>
+    <h2 class="title" style= "text-align:center;">Meow <strong> <%= user.facebook.name %>! <strong></h2>
     <h3 style= "text-align:center;"><b>Welcome to MotleyMeow.</b></h3>
     <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
     <h4 style= "text-align:center;"><small> Your location is not set currently. Choose your location through <a href="/profile">"update profile"</a> link and view happenings in your city only.</small></h4>
