@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
+         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="js/jquery.js"></script>
@@ -15,7 +16,7 @@
         <link href="css/tab.css" rel="stylesheet">
         <link href="indexPage/css/font-awesome.min.css" rel="stylesheet">
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
-        <link href="css/bootstrap.css" rel="stylesheet">
+       
  
   </head>
   
@@ -73,7 +74,7 @@
 
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
             
-                <ul class="nav navbar-nav" id="headerlist">
+                <ul class="nav navbar-nav" id="headerlist" style="font-size:16px;">
                   <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
                    <li><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
                    <li><a href="/postarequest">Post a request<span class="sr-only">(current)</span></a></li>
@@ -145,7 +146,7 @@
   </div>-->
   
   <div class="container">
-    <h2 class="title" style= "text-align:center;">Meow <strong> <%= user.facebook.name %>! <strong></h2>
+    <h2 class="title" style= "text-align:center;">Meeoowww <strong> <%= user.facebook.name %>! </strong></h2>
     <h3 style= "text-align:center;"><b>Welcome to MotleyMeow.</b></h3>
     <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
     <h4 style= "text-align:center;"><small> Your location is not set currently. Choose your location through <a href="/profile">"update profile"</a> link and view happenings in your city only.</small></h4>

@@ -275,6 +275,43 @@ td,th{
 	src:url(../fonts/glyphicons-halflings-regular.eot);
 	src:url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'),url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'),url(../fonts/glyphicons-halflings-regular.woff) format('woff'),url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'),url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
 }
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Light'), local('Roboto-Light'), url(../fonts/Roboto-Light.ttf);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(../fonts/Roboto-Regular.ttf);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Bold'), local('Roboto-Bold'), url(../fonts/Roboto-Bold.ttf);
+}
+
+/*@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Light'), local('Roboto-Light'), url(../fonts/Lato-Light.ttf);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(../fonts/Lato-Regular.ttf);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Bold'), local('Roboto-Bold'), url(../fonts/Lato-Bold.ttf);;
+}*/
 
 .glyphicon{
 	position:relative;
@@ -1338,7 +1375,7 @@ html{
 }
 
 body{
-	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-family:Roboto,Arial,sans-serif;
 	font-size:14px;
 	line-height:1.42857143;
 	color:#333;
