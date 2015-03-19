@@ -127,7 +127,27 @@
 
     <!-- footer starts-->
    <div id = "footer"></div>
-    
+    <div class="modal fade" id="eventErrorModal" role="dialog" aria-labelledby="eventErrorModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                  <h4 class="modal-title" data-step="1">Error occurred</h4>
+                  
+              </div>
+              <div class="modal-body" style="text-align:left;">
+                              
+                                There is a wrong event URL given, please check again. It must be in this format:
+                                https://www.facebook.com/events/12345678900/?ref_dashboard_filter.....
+                          
+              </div>
+              
+              <div class="modal-footer">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close and try again</button></span>
+              </div>
+              
+          </div>
+      </div>
+  </div>
    <!-- footer ends-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/jquery.js"></script>
@@ -138,32 +158,42 @@
     $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
-    $('#eventform').submit(function(event) {
-     
-      var eventDetails = document.getElementById("eventId").value;
-      var splitEventbyEvent = eventDetails.split("/events/");
-      var splitEventbyId;
-      var idOfEvent;
-      
-      var lengthofSplitEvent = splitEventbyEvent.length;
-      
-      if(lengthofSplitEvent > 1) {
-        splitEventbyId = splitEventbyEvent[1].split("/");
-        if (splitEventbyId.length > 0) {
-          idOfEvent = splitEventbyId[0];
-          document.getElementById("eventId").value = idOfEvent;
-          
-        }  else {
-          console.log("some error occurred in split");
+    $(document).ready(function() {
+      $('#eventform').submit(function(event) {
+       
+        var eventDetails = document.getElementById("eventId").value;
+        var splitEventbyEvent = eventDetails.split("/events/");
+        var splitEventbyId;
+        var idOfEvent;
+        
+        var lengthofSplitEvent = splitEventbyEvent.length;
+        if(lengthofSplitEvent > 1) {
+          splitEventbyId = splitEventbyEvent[1].split("/");
+          if (splitEventbyId.length > 0) {
+              idOfEvent = splitEventbyId[0];
+              if(/^\d.*/.test(idOfEvent)) {
+                document.getElementById("eventId").value = idOfEvent;
+              } else {
+                console.log("its not a correct event id");
+                $('#eventErrorModal').modal('show');
+                event.preventDefault();
+                return;
+              }
+          }  else {
+            console.log("some error occurred in split");
+            $('#eventErrorModal').modal('show');
+            event.preventDefault();
+            return;
+          }
+        } else {
+          console.log("some error occurred in first split");
+          $('#eventErrorModal').modal('show');
+           event.preventDefault();
+          return;
         }
-      } else {
-        console.log("some error occurred in first split");
-      }
 
-
-      
-
-    });
+      });
+    });  
 
     $('#eventform').validate({
             rules: {
