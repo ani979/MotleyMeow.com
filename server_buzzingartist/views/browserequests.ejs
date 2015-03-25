@@ -229,11 +229,15 @@
     var selectLang = "Language comfortability";
     var filterTable;
     $(document).ready(function(){
+      $('button[id="citySel"]').html(selectCity);
+      $('button[id="artistSel"]').html(selectRole);
+      $('button[id="languageSel"]').html(selectLang);
       
       filterTable=$('#mytable').DataTable( {
         "order": [[ 0, "desc" ]]
       });
       $('#mytable').show();
+      $('#searchposts').show();
     });
 
 
@@ -287,13 +291,7 @@ function filterme() {
  
  
   
-  $(document).ready(function(){
-      $('button[id="citySel"]').html(selectCity);
-      $('button[id="artistSel"]').html(selectRole);
-      $('button[id="languageSel"]').html(selectLang);
-      $('#searchposts').show();
-           
-  }(jQuery));
+  
 
   function callPostView(postTitle, description) {
         $('#myModal').modal().show();
