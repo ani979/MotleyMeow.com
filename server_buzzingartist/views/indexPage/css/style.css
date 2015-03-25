@@ -171,38 +171,32 @@ body {
 	text-align: center;
 }
 
-#slide-1 {
-	background-image: url(../images/DSC_0197.jpg);
-	color: #ffffff;
-    -webkit-background-size: 100%;
-    -moz-background-size: 100%;
-    -o-background-size: 100%;
-    background-size: 100%;
 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    width: 100%;
-	background-attachment: relative;
-	background-position: center center;
-}
 
 #slide-1 h1 {
 	padding-top: 130px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 2000px) {
 	#slide-1 {
-		background-position: -70% 0, 170% 0;
+		background-image: url(../images/DSC_0197.jpg);
+		color: #ffffff;
+	    -webkit-background-size: 100%;
+	    -moz-background-size: 100%;
+	    -o-background-size: 100%;
+	    background-size: 100%;
+
+	    -webkit-background-size: cover;
+	    -moz-background-size: cover;
+	    -o-background-size: cover;
+	    background-size: cover;
+	    width: 100%;
+		background-attachment: relative;
+		background-position: center center;
 	}
 }
 
-@media (max-width: 767px) {
-	#slide-1 {
-		background-image: none;
-	}
-}
+
 
 	#home-row-1,
 	#home-row-2 {

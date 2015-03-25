@@ -233,27 +233,7 @@ outline: none;
   display: none;
 }
 
-.homepageicon {
-  font-size:60px;
-  
-  z-index:1000;
-}
 
-.divrowleft {
-  padding-top:25px;
-  padding-right:100px;
-  height:100px;
-  vertical-align:middle;
-  text-align:right;
-}
-
-.divrowright {
-  padding-top:25px;
-  padding-left:100px;
-  height:100px;
-  vertical-align:middle;
-  text-align:left;
-}
 i {
     font-size: 15px;
     color: #151414;
@@ -488,30 +468,120 @@ body.modal-open .supreme-container{
   display:none;
 }
 
-.Landingrow {
-  background-image: url(../images/landingPage_2.jpg);
- 
+@media (min-width: 992px) {
+  .Landingrow {
+    background-image: url(../images/landingPage_2.gif);
     -webkit-background-size: contain;
     -moz-background-size: contain;
     -o-background-size: contain;
     background-size: 100% 100%;
     width: 100%;
     min-height: 100% !important;
-    height: 350px;
-}
+    height: 500px;
+  }
+  .homepageicon {
+    font-size:60px;
+    z-index:1000;
+  }
 
+.divrowleft {
+    padding-top:25px;
+    padding-right:100px;
+    height:100px;
+    vertical-align:middle;
+    text-align:right;
+  }
 
-@media (max-width: 991px) {
+.divrowright {
+    padding-top:25px;
+    padding-left:100px;
+    height:100px;
+    vertical-align:middle;
+    text-align:left;
+  }
+
+  .labelrow {
+    font-size:25px;
+    color:rgba(249, 243, 243, 0.95);
+  }
+}  
+
+@media (max-width: 991px) and (min-width: 600px) {
   .Landingrow {
-    background-position: -70% 0, 170% 0;
+    background-image: url(../images/landingPage_2.gif);
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: 100% 100%;
+    width: 100%;
+    min-height: 100% !important;
+    height: 500px;
+  }
+  .homepageicon {
+    font-size:60px;
+    z-index:1000;
+  }
+
+.divrowleft {
+    padding-top:25px;
+    padding-right:50px;
+    height:100px;
+    vertical-align:middle;
+    text-align:right;
+  }
+
+.divrowright {
+    padding-top:25px;
+    padding-left:50px;
+    height:100px;
+    vertical-align:middle;
+    text-align:left;
+  }
+  .labelrow {
+    font-size:15px;
+    color:rgba(249, 243, 243, 0.95);
   }
 }
 
-@media (max-width: 767px) {
+
+@media (max-width: 599px) and (min-width: 0px) {
   .Landingrow {
-    background-image: none;
+    background-image: url(../images/landingPage_2.gif);
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: 100% 100%;
+    width: 100%;
+    min-height: 100% !important;
+    height: 500px;
+  }
+  .homepageicon {
+    font-size:40px;
+    z-index:1000;
+  }
+
+.divrowleft {
+    padding-top:25px;
+    padding-right:30px;
+    height:100px;
+    vertical-align:middle;
+    text-align:right;
+  }
+
+.divrowright {
+    padding-top:25px;
+    padding-left:30px;
+    height:100px;
+    vertical-align:middle;
+    text-align:left;
+  }
+  .labelrow {
+    font-size:10px;
+    color:rgba(249, 243, 243, 0.95);
   }
 }
+
+
 /*@font-face {
   font-family: 'Roboto';
   font-style: normal;
