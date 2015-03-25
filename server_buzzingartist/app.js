@@ -135,7 +135,7 @@ passport.use(new FacebookStrategy({
                         newUser.facebook.id    = profile.id; // set the users facebook id                   
                         newUser.facebook.token = profile.token; // we will save the token that facebook provides to the user                    
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                        console.log("email id " + newUser.facebook.name);
+                        console.log("facebook name " + newUser.facebook.name);
                         if(typeof profile.emails == 'undefined' || profile.emails.length == 0) {
                             newUser.facebook.email = "";
                         } else {
@@ -151,7 +151,7 @@ passport.use(new FacebookStrategy({
                                         console.log(" response.link " + response.link);
                                         /* handle the result */
                                         //user.facebook.link = response.link;
-                                        User.update({'facebook.email' : req.session.user.facebook.email},
+                                        User.update({'facebook.email' : newUser.facebook.email},
                                                  { $set: {"facebook.link": response.link}},
                                                             function (err, user) {
                                                                 if(err) {
