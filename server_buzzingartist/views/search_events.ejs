@@ -166,9 +166,11 @@
     $(document).ready(function(){
         $('button[id="citySel"]').html(selectCity);
         $('button[id="categorySel"]').html(selectCategory);
-         filterTable = $('#mytable').DataTable( {
+
+        filterTable = $('#mytable').DataTable( {
         "order": [[ $('.eDate').index(), "asc" ]]
         } );
+
         $('#mytable').show();
         $('#searchevents').show();
     });
@@ -199,24 +201,7 @@
         .draw();
 
     }
-
   
-
-  
-
-
-        
-  $(document).ready(function(){
-            
-
-    $(function(){
-      $('select[value]').each(function(){
-        $(this).val(this.getAttribute("value"));
-     });
-     
-      
-
-});
 function uncheckAll(){
 
   $('input[type="checkbox"]:checked').prop('checked',false);
