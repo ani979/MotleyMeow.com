@@ -47,7 +47,7 @@
             return retDate;
         }
     %>
-  <div class="col-md-12" style = "text-align: center;" id = "searchposts">
+  <div class="col-md-12" style = "text-align: center;" id = "searchposts" style="display:none;">
     <h3>
       VIEW ALL POSTS
      </h3>
@@ -124,7 +124,7 @@
         <div class="table-responsive">
 
                 
-               <table id="mytable">
+               <table id="mytable" style="display:none;">
                 <thead>
                     <tr>
                         <th class ="ardate">Posted On</th>
@@ -233,6 +233,7 @@
       filterTable=$('#mytable').DataTable( {
         "order": [[ 0, "desc" ]]
       });
+      $('#mytable').show();
     });
 
 
@@ -290,16 +291,8 @@ function filterme() {
       $('button[id="citySel"]').html(selectCity);
       $('button[id="artistSel"]').html(selectRole);
       $('button[id="languageSel"]').html(selectLang);
-            $('[id=searchartists]').on("keyup", function(){
-              
-                        
-                        var rex = new RegExp($(this).val(), 'i');
-                        $('.searchable tr').hide();
-                        $('.searchable tr').filter(function () {
-                            return rex.test($(this).text());
-                        }).show();
-                    //})
-            });
+      $('#searchposts').show();
+           
   }(jQuery));
 
   function callPostView(postTitle, description) {

@@ -46,7 +46,7 @@
             return retDate;
         }
     %>    
-  <div class="col-md-12" style = "text-align: center;" id = "searchevents">
+  <div class="col-md-12" style = "text-align: center;" id = "searchevents" style="display:none;">
     <h3>
       EVENTS PLAYING
      </h3>
@@ -112,7 +112,7 @@
         <div class="table-responsive">
 
                 
-              <table id="mytable" class="table table-bordered table-striped">
+              <table id="mytable" class="table table-bordered table-striped" style="display:none;">
                    
                    <thead>
                       <th class = "ename">Event Name</th>
@@ -169,7 +169,8 @@
          filterTable = $('#mytable').DataTable( {
         "order": [[ $('.eDate').index(), "asc" ]]
         } );
-        
+        $('#mytable')show();
+        $('#searchevents').show();
     });
 
     function filterme() {
@@ -206,18 +207,7 @@
 
         
   $(document).ready(function(){
-            $('[id=searchevents]').on("keyup", function(){
-              
-                        
-                        var rex = new RegExp($(this).val(), 'i');
-                        $('.searchable tr').hide();
-                        $('.searchable tr').filter(function () {
-                            return rex.test($(this).text());
-                        }).show();
-                    //})
-            });
-         }(jQuery));
-
+            
 
     $(function(){
       $('select[value]').each(function(){

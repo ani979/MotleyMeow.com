@@ -34,7 +34,7 @@
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
   </div>-->
-  <div class="col-md-12" style = "text-align: center;" id = "searchartists">
+  <div class="col-md-12" style = "text-align: center; display:none;" id = "searchartists">
     <h3>
       ARTISTS AROUND YOU
      </h3>
@@ -175,6 +175,7 @@
     $(document).ready(function(){
 
       filterTable = $('#mytable').DataTable();
+      $('#searchartists').show();
       $('#mytable').show();
       $('button[id="citySel"]').html(selectCity);
       $('button[id="artistSel"]').html(selectRole);
