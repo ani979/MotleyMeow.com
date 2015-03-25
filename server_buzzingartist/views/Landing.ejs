@@ -152,8 +152,10 @@
     <h2 class="title" style= "text-align:center;">Meeoowww <strong> <%= user.facebook.name %>! </strong></h2>
     <h3 style= "text-align:center;"><b>Let's bell the cat!</b></h3>
     <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
-    <h4 style= "text-align:center;"><small> Your location is not set currently. Choose your location through <a href="/profile">"update profile"</a> link and view happenings in your city only.</small></h4>
-    <% } %>  
+    <h4 style= "text-align:center;"><small> Your location is not set currently and your current email id is set to "<%= user.facebook.email %>". You can always update your location and email id through <a href="/profile">"update profile"</a> and keep yourself updated about happenings in your city only.</small></h4>
+    <% } else { %>  
+    <h4 style= "text-align:center;"><small> Your current email id is set to "<%= user.facebook.email %>". You can always <a href="/profile">"update it here"</a> to keep yourself updated about latest happenings.</small></h4>
+    <% } %>
 
     <hr class="half-rule">
 
