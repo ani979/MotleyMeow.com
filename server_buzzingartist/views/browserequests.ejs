@@ -230,7 +230,9 @@
     var filterTable;
     $(document).ready(function(){
       
-      filterTable=$('#mytable').DataTable();
+      filterTable=$('#mytable').DataTable( {
+        "order": [[ 0, "desc" ]]
+      });
     });
 
 

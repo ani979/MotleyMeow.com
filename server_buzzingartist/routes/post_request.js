@@ -304,13 +304,12 @@ exports.viewallposts = function (req, res) {
             console.log("req.session.user " + req.session.user);
             var allUsers;
             var posts; 
-            Posts.aggregate([{ $match: { 'post.date': { $gte: new Date(then.toISOString()) } } }],
+            Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } }, { $sort : { 'post.date' : -1 } } ],
                                     function(err, postsinDB) {
                 console.log("here");
                 if(!err) {
                     posts = postsinDB;
                 }
-                console.log("posts is " + posts);
                 console.log("posts length is " + posts.length);
                 console.log("req.user " + req.user);
                 
