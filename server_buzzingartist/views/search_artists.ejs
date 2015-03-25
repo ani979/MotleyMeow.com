@@ -109,7 +109,7 @@
         <div class="table-responsive">
 
                 
-              <table id="mytable">
+              <table id="mytable" style=" display:none;">
                    
                    <thead>
                       <th class ="arname" style="text-align:center">Name</th>
@@ -175,6 +175,7 @@
     $(document).ready(function(){
 
       filterTable = $('#mytable').DataTable();
+      $('#mytable').show();
       $('button[id="citySel"]').html(selectCity);
       $('button[id="artistSel"]').html(selectRole);
       $('button[id="languageSel"]').html(selectLang);
