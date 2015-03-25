@@ -235,7 +235,24 @@ outline: none;
 
 .homepageicon {
   font-size:60px;
+  
+  z-index:1000;
+}
+
+.divrowleft {
+  padding-top:25px;
+  padding-right:100px;
+  height:100px;
+  vertical-align:middle;
+  text-align:right;
+}
+
+.divrowright {
+  padding-top:25px;
   padding-left:100px;
+  height:100px;
+  vertical-align:middle;
+  text-align:left;
 }
 i {
     font-size: 15px;
@@ -469,6 +486,31 @@ body.modal-open .supreme-container{
 
 #doorbell-button {
   display:none;
+}
+
+.Landingrow {
+  background-image: url(../images/landingPage_2.jpg);
+ 
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: 100% 100%;
+    width: 100%;
+    min-height: 100% !important;
+    height: 350px;
+}
+
+
+@media (max-width: 991px) {
+  .Landingrow {
+    background-position: -70% 0, 170% 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .Landingrow {
+    background-image: none;
+  }
 }
 /*@font-face {
   font-family: 'Roboto';

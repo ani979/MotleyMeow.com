@@ -141,7 +141,7 @@
  </div>
 <%}%> 
 <% var citysel = user.local.city %>
-<div class = "main-container">
+<div class = "main-container" >
     <!--<div class="col-md-12" style = "text-align: center;">
     <h3 class = "thtrexplore">
       EXPLORE. CONNECT. CONTRIBUTE.
@@ -150,30 +150,34 @@
   
   <div class="container">
     <h2 class="title" style= "text-align:center;">Meeoowww <strong> <%= user.facebook.name %>! </strong></h2>
-    <h3 style= "text-align:center;"><b>Welcome to MotleyMeow.</b></h3>
+    <h3 style= "text-align:center;"><b>Let's bell the cat!</b></h3>
     <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
     <h4 style= "text-align:center;"><small> Your location is not set currently. Choose your location through <a href="/profile">"update profile"</a> link and view happenings in your city only.</small></h4>
     <% } %>  
 
     <hr class="half-rule">
 
-    <div class="row">
-      <div class="col-sm-3">
-        <i class="homepageicon icon icon-book"></i>
-        <h3>Update your profile</h3>
-        <p>How do you contribute to theare? Acting/Lights designing/Music/Set Design etc.. <a href="/profile">Update it here</a> </p>
+    <div class="Landingrow">
+      <div>&nbsp;</div>
+   <div>&nbsp;</div>
+      <div class="col-sm-6 divrowleft">
+        <a href="/profile" title="Update your profile" data-toggle="tooltip" style= "text-decoration: none;"><i class="homepageicon glyphicon glyphicon-user" style="color:rgba(249, 243, 243, 0.95);"></i></a>
       </div>
-      <div class="col-sm-3">
-        <i class="homepageicon icon icon-search"></i><h3>Search Artists</h3>
-        <p>Browse artists <a href="/artists"> here </a>, do an advance search and find out relevant artists who can help you
+      <div class="col-sm-6 divrowright">
+        <a href="/artists" title="Browse artists, posts, events" data-toggle="tooltip" style= "text-decoration: none;"><i class="homepageicon icon icon-search" style="color:rgba(249, 243, 243, 0.95);"></i></a>
+
       </div>
-      <div class="col-sm-3">
-        <i class="homepageicon icon icon-hand-up"></i><h3>Post and help</h3>
-        <p>Post auditions, post a need for artists etc. or help others for requests they have put up here<a href="/postarequest"> Post it here</a>
+      <div>&nbsp;</div>
+     <div>&nbsp;</div>
+      <div class="col-sm-4 divrowleft">
+        <a href="/postarequest" title="Post a request" data-toggle="tooltip" style= "text-decoration: none;"><i class="homepageicon glyphicon glyphicon-edit" style="color:rgba(249, 243, 243, 0.95);"></i></a>
+       
       </div>
-      <div class="col-sm-3">
-        <i class="homepageicon icon icon-eye-open"></i><h3>Experience theatre</h3>
-        <p>Find out what event is coming up, search by the category of events<a href="/allevents"> Find out here </a> 
+       <div class="col-sm-4">
+      </div>
+      <div class="col-sm-4 divrowright">
+        <a href="/allevents" style= "text-decoration: none;"><i class="homepageicon icon icon-eye-open" style="color:rgba(249, 243, 243, 0.95);"></i></a>
+        
       </div>
     </div>
     <hr class="half-rule">

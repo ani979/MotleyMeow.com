@@ -258,7 +258,7 @@ body {
 }
 
 #slide-2 {
-	background: url(../images/bg1.jpg) no-repeat center center fixed; 
+	/*background: url(../images/bg1.jpg) no-repeat center center fixed; */
 	background-color: #1abc9c;
 	color: #e4e6e5;
 	padding-top: 90px;
@@ -441,7 +441,7 @@ body {
 	color: #e4e6e5;
 	padding-top: 0px;
 	padding-bottom:0px;
-	background: url(../images/WhereWeAre.jpg) no-repeat center center fixed; 
+	/*background: url(../images/WhereWeAre.jpg) no-repeat center center fixed; */
 	background-size: 100%;
 	  
 	  position: relative;
@@ -459,7 +459,7 @@ body {
 	padding-top: 90px;
 }*/
 #slide-8 {
-	background: url(../images/WhoWeAre.jpg) no-repeat center center fixed; 
+	/*background: url(../images/WhoWeAre.jpg) no-repeat center center fixed; */
 	background-color: #2f2f2f;
 	color: #e4e6e5;
 	padding-bottom: 350px;
