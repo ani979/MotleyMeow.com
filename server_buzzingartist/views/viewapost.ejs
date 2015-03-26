@@ -168,18 +168,22 @@
        </div>         
        
        <div class="control-group" style="text-align:center">
-  <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
-     <% console.log("same user as logged in so can edit"); %>
-     <form action="/editpost" method="POST">
-        <button id ="edit" align="center" class="btn btn-primary"><span class="glyphicon glyphicon-pencil">EDIT</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <input name="_id"  type="hidden" value=<%=user._id%>>
-        <input name="_postid"  type="hidden" value=<%=post._id%>>
-        <input action="action" type="button" value="Back" onclick="history.go(-1);" class="btn btn-primary"/>
-    </form>
- <% } %>  
+       
+          <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
+             <% console.log("same user as logged in so can edit"); %>
+             <form action="/editpost" method="POST">
+                <button id ="edit" align="center" class="btn btn-primary"><span class="glyphicon glyphicon-pencil">EDIT</button>&nbsp;
+                <input name="_id"  type="hidden" value=<%=user._id%>>
+                <input name="_postid"  type="hidden" value=<%=post._id%>>
+                
+            </form>
+            <% } %>  
+            &nbsp;&nbsp;<br/>
+            <input action="action" type="button" value="Back" onclick="history.go(-1);" class="btn btn-primary">
+        
         
     
-       </div>        
+      </div>        
   </div> 
 
 <div class="fb-like col-md-8 col-md-offset-4" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
