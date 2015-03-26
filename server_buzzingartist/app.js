@@ -295,11 +295,11 @@ app.get('/aboutus', function(req, res){
 });
 
 app.get('/theTeam', function(req, res){
-  res.render('AboutUs', { user: req.session.user, hashValue: "slide-8" });
+  res.render('AboutUs', { user: req.session.user, hashValue: "section-testimonials" });
 });
 
 app.get('/whereweare', function(req, res){
-   res.render('AboutUs', { user: req.session.user, hashValue: "slide-5" });
+   res.render('AboutUs', { user: req.session.user, hashValue: "section-pricing" });
 });
 app.get('/supportUs', function(req, res){
    res.render('SupportUs', { user: req.session.user});

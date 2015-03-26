@@ -1,177 +1,367 @@
-<!doctype html>
-<html>
-<head lang="en">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<title>MotleyMeow.com - About Us</title>
 	
-	<title>MOTLEYMEOW. Hear the artists meow.</title> 
-	<meta name="description" content="Hear the artists meow." />	    
-	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
-	<meta property="og:title" content="">
-	<link rel="stylesheet" type="text/css" href="indexPage/css/style.css">	
-	<link href="indexPage/css/font-awesome.min.css" rel="stylesheet">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="indexPage/js/script.js"></script
-    <link href="css/tab.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    
-    
-		
-</head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="FirstPage/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="FirstPage/css/linea-icon.css" />
+	<link rel="stylesheet" href="FirstPage/css/fancy-buttons.css" />
+	<!--=== Google Fonts ===-->
+	<link href='http://fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,700,400' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Raleway:600,400,300' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+	<!--=== Other CSS files ===-->
+	<link rel="stylesheet" href="FirstPage/css/animate.css" />
+	<link rel="stylesheet" href="FirstPage/css/jquery.vegas.css" />
+	<link rel="stylesheet" href="FirstPage/css/baraja.css" />
+	<link rel="stylesheet" href="FirstPage/css/jquery.bxslider.css" />
+	
+	<!--=== Main Stylesheets ===-->
+	<link rel="stylesheet" href="FirstPage/css/style.css" />
+	<link rel="stylesheet" href="FirstPage/css/responsive.css" />
+	
+	<!--=== Color Scheme, three colors are available red.css, orange.css and gray.css ===-->
+	<link rel="stylesheet" id="scheme-source" href="FirstPage/css/schemes/gray.css" />
 
+	
+	
+	<!--=== Internet explorer fix ===-->
+	<!-- [if lt IE 9]>
+		<script src="http://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="http://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif] -->
+	
+	
+</head>
 <body>
+
+	
+	<!--=== Header section Starts ===-->
 	<% if(typeof user != 'undefined' && user!=null) { %>
 	<div id = "headerloggedin"> </div>
 	<% } else { %>
 	<div id = "headerloggedout"></div>
 	<%}%> 
+
+		<!-- sticky-bar Ends-->
+		<!--=== Header section Ends ===-->
+		
+		<!--=== Home Section Starts ===-->
+		<div id="section-home" class="home-section-wrap center">
+			<div class="section-overlay"></div>
+			<div class="container home">
+				<div class="row">
+					<h1 class="well-come">MotleyMeow</h1>
+					
+					<div class="col-md-8 col-md-offset-2">
+						<p class="intro-message">Helping you get your paws on stage</p>
+						
+						<div class="home-buttons">
+							<a href="#section-services" class="fancy-button button-line button-white vertical">
+								Learn more
+								<span class="icon">
+									<i class="fa fa-gear"></i>
+								</span>
+							</a>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--=== Home Section Ends ===-->
+	</div>
 	
 	
+	<!--=== Features section Starts ===-->
+
 	
-	<!-- === MAIN Background === -->
-	
-	
-	<!-- === Slide 2 === -->
-	<div class="slide story" id="slide-2" data-slide="2" style = "padding-top:90px;font-size:16px;">
-		<div class="container">
+	<!--=== Services section Starts ===-->
+	<section id="section-services" class="services-wrap">
+		<div class="container services">
+			<div class="row">
 			
-			<div class="row subtitle-row">
-				<div class="col-sm-8 col-sm-offset-2 font-thin"><span><b>Sir Tom Stoppard</b>, the British Playwright said that Theatre is a series of insurmountable obstacles on the road to imminent disaster. All of us working in this industry know how true that is. Everything that can go wrong, does go wrong. </span><br/><br/>
-					<span> The idea behind MotleyMeow is to create a support structure where as a community we support each other and overcome all the obstacles. So, whether your production needs actors, or a consultant or even last minute backstage help, MotleyMeow is the place to find the purrfect person.</span>
+				<div class="col-md-10 col-md-offset-1 center section-title">
+					<h3>What We Are</h3>
+				</div>
+				
+				<div class="col-md-12 center font-thin"><span><b>Sir Tom Stoppard</b>, the British Playwright said that Theatre is a series of insurmountable obstacles on the road to imminent disaster. All of us working in this industry know how true that is. Everything that can go wrong, does go wrong. </span><br/><br/>
+					<span> The idea behind MotleyMeow is to <b>"create a support structure"</b> where as a community we support each other and overcome all the obstacles. So, whether your production needs actors, or a consultant or even last minute backstage help, <b>MotleyMeow is the place to find the purrfect person.</b></span>
 
 				 </div>
-			</div><!-- /row -->
-			<div class="row content-row" style="padding-left:100px;padding-top:0px;">
-				<div class="col-12 col-lg-2 col-sm-6 with-hover-text">
-					<p><i class="icon icon-eye-open" style="font-size:80px;color:white;"></i></p>
-					<h2 class="font-semibold">FEATURES</h2>
-					<span class="hover-text" style="font-size:20px">MotleyMeow will be your trusted support through the entire process of your next production. From auditions, to consultation and planning, to training, to costume design, we will be there with you and help you find the right person for the job.</span>
-				</div><!-- /col12 -->
-				<div class="col-12 col-lg-2 col-sm-6 with-hover-text">
-					<p><i class="icon icon-pencil" style="font-size:80px;color:white;"></i></p>
-					<h2 class="font-semibold">POST A REQUIREMENT</h2>
-					<span class="hover-text" style="font-size:20px">Post a requirement for artists or request even for a help in your production. Get attention of other theatre practitioners who can help you.</span>
-				</div><!-- /col12 -->
-				<div class="col-12 col-lg-2 col-sm-6 with-hover-text">
-					<p><i class="icon icon-share" style="font-size:80px;color:white;"></i></p>
-					<h2 class="font-semibold">POST AN EVENT</h2>
-					<span class="hover-text" style="font-size:20px">Copy paste an event from FB and put it up here. Get your event focused attention. Make everyone aware if you are hosting a play or workshop or a reading.</span>
-				</div><!-- /col12 -->
-				<div class="col-12 col-lg-2 col-sm-6 with-hover-text">
-					<p><i class="icon icon-search" style="font-size:80px;color:white;"></i></p>
-					<h2 class="font-semibold">BROWSE EVENTS</h2>
-					<span class="hover-text" style="font-size:20px">Looking for workshops to attend? Search events that you are looking for. Find out various events running in your city. </span>
-				</div><!-- /col12 -->
-				<div class="col-12 col-lg-2 col-sm-6 with-hover-text">
-					<p><i class="icon icon-hand-up" style="font-size:80px;color:white;"></i></p>
-					<h2 class="font-semibold">SUPPORT OTHERS</h2>
-					<span class="hover-text" style="font-size:20px">This is our motto. Help other artists, connect with them and get yourself connected.Tell the community about your skills and talents.</span>
-				</div><!-- /col12 -->
-			</div><!-- /row -->
-
-		</div><!-- /container -->
-	</div><!-- /slide2 -->
+				
+				<div class="col-md-12" >&nbsp;</div>
+				
+				<!-- Single Service Starts -->
+				<div class="col-md-12 col-sm-12 service animated" data-animation="fadeInLeft" data-animation-delay="700">
+					<span class="service-icon center"><i class="icon icon-basic-paperplane fa-3x"></i></span>
+					<div class="service-desc">
+						<h4 class="service-title color-scheme">FEATURES</h4>
+						<p class="service-description justify">
+							MotleyMeow will be your trusted support through the entire process of your next production. From auditions, to consultation and planning, to training, to costume design, we will be there with you and help you find the right person for the job.
+						</p>
+					</div>
+				</div>
+				<!-- Single Service Ends -->
+				
+				<!-- Single Service Starts -->
+				<div class="col-md-6 col-sm-6 service animated" data-animation="fadeInUp" data-animation-delay="700">
+					<span class="service-icon center"><i class="icon icon-basic-book-pencil fa-3x"></i></span>
+					<div class="service-desc">
+						<h4 class="service-title color-scheme">POST A REQUIREMENT</h4>
+						<p class="service-description justify">
+							Post a requirement for artists or request even for a help in your production. Get attention of other theatre practitioners who can help you.
+						</p>
+					</div>
+				</div>
+				<!-- Single Service ends -->
+				
+				<!-- Single Service Starts -->
+				<div class="col-md-6 col-sm-6 service animated" data-animation="fadeInRight" data-animation-delay="700">
+					<span class="service-icon center"><i class="icon icon-basic-calendar fa-3x"></i></span>
+					<div class="service-desc">
+						<h4 class="service-title color-scheme">POST AN EVENT</h4>
+						<p class="service-description justify">Copy paste an event from FB and put it up here. Get your event focused attention. Make everyone aware if you are hosting a play or workshop or a reading.
+						</p>
+					</div>
+				</div>
+				<!-- Single Service Ends -->
+				
+				<!-- Single Service Starts -->
+				<div class="col-md-6 col-sm-6 service animated" data-animation="fadeInUp" data-animation-delay="700">
+					<span class="service-icon center"><i class="icon icon-basic-lightbulb fa-3x"></i></span>
+					<div class="service-desc">
+						<h4 class="service-title color-scheme">BROWSE EVENTS</h4>
+						<p class="service-description justify">
+							Looking for workshops to attend? Search events that you are looking for. Find out various events running in your city.
+						</p>
+					</div>
+				</div>
+				<!-- Single Service Ends -->
+								<!-- Single Service Starts -->
+				<div class="col-md-6 col-sm-6 service animated" data-animation="fadeInUp" data-animation-delay="700">
+					<span class="service-icon center"><i class="icon icon-basic-signs fa-3x"></i></span>
+					<div class="service-desc">
+						<h4 class="service-title color-scheme">SUPPORT OTHERS</h4>
+						<p class="service-description justify">
+							This is our motto. Help other artists, connect with them and get yourself connected.Tell the community about your skills and talents.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--=== Services section Ends ===-->
 	
 
-	<!-- === Slide 6 / Contact === -->
-	<div class="slide story" id="slide-8" data-slide="8" style = "padding-top:10px;">
-		<div class="container">
-			<div class="row subtitle-row">
-				<div class="col-12 font-thin"><span>Each one us has experienced the magic of theatre and it has touched our lives in one way or another. This project is really all about giving back to this community and giving a platform to more people to experience this art form.</span>
-					<br/>
+	
+	<!--=== Testimonials section Starts ===-->
+	<section id="section-testimonials" class="testimonials-wrap">
+
+		<div class="section-overlay">
+		<div class="col-md-10 col-md-offset-1 center section-title">
+					<h3>Who We Are</h3>
+		</div></div>
+		
+		<div class="container testimonials center animated" data-animation="rollIn" data-animation-delay="500">
+			<div class="col-md-12 center font-thin"><span>Each one us has experienced the magic of theatre and it has touched our lives in one way or another. This project is really all about giving back to this community and giving a platform to more people to experience this art form.</span><br/><br/>
 					<span> Don't be a fraidycat and reach us for any kind of support at the details given below. Also do write into us if you wish to contribute to project and be part of the MotleyMeow team.</span>
 
-				 </div>
-				<br/><br/>
-				<div class="col-12 font-light"><u><b>Meet the team</b></u></div>
-				
-			</div><!-- /row -->
-			<div id="contact-row-4" class="row" style="padding-top:0px;">
-				<div class="col-12 col-sm-3 with-hover-text" style="height:100%">
-					<p><img src ="images/ShauryaSingh.jpg">
-					<span class="hover-text font-thin ">co-founder Saarthak Productions. A playwright, actor, director. It was his idea to launch such a service for theatre fraternity.</img></span></p>
-					<ul class="social-icons">
-                            <li><a href="https://www.facebook.com/shaurya.singh.25?fref=ts" target="_blank"><ifooter class="fa fa-facebook"></ifooter></a></li>
-                            <li><a href="http://in.linkedin.com/pub/shaurya-singh/30/a23/2b1/en" target="_blank"><ifooter class="fa fa-linkedin"></ifooter></a></li>
-                    </ul>
-				</div><!-- /col12 -->
-				<div class="col-12 col-sm-3 with-hover-text" style="height:100%">
-					<p><img src ="images/DeevasGupta.jpg">
-					<span class="hover-text font-thin ">co-founder Saarthak Productions. A poet, playwright, actor, director. He also works as an editor at HighOnPoems. He along with Shaurya has been a guiding force behing the launch of this site. </span></img></p>
-					<ul class="social-icons">
-                            <li><a href="https://www.facebook.com/dvasg?fref=ts" target="_blank"><ifooter class="fa fa-facebook"></ifooter></a></li>
-                            <li><a href="http://in.linkedin.com/pub/deevas-gupta/21/998/b7a/en" target="_blank"><ifooter class="fa fa-linkedin"></ifooter></a></li>
-                    </ul>
-				</div><!-- /col12 -->
-				<div class="col-12 col-sm-3 with-hover-text" style="height:100%">
-					<p><img src ="images/AnupamProfile.jpg">
-					<span class="hover-text font-thin ">Coder @MotleyMeow, Anupam is an avid coder. Currently working for CISCO, he spent time off work to create MotleyMeow site.</img></span></p>
-					<ul class="social-icons">
-                            <li><a href="https://www.facebook.com/anupam.singh.18659041?fref=ts" target="_blank"><ifooter class="fa fa-facebook"></ifooter></a></li>
-                            <li><a href="http://in.linkedin.com/pub/anupam-singh/20/3bb/7a8/en" target="_blank"><ifooter class="fa fa-linkedin"></ifooter></a></li>
-                    </ul>
-				</div><!-- /col12 -->
-				<div class="col-12 col-sm-3 with-hover-text" style="height:100%">
-					<p><img src ="images/Animesh.jpg">
-					<span class="hover-text font-thin ">Coder @MotleyMeow, Along with Anupam has been the driving force to the development of this website and to make the idea a reality.</span></img></p>
-					<ul class="social-icons">
-                            <li><a href="https://www.facebook.com/animesh.shrivastava.79?fref=ts" target="_blank"><ifooter class="fa fa-facebook"></ifooter></a></li>
-                            <li><a href="https://www.linkedin.com/profile/public-profile-settings?trk=prof-edit-edit-public_profile" target="_blank"><ifooter class="fa fa-linkedin"></ifooter></a></li>
-                    </ul>
-				</div><!-- /col12 -->
-				
-
-			</div><!-- /row -->
-		</div><!-- /container -->
-	</div>	
-	
-	<!-- === Slide 6 / Contact === -->
-	<div class="slide story" id="slide-5" data-slide="5">
-		<div class="container">
-			<div class="row subtitle-row">
-				<div class="col-sm-1 hidden-sm">&nbsp;</div>
-				<div class="col-12 col-sm-10 font-light">We are based out of Bengaluru, India. Please do contact us if you would like to set up on ground teams in various cities. 
-				<p>We are based out of Bangalore. We have provided most of our our details below along with the hotline numbers which you can call anytime during the day to discuss any issue you faced or an urgent help on looking out for artists. 
-				<p>If you face any issues with the site or would want more features on it, don't be a sourpuss and Just Hit the "Send us a meow" button located in the header of your home page (after you login). Give us your comments, feedback. We will get in touch with you as soon as we can!
 			</div>
-			<div class="col-sm-1 hidden-sm">&nbsp;</div>
-			</div><!-- /row -->
-			<div id="contact-row-4" class="row" style="padding-top:0px;">
-				<div class="col-sm-1 hidden-sm">&nbsp;</div>
-				<div class="col-12 col-sm-2 with-hover-text">
-					<p><i class="icon icon-phone" style="font-size:80px; text-decoration:none;color:white;"></i></p>
-					<span class="hover-text ">9886244329, 9663405979</span></a>
-				</div><!-- /col12 -->
-				<div class="col-12 col-sm-2 with-hover-text">
-					<p><i class="icon icon-envelope" style="font-size:80px;text-decoration:none;color:white;"></i></p>
-					<span class="hover-text ">MotleyMeow@gmail.com</span></a>
-				</div><!-- /col12 -->
-				<div class="col-12 col-sm-2 with-hover-text">
-					<p><i class="icon icon-home"style="font-size:80px;text-decoration:none;color:white;"></i></p>
-					<span class="hover-text ">Bangalore, India</span></a>
-				</div><!-- /col12 -->
-				<div class="col-12 col-sm-2 with-hover-text">
-					<p><a target="_blank" href="https://www.facebook.com/groups/328653777276568"><i class="icon icon-facebook" style="font-size:80px;text-decoration:none;color:white;"></i></a></p>
-					<span class="hover-text "><a href="https://www.facebook.com/groups/328653777276568" target="_blank">THEATRE SCENE</a></span></a>
-				</div><!-- /col12 -->
-				
-			</div><!-- /row -->
-		</div><!-- /container -->
-	</div>	
-   <!-- footer starts-->
-   <div id = "footer"></div>
-   <!-- footer ends-->
+			<div>&nbsp;</div>	 
+			<div>&nbsp;</div>	
+			<div>&nbsp;</div>	
+			<div class="col-12 font-light"><u><b>Meet the team</b></u></div>
+			<div class="row">
 
-
-</body>
-
+				<div class="col-md-8 col-md-offset-2">
+					<div class="testimonial-slider">
+						<!-- Single Testimonial Starts -->
+						<div class="testimonial">
+							<p class="comment">
+								co-founder <a href = "https://www.facebook.com/Saarthak.Productions?fref=ts&ref=br_tf"><b>Saarthak Productions</b></a>. A playwright, actor, director. It was his idea to launch such a service for theatre fraternity.
+							</p>
+							
+							<h5 class="happy-client">Shaurya Singh</h5><a href="https://www.facebook.com/shaurya.singh.25?fref=ts" target="_blank"><ifooter class="fa fa-facebook"></ifooter></a><a href="http://in.linkedin.com/pub/shaurya-singh/30/a23/2b1/en" target="_blank">&nbsp;&nbsp;&nbsp;<ifooter class="fa fa-linkedin"></ifooter></a>
+                    		</ul>
+						</div>
+						<!-- Single Testimonial Ends -->
+						
+						<!-- Single Testimonial Starts -->
+						<div class="testimonial">
+							<p class="comment">
+								co-founder <a href = "https://www.facebook.com/Saarthak.Productions?fref=ts&ref=br_tf"><b>Saarthak Productions</b></a>. A poet, playwright, actor, director. He also works as an editor at HighOnPoems. He along with Shaurya has been a guiding force behing the launch of this site. 
+							</p>
+							
+							<h5 class="happy-client">Deevas Gupta</h5><a href="https://www.facebook.com/dvasg?fref=ts" target="_blank"><ifooter class="fa fa-facebook"></ifooter></a>&nbsp;&nbsp;&nbsp;<a href="http://in.linkedin.com/pub/deevas-gupta/21/998/b7a/en" target="_blank"><ifooter class="fa fa-linkedin"></ifooter></a>
+						</div>
+						<!-- Single Testimonial Ends -->
+						
+						<!-- Single Testimonial Starts -->
+						<div class="testimonial">
+							<p class="comment">
+								Coder @MotleyMeow, Anupam is an avid coder. Currently working for CISCO, he spent time off work to create MotleyMeow site.
+							</p>
+							
+							<h5 class="happy-client">Anupam Singh</h5><a href="https://www.facebook.com/anupam.singh.18659041?fref=ts" target="_blank"><ifooter class="fa fa-facebook"></ifooter></a>&nbsp;&nbsp;&nbsp;<a href="http://in.linkedin.com/pub/anupam-singh/20/3bb/7a8/en" target="_blank"><ifooter class="fa fa-linkedin"></ifooter></a>
+						</div>
+						<div class="testimonial">
+							<p class="comment">
+								Coder @MotleyMeow, Along with Anupam has been the driving force to the development of this website and to make the idea a reality.
+							</p>
+							
+							<h5 class="happy-client">Animesh Shrivastava</h5><a href="https://www.facebook.com/animesh.shrivastava.79?fref=ts" target="_blank"><ifooter class="fa fa-facebook"></ifooter></a>&nbsp;&nbsp;&nbsp;<a href="https://www.linkedin.com/profile/public-profile-settings?trk=prof-edit-edit-public_profile" target="_blank"><ifooter class="fa fa-linkedin"></ifooter></a>
+							
+						</div>
+						<!-- Single Testimonial Ends -->
+					</div>
+					<div id="bx-pager" class="client-photos">
+						<a data-slide-index="0" href="" class="photo-hold">
+							<span class="photo-bg">
+								<img src="images/ShauryaSingh.jpg" alt="" style="max-width:78px;max-height:78px;"/> <!-- Client photo 1 -->
+							</span>
+						</a>
+						<a data-slide-index="1" href="" class="photo-hold">
+							<span class="photo-bg">
+								<img src="images/DeevasGupta.jpg" alt="" style="max-width:78px;max-height:78px;"/> <!-- Client photo 2 -->
+							</span>
+						</a>
+						<a data-slide-index="2" href="" class="photo-hold">
+							<span class="photo-bg">
+								<img src="images/AnupamProfile.jpg" alt="" style="max-width:78px;max-height:78px;"/> <!-- Client photo 3 -->
+							</span>
+						</a>
+						<a data-slide-index="3" href="" class="photo-hold">
+							<span class="photo-bg">
+								<img src="images/Animesh.jpg" alt="" style="max-width:78px;max-height:78px;"/> <!-- Client photo 3 -->
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--=== Testimonials section Ends ===-->
 	
-	<!-- fancybox init -->
-	<script>
+	
+	<!--=== Pricing section Starts ===-->
+	<section id="section-pricing" class="pricing-wrap">
+		<div class="container pricing">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1 center section-title">
+					<h3>Where we are</h3>
+				</div>
+				<div class="col-md-12 center font-thin">We are based out of <b>Bengaluru, India</b>. Please do contact us if you would like to set up on ground teams in various cities. 
+				<p>We are based out of Bangalore. We have provided most of our our details below along with the hotline numbers which you can call anytime during the day to discuss any issue you faced or any sort of help in looking out for artists. 
+				<p>If you face any issues with the site or would want more features on it, don't be a sourpuss and Just Hit the <b>"Send us a meow"</b> button located in the header of your home page (after you login). 
+					<p><b><i>Give us your comments, feedback. We will get in touch with you as soon as we can!</i></b>
+				</div>
+				<!-- Single Price Starts -->
+				<div class="col-md-3 col-sm-6 single-pricing-wrap center animated" data-animation="bounceInLeft" data-animation-delay="500">
+					<div class="single-pricing">
+					
+						<div class="pricing-head">
+							<h4 class="pricing-heading color-scheme">Phone</h4>
+							<div class="price">
+								<h3>
+									<span class="hover-text ">9886244329, 9663405979</span>
+								</h3>
+							</div>
+						</div>
+						
+						
+					</div>
+				</div>
+				<!-- Single Price Ends -->
+				
+				
+				<!-- Single Price Starts -->
+				<div class="col-md-3 col-sm-6 single-pricing-wrap center animated" data-animation="bounceInLeft" data-animation-delay="700">
+					<div class="single-pricing best-pricing"> <!-- this is best-pricing -->
+					
+						<div class="pricing-head">
+							<h4 class="pricing-heading color-scheme">Reach us at</h4>
+							<div class="price">
+								<h3>
+									<span class="hover-text" style="font-size:15px;">motleymeow@gmail.com</span>
+								</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Single Price Ends -->
+				
+				<!-- Single Price Starts -->
+				<div class="col-md-3 col-sm-6 single-pricing-wrap center animated" data-animation="bounceInLeft" data-animation-delay="900">
+					<div class="single-pricing">
+					
+						<div class="pricing-head">
+							<h4 class="pricing-heading color-scheme">Our shelter</h4>
+							<div class="price">
+								<h3>
+									<span class="hover-text ">Bengaluru, India</span>
+								</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Single Price Ends -->
+				
+				<!-- Single Price Starts -->
+				<div class="col-md-3 col-sm-6 single-pricing-wrap center animated" data-animation="bounceInLeft" data-animation-delay="1100">
+					<div class="single-pricing">
+					
+						<div class="pricing-head">
+							<h4 class="pricing-heading color-scheme">Online on</h4>
+							<div class="price">
+								<h3>
+									<span class="hover-text "><a href="https://www.facebook.com/groups/328653777276568" target="_blank">THEATRE SCENE</a></span>
+								</h3>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<!-- Single Price Ends -->
+				
+			</div>
+		</div>
+	</section>
+	<div id = "footer"></div>
+	<!--=== Pricing section Ends ===-->
+	
+
+	<!--=== Footer section Ends ===-->
+	
+<!--==== Js files ====-->
+<!--==== Essential files ====-->
+<script type="text/javascript" src="FirstPage/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="FirstPage/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="FirstPage/js/bootstrapValidator.min.js"></script>
+<script type="text/javascript" src="FirstPage/js/modernizr.js"></script>
+<script type="text/javascript" src="FirstPage/js/jquery.easing.1.3.js"></script>
+
+<!--==== Slider and Card style plugin ====-->
+<script type="text/javascript" src="FirstPage/js/jquery.baraja.js"></script>
+<script type="text/javascript" src="FirstPage/js/jquery.vegas.min.js"></script>
+<script type="text/javascript" src="FirstPage/js/jquery.bxslider.min.js"></script>
+
+<!--==== MailChimp Widget plugin ====-->
+<script type="text/javascript" src="FirstPage/js/jquery.ajaxchimp.min.js"></script>
+
+<!--==== Scroll and navigation plugins ====-->
+<script type="text/javascript" src="FirstPage/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="FirstPage/js/jquery.nav.js"></script>
+<script type="text/javascript" src="FirstPage/js/jquery.appear.js"></script>
+<script type="text/javascript" src="FirstPage/js/jquery.fitvids.js"></script>
+
+<!--==== Custom Script files ====-->
+<script type="text/javascript" src="FirstPage/js/custom.js"></script>
+<script>
 	$(document).ready(function(e) {
 		<% if (typeof hashValue != 'undefined' && hashValue != "") { %>
 			document.location.hash = "<%=hashValue%>";
@@ -186,4 +376,5 @@
 
 	</script>
 
+</body>
 </html>
