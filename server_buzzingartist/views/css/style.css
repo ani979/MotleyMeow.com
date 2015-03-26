@@ -115,12 +115,6 @@ div.srchBox {
 	
 }
 
-
-
-
-
-
-
 .form-signin {
   max-width: 400px;  
   margin: 0 auto;
@@ -253,7 +247,7 @@ html, body {
    margin:0;
    padding:0;
    height:100%;
-background-color: rgba(237, 233, 233, 0.01);
+  background-color: rgba(252, 252, 252, 0.28)
 }
 
 imageUpdateField {
