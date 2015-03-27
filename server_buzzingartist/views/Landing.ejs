@@ -354,7 +354,8 @@
      if(city == 'None') { %>
         <div class="form-group panel-body" id="myCity" style="margin:0px;padding:0px;">
             <label class="col-sm-6 control-label" for="city" style="padding:0px;">Location</label>
-            <div class="col-sm-6"><select class="form-control" id="myCityForm" value="<%= user.local.city %>" name="city">
+            <div class="col-sm-6">
+              <select class="form-control" id="myCityForm" name="cityVal">
               <% var cities = dropdowns.alldropdowns.cities;
                   for(var i = 0; i < cities.length; i ++) {   %> 
                         <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
@@ -364,7 +365,7 @@
             <div id="myRole" class="form-group">
               <label class="control-label">What kind of Artist are you?</label> 
               <br>
-              <% var roles = dropdowns.alldropdowns.rolesForPost;
+              <% var roles = dropdowns.alldropdowns.rolesForSearch;
                 for(var i = 0; i < roles.length; i ++) {   %> 
                   <div class = "col-sm-6">
                     <label class="checkbox-inline">
@@ -435,14 +436,12 @@
                 var $closeButton = $('#closebtn');
                 
                 $button.on('click', {dialogRef: dialogRef}, function(event){
+                  
                   var roles = $('input:checkbox[name="role"]:checked').map(function() {
                               return this.value;
                                 }).get().join(',');
-                  console.log("rolesssssssssssssss: "+roles);
-                  var citiesss = $('select[name="city"]')[0].value;
-                  console.log("citiesssssssss: "+citiesss);
+                  var citiesss = $('#myCityForm').val();
                   if(citiesss == "None Of the above") citiesss = "";
-                  console.log("citiesssssssss: "+citiesss);
                   event.data.dialogRef.close();
                   $.ajax({
                         url: "/getCity",
@@ -450,11 +449,10 @@
                         data: {role: roles,city: citiesss},
                         // data: {$("#myCityForm").serialize(), role: roles},
                         success: function (data) {
-                            console.log("City and role saved ");
                             location.reload();
                         },
                         error: function (data) {
-                            console.log("some error " + data);
+                          console.log("some error " + data);
                         }
                         
                   });
