@@ -21,7 +21,7 @@ module.exports = {alldropdowns: {
     							   { category: "Storytelling", text:"Storytelling event"}, {category: "Reading", text:"Reading"},
     							   {category: "Others", text:"Other Events"}],
                     rolesForSearch: [{ role: "Actor", text:"Actor"}, { role: "Director", text:"Director"}, { role: "Playwright", text:"Playwright"},
-                            { role: "Lights", text:"Lighting Designer"}, { role: "Dramaturgist", text:"Dranamturgist"},{ role: "Sound", text:"Sound Designer"},
+                            { role: "Lights", text:"Lighting Designer"}, { role: "Dramaturgist", text:"Dramaturgist"},{ role: "Sound", text:"Sound Designer"},
                             { role: "Music", text:"Music Composer"},{ role: "Costume", text:"Costume Designer"}, { role: "MakeUp", text:"Make-up artist"},
                             { role: "SetDesign", text:"Set Designer"},{ role: "StageManager", text:"Production Manager"}, 
                             { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"}]
