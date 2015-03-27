@@ -24,6 +24,6 @@ module.exports = {alldropdowns: {
                             { role: "Lights", text:"Lighting Designer"}, { role: "Dramaturgist", text:"Dranamturgist"},{ role: "Sound", text:"Sound Designer"},
                             { role: "Music", text:"Music Composer"},{ role: "Costume", text:"Costume Designer"}, { role: "MakeUp", text:"Make-up artist"},
                             { role: "SetDesign", text:"Set Designer"},{ role: "StageManager", text:"Production Manager"}, 
-                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"} ,{ role: "Audience", text:"Audience"}]
+                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"}]
     			}
 }
