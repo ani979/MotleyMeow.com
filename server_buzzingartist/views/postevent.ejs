@@ -174,19 +174,19 @@
               if(/^\d.*/.test(idOfEvent)) {
                 document.getElementById("eventId").value = idOfEvent;
               } else {
-                console.log("its not a correct event id");
+                
                 $('#eventErrorModal').modal('show');
                 event.preventDefault();
                 return;
               }
           }  else {
-            console.log("some error occurred in split");
+            
             $('#eventErrorModal').modal('show');
             event.preventDefault();
             return;
           }
         } else {
-          console.log("some error occurred in first split");
+          
           $('#eventErrorModal').modal('show');
            event.preventDefault();
           return;
