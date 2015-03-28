@@ -8,7 +8,9 @@
     <meta name="Keywords" content="Theatre, Artists, Motleymeow, Sponsor, Events, Bengaluru, Mumbai, Delhi, Chennai, Kolkata, Drama, Naatak" />
     <meta property="og:title" content="Posted on MotleyMeow: <%=post.post.postTitle%>">
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="http://www.motleymeow.com/uploads/<%=post.post.imagePath%>"/>
+    <% if(typeof post != 'undefined' && typeof post.post!='undefined' && typeof post.post.imagePath != 'undefined' && post.post.imagePath != "") { %>
+      <meta property="og:image" content="http://www.motleymeow.com/uploads/<%=post.post.imagePath%>"/>
+    <% } %>  
     <title></title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">       
