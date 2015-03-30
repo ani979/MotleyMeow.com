@@ -168,7 +168,8 @@
         $('button[id="categorySel"]').html(selectCategory);
 
         filterTable = $('#mytable').DataTable( {
-        "order": [[ $('.eDate').index(), "asc" ]]
+        "order": [[ 2, "desc" ]],
+        stateSave: true
         } );
 
         $('#mytable').show();

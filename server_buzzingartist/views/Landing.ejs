@@ -215,7 +215,7 @@
 
         <%}  else { %>
                 <% for(var i=0; i < postss.length; i++) { %>
-                  <tr>
+                  <tr rel="tooltip" title="<%= postss[i].post.postDetail%>">
                   <td><%= postss[i].post.postTitle %></td>
                   <td><%= postss[i].post.role %></td>
                   <td><%= postss[i].post.city %></td>
@@ -543,6 +543,7 @@ $("#footer").load("footer.ejs");
           }  
           var timerId;
           timerId = setInterval(function() {
+            
             $("#recentArtists").load("/getRecentArtists");
             $("#recentPosts").load("/getRecentPosts");
           }, 20000); 
@@ -550,7 +551,7 @@ $("#footer").load("footer.ejs");
           var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
           myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
-              console.log("Clearing the interval")
+              //console.log("Clearing the interval")
               clearInterval(timerId);
           });
           

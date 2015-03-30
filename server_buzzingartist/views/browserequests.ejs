@@ -234,7 +234,8 @@
       $('button[id="languageSel"]').html(selectLang);
       
       filterTable=$('#mytable').DataTable( {
-        "order": [[ 0, "desc" ]]
+        "order": [[ 0, "desc" ]],
+        stateSave: true
       });
       $('#mytable').show();
       $('#searchposts').show();

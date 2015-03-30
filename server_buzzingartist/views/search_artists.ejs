@@ -174,7 +174,8 @@
     var filterTable;
     $(document).ready(function(){
 
-      filterTable = $('#mytable').DataTable();
+      filterTable = $('#mytable').DataTable({
+        stateSave: true});
       $('#mytable').show();
       $('button[id="citySel"]').html(selectCity);
       $('button[id="artistSel"]').html(selectRole);
