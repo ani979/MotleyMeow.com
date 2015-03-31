@@ -347,7 +347,7 @@ exports.viewpost = function (req, res) {
     if(typeof req.session == 'undefined' || typeof req.session.user == 'undefined') {
         console.log("req.query.postid " + req.query.postid)
         Posts.findOne({ '_id' : req.query.postid }, function(error, db) {
-                if (error) {
+                if (error || !db) {
                     console.log("ERROR NOT A VALID POST. FROM LOGGED OUT USER");
                   req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
                   res.redirect('/error');
@@ -359,14 +359,14 @@ exports.viewpost = function (req, res) {
      } else {
 	        console.log("post id " + req.query.postid);
             Posts.findOne({ '_id' : req.query.postid }, function(error, db) {
-                if (error) {
+                if (error || !db) {
                     console.log("ERROR NOT A VALID. FROM LOGGED IN USER");
                   req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
                   res.redirect('/error');
                 } else {
                   console.log("found post " + db);
                   User.findOne({ 'facebook.id' : db.post.userid }, function(error, user) {
-                    if(error) {
+                    if(error || !db) {
                         console.log("Error in retrieving post, something is not correct. Please try again.");
                         // res.redirect("/searchposts");
                         req.flash('info', "Error in retrieving post, something is not correct. Please try again.");

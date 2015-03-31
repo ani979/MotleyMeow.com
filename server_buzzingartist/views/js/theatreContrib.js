@@ -5,7 +5,8 @@ module.exports = {alldropdowns: {
     						{ role: "Music", text:"Music Composition"},{ role: "Dramaturgist", text:"Dramaturgy"},{ role: "Costume", text:"Costume Designing"},
                             { role: "MakeUp", text:"Make-up"},
     						{ role: "SetDesign", text:"Set Designing"},{ role: "StageManager", text:"Managing Production"}, 
-                            { role: "Backstage", text:"Production/Backstage Crew"}, { role: "Trainer", text:"Training"}],
+                            { role: "Backstage", text:"Production/Backstage Crew"}, { role: "Trainer", text:"Training"},
+                            { role: "Audience", text:"Mostly into Audience"}],
     				cities: [{ city: "Bengaluru", text: "Bengaluru"}, {city:"Chennai", text:"Chennai"}, 
     						 {city: "Kolkata", text:"Kolkata"},{city:"Delhi", text:"Delhi"}, {city: "Mumbai", text: "Mumbai"}, 
                              {city: "Pune", text: "Pune"}, {city: "Hyderabad", text: "Hyderabad"}, {city: "Bhopal", text: "Bhopal"}, 
@@ -18,7 +19,7 @@ module.exports = {alldropdowns: {
                             { role: "Music", text:"Music Composer"},{ role: "Dramaturgist", text:"Dramaturgist"}, { role: "Costume", text:"Costume Designer"},
                             { role: "SetDesign", text:"Set Designer"},{ role: "StageManager", text:"Production Manager"}, 
                             { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"} ,{ role: "Props", text:"Props"},
-    						{ role: "RehearsalSpace", text:"Rehearsal Space"}],
+    						{ role: "RehearsalSpace", text:"Rehearsal Space"}, { role: "Audience", text:"Need Audience"}],
     				languages:["Hindi", "Kannada", "Marathi", "Tamil", "Malayalam", "Bengali", "Punjabi", "Telegu", "English"],
     				eventCategories:[{ category: "Play", text:"Play"}, { category: "Workshop", text:"Training or Workshop"}, 
     							   { category: "Storytelling", text:"Storytelling event"}, {category: "Reading", text:"Reading"},
@@ -27,6 +28,6 @@ module.exports = {alldropdowns: {
                             { role: "Lights", text:"Lighting Designer"}, { role: "Dramaturgist", text:"Dramaturgist"},{ role: "Sound", text:"Sound Designer"},
                             { role: "Music", text:"Music Composer"},{ role: "Costume", text:"Costume Designer"}, { role: "MakeUp", text:"Make-up artist"},
                             { role: "SetDesign", text:"Set Designer"},{ role: "StageManager", text:"Production Manager"}, 
-                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"}]
+                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"}, { role: "Audience", text:"Mostly into Audience"}]
     			}
 }

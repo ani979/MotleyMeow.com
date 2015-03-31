@@ -112,7 +112,7 @@
           <legend>Your profile</legend>
             <div class="panel with-nav-tabs panel-primary">
                     <div class="panel-heading">
-                            <ul class="nav nav-tabs">
+                            <ul class="nav nav-tabs" id = "btabs">
                                 <li class="active"><a href="#tab1primary" data-toggle="tab">Basic</a></li>
                                 <li><a href="#tab2primary" data-toggle="tab">On the stage</a></li>
                                 
@@ -423,7 +423,7 @@
     <script src="js/multiple-modals.js"></script>
  
      <script type="text/javascript">
-
+      $.validator.setDefaults({ ignore: [] });
      sendEvent = function(sel, step) {
           $(sel).trigger('next.m.' + step);
       }
@@ -450,6 +450,7 @@
                 }
             },
             highlight: function (element) {
+                $('#btabs a[href="#tab1primary"]').tab('show');
                 $(element).closest('.form-group').removeClass('success').addClass('error');
             },
             success: function (element) {

@@ -42,7 +42,7 @@
                   <td><%= postss[i].post.role %></td>
                   <td><%= postss[i].post.city %></td>
                   
-                        <td><button id ="view" name="<%=postss[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></button></td>
+                        <td><a href="/viewpost?postid=<%=postss[i]._id%>" id ="view" name="<%=postss[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></a></td>
                         <input id="_id<%=postss[i]._id%>" name="_id"  type="hidden" value=<%=postss[i].post.userid%>>
                         <input id="_postid<%=postss[i]._id%>"  type="hidden" value=<%=postss[i]._id%>>
                    

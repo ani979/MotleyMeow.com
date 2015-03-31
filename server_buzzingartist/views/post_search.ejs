@@ -95,10 +95,10 @@
 
                     
 
-                   <form action="/viewpost" method="GET">
-                      <td style = "text-align:center;"><p data-placement="top" data-toggle="tooltgetpostip" title="View"><button id ="view"><span class="glyphicon glyphicon-info-sign"></span></button></p></td>
+                  <!--  <form action="/viewpost" method="GET"> -->
+                      <td style = "text-align:center;"><a href="/viewpost?postid=<%=posts[i]._id%>" id ="view" name="<%=posts[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></a></td>
                       <input name="postid"  type="hidden" value=<%=posts[i]._id%>>
-                    </form>
+                    <!-- </form> -->
                           
                           
                           

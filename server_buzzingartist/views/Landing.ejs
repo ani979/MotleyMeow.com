@@ -220,7 +220,7 @@
                   <td><%= postss[i].post.role %></td>
                   <td><%= postss[i].post.city %></td>
                   
-                        <td><button id ="view" name="<%=postss[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></button></td>
+                        <td><a href="/viewpost?postid=<%=postss[i]._id%>" id ="view" name="<%=postss[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></a></td>
                         <input id="_id<%=postss[i]._id%>" name="_id"  type="hidden" value=<%=postss[i].post.userid%>>
                         <input id="_postid<%=postss[i]._id%>"  type="hidden" value=<%=postss[i]._id%>>
                    
@@ -234,22 +234,22 @@
     </table>
     <script>
 
-    $('button[id="view"]').on('click', function(e){
+    // $('a[id="view"]').on('click', function(e){
      
-      var buttonname = $(this).attr('name');
-      var postusername = '_id' + buttonname;
-      var postname = '_postid' + buttonname;
-      var postval = $('#'+ postname).val();
-      var postUserVal = $('#' + postusername).val();
+    //   var buttonname = $(this).attr('name');
+    //   var postusername = '_id' + buttonname;
+    //   var postname = '_postid' + buttonname;
+    //   var postval = $('#'+ postname).val();
+    //   var postUserVal = $('#' + postusername).val();
       
      
 
-      var form = $('#viewPost');
-      $('#postid').val(postval)
-      form.submit();
+    //   var form = $('#viewPost');
+    //   $('#postid').val(postval)
+    //   form.submit();
       
         
-    });
+    // });
     </script>
   </div>
   <form id="viewPost" action="/viewpost" method="GET">
