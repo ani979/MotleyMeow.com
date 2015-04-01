@@ -137,18 +137,18 @@
 
         // setup countUp object 
         if(aCount != 0) {
-	        artistsCount = new countUp('artistsCount', 0, aCount);
+	        artistsCount = new countUp('artistsCount', 0, 210);
 	        artistsCount.start(methodToCallOnComplete);
         }
         
         
         if(pCount != 0) {
-	        postsCount = new countUp('postsCount', 0, pCount);
+	        postsCount = new countUp('postsCount', 0, 20);
 	        postsCount.start();
 	    }    
 
 	    if(eCount != 0) {
-	        eventCount = new countUp('eventCount', 0, eCount);
+	        eventCount = new countUp('eventCount', 0, 20);
 	        eventCount.start();
 	    }    
     }
