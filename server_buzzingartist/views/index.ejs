@@ -13,10 +13,12 @@
 	<meta property="og:url" content="http://www.motleymeow.com" />
 	<link rel="stylesheet" type="text/css" href="indexPage/css/bootstrap.min.css">
 	<link rel="stylesheet" href="indexPage/css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/animate.css" rel="stylesheet">
 	
 	<link rel="stylesheet" type="text/css" href="indexPage/css/style.css">	
 	
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,600,300,200&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
 	
 	
 	
@@ -27,19 +29,32 @@
 	
 	
 	<!-- === MAIN Background === -->
-	<div class="slide story" id="slide-1" data-slide="1" style = "max-height:100%">
+	<div class="slide story" id="slide-1" data-slide="1" style = "max-height:100%; padding-top:0px;">
 		<div class="container">
-			<div id="home-row-1" class="row clearfix">
-				<div class="col-12" style="float:center;">
-					<h1 class="font-semibold" style="padding-top:0px;"><img src ="./images/MotleyMeow-logo02.gif" style="max-width:400px;max-height:400px;"></h1>
-					<h4 class="font-thin" style="font-style: italic; ">"The cat is out of the bag!"</h4>
-						
-
+			<div id="home-row-1" class="row clearfix" style="padding-top:0px;padding-left:0px;">
+				<div class="col-12">
+					<h1 class="font-semibold" style="padding-top:0px;"><img src ="./images/MotleyMeow-logo02.gif"></h1>
 				</div><!-- /col-12 -->
+				<div class="col-4" style="float:left;">
+					<h4 class="font-light" id="artistsCount">1</h4>
+					<span class="font-light" style="font-size:28px;">Artists</span>
+				</div><!-- /col-4-->
+				<div class="col-4" style="float:left;">
+					<h4 class="font-light" id="postsCount">1</h4>
+					<span class="font-light" style="font-size:28px;">Posts</span>
+				</div><!-- /col-4-->
+				<div class="col-4" style="float:left;">
+					<h4 class="font-light" id="eventCount">1</h4>
+					<span class="font-light" style="font-size:28px;">Events</span>
+				</div><!-- /col-4-->
+				<!-- <div class="col-12" style="float:center;"> -->
+					<h5 class="tlt" id ="codeVisualizer" style="font-style:italic;font-size:32px;margin:0px;color:rgba(227, 220, 255, 0.92);padding-top:20px;padding-bottom:20px;"><span style="visibility:hidden;">ABC</span></h5>
+				<!-- </div>	 -->
 			</div><!-- /row -->
-			<div id="home-row-2" class="row clearfix" style= "float:center;">
 
-				<div class="col-12" class="row clearfix" style="float:center;height:100%">
+			<div id="home-row-2" class="row clearfix" style= "float:center;padding-top:0px;">
+
+				<div class="col-12" class="row clearfix" style="float:center;height:100%;padding-top:0px;">
 			  		<div>
 			     		<form class="form-signin" action="" method="post">
 				        	<h3 class="heading-desc">
@@ -68,7 +83,8 @@
 				<div class="col-12 col-sm-4 with-hover-text" style="font-size: 20px"><a href="/theTeam"><i class="icon icon-group" style="text-decoration:none;"></i></a></p>Who we are</div>
 				<div class="col-12 col-sm-4 with-hover-text" style="font-size: 20px"><a href="/whereweare"><i class="icon icon-map-marker" style="text-decoration:none;"></i></a></p>Where we are</div>
 			</div><!-- /row -->
-			
+				
+
 		</div><!-- /container -->
 	</div><!-- /slide1 -->
 	
@@ -84,6 +100,10 @@
 	<script src="indexPage/js/bootstrap.min.js"></script>
 	<script src="indexPage/js/jquery.easing.1.3.js"></script>
 	<script src="indexPage/js/script.js"></script>
+    <script src="js/countup.min.js"></script>
+    <script src="js/jquery.textillate.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+  	<script src="js/jquery.lettering.js"></script>
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -93,6 +113,56 @@
 	  ga('create', 'UA-61218032-1', 'auto');
 	  ga('send', 'pageview');
 
+
+
 	</script>
+	<script type="text/javascript">
+
+    // var demo, code, data, stars;
+
+    // create instance
+    window.onload = function() {
+    	var aCount = 0;
+    	var pCount = 0;
+    	var eCount=  0;
+		 <% if(typeof aCount != 'undefined' && aCount !=0) { console.log("aCount is" + aCount);%>
+		 	aCount = <%=aCount%>;
+		 <%}%>
+		 <% if(typeof pCount != 'undefined' && pCount !=0) { console.log("pCount is" + pCount);%>
+		 	pCount = <%=pCount%>;
+		 <%}%>
+		 <% if(typeof eCount != 'undefined' && eCount !=0) { console.log("eCount is" + eCount);%>
+		 	eCount = <%=eCount%>;
+		 <%}%>
+
+        // setup countUp object 
+        if(aCount != 0) {
+	        artistsCount = new countUp('artistsCount', 0, aCount);
+	        artistsCount.start(methodToCallOnComplete);
+        }
+        
+        
+        if(pCount != 0) {
+	        postsCount = new countUp('postsCount', 0, pCount);
+	        postsCount.start();
+	    }    
+
+	    if(eCount != 0) {
+	        eventCount = new countUp('eventCount', 0, eCount);
+	        eventCount.start();
+	    }    
+    }
+
+
+    function methodToCallOnComplete() {
+    	$('.tlt').textillate({ in: { effect: 'flipInY'}});
+    	$('.tlt').find('.texts li:first').text("The cat is out of the bag!");
+        $('.tlt').textillate('start');
+
+    }
+
+
+
+    </script>
 
 </html>

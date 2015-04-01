@@ -251,6 +251,22 @@ body {
 	}
 }
 
+@media (max-width: 420px) {
+	#home-row-1 img {
+		max-width:250px;
+		max-height:250px;
+	}
+}
+
+@media (min-width: 421px) {
+	#home-row-1 img {
+		max-width:400px;
+		max-height:400px;
+	}
+}
+
+
+
 #slide-2 {
 	/*background: url(../images/bg1.jpg) no-repeat center center fixed; */
 	background-color: #1abc9c;
@@ -712,4 +728,3 @@ body {
   padding-right:20px;
   font-size:30px;
 }
-

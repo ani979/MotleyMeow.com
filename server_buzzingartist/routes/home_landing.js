@@ -36,7 +36,24 @@ exports.index = function(req, res) {
         if(req.isAuthenticated()) {
             res.redirect('/home');
         } else {
-                res.render('index');            
+            User.count(function(err, uCnt) {
+               if(err) {
+                res.render('index');    
+               }
+               Posts.count(function(err, pCnt) {
+                if(err) {
+                    res.render('index', {aCount:uCnt});    
+                }
+                Event.count(function(err, eCnt) {
+                    if(err) {
+                        res.render('index', {aCount:uCnt, pCount:pCnt});    
+                    } 
+                    res.render('index', {aCount:uCnt, pCount:pCnt, eCount:eCnt});    
+                    
+                });    
+               }); 
+            });
+                       
             
         }
     } else {
