@@ -35,6 +35,7 @@
 				<div class="col-12">
 					<h1 class="font-semibold" style="padding-top:0px;"><img src ="./images/MotleyMeow-logo02.gif"></h1>
 				</div><!-- /col-12 -->
+									<h5 class="tlt" id ="codeVisualizer" style="font-style:italic;font-size:32px;margin:0px;color:rgba(227, 220, 255, 0.92);padding-top:20px;padding-bottom:20px;"><span style="visibility:hidden;">ABC</span></h5>
 				<div class="col-4" style="float:left;">
 					<h4 class="font-light" id="artistsCount">1</h4>
 					<span class="font-light" style="font-size:28px;">Artists</span>
@@ -48,7 +49,7 @@
 					<span class="font-light" style="font-size:28px;">Events</span>
 				</div><!-- /col-4-->
 				<!-- <div class="col-12" style="float:center;"> -->
-					<h5 class="tlt" id ="codeVisualizer" style="font-style:italic;font-size:32px;margin:0px;color:rgba(227, 220, 255, 0.92);padding-top:20px;padding-bottom:20px;"><span style="visibility:hidden;">ABC</span></h5>
+
 				<!-- </div>	 -->
 			</div><!-- /row -->
 
@@ -137,18 +138,18 @@
 
         // setup countUp object 
         if(aCount != 0) {
-	        artistsCount = new countUp('artistsCount', 0, 210);
+	        artistsCount = new countUp('artistsCount', 0, aCount);
 	        artistsCount.start(methodToCallOnComplete);
         }
         
         
         if(pCount != 0) {
-	        postsCount = new countUp('postsCount', 0, 20);
+	        postsCount = new countUp('postsCount', 0, pCount);
 	        postsCount.start();
 	    }    
 
 	    if(eCount != 0) {
-	        eventCount = new countUp('eventCount', 0, 20);
+	        eventCount = new countUp('eventCount', 0, eCount);
 	        eventCount.start();
 	    }    
     }
