@@ -22,6 +22,12 @@ var userSchema = mongoose.Schema({
         email        : String,
         name         : String,
         link         : String
+    },
+    portfolio        : {
+        myself      : String,
+        myPhotos     : [{}],
+        myVideos     : [{}],
+        myResume     : [{}]
     }
 
 });

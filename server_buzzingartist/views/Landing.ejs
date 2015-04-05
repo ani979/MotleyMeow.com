@@ -81,7 +81,7 @@
             
                 <ul class="nav navbar-nav" id="headerlist" style="font-size:16px;">
                   <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
-                   <li><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
+                   <li><a href="/profile">View your profile <span class="sr-only">(current)</span></a></li>
                    <li><a href="/postarequest">Post a request<span class="sr-only">(current)</span></a></li>
                    </li> 
                    <li ><a href="/searchPosts">Your posts<span class="sr-only">(current)</span></a></li>
@@ -265,7 +265,7 @@
               <th class ="namecol" style="text-align:left">Name</th>
               <th class ="contribcol" style="text-align:left">Contribution in Theatre</th>
               <th class ="citycol" style="text-align:left">City</th>
-              <th class ="fbprofilecol" style="text-align:left">FB profile</th>
+              <th class ="fbprofilecol" style="text-align:left">Profile</th>
           </tr>
       </thead>
       <tbody class="searchable">
@@ -282,14 +282,13 @@
 
                        <% if(typeof users[i].local.city == 'undefined' || users[i].local.city == "") { %>
                             <td>Not Set</td>
-                          <% } else { %>  
-                            <td><%= users[i].local.city %></td>
-                          <% } %> 
-                        <% if(users[i].facebook.link) { %>
-                            <td><a href = "<%=users[i].facebook.link%>" target="_blank"><img alt="" src=<%= users[i].local.picture %> class="img-circle" style="max-height:30px;max-width:30px"></a></td>
-                        <% } else { %>
-                            <td>Not shared</td>
-                        <% } %>
+                      <% } else { %>  
+                        <td><%= users[i].local.city %></td>
+                      <% } %> 
+                      <td>
+                       <a href="/profile?fbId=<%=users[i].facebook.id%>" type= "button" id ="viewProfile" align="center" class="btn btn-primary">View Me</a>
+                      </td>
+
                     
                     </tr>
                   <%}%>     

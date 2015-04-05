@@ -139,12 +139,11 @@
                           <% } else { %>  
                             <td><%= user.local.city %></td>
                           <% } %>  
-                         <% if(user.facebook.link) { %>
-                            <td><a href = "<%= user.facebook.link %>" target="_blank"><img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:100px;"></a></td>
-                          <% } else { %>
-                            <td>Not set</td>
-                          <% } %>
-                          
+                          <td>
+                           <a href="/profile?fbId=<%=users[i].facebook.id%>" type= "button" id ="viewProfile" align="center" class="btn btn-primary">View Me</a>
+                          </td>
+
+
                         </tr> 
                       <% }); %>
                         

@@ -575,7 +575,10 @@ body.modal-open .supreme-container{
   }
 }
 
-
+.bar {
+    height: 18px;
+    background: green;
+}
 /*@font-face {
   font-family: 'Roboto';
   font-style: normal;
@@ -594,3 +597,7 @@ body.modal-open .supreme-container{
   font-weight: 700;
   src: local('Roboto Bold'), local('Roboto-Bold'), url(http://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2'), url(http://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
 }*/
+.entry:not(:first-of-type)
+{
+    margin-top: 10px;
+}

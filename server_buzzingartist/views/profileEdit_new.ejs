@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MOTLEYMEOW. Hear the artists meow.</title> 
-
+        <link rel="stylesheet" type="text/css" href="//blueimp.github.io/jQuery-File-Upload/css/jquery.fileupload.css">
+        <link rel="stylesheet" type="text/css" href="//blueimp.github.io/jQuery-File-Upload/css/jquery.fileupload-ui.css">
         <link href="css/tab.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet"> 
-        <link href="css/lightbox.css" rel="stylesheet" />
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
         <script src="js/bootstrap-dialog.js"></script>
 
@@ -109,7 +109,7 @@
                 <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:180px;padding-bottom:0px;"> </div>
 
   <div class=" col-md-9 col-lg-9 "> 
-    <form id = "profileUpdateForm" class="form-horizontal" role="form" enctype="multipart/form-data" action="/update" method="post">
+    <form id = "profileUpdateForm" class="form-horizontal" role="form" action="/update" method="post">
 
 
         <fieldset>
@@ -254,7 +254,7 @@
                        </div>  -->  
                        <div  class="tab-pane fade" id="tab2primary">
                               <div class="control-group col-md-12">
-                                <label class="control-label col-md-3">Tell something about your artistic journey:</label>        
+                                <label class="control-label col-md-3" for="post">Tell something about your artistic journey:</label>        
                                   <div class="controls col-md-9">                
                                 <% if (typeof user != 'undefined' && typeof user.portfolio != 'undefined' && typeof user.portfolio.myself != 'undefined') { %>       
                                     <textarea id="textarea" name="myself" style="min-width:100%;"rows=6><%=user.portfolio.myself%></textarea>
@@ -263,42 +263,15 @@
                                 <%}%> 
                                   </div>
                               </div>
-                              <div>&nbsp;</div>
-                              <div>&nbsp;</div>
-                              <div class="control-group col-md-12" id = "mypics">
-                                <label class="control-label col-md-3">Add your pictures</label>
-                                  <span class="btn btn-default col-md-9">
-                                  <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple style="color: transparent;"/>
+                              <div class="control-group col-md-12">
+ 
+                                   <span class="pull-left "><button id = "uploadPics" type = "submit" title="Upload your pictures" type="button" class="btn btn-sm btn-success" name="btnvalue" value="upload" data-toggle="modal" data-target="#uploadPicturesModal">Upload your pictures</button>
                                   </span>
-                                 <div>&nbsp;</div> 
-                                 <input type="hidden" id="mypfolioPics" name = "mypfolioPics">
-                              </div> 
-                              <div>&nbsp;</div>
-                              <div>&nbsp;</div>
-                              <div class="control-group col-md-12" id = "myVideos">
-                                  <div class="control-group" id="fields">
-                                      <label class="control-label col-md-3" for="field1">Add your videos</label>
-                                      <div class="controls col-md-9"> 
-                                          <div id = "videoPlus">
-                                              <div class="entry input-group col-md-12" id="vid0">
-                                                  <input class="col-md-9" id="videos0" name="videos0" type="text" placeholder="Give video URL here" 
-                                                  onchange="insertIframe(this)"/>
-                                                <span class="input-group-btn col-md-3">
-                                                      <button class="btn btn-success btn-add" type="button" style="font-size:8px;">
-                                                          <span class="glyphicon glyphicon-plus"></span>
-                                                      </button>
-                                                  </span>
-                                              </div>
-                                           </div>   
-                                      <br>
-                                      <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another video :)</small>
-                                      <input type="hidden" id="mypfolioVids" name = "mypfolioVids">
-                                      </div>
-                                  </div>
-                            </div>
+                                 
+                              </div>   
 
                        </div>    
-                      
+                       <!-- The blueimp Gallery widget -->
 
 
                     </div>
@@ -389,7 +362,145 @@
 
   </div>  
 
+<div class="modal fade" id="uploadPicturesModal" role="dialog" aria-labelledby="uploadPicturesModal" class="open-ViewDialog" tabindex="-2" aria-hidden="true">
+        <!-- <form id="fileupload" action="/upload" method="POST" enctype="multipart/form-data"> -->
+        <!-- Redirect browsers with JavaScript disabled to the origin page -->
+        <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-body">
+                 <div class="row fileupload-buttonbar">
+                    <div class="col-lg-12 col-md-12">
+                      <!-- The fileinput-button span is used to style the file input field as button -->
+                      <span class="btn btn-success fileinput-button">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Add files...</span>
+                          <input id="fileupload" type="file" name="files[]" multiple>
+                      </span>
+                      <button type="submit" class="btn btn-primary start">
+                          <i class="glyphicon glyphicon-upload"></i>
+                          <span>Start upload</span>
+                      </button>
+                      <button type="reset" class="btn btn-warning cancel">
+                          <i class="glyphicon glyphicon-ban-circle"></i>
+                          <span>Cancel upload</span>
+                      </button>
+                      <button type="button" class="btn btn-danger delete">
+                          <i class="glyphicon glyphicon-trash"></i>
+                          <span>Delete</span>
+                      </button>
+                      <input type="checkbox" class="toggle">
+                      <!-- The global file processing state -->
+                      <span class="fileupload-process"></span>
+                    </div>
+                    <!-- The global progress state -->
+                    <div class="col-lg-5 fileupload-progress fade">
+                        <!-- The global progress bar -->
+                        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                        </div>
+                        <!-- The extended global progress state -->
+                        <div class="progress-extended">&nbsp;</div>
+                    </div>
+                  </div>
+                  <!-- The table listing the files available for upload/download -->
+                  <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+            </div>
+        </div>
+      </div>  
+    <!-- </form> -->
 
+
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+
+        <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+            <div class="slides"></div>
+            <h3 class="title"></h3>
+            <a class="prev">‹</a>
+            <a class="next">›</a>
+            <a class="close">×</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+        <!-- The template to display files available for upload -->
+        <script id="template-upload" type="text/x-tmpl">
+        {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-upload fade">
+                <td>
+                    <span class="preview"></span>
+                </td>
+                <td>
+                    <p class="name">{%=file.name%}</p>
+                    <strong class="error text-danger"></strong>
+                </td>
+                <td>
+                    <p class="size">Processing...</p>
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+                </td>
+                <td>
+                    {% if (!i && !o.options.autoUpload) { %}
+                        <button class="btn btn-primary start" disabled>
+                            <i class="glyphicon glyphicon-upload"></i>
+                            <span>Start</span>
+                        </button>
+                    {% } %}
+                    {% if (!i) { %}
+                        <button class="btn btn-warning cancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                            <span>Cancel</span>
+                        </button>
+                    {% } %}
+                </td>
+            </tr>
+        {% } %}
+        </script>
+        <!-- The template to display files available for download -->
+        <script id="template-download" type="text/x-tmpl">
+        {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-download fade">
+                <td>
+                    <span class="preview">
+                        {% if (file.thumbnailUrl) { %}
+                            <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                        {% } %}
+                    </span>
+                </td>
+                <td>
+                    <p class="name">
+                        {% if (file.url) { %}
+                            <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                        {% } else { %}
+                            <span>{%=file.name%}</span>
+                        {% } %}
+                    </p>
+                    {% if (file.error) { %}
+                        <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+                    {% } %}
+                </td>
+                <td>
+                    <span class="size">{%=o.formatFileSize(file.size)%}</span>
+                </td>
+                <td>
+                    {% if (file.deleteUrl) { %}
+                        <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <span>Delete</span>
+                        </button>
+                        <input type="checkbox" name="delete" value="1" class="toggle">
+                    {% } else { %}
+                        <button class="btn btn-warning cancel">
+                            <i class="glyphicon glyphicon-ban-circle"></i>
+                            <span>Cancel</span>
+                        </button>
+                    {% } %}
+                </td>
+            </tr>
+        {% } %}
+        </script>
+
+
+
+      </div>   
   <div class="modal fade multi-step" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
     <form action="/deleteArtist" method="post" id="deleteForm">
       <div class="modal-dialog">
@@ -449,11 +560,16 @@
     <script src="js/jquery-validate.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/multiple-modals.js"></script>
-    <script src="js/lightbox.min.js"></script>
+<script src="//blueimp.github.io/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="//blueimp.github.io/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+<script src="//blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+<!-- <script src="//blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>
+<script src="//blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload-image.js"></script>
+<script src="//blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
+<script src="//blueimp.github.io/jQuery-File-Upload/js/jquery.fileupload-ui.js"></script> -->
+
      <script type="text/javascript">
-      var imageIndex = 0;
-      var portfolioImages =new Array();
-      var portfolioVideos =new Array();
+
        $('input[id=fileupload]').change(function(e){
           alert("here");
           $('#fileupload').fileupload({
@@ -478,11 +594,7 @@
      sendEvent = function(sel, step) {
           $(sel).trigger('next.m.' + step);
       }
-      $('#profileUpdateForm').submit(function( event ) {
-        $('#imagePost').val("");
-        $('#mypfolioPics').val(portfolioImages);
-        $('#mypfolioVids').val(portfolioVideos);
-      });
+
       $('#deleteForm').validate({
             rules: {
                 deletedFeedback: {
@@ -518,142 +630,13 @@
       }
 
      $(window).ready(function(){
-          $('#successprofile').modal('show');
-          <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
-          <% } else {
-            for(var i = 0; i < user.portfolio.myPhotos.length; i ++ ) { %> 
-                  $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-                  $('#div' + imageIndex).append("<a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + "<%=user.portfolio.myPhotos[i]%>" + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                  $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=user.portfolio.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                  $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-                  $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + "<%=user.portfolio.myPhotos[i]%>" + " />")
-                  $('#mypics').append("</div>");
-                  imageIndex++;
-                  portfolioImages.push("<%=user.portfolio.myPhotos[i]%>");
-            <% } %>
-          <%} %>
+              $('#successprofile').modal('show');
      });
 
     // $(function(){
     //   disableSubmit()
     // });
-    $(function(){
 
-      $('input[id^=deleteImage]').on('click', function(e){
-          alert("here");
-          e.preventDefault();
-          // $("#updatedImage").attr("src","");
-          // $("#updatedImage").parents("a").attr("href", "");
-          // $("#updatedImage").parents("a").hide();
-          // $("#imagePost").val("");
-          // $("#postedImage").val("removed");
-      });
-
-      removeThis = function(imgIndx) {
-        $.ajax({
-            url: "/removeProfilePics",
-            type: "POST",
-            data: {image:$('#imageName' + imgIndx).val()},
-            complete: function() {
-            },
-            success: function(data) {
-               if(data.error) {
-                return;
-                }
-                portfolioImages.splice($.inArray( $('#imageName' + imgIndx).val(), portfolioImages),1);
-                $('img[id=image' + imgIndx + ']').attr("src","");
-                $('div[id=div' + imgIndx + ']').remove();
-                
-                return false;
-            }
-        });        
-      }
-
-      $('input[id=imagePost]').change(function(e){
-          // alert("here")
-          var data = new FormData();
-          for (var i = 0; i < $('input[id=imagePost]')[0].files.length; i++) { 
-              data.append('image', $('input[id=imagePost]')[0].files[i]); 
-          }
-          
-          // alert("Data is " + data);
-          $.ajax({
-            url: "/postProfilePics",
-            type: "POST",
-            contentType: false,
-            processData: false,
-            data: data,
-            complete: function() {
-              
-            },
-
-            success: function(data) {
-               if(data.error) {
-                // alert('Opps, something bad happened');
-                return;
-                }
-              // alert("here success11 data.length" + data);  
-              if(data.path.length > 0) {
-                for(var i = 0; i < data.path.length ; i++) {
-                  portfolioImages.push(data.path[i].name);
-
-                  // $('#mypics').append("<img id=image"+i+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
-                  // $("#image"+i).attr("src","tempUploads/"+data.path[i].name);
-                  $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-                  $('#div' + imageIndex).append("<a href=/portfolio/"+ <%=user.facebook.id%> + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                  $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" +data.path[i].name + 
-                                            " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                  $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-                  $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + data.path[i].name + " />")
-                  // <a href="" data-lightbox="No Image set" data-title="Portfolio pictures">
-                  // <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
-                  // <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple/>
-                  
-                  //   <a href = "" id="updateImage" style="display:none">Update this image</a>
-                  //   <a href = "" id="deleteImage" style="display:none">Remove this image</a>
-                  //   <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
-                  // $('#mypics').append("<img id=image"+0+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
-                  // $("#image0").attr("src","tempUploads/"+data.path.name);
-                  $('#mypics').append("</div>");
-                  imageIndex++;
-                }
-                
-              } else {
-                portfolioImages.push(data.path.name);
-                  // alert("No not an array " + data.path.name)
-                  $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-                  $('#div' + imageIndex).append("<a href=/portfolio/" + <%=user.facebook.id%> + "/pictures/" + data.path.name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                  $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" + data.path.name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                  $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + 
-                                      " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-                  $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + data.path.name +  " />")
-                  // <a href="" data-lightbox="No Image set" data-title="Portfolio pictures">
-                  // <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
-                  // <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple/>
-                  
-                  //   <a href = "" id="updateImage" style="display:none">Update this image</a>
-                  //   <a href = "" id="deleteImage" style="display:none">Remove this image</a>
-                  //   <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
-                  // $('#mypics').append("<img id=image"+0+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
-                  // $("#image0").attr("src","tempUploads/"+data.path.name);
-                  $('#mypics').append("</div>");
-                  
-                  imageIndex++;
-                  // $("#updatedImage").parents("a").attr("href", "tempUploads/"+data.path.name)
-                  // $("#updatedImage").parents("a").show();
-                  // $("#updateImage").show();
-                  // $("#deleteImage").show();
-                  // $("#updatedImage").show();
-                  // $("#postedImage").val("changed");
-              }
-           },
-
-            error: function() {
-              console.log('process error');
-            },
-          });
-      });
-    });
     $(function () {
       $('#tab1primary a').click(function (e) {
           e.preventDefault();
@@ -743,38 +726,6 @@
         $('.step-2').hide();
         $('.step-3').hide();
       })
-      var vidIndex = 1;
-      $(function() {
-        $(document).on('click', '.btn-add', function(e) {
-            e.preventDefault();
-            var controlForm = $('.controls #videoPlus:first'),
-                currentEntry = $(this).parents('.entry:first'),
-                newEntry = $(currentEntry).clone().appendTo(controlForm);
-            $(newEntry).find('iframe').remove();
-            $(newEntry).attr('id', 'vid' + vidIndex);
-            newEntry.find('input').attr('id', 'videos'+vidIndex);
-            newEntry.find('input').val('');
-            controlForm.find('.entry:not(:last) .btn-add')
-                .removeClass('btn-add').addClass('btn-remove')
-                .removeClass('btn-success').addClass('btn-danger')
-                .html('<span class="glyphicon glyphicon-minus"></span>');
-            vidIndex++;    
-        }).on('click', '.btn-remove', function(e) {
-          alert("video to be removed " + $(this).parents('.entry:first').find('iframe').attr('src'));
-          portfolioVideos.splice($.inArray(  $(this).parents('.entry:first').find('iframe').attr('src'), portfolioVideos),1);
-          $(this).parents('.entry:first').remove();
-          e.preventDefault();
-          return false;
-        });
-        
-    });
-
-      function insertIframe(element) {
-        var currentEntry = $(element).parents('.entry:first');
-        $(currentEntry).append("<div>&nbsp;</div><iframe src=" +  $(element).val() + " width=500 height=300 frameborder=0 allowfullscreen class=col-md-12></iframe>");
-        // $(currentEntry).append("<div>&nbsp;</div> <input type = "text);
-        portfolioVideos.push($(element).val());
-      }
       
     </script>
 

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Keywords" content="Theatre, Artists, Motleymeow, Sponsor, Events, Bengaluru, Mumbai, Delhi, Chennai, Kolkata, Drama, Naatak,
+    "<%=user.facebook.name%>" />
+    <meta property="og:title" content="View the artist: "<%=user.facebook.name%>">
+    <meta property="og:type" content="website" />
+    <% if(typeof user != 'undefined' && typeof user.local!='undefined' && typeof user.local.picture != 'undefined' && user.local.picture != "") { %>
+      <meta property="og:image" content="<%=user.local.picture%>"/>
+    <% } else { %>  
+      <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <% } %>  
+    <title>MOTLEYMEOW. Hear the artists meow.</title> 
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-dialog.js"></script>
+    <link href="css/lightbox.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet">       
+    <link href="css/tab.css" rel="stylesheet">
+  </head>
+
+
+<body>
+     
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>    
+ <% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout"></div>
+  <%}%> 
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-10">
+         <h1 class=""><%=user.facebook.name%></h1>
+
+        <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
+         <% console.log("same user as logged in so can edit"); %>
+         <form action="/profileEdit" method="GET">
+            <button id ="edit" align="center" class="btn btn-success">Edit my profile</button>&nbsp;
+          </form>
+        <% } %> 
+        <br> 
+      </div>
+
+      <div class="col-sm-2"><img title="profile image" class="img-circle img-responsive" src="<%= user.local.picture %>">
+      </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false"><h3>Your Profile</h3></li>
+                <% var isodateString = new Date(user.local.joiningDate).toISOString();
+                var displayableDate = getDate(isodateString) %>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Joined</strong></span> <%=displayableDate%></li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">From city:</strong></span> 
+                  <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
+                  <p style="color:red"><b>Not Set</b></p>
+                  <% } else { %>  
+                  <p style="font-size:18px;"><%= user.local.city %></p>
+                  <% } %>
+
+                </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Full name</strong></span> <%=user.facebook.name%></li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Contribution in theatre: </strong></span>
+                          <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
+                              <p style="color:red"><b>Not updated yet</b></p>
+                            <% } else { %>  
+                              <p style="font-size:18px;"><%= user.local.role %></p>
+                            <% } %>
+                 
+                </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Comfortable in languages </strong></span>
+                          <% if(typeof user.local.lang == 'undefined' || user.local.lang.length == 0) { %>
+                              <p style="color:red"><b>Not updated yet</b></p>
+                            <% } else { %>  
+                              <p style="font-size:18px;"><%= user.local.lang %></p>
+                            <% } %>
+                 
+                </li>
+          </ul>
+          <div class="panel panel-default">
+            <div class="panel panel-default">
+                <div class="panel-heading">FB profile link <i class="fa fa-link fa-1x"></i>
+
+                </div>
+                <div class="panel-body">
+                  <% if(user.facebook.link) { %>
+                    <a href = "<%= user.facebook.link %>" target="_blank"><img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:100px;"></a>
+                  <% } else { %>
+                    Not set
+                  <% } %>
+                </div>
+            </div>
+          </div>
+        </div>    
+
+        <!--/col-3-->
+        <div class="col-sm-9" style="" contenteditable="false">
+            <div class="panel panel-default">
+                <div class="panel-heading">The artist that i am</div>
+                <div class="panel-body"> 
+                  <% if(typeof user.portfolio == 'undefined' || user.portfolio.myself == 'undefined' || user.portfolio.myself == "") { %>
+                    <p class="form-control-static" ><span class="fieldNote">Don't be a sourpuss!! Describe something about youself.</span>
+                  <%} else {%>
+                    <p class="form-control-static" data-linkify="this" ><%=user.portfolio.myself%>
+                  <% } %>
+
+                </div>
+            </div>
+            <div class="panel panel-default target">
+                <div class="panel-heading" contenteditable="false">My portfolio pictures</div>
+                  <div class="panel-body">
+                    <div class="row">
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
+                      
+                        No Images found
+                      
+                    <% } else { 
+                        for(var i = 0; i < user.portfolio.myPhotos.length; i ++ ) { %> 
+                      <div class="col-md-4">
+                        <div class="thumbnail">
+                            <a href = "/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" data-lightbox="image" data-title="Portfolio images">
+                              <img alt="No image" src="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>">
+                            </a>  
+                        </div>
+                      </div>
+                      <% } %>
+                    <%} %>
+                       
+                  </div>
+                </div>  
+             </div>
+             <div class="panel panel-default target">
+                <div class="panel-heading" contenteditable="false">My videos</div>
+                  <div class="panel-body">
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myVideos == 'undefined' || user.portfolio.myVideos.length ==0 ) { %>
+                      
+                        No Videos found
+                      
+                    <% } else { 
+                        for(var i = 0; i < user.portfolio.myVideos.length; i ++ ) { %> 
+                          
+                                <iframe src="<%=user.portfolio.myVideos[i]%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
+                           
+                        <% } %>
+                    <%} %>
+                    <!-- <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe><iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>  
+                  </div>   -->
+                </div>
+             </div>   
+           </div>
+
+  </div>
+ </div>
+</div>  
+
+
+
+<!-- footer starts-->
+<div id = "footer"></div>
+
+    <script src="js/linkified-min.js"></script>
+    <script src="js/lightbox.min.js"></script>
+
+
+<script>
+    $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
+</script>    
+
+  </body>
+
+
+</html>

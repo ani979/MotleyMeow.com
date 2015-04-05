@@ -5,13 +5,22 @@ var Posts = require('../models/posts.js');
 var Event = require('../models/event.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var config        = require('../oauth.js')
+var upload = require('jquery-file-upload-middleware');
 
 /*FB.options({
     appId:          config.facebook.appId,
     appSecret:      config.facebook.appSecret,
     redirectUri:    config.facebook.redirectUri
 });*/
-
+// configure upload middleware 
+upload.configure({
+    imageVersions: {
+        thumbnail: {
+            width: 80,
+            height: 80
+        }
+    }
+});
 var profile = {
     firstName:'',
     fullName:'',
@@ -71,12 +80,39 @@ exports.logout = function (req, res) {
 
 exports.profile = function (req, res) {
     var accessToken = req.session.access_token;
+    var fbid = "";
     console.log("accesstoken111: "+ accessToken);
     if(!accessToken) {
         console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
         if(req.isAuthenticated()) {
             console.log("req.user city " + req.session.user.local.city);
+            console.log("req.fbId " + req.query.fbId);
+            if(typeof req.query.fbId == 'undefined') {
+                fbid = req.session.user.facebook.id;
+            } else {
+                fbid = req.query.fbId;
+            }
             console.log("req.user name " + req.session.user.facebook.name);
+            User.findOne({ 'facebook.id' : fbid}, function(error, db) {
+                res.render('profileView', { user: db, dropdowns:dropdowns, sessionUser: req.session.user});
+            });    
+        } else {
+            res.redirect('/');
+            
+        }
+    } else {
+        // res.render('home');
+        res.redirect('/');
+    }
+};
+
+exports.profileEdit = function (req, res) {
+    var accessToken = req.session.access_token;
+    console.log("accesstoken111: "+ accessToken);
+    if(!accessToken) {
+        console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
+        if(req.isAuthenticated()) {
+
             res.render('profileEdit', { user: req.session.user, dropdowns:dropdowns});
         } else {
                 res.redirect('/');

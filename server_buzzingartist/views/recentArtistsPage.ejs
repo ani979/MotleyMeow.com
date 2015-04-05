@@ -22,14 +22,12 @@
 
                        <% if(typeof users[i].local.city == 'undefined' || users[i].local.city == "") { %>
                             <td>Not Set</td>
-                          <% } else { %>  
-                            <td><%= users[i].local.city %></td>
-                          <% } %> 
-                        <% if(users[i].facebook.link) { %>
-                            <td><a href = "<%=users[i].facebook.link%>" target="_blank"><img alt="" src=<%= users[i].local.picture %> class="img-circle" style="max-height:30px;max-width:30px"></a></td>
-                        <% } else { %>
-                            <td>Not shared</td>
-                        <% } %>
+                      <% } else { %>  
+                        <td><%= users[i].local.city %></td>
+                      <% } %> 
+                      <td>
+                       <a href="/profile?fbId=<%=users[i].facebook.id%>" type= "button" id ="viewProfile" align="center" class="btn btn-primary">View Me</a>
+                      </td>
                     
                     </tr>
                   <%}%>     

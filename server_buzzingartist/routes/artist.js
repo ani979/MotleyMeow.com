@@ -2,6 +2,7 @@ var User = require('../models/user.js');
 var Post = require('../models/posts.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var deletedArtists = require('../models/deletedArtists.js');
+var app = require('../app.js');
 
 
 exports.artist = function (req, res) {
@@ -17,8 +18,22 @@ exports.artist = function (req, res) {
 };
 
 exports.update = function (req, res) {
+  var pfolioPictures;
+  var pfolioVideos;
 	var id = req.body.userId;  
   console.log("Id is " + id);
+  if(typeof req.body.mypfolioPics != 'undefined') {
+    pfolioPictures = req.body.mypfolioPics.split(",");
+    console.log("req.body.mypfolioPics " + pfolioPictures.length);
+  } 
+
+  if(typeof req.body.mypfolioVids != 'undefined') {
+    pfolioVideos = req.body.mypfolioVids.split(",");
+    console.log("req.body.pfolioVids " + pfolioVideos.length);
+  }  
+
+
+
     User.findOne({ 'facebook.id' : id }, function(error, db) {
         console.log("coming 1");
         if (error || !db) {
@@ -37,6 +52,9 @@ exports.update = function (req, res) {
                // now update it in MongoDB
                db.local.role = req.body.role;
                db.local.lang = req.body.lang;
+               db.portfolio.myself = req.body.myself;
+               db.portfolio.myPhotos = pfolioPictures;
+               db.portfolio.myVideos = pfolioVideos;
                console.log("req.body.emailDisplay " + req.body.emailDisplay)
                if(req.body.emailDisplay) {
                     if (req.body.emailDisplay == "ok") db.local.emailDisplay = true;
@@ -58,7 +76,8 @@ exports.update = function (req, res) {
 
                    req.session.user = user;
                    req.session.loggedIn = true;
-                   res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful", dropdowns:dropdowns});
+                   res.redirect('/profile');
+                   //res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful", dropdowns:dropdowns});
                });
             } 
         }
@@ -200,3 +219,20 @@ exports.updateCityAndRoles = function (req, res) {
         }
     });
 };
+
+exports.postProfilePhoto = function(req,res) {
+    console.log(JSON.stringify(req.files));
+    res.send({path: req.files.image});
+}
+
+
+exports.removeProfilePics = function(req,res) {
+    console.log("req.body.image " + req.body.image);
+    app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures').forEach(function(fileName) {
+       if(fileName == req.body.image) {
+        console.log("FOUND THE PIC TO BE REMOVED");
+        app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
+        res.send({result:"DONE"});
+       } 
+    });
+}

@@ -11,7 +11,8 @@ var express       = require('express'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
     multer  = require('multer'),
-    argv = require('optimist').argv;
+    argv = require('optimist').argv,
+    upload = require('jquery-file-upload-middleware');
 
 var moment = require('moment');
 var argv = require('optimist').argv;
@@ -143,30 +144,31 @@ passport.use(new FacebookStrategy({
                         }
                         newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
                         newUser.local.joiningDate    = new Date(); 
-                        FB.api(
-                                    '/me?access_token=' + accessToken + '&appsecret_proof=' + req.session.hashValue,
-                                    function (response) {
-                                        console.log("response "  + response);
-                                      if (response && !response.error) {
-                                        console.log(" response.link " + response.link);
-                                        /* handle the result */
-                                        //user.facebook.link = response.link;
-                                        User.update({'facebook.email' : newUser.facebook.email},
-                                                 { $set: {"facebook.link": response.link}},
-                                                            function (err, user) {
-                                                                if(err) {
-                                                                    console.log("Something went wrong in saving facebook link");
-                                                                    req.flash('info', "Something went wrong in saving facebook link")
-                                                                    res.redirect('/error');
-                                                                }
-                                        });                        
-                                      } else {
-                                        console.log("error in saving FB link " + response.error.message);
-                                        req.flash('info', "Error in saving FB link")
-                                        res.redirect('/error');
-                                      }
-                                    }
-                        );    
+                        // FB.api(
+                        //             '/me?access_token=' + accessToken + '&appsecret_proof=' + req.session.hashValue,
+                        //             function (response) {
+                        //                 console.log("response "  + response);
+                        //               if (response && !response.error) {
+                        //                 console.log(" response.link " + response.link);
+                        //                 /* handle the result */
+                        //                 //user.facebook.link = response.link;
+                        //                 User.update({'facebook.email' : newUser.facebook.email},
+                        //                          { $set: {"facebook.link": response.link}},
+                        //                                     function (err, user) {
+                        //                                         if(err) {
+                        //                                             console.log("Something went wrong in saving facebook link");
+                        //                                             req.flash('info', "Something went wrong in saving facebook link")
+                        //                                             res.redirect('/error');
+                        //                                         }
+                        //                 });                        
+                        //               } else {
+                        //                 console.log("error in saving FB link " + response.error.message);
+                        //                 req.flash('info', "Error in saving FB link")
+                        //                 res.redirect('/error');
+                        //               }
+                        //             }
+                        // );    
+                        newUser.facebook.link  = "https://www.facebook.com/" + profile.id;
                         console.log("email id " + newUser.facebook.email);
                         req.session.fbAccessToken = accessToken;
 
@@ -194,6 +196,17 @@ passport.use(new FacebookStrategy({
 
 var app = express();
 
+// configure upload middleware 
+upload.configure({
+    imageVersions: {
+        thumbnail: {
+            width: 80,
+            height: 80
+        }
+    }
+});
+
+
 //app.configure(function() {
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -209,6 +222,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -253,7 +267,8 @@ app.get('/auth/facebook/callback',
 
 
 app.get( '/home',  ensureAuthenticated, home.landing_home);
-app.get( '/profile', home.profile);
+app.get( '/profile', ensureAuthenticated, home.profile);
+app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
 var mwMulter1 = multer({ dest: './views/uploads' });
 app.post( '/post',  mwMulter1, post_request.post);
@@ -269,9 +284,33 @@ app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequ
 
 app.get( '/artists', artists.artist);
 app.post('/deleteArtist', artists.deleteArtist);
-app.get( '/getRecentPosts', post_request.getRecentPosts);
-app.get( '/getRecentArtists', artists.getRecentArtists);
-app.post( '/update', artists.update);
+app.get( '/getRecentPosts', ensureAuthenticated, post_request.getRecentPosts);
+app.get( '/getRecentArtists', ensureAuthenticated,  artists.getRecentArtists);
+// var mwMulter3 = multer({ dest: './views/profile' });
+app.post( '/update',
+                    multer({ 
+                    dest: './views/portfolio/', 
+                    changeDest: function(dest, req, res) {
+                                    var newDestination = dest + req.session.user.facebook.id;
+                                    var stat = null;
+                                    try {
+                                      stat = fsExtra.statSync(newDestination);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination);
+                                    }
+
+                                    var newDestination_1 = newDestination + "/pictures"
+                                    try {
+                                      stat = fsExtra.statSync(newDestination_1);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination_1);
+                                    }
+                                    if (stat && !stat.isDirectory()) {
+                                        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+                                    }
+                                    return newDestination_1
+                                }
+                    }), ensureAuthenticated, artists.update);
 app.get( '/contactArtists', artists.contactArtists);
 app.post( '/getEmails', artists.getEmails);
 app.post( '/getCity', artists.updateCityAndRoles);
@@ -323,6 +362,48 @@ app.get('/privacy', function(req, res){
 
 app.get('/terms', function(req, res){
   res.render('terms', { user: req.session.user });
+});
+
+//var mwMulter4 = multer({ dest: './views/profile/tempUploads' });
+app.post('/postProfilePics', multer({ 
+                    dest: './views/portfolio/', 
+                    changeDest: function(dest, req, res) {
+                                    var newDestination = dest + req.session.user.facebook.id;
+                                    var stat = null;
+                                    try {
+                                      stat = fsExtra.statSync(newDestination);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination);
+                                    }
+
+                                    var newDestination_1 = newDestination + "/pictures"
+                                    try {
+                                      stat = fsExtra.statSync(newDestination_1);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination_1);
+                                    }
+                                    if (stat && !stat.isDirectory()) {
+                                        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+                                    }
+                                    return newDestination_1
+                                }
+                    }), artists.postProfilePhoto);
+
+
+app.post('/removeProfilePics', artists.removeProfilePics);
+
+
+app.use('/upload', function (req, res, next) {
+            // imageVersions are taken from upload.configure() 
+            console.log("i am here in upload");
+            upload.fileHandler({
+                uploadDir: function () {
+                    return __dirname + '/public/uploads/' + req.session.user.facebook.id
+                },
+                uploadUrl: function () {
+                    return '/uploads/' + req.session.user.facebook.id
+                }
+            })(req, res, next);
 });
 
 var mwMulter2 = multer({ dest: './views/tempUploads' });
