@@ -452,6 +452,7 @@
     <script src="js/lightbox.min.js"></script>
      <script type="text/javascript">
       var imageIndex = 0;
+      var vidIndex = 0;
       var portfolioImages =new Array();
       var portfolioVideos =new Array();
        $('input[id=fileupload]').change(function(e){
@@ -481,7 +482,15 @@
       $('#profileUpdateForm').submit(function( event ) {
         $('#imagePost').val("");
         $('#mypfolioPics').val(portfolioImages);
-        $('#mypfolioVids').val(portfolioVideos);
+        $('#videoPlus').children('div').each(function () {
+            if(typeof $(this).find('iframe').attr('src') != 'undefined') {
+              portfolioVideos.push({
+                    "videoURL": $(this).find('iframe').attr('src'),
+                    "videoText": $(this).find('textarea').val()
+              }); 
+            }  
+        });
+        $('#mypfolioVids').val(JSON.stringify(portfolioVideos));
       });
       $('#deleteForm').validate({
             rules: {
@@ -532,6 +541,58 @@
                   portfolioImages.push("<%=user.portfolio.myPhotos[i]%>");
             <% } %>
           <%} %>
+
+          <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myVideos == 'undefined' || user.portfolio.myVideos.length <= 0 ) { %>
+          <% } else { %>
+              // if(user.portfolio.myVideos.length == 1) { %>
+                var controlForm = $('.controls #videoPlus:first'),
+                    currentEntry = $(this).find('.entry:first');
+                $(currentEntry).find('input').val("<%=user.portfolio.myVideos[0].videoURL%>");
+                $(currentEntry).append("<div>&nbsp;</div><iframe src=" +  "<%=user.portfolio.myVideos[0].videoURL%>" + " width=500 height=300 frameborder=0 allowfullscreen class=col-md-12></iframe>");
+                $(currentEntry).append("<div>&nbsp;</div> <textarea id=videoText"+ currentEntry.attr('id') + 
+                            " name= videoText"+ currentEntry.attr('id') + " placeholder='Tell us something about this video' " +
+                            "style='min-width:100%';rows=6>" + "<%=user.portfolio.myVideos[0].videoText%>" + "</textarea>");     
+                controlForm.find('.entry .btn-add')
+                    .removeClass('btn-add').addClass('btn-remove')
+                    .removeClass('btn-success').addClass('btn-danger')
+                    .html('<span class="glyphicon glyphicon-minus"></span>');
+                vidIndex++; 
+
+
+              <% for(var i = 1; i < user.portfolio.myVideos.length; i ++ ) { %> 
+                  var controlForm = $('.controls #videoPlus:first'),
+                      currentEntry = $(this).find('.entry:last'),
+                      newEntry = $(currentEntry).clone().appendTo(controlForm);
+                  $(newEntry).attr('id', 'vid' + vidIndex);
+                  newEntry.find('input').attr('id', 'videos'+vidIndex);
+                  newEntry.find('input').val("<%=user.portfolio.myVideos[i].videoURL%>");
+                  newEntry.find('iframe').attr('src', "<%=user.portfolio.myVideos[i].videoURL%>");
+                  newEntry.find('textarea').attr('id', "videoText"+ newEntry.attr('id'));
+                  newEntry.find('textarea').val("<%=user.portfolio.myVideos[i].videoText%>");
+                  // newEntry.append("<div>&nbsp;</div><iframe src=" +  "<%=user.portfolio.myVideos[i].videoURL%>" + " width=500 height=300 frameborder=0 allowfullscreen class=col-md-12></iframe>");
+                  // alert("333")
+                  // newEntry.append("<div>&nbsp;</div> <textarea id=videoText"+ newEntry.attr('id') + 
+                  //             " name= videoText"+ newEntry.attr('id') + " placeholder='Tell us something about this video' " +
+                  //             "style='min-width:100%';rows=6>" + "<%=user.portfolio.myVideos[i].videoText%>" + "</textarea>");     
+                  controlForm.find('.entry:not(:last) .btn-add')
+                      .removeClass('btn-add').addClass('btn-remove')
+                      .removeClass('btn-success').addClass('btn-danger')
+                      .html('<span class="glyphicon glyphicon-minus"></span>');
+                  vidIndex++; 
+              <% } %>  
+                  var controlForm = $('.controls #videoPlus:first'),
+                  currentEntry = $(this).find('.entry:last'),
+                  newEntry = $(currentEntry).clone().appendTo(controlForm);
+                  $(newEntry).find('iframe').remove();
+                  $(newEntry).find('textarea').remove();
+                  $(newEntry).attr('id', 'vid' + vidIndex);
+                  newEntry.find('input').attr('id', 'videos'+vidIndex);
+                  newEntry.find('input').val('');
+                  newEntry.find('.btn-remove').removeClass('btn-remove').addClass('btn-add')
+                  .removeClass('btn-danger').addClass('btn-success')
+                    .html('<span class="glyphicon glyphicon-plus"></span>');
+          <% } %>      
+
      });
 
     // $(function(){
@@ -743,7 +804,7 @@
         $('.step-2').hide();
         $('.step-3').hide();
       })
-      var vidIndex = 1;
+      
       $(function() {
         $(document).on('click', '.btn-add', function(e) {
             e.preventDefault();
@@ -751,6 +812,7 @@
                 currentEntry = $(this).parents('.entry:first'),
                 newEntry = $(currentEntry).clone().appendTo(controlForm);
             $(newEntry).find('iframe').remove();
+            $(newEntry).find('textarea').remove();
             $(newEntry).attr('id', 'vid' + vidIndex);
             newEntry.find('input').attr('id', 'videos'+vidIndex);
             newEntry.find('input').val('');
@@ -761,7 +823,7 @@
             vidIndex++;    
         }).on('click', '.btn-remove', function(e) {
           alert("video to be removed " + $(this).parents('.entry:first').find('iframe').attr('src'));
-          portfolioVideos.splice($.inArray(  $(this).parents('.entry:first').find('iframe').attr('src'), portfolioVideos),1);
+          portfolioVideos.splice($.inArray(  $(this).parents('.entry:first').find('iframe').attr('src'), portfolioVideos.videoURL),1);
           $(this).parents('.entry:first').remove();
           e.preventDefault();
           return false;
@@ -770,10 +832,13 @@
     });
 
       function insertIframe(element) {
+
         var currentEntry = $(element).parents('.entry:first');
         $(currentEntry).append("<div>&nbsp;</div><iframe src=" +  $(element).val() + " width=500 height=300 frameborder=0 allowfullscreen class=col-md-12></iframe>");
-        // $(currentEntry).append("<div>&nbsp;</div> <input type = "text);
-        portfolioVideos.push($(element).val());
+        $(currentEntry).append("<div>&nbsp;</div> <textarea id=videoText"+ currentEntry.attr('id') + 
+                                " name= videoText"+ currentEntry.attr('id') + " placeholder='Tell us something about this video' " +
+                                "style='min-width:100%';rows=6></textarea>"); 
+
       }
       
     </script>

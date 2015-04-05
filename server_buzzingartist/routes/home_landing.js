@@ -5,7 +5,7 @@ var Posts = require('../models/posts.js');
 var Event = require('../models/event.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var config        = require('../oauth.js')
-var upload = require('jquery-file-upload-middleware');
+
 
 /*FB.options({
     appId:          config.facebook.appId,
@@ -13,14 +13,7 @@ var upload = require('jquery-file-upload-middleware');
     redirectUri:    config.facebook.redirectUri
 });*/
 // configure upload middleware 
-upload.configure({
-    imageVersions: {
-        thumbnail: {
-            width: 80,
-            height: 80
-        }
-    }
-});
+
 var profile = {
     firstName:'',
     fullName:'',

@@ -11,8 +11,8 @@ var express       = require('express'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
     multer  = require('multer'),
-    argv = require('optimist').argv,
-    upload = require('jquery-file-upload-middleware');
+    argv = require('optimist').argv;
+    // upload = require('jquery-file-upload-middleware');
 
 var moment = require('moment');
 var argv = require('optimist').argv;
@@ -197,14 +197,14 @@ passport.use(new FacebookStrategy({
 var app = express();
 
 // configure upload middleware 
-upload.configure({
-    imageVersions: {
-        thumbnail: {
-            width: 80,
-            height: 80
-        }
-    }
-});
+// upload.configure({
+//     imageVersions: {
+//         thumbnail: {
+//             width: 80,
+//             height: 80
+//         }
+//     }
+// });
 
 
 //app.configure(function() {

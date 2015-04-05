@@ -27,10 +27,11 @@ exports.update = function (req, res) {
     console.log("req.body.mypfolioPics " + pfolioPictures.length);
   } 
 
-  if(typeof req.body.mypfolioVids != 'undefined') {
-    pfolioVideos = req.body.mypfolioVids.split(",");
-    console.log("req.body.pfolioVids " + pfolioVideos.length);
+  if(typeof req.body.mypfolioVids != 'undefined' && req.body.mypfolioVids.length > 0) {
+    pfolioVideos = JSON.parse(req.body.mypfolioVids);
+    console.log("pfolioVideos[0] " + pfolioVideos[0].videoURL)
   }  
+
 
 
 
@@ -54,6 +55,14 @@ exports.update = function (req, res) {
                db.local.lang = req.body.lang;
                db.portfolio.myself = req.body.myself;
                db.portfolio.myPhotos = pfolioPictures;
+               if(typeof pfolioVideos != 'undefined' && pfolioVideos.length > 0) {
+                for(var i = 0; i < pfolioVideos.length; i++) {
+                  db.portfolio.myVideos.push({
+                        "videoURL": pfolioVideos[i].videoURL,
+                        "videoText": pfolioVideos[i].videoText
+                  })
+                }
+               }
                db.portfolio.myVideos = pfolioVideos;
                console.log("req.body.emailDisplay " + req.body.emailDisplay)
                if(req.body.emailDisplay) {

@@ -161,8 +161,10 @@
                     <% } else { 
                         for(var i = 0; i < user.portfolio.myVideos.length; i ++ ) { %> 
                           
-                                <iframe src="<%=user.portfolio.myVideos[i]%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
-                           
+                                <iframe src="<%=user.portfolio.myVideos[i].videoURL%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
+                                <p> <%=user.portfolio.myVideos[i].videoText%>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
                         <% } %>
                     <%} %>
                     <!-- <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
