@@ -28,13 +28,11 @@ exports.update = function (req, res) {
   } 
 
   if(typeof req.body.mypfolioVids != 'undefined' && req.body.mypfolioVids.length > 0) {
+    console.log(" req.body.mypfolioVids.length " + req.body.mypfolioVids.length);
     pfolioVideos = JSON.parse(req.body.mypfolioVids);
     console.log("pfolioVideos[0] " + pfolioVideos[0].videoURL)
   }  
-
-
-
-
+  
     User.findOne({ 'facebook.id' : id }, function(error, db) {
         console.log("coming 1");
         if (error || !db) {
