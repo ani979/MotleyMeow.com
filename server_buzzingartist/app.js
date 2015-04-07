@@ -267,6 +267,8 @@ app.get('/auth/facebook/callback',
 
 
 app.get( '/home',  ensureAuthenticated, home.landing_home);
+app.post( '/saveNotificationClickDate', home.saveNotificationClickDate);
+app.get( '/getNotification', home.getNotification);
 app.get( '/profile', ensureAuthenticated, home.profile);
 app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
@@ -279,6 +281,7 @@ app.post( '/deletepost', ensureAuthenticated, mwMulter1, post_request.deletepost
 
 app.get( '/searchPosts', ensureAuthenticated, post_request.searchPosts);
 app.get( '/viewallposts', ensureAuthenticated, post_request.viewallposts);
+app.get( '/viewNotificationPosts', post_request.viewNotificationPosts);
 app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequest);
 
 

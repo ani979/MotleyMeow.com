@@ -320,6 +320,37 @@ exports.viewallposts = function (req, res) {
             });
 };
 
+exports.viewNotificationPosts = function (req, res) {
+    console.log("viewNotificationPostsSSSSSSSSSSSSSSSS");
+    var foundUser = req.session.user;
+    var selectedCity = new Array();
+    var notificationClickDate = new Date(foundUser.local.notificationClickDate);
+    console.log("found user notificationClickDate: "+notificationClickDate);
+    if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
+        if(foundUser.local.city == "Bengaluru" || foundUser.local.city == "Bangalore") {
+            selectedCity.push("Bangalore", "Bengaluru");
+        } else if(foundUser.local.city == "Calcutta" || foundUser.local.city == "Kolkata") {
+            selectedCity.push("Calcutta", "Kolkata");
+        } else if(foundUser.local.city == "Mumbai" || foundUser.local.city == "Bombay") {
+            selectedCity.push("Mumbai", "Bombay");
+        } else if (foundUser.local.city != "None") {
+            selectedCity.push(foundUser.local.city);
+        }
+    }
+
+    if(typeof selectedCity != undefined && selectedCity.length != 0) {
+        console.log("req.session.user role: "+foundUser.local.role[0]);                                
+                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                                            { 'post.date': { $lte: new Date() } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
+                                                                function(err, postsinDB) {
+                                            if(!err) {
+                                                postsForArtist = postsinDB;
+                                            }
+                                            res.render('browserequests', { user: req.session.user, allposts: postsForArtist, rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia", dropdowns:dropdowns});
+                                        });
+    }
+};
+
 exports.postarequest = function (req, res) {
 	var allUsers;
     console.log("req.user " + req.user);

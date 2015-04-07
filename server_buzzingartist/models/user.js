@@ -14,7 +14,8 @@ var userSchema = mongoose.Schema({
         emailDisplay : {type:Boolean, default:true},
         privelege    : {type:String, default:"somebody"},
         joiningDate  :Date,
-        receiveNotif : {type:Boolean, default:true}
+        receiveNotif : {type:Boolean, default:true},
+        notificationClickDate : Date
     },
     facebook         : {
         id           : String,
