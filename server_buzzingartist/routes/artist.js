@@ -19,20 +19,48 @@ exports.artist = function (req, res) {
 
 exports.update = function (req, res) {
   var pfolioPictures;
+  var pfolioPicturesToBeRemoved;
   var pfolioVideos;
 	var id = req.body.userId;  
   console.log("Id is " + id);
   if(typeof req.body.mypfolioPics != 'undefined') {
     pfolioPictures = req.body.mypfolioPics.split(",");
     console.log("req.body.mypfolioPics " + pfolioPictures.length);
-  } 
+     app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+      var found = false;
+      for(var i = 0; i < pfolioPictures.length; i++) {
+        if(pfolioPictures[i] == fileName) {
+          found = true;
+        }  
+      }
+      if(found == false) {
+        console.log("Removing file " + fileName);
+        app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
+      }  
+    });
+  } else {
+    console.log("removing all profile pictures")
+    app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+        console.log("Removing file " + fileName);
+        app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
+    });
+  }
 
   if(typeof req.body.mypfolioVids != 'undefined' && req.body.mypfolioVids.length > 0) {
     console.log(" req.body.mypfolioVids.length " + req.body.mypfolioVids.length);
     pfolioVideos = JSON.parse(req.body.mypfolioVids);
     console.log("pfolioVideos[0] " + pfolioVideos[0].videoURL)
   }  
-  
+
+  // if(typeof req.body.mypfolioRemPics != 'undefined') {
+  //   pfolioPicturesToBeRemoved = req.body.mypfolioRemPics.split(",");
+  //   console.log("req.body.mypfolioPics to be removed " + pfolioPicturesToBeRemoved.length);
+  //   for(var i = 0; i < pfolioPicturesToBeRemoved.length; i++) {
+  //       console.log(" Going to remove " + pfolioPicturesToBeRemoved[i]);
+  //       app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + pfolioPicturesToBeRemoved[i]);
+  //   }
+  // } 
+
     User.findOne({ 'facebook.id' : id }, function(error, db) {
         console.log("coming 1");
         if (error || !db) {
@@ -61,6 +89,8 @@ exports.update = function (req, res) {
                   })
                 }
                }
+               console.log("req.body.resume = " + req.body.myResume);
+               db.portfolio.myResume = req.body.myResume;
                db.portfolio.myVideos = pfolioVideos;
                console.log("req.body.emailDisplay " + req.body.emailDisplay)
                if(req.body.emailDisplay) {
@@ -229,17 +259,11 @@ exports.updateCityAndRoles = function (req, res) {
 
 exports.postProfilePhoto = function(req,res) {
     console.log(JSON.stringify(req.files));
-    res.send({path: req.files.image});
+    //res.send({path: req.files.image});
 }
 
-
-exports.removeProfilePics = function(req,res) {
-    console.log("req.body.image " + req.body.image);
-    app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures').forEach(function(fileName) {
-       if(fileName == req.body.image) {
-        console.log("FOUND THE PIC TO BE REMOVED");
-        app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
-        res.send({result:"DONE"});
-       } 
-    });
+exports.postProfileResume = function(req,res) {
+    console.log(JSON.stringify(req.files));
+    console.log("req.files.resume.name " + req.files.resume.name);
+    res.send({resumeName: req.files.resume});
 }

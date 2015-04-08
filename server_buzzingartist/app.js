@@ -11,8 +11,8 @@ var express       = require('express'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
     multer  = require('multer'),
-    argv = require('optimist').argv;
-    // upload = require('jquery-file-upload-middleware');
+    argv = require('optimist').argv,
+    im = require('imageMagick');
 
 var moment = require('moment');
 var argv = require('optimist').argv;
@@ -282,6 +282,7 @@ app.post( '/deletepost', ensureAuthenticated, mwMulter1, post_request.deletepost
 app.get( '/searchPosts', ensureAuthenticated, post_request.searchPosts);
 app.get( '/viewallposts', ensureAuthenticated, post_request.viewallposts);
 app.get( '/viewNotificationPosts', post_request.viewNotificationPosts);
+
 app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequest);
 
 
@@ -368,8 +369,11 @@ app.get('/terms', function(req, res){
 });
 
 //var mwMulter4 = multer({ dest: './views/profile/tempUploads' });
+var uploadedFiles = new Array();
 app.post('/postProfilePics', multer({ 
                     dest: './views/portfolio/', 
+                    putSingleFilesInArray: true,
+                    limits: { fileSize: 5* 1024 * 1024},
                     changeDest: function(dest, req, res) {
                                     var newDestination = dest + req.session.user.facebook.id;
                                     var stat = null;
@@ -389,11 +393,87 @@ app.post('/postProfilePics', multer({
                                         throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
                                     }
                                     return newDestination_1
+                    },
+                    onFileUploadStart: function (file, req, res) {
+                        if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
+                            console.log("OK to start upload");
+                        } else {
+                            return false;
+                        }
+                    },
+                    onFileUploadComplete: function (file, req, res) {
+                        console.log("now going to resize " + file.path);
+                        if(file.size <= (500*1024)) {
+                            if(uploadedFiles.length == req.files.length) {
+                                res.end();
+                            }
+                            return;
+                        }
+                        im.resize({
+                          srcPath: file.path,
+                          dstPath: './views/portfolio/' + req.session.user.facebook.id + "/pictures/" + file.name,
+                          width:   1024
+                        }, function(err, stdout, stderr){
+                          if (err) {
+                            console.log("Some error occurred")
+                          }
+                          uploadedFiles.push(file.path);
+                          console.log(" uploadedFiles "+ uploadedFiles.length)
+                          console.log(" req.files.image.length "+ req.files.image.length)
+                          if(uploadedFiles.length == req.files.image.length || uploadedFiles.length > req.files.image.length) {
+                            uploadedFiles = [];
+                            res.send({path: req.files.image});
+                          }
+                        });
+                        // gm(file.path)
+                        //     .resize(240, 240)
+                        //     .noProfile()
+                        //     .write('./views/portfolio/newImage.jpg', function (err) {
+                        //       if (!err) { 
+                        //         console.log('done') 
+                        //       } else {
+                        //         console.log("error " + err);
+                        //       }  
+                        // });
+                    },
+                    onFileSizeLimit: function (file) {
+                      console.log('Failed: ', file.originalname)
+                      fsExtra.unlink('./' + file.path) // delete the partially written file 
+                      return false;
+                    },
+                    onParseEnd: function (req, next) {
+                      console.log('Form parsing completed at: ', new Date());
+                      // call the next middleware
+                      next();
+                    },
+                    onParseStart: function() {
+                        uploadedFiles = [];
+                    }
+            }), artists.postProfilePhoto);
+
+app.post('/postProfileResume', multer({ 
+                    dest: './views/portfolio/', 
+                    changeDest: function(dest, req, res) {
+                                    var newDestination = dest + req.session.user.facebook.id;
+                                    var stat = null;
+                                    try {
+                                      stat = fsExtra.statSync(newDestination);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination);
+                                    }
+
+                                    var newDestination_1 = newDestination + "/resume"
+                                    try {
+                                      stat = fsExtra.statSync(newDestination_1);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination_1);
+                                    }
+                                    if (stat && !stat.isDirectory()) {
+                                        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+                                    }
+                                    return newDestination_1
                                 }
-                    }), artists.postProfilePhoto);
-
-
-app.post('/removeProfilePics', artists.removeProfilePics);
+                    }), artists.postProfileResume);
 
 
 app.use('/upload', function (req, res, next) {

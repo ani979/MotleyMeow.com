@@ -28,7 +28,7 @@ var userSchema = mongoose.Schema({
         myself      : String,
         myPhotos     : [{}],
         myVideos     : [{}],
-        myResume     : [{}]
+        myResume     : String
     }
 
 });

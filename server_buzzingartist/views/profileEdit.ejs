@@ -6,13 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MOTLEYMEOW. Hear the artists meow.</title> 
-
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <link href="css/tab.css" rel="stylesheet">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet"> 
         <link href="css/lightbox.css" rel="stylesheet" />
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
         <script src="js/bootstrap-dialog.js"></script>
+        <script src="js/dropzone.js"></script>
 
 
 
@@ -33,7 +34,13 @@
   </script>
 
 <body>
-     
+  <style>
+    .progress {
+      position: relative;
+      overflow: visible;
+    }
+    
+  </style>    
 
  <% if(typeof user != 'undefined' && user!=null) { %>
  <div id = "headerloggedin"> </div>
@@ -252,6 +259,7 @@
                                   </div> 
                                </div>     
                        </div>  -->  
+
                        <div  class="tab-pane fade" id="tab2primary">
                               <div class="control-group col-md-12">
                                 <label class="control-label col-md-3">Tell something about your artistic journey:</label>        
@@ -266,12 +274,38 @@
                               <div>&nbsp;</div>
                               <div>&nbsp;</div>
                               <div class="control-group col-md-12" id = "mypics">
-                                <label class="control-label col-md-3">Add your pictures</label>
-                                  <span class="btn btn-default col-md-9">
+                                <label class="control-label col-md-3">Add your pictures:</label>
+                                <span class="btn btn-success fileinput-button col-md-9">
+                                  <i class="glyphicon glyphicon-plus"></i>
+                                  <span>Add images(jpg/jpeg/png only)</span>
+                                 <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple style="color: transparent;"/>
+                                </span>
+                                  <!-- <span class="btn btn-default col-md-9">
                                   <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple style="color: transparent;"/>
-                                  </span>
+                                  </span> -->
+                                <label class="control-label col-md-12" id="errorMsg" style="display:none;font-size:12px;color:#F50B0B;float:left;text-align:left;">For a better user experience, please upload images of type(either jpeg, jpg or png) and limit its size to 5 MB. Thanks.</label>
                                  <div>&nbsp;</div> 
+                                  
+                                 <!-- <table role="presentation" class="table table-striped"><tbody class="files"><tr class="template-upload fade in">
+                                      <td>
+                                          <img id="image3" src="/portfolio/10153582015262080/pictures/fe11c01bff834d7bd9686c4efe9ad19b.JPG" alt="No Image Set" style="max-width:200px;max-height:200px">
+                                      </td>
+                                      <td>
+                                         <button class="btn btn-warning cancel" id="removetheImg">
+                                            <i class="glyphicon glyphicon-ban-circle"></i>
+                                              <span>Remove this image</span>
+                                          </button>
+                                      </td>
+                                 </table> --> 
                                  <input type="hidden" id="mypfolioPics" name = "mypfolioPics">
+                                 <input type="hidden" id="mypfolioRemPics" name = "mypfolioRemPics">
+                                 <div class="progress" style= "display:none;">
+                                      <div class="bar"></div >
+                                      <label class="percent">0</label >
+                                  </div>
+                                  <div class='col-md-9' style='float:right;'><table role="presentation" id = "imageTable" class='table table-striped'><tbody class='files'></tbody>
+                                 </table></div>
+                                  <div id="status"></div>
                               </div> 
                               <div>&nbsp;</div>
                               <div>&nbsp;</div>
@@ -298,6 +332,13 @@
                                       </div>
                                   </div>
                             </div>
+                            <div class="control-group col-md-12">
+                                <label class="control-label col-md-3">Add/Update your Artistic Résumé</label>
+                                  <span class="btn btn-default col-md-9">
+                                  <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
+                                  </span>
+                                 <input type="hidden" id="myResume" name = "myResume">
+                              </div> 
 
                        </div>    
                       
@@ -452,11 +493,14 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/multiple-modals.js"></script>
     <script src="js/lightbox.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
      <script type="text/javascript">
       var imageIndex = 0;
       var vidIndex = 0;
       var portfolioImages =new Array();
+      var portfolioRemovedImages =new Array();
       var portfolioVideos =new Array();
+      var portfolioRemovedVideos =new Array();
        $('input[id=fileupload]').change(function(e){
           $('#fileupload').fileupload({
               dataType: 'json',
@@ -482,6 +526,7 @@
       $('#profileUpdateForm').submit(function( event ) {
         $('#imagePost').val("");
         $('#mypfolioPics').val(portfolioImages);
+        //$('#mypfolioRemPics').val(portfolioRemovedImages);
         $('#videoPlus').children('div').each(function () {
             var iframeElem = $(this).find('iframe');
             
@@ -492,6 +537,7 @@
               }); 
             }  
         });
+
         
         if(portfolioVideos.length > 0 ) {
           $('#mypfolioVids').val(JSON.stringify(portfolioVideos));
@@ -534,18 +580,28 @@
      $(window).ready(function(){
           $('#successprofile').modal('show');
           <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
-          <% } else {
-            for(var i = 0; i < user.portfolio.myPhotos.length; i ++ ) { %> 
-                  $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-                  $('#div' + imageIndex).append("<a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + "<%=user.portfolio.myPhotos[i]%>" + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                  $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=user.portfolio.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                  $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-                  $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + "<%=user.portfolio.myPhotos[i]%>" + " />")
-                  $('#mypics').append("</div>");
+          <% } else { %>
+                                 
+
+            // $('#mypics').append("<div class='col-md-9' style='float:right;'><table role=presentation" + " id = imageTable" + " class='table table-striped'><tbody class='files'>");
+
+
+            <% for(var i = 0; i < user.portfolio.myPhotos.length; i ++ ) { %> 
+                $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
+                $('#div' + imageIndex).append("<td> <a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + "<%=user.portfolio.myPhotos[i]%>" + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
+                $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=user.portfolio.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                  // $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
+                  // $('#div' + imageIndex).append("<a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + "<%=user.portfolio.myPhotos[i]%>" + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
+                  // $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=user.portfolio.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+                  // $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
+                  // $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + "<%=user.portfolio.myPhotos[i]%>" + " />")
+                  // $('#mypics').append("</div>");
                   imageIndex++;
                   portfolioImages.push("<%=user.portfolio.myPhotos[i]%>");
             <% } %>
           <%} %>
+          // $('#mypics').append("</table></div>");
 
           <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myVideos == 'undefined' || user.portfolio.myVideos.length <= 0 ) { %>
           <% } else { %>
@@ -615,36 +671,46 @@
           // $("#postedImage").val("removed");
       });
 
+      $('input[id=imagePost]').click(function(){
+        $('.progress').hide();
+        $('#errorMsg').hide();
+      });  
+
       removeThis = function(imgIndx) {
-        $.ajax({
-            url: "/removeProfilePics",
-            type: "POST",
-            data: {image:$('#imageName' + imgIndx).val()},
-            complete: function() {
-            },
-            success: function(data) {
-               if(data.error) {
-                return;
-                }
-                portfolioImages.splice($.inArray( $('#imageName' + imgIndx).val(), portfolioImages),1);
-                $('img[id=image' + imgIndx + ']').attr("src","");
-                $('div[id=div' + imgIndx + ']').remove();
+        //portfolioRemovedImages.push($('#imageName' + imgIndx).val());
+        portfolioImages.splice($.inArray( $('#imageName' + imgIndx).val(), portfolioImages),1);
+        $('img[id=image' + imgIndx + ']').attr("src","");
+        $('tr[id=div' + imgIndx + ']').remove();
+
+        // $.ajax({
+        //     url: "/removeProfilePics",
+        //     type: "POST",
+        //     data: {image:$('#imageName' + imgIndx).val()},
+        //     complete: function() {
+        //     },
+        //     success: function(data) {
+        //        if(data.error) {
+        //         return;
+        //         }
+        //         portfolioImages.splice($.inArray( $('#imageName' + imgIndx).val(), portfolioImages),1);
+        //         $('img[id=image' + imgIndx + ']').attr("src","");
+        //         $('div[id=div' + imgIndx + ']').remove();
                 
-                return false;
-            }
-        });        
+        //         return false;
+        //     }
+        // });        
       }
 
-      $('input[id=imagePost]').change(function(e){
+
+      $('input[id=resume]').change(function(e){
           // alert("here")
           var data = new FormData();
-          for (var i = 0; i < $('input[id=imagePost]')[0].files.length; i++) { 
-              data.append('image', $('input[id=imagePost]')[0].files[i]); 
-          }
+
+          data.append('resume',$('input[id=resume]')[0].files[0]); 
           
           // alert("Data is " + data);
           $.ajax({
-            url: "/postProfilePics",
+            url: "/postProfileResume",
             type: "POST",
             contentType: false,
             processData: false,
@@ -652,25 +718,116 @@
             complete: function() {
               
             },
-
             success: function(data) {
-               if(data.error) {
+              if(data.error) {
                 // alert('Opps, something bad happened');
                 return;
+              }
+              var currentEntry = $('input[id=resume]').parents('div:first');
+              $(currentEntry).find('p').remove();
+              $(currentEntry).append("<p class=col-md-9><b>" +  "File " + data.resumeName.originalname + " uploaded</b>");
+              alert("data.resumeName.name " + data.resumeName.name)
+              $('#myResume').val(data.resumeName.name);
+            }
+          });
+      });       
+
+      $('input[id=imagePost]').change(function(e){
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+        var imagesAdded = false;
+        var dataToLoad;
+          // alert("here")
+          var data = new FormData();
+          for (var i = 0; i < $('input[id=imagePost]')[0].files.length; i++) { 
+              var fileInput = $('input[id=imagePost]')[0].files[i];
+             
+              var filename = fileInput.name.split('.').pop().toLowerCase();
+             
+              if (filename == 'jpg' || filename == 'jpeg' || filename == 'png') {
+                  var filesize=fileInput.size;
+                 
+                  if (filesize > 5242880) {
+                      
+                      $('#errorMsg').show();
+                  } else {
+                      imagesAdded = true;
+                      data.append('image', $('input[id=imagePost]')[0].files[i]); 
+                  }
+              } else {
+                  $('#errorMsg').show();
+              }
+              
+          }
+          
+          
+          if(!imagesAdded) {
+            
+            return;
+          }
+          $.ajax({
+            url: "/postProfilePics",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: data,
+            beforeSend: function() {
+              status.empty();
+              var percentVal = '0%';
+              $('.progress').show();
+              bar.width(percentVal);
+              percent.html(percentVal);
+            },
+            xhr: function() {
+              var xhr = new window.XMLHttpRequest();
+              xhr.upload.addEventListener("progress", function(evt) {
+                // alert("progress evt.loaded " + evt.loaded);
+                //  alert("progress evt.total" + evt.total);
+                if (evt.lengthComputable) {
+                  var percentComplete = evt.loaded / evt.total;
+                  percentComplete = parseInt(percentComplete * 100);
+
+                  bar.width(percentComplete);
+                  percent.html(percentComplete + "% completed");
                 }
-              // alert("here success11 data.length" + data);  
-              if(data.path.length > 0) {
+              }, false);
+
+
+              xhr.upload.addEventListener("load", function(evt) {
+                bar.css( "width", "100%" );
+                percent.html("100% completed");
+              }, false);  
+              return xhr;
+            },
+            complete: function() {
+
+            },
+            success: function(data) {
+             if(data.error) {
+              // alert('Opps, something bad happened');
+              return;
+              }
+              if(typeof data.path != 'undefined' && data.path.length > 0) {
                 for(var i = 0; i < data.path.length ; i++) {
                   portfolioImages.push(data.path[i].name);
 
                   // $('#mypics').append("<img id=image"+i+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
                   // $("#image"+i).attr("src","tempUploads/"+data.path[i].name);
-                  $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-                  $('#div' + imageIndex).append("<a href=/portfolio/"+ <%=user.facebook.id%> + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                  $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" +data.path[i].name + 
-                                            " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                  $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-                  $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + data.path[i].name + " />")
+                $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
+                $('#div' + imageIndex).append("<td> <a href=/portfolio/"+ <%=user.facebook.id%> + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
+                $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+ 
+
+
+
+                  // $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
+                  // $('#div' + imageIndex).append("<a href=/portfolio/"+ <%=user.facebook.id%> + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
+                  // $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" +data.path[i].name + 
+                  //                           " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+                  // $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
+                  // $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + data.path[i].name + " />")
                   // <a href="" data-lightbox="No Image set" data-title="Portfolio pictures">
                   // <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
                   // <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple/>
@@ -683,36 +840,39 @@
                   $('#mypics').append("</div>");
                   imageIndex++;
                 }
-                
-              } else {
-                portfolioImages.push(data.path.name);
-                  // alert("No not an array " + data.path.name)
-                  $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-                  $('#div' + imageIndex).append("<a href=/portfolio/" + <%=user.facebook.id%> + "/pictures/" + data.path.name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                  $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" + data.path.name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                  $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + 
-                                      " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-                  $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + data.path.name +  " />")
-                  // <a href="" data-lightbox="No Image set" data-title="Portfolio pictures">
-                  // <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
-                  // <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple/>
-                  
-                  //   <a href = "" id="updateImage" style="display:none">Update this image</a>
-                  //   <a href = "" id="deleteImage" style="display:none">Remove this image</a>
-                  //   <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
-                  // $('#mypics').append("<img id=image"+0+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
-                  // $("#image0").attr("src","tempUploads/"+data.path.name);
-                  $('#mypics').append("</div>");
-                  
-                  imageIndex++;
-                  // $("#updatedImage").parents("a").attr("href", "tempUploads/"+data.path.name)
-                  // $("#updatedImage").parents("a").show();
-                  // $("#updateImage").show();
-                  // $("#deleteImage").show();
-                  // $("#updatedImage").show();
-                  // $("#postedImage").val("changed");
               }
-           },
+            },
+            
+                
+           //    } else {
+           //      portfolioImages.push(data.path.name);
+           //        // alert("No not an array " + data.path.name)
+           //        $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
+           //        $('#div' + imageIndex).append("<a href=/portfolio/" + <%=user.facebook.id%> + "/pictures/" + data.path.name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
+           //        $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" + data.path.name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+           //        $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + 
+           //                            " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
+           //        $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + data.path.name +  " />")
+           //        // <a href="" data-lightbox="No Image set" data-title="Portfolio pictures">
+           //        // <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
+           //        // <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple/>
+                  
+           //        //   <a href = "" id="updateImage" style="display:none">Update this image</a>
+           //        //   <a href = "" id="deleteImage" style="display:none">Remove this image</a>
+           //        //   <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
+           //        // $('#mypics').append("<img id=image"+0+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
+           //        // $("#image0").attr("src","tempUploads/"+data.path.name);
+           //        $('#mypics').append("</div>");
+                  
+           //        imageIndex++;
+           //        // $("#updatedImage").parents("a").attr("href", "tempUploads/"+data.path.name)
+           //        // $("#updatedImage").parents("a").show();
+           //        // $("#updateImage").show();
+           //        // $("#deleteImage").show();
+           //        // $("#updatedImage").show();
+           //        // $("#postedImage").val("changed");
+           //    }
+           // },
 
             error: function() {
               console.log('process error');
@@ -866,6 +1026,39 @@
         return "";
       }  
       
+
+    $(function() {
+      var progressbar = $( "#progressbar" ),
+        progressLabel = $( ".progress-label" );
+   
+      progressbar.progressbar({
+        value: false,
+        change: function() {
+          progressLabel.text( progressbar.progressbar( "value" ) + "%" );
+        },
+        complete: function() {
+          progressLabel.text( "Complete!" );
+        }
+      });
+   
+    //   function progress() {
+    //     var val = progressbar.progressbar( "value" ) || 0;
+    //    // alert("val is " + val);
+    //     progressbar.progressbar( "value", val + 2 );
+   
+    //   //   if ( val < 99 ) {
+    //   //     //alert(" progressbar.progressbar" + progressbar.progressbar( "value" ))
+    //   //     setTimeout( progress, 80 );
+    //   //   }
+    //   // }
+    //   // //alert(" progressbar.progressbar 222" + progressbar.progressbar( "value" ))
+    //   // setTimeout( progress, 2000 );
+    });
+
+    $('[id=removetheImg]').click(function(){
+      
+    }); 
+
     </script>
 
   </body>
