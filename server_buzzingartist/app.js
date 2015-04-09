@@ -12,7 +12,7 @@ var express       = require('express'),
     artists  = require('./routes/artist'),
     multer  = require('multer'),
     argv = require('optimist').argv,
-    im = require('imageMagick');
+    im = require('imagemagick');
 
 var moment = require('moment');
 var argv = require('optimist').argv;
