@@ -162,7 +162,7 @@
                   <div class="panel-body">
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myVideos == 'undefined' || user.portfolio.myVideos.length ==0 ) { %>
                       
-                        No Videos found
+                         <p class="form-control-static" ><span class="fieldNote">Rolling the reel in progress. Will be shared soon!!</span>
                       
                     <% } else { 
                         for(var i = 0; i < user.portfolio.myVideos.length; i ++ ) { %> 
@@ -182,13 +182,58 @@
                 </div>
 
              </div>   
+
+             <div class="panel panel-default target">
+                <div class="panel-heading" contenteditable="false">My experiences
+                </div>
+                <div class="panel-body">
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPlays == 'undefined' || user.portfolio.myPlays.length ==0 ) { %>
+                      
+                        <p class="form-control-static" ><span class="fieldNote">The list is big. Its getting posted one by one!</span> 
+                      
+                    <% } else { %>
+                        <ul> <b><text style="text-align:left;"> Plays that i have been associated with</b><div>&nbsp;</div> 
+                        
+                        <% for(var i = 0; i < user.portfolio.myPlays.length; i ++ ) { %> 
+
+                                <% if(typeof user.portfolio.myPlays[i].playURL != 'undefined' && user.portfolio.myPlays[i].playURL !="") { %>
+                                  
+                                  
+                                  <% console.log("user.portfolio.myPlays[i].playContrib " + user.portfolio.myPlays[i].playContrib)
+                                  if(typeof user.portfolio.myPlays[i].playContrib != 'undefined' && user.portfolio.myPlays[i].playContrib != "" && user.portfolio.myPlays[i].playContrib != null)  {%>
+                                    <li> For a play  <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this"><%=user.portfolio.myPlays[i].playName%></a>, where i contributed as <%=user.portfolio.myPlays[i].playContrib%></li>
+                                  <% } else { %>  
+                                    <li> For a play  <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this"><%=user.portfolio.myPlays[i].playName%></a></li>
+                                  <% } %>  
+                                <% } else {%>
+                                  <% if(typeof user.portfolio.myPlays[i].playContrib != 'undefined' && user.portfolio.myPlays[i].playContrib != "" && user.portfolio.myPlays[i].playContrib != "null")  {%>
+                                  <li> For a play  <%=user.portfolio.myPlays[i].playName%> as <%=user.portfolio.myPlays[i].playContrib%></li> 
+                                    
+                                  <% } else { %>  
+                                    <li> For a play  <%=user.portfolio.myPlays[i].playName%> as <%=user.portfolio.myPlays[i].playContrib%></li> 
+                                  <% } %>
+                                <% } %>  
+                                  <div>&nbsp;</div>
+                                  <div>&nbsp;</div>
+                        <% } %>
+                      </ul>
+                    <%} %>
+                    <!-- <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe><iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>  
+                  </div>   -->
+                </div>
+
+             </div>   
            
            <div class="panel panel-default target">
                 <div class="panel-heading" contenteditable="false">My Résumé</div>
                   <div class="panel-body">
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myResume == 'undefined' || user.portfolio.myResume == "" ) { %>
                       
-                        No Resume uploaded
+                        <p class="form-control-static" ><span class="fieldNote">My book is about to be published. Hang on!</span> 
                       
                     <% } else { %>
                         <a href= "/portfolio/<%=user.facebook.id%>/resume/<%=user.portfolio.myResume%>">View it here</a>

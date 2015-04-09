@@ -14,8 +14,9 @@
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
         <script src="js/bootstrap-dialog.js"></script>
         <script src="js/dropzone.js"></script>
-
-
+<!-- 
+<link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
+ -->
 
   </head>
 
@@ -314,24 +315,67 @@
                                       <label class="control-label col-md-3" for="field1">Add your videos</label>
 
                                       <div class="controls col-md-9"> 
-                                        <span class="fieldNote">We are currently supporting only YouTube Videos. Please copy and pase the URL here. Thanks.</span>
+                                        <span class="fieldNote">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
                                           <div id = "videoPlus">
                                               <div class="entry input-group col-md-12" id="vid0">
                                                   <input class="col-md-9" id="videos0" name="videos0" type="text" placeholder="Give video URL here" 
                                                   />
                                                 <span class="input-group-btn col-md-3">
-                                                      <button class="btn btn-success btn-add" type="button" style="font-size:8px;">
+                                                      <button class="btn btn-success btn-add btn-addVideos" type="button" style="font-size:8px;">
                                                           <span class="glyphicon glyphicon-plus"></span>
                                                       </button>
                                                   </span>
                                               </div>
                                            </div>   
                                       <br>
-                                      <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another video :)</small>
                                       <input type="hidden" id="mypfolioVids" name = "mypfolioVids">
                                       </div>
                                   </div>
                             </div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <div class="control-group col-md-12" id = "myPlays">
+                                  <div class="control-group">
+                                      <label class="control-label col-md-3" for="field1">Your performances</label>
+
+                                      <div class="panel panel-default controls col-md-9"> 
+                                        
+                                          <div id = "playPlus" class="panel-body">
+                                              <div class="playEntry input-group col-md-12" id="plays0" style="padding-top:15px;">
+                                                  <input class="col-md-12 playsText" id="playsText" name="playsText" type="text" placeholder="Name the play you were part of"/>
+                                                  <div>&nbsp;</div>
+                                                  <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it"onchange="insertURL(this)"/>
+                                                  <div>&nbsp;</div>
+                                                  <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                                      <label class="control-label">Your involvement in this event:(Cntrl-select to add more)</label> 
+                                                        <br>
+                                                  </div> 
+                                                  <div class = "col-sm-5" style="height:100%">
+                                                        <select class="playsRole" id="playsRole" multiple="multiple">
+                                                          <% var roles = dropdowns.alldropdowns.roles;
+                                                          for(var i = 0; i < roles.length; i ++) {   %> 
+                                                                <option value="<%=roles[i].role%>"><%=roles[i].text%></option>
+                                                           <% } %>
+                                                        </select>
+                                                   </div> 
+                                                
+                                                <span class="col-md-12">
+                                                      <button class="btn btn-success btn-addPlays col-md-12" type="button" style="font-size:12px;">
+                                                          <span class="glyphicon glyphicon-plus">Add more experiences</span>
+                                                      </button>
+                                                </span>
+
+                                            </div>
+                                          </div>   
+                                      <br>
+                                      
+                                      <input type="hidden" id="mypfolioPlays" name = "mypfolioPlays">
+                                      </div>
+                                  </div>
+                            </div>
+
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
                             <div class="control-group col-md-12">
                                 <label class="control-label col-md-3">Add/Update your Artistic Résumé</label>
                                   <span class="btn btn-default col-md-9">
@@ -497,10 +541,12 @@
      <script type="text/javascript">
       var imageIndex = 0;
       var vidIndex = 0;
+      var playIndex = 0;
       var portfolioImages =new Array();
       var portfolioRemovedImages =new Array();
       var portfolioVideos =new Array();
       var portfolioRemovedVideos =new Array();
+      var portfolioPlays =new Array();
        $('input[id=fileupload]').change(function(e){
           $('#fileupload').fileupload({
               dataType: 'json',
@@ -538,6 +584,20 @@
             }  
         });
 
+        $('#playPlus').children('div').each(function () {
+            var playName = $(this).find('#playsText').val();
+            if(playName != 'undefined' && playName != "") {
+              portfolioPlays.push({
+                    "playName": playName,
+                    "playURL": $(this).find('#playsLink').val(),
+                    "playContrib" : $(this).find('#playsRole').val()
+              }); 
+            }  
+        });
+        if(portfolioPlays.length > 0 ) {
+          $('#mypfolioPlays').val(JSON.stringify(portfolioPlays));
+        }
+
         
         if(portfolioVideos.length > 0 ) {
           $('#mypfolioVids').val(JSON.stringify(portfolioVideos));
@@ -565,7 +625,9 @@
                 }
             },
             highlight: function (element) {
-                $('#btabs a[href="#tab1primary"]').tab('show');
+                if(element == $('#email')) {
+                  $('#btabs a[href="#tab1primary"]').tab('show');
+                }  
                 $(element).closest('.form-group').removeClass('success').addClass('error');
             },
             success: function (element) {
@@ -649,11 +711,58 @@
                   $(newEntry).attr('id', 'vid' + vidIndex);
                   newEntry.find('input').attr('id', 'videos'+vidIndex);
                   newEntry.find('input').val('');
-                  newEntry.find('.btn-remove').removeClass('btn-remove').addClass('btn-add')
+                  newEntry.find('.btn-remove').removeClass('btn-remove').addClass('btn-addVideos')
                   .removeClass('btn-danger').addClass('btn-success')
                     .html('<span class="glyphicon glyphicon-plus"></span>');
                   vidIndex++;  
           <% } %>      
+
+
+          // Add the experience with plays
+        <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPlays == 'undefined' || user.portfolio.myPlays.length <= 0 ) { %>
+          <% } else { %>
+
+                // if(user.portfolio.myVideos.length == 1) { %>
+                var controlForm = $('.controls #playPlus:first'),
+                    currentEntry = $(this).find('.playEntry:first');
+                $(currentEntry).find('#playsText').val("<%=user.portfolio.myPlays[0].playName%>");
+                $(currentEntry).find('#playsLink').val("<%=user.portfolio.myPlays[0].playURL%>");
+                $(currentEntry).find('#playsRole').val("<%=user.portfolio.myPlays[0].playContrib%>".split(","));
+                 
+                controlForm.find('.playEntry .btn-addPlays')
+                    .removeClass('btn-addPlays').addClass('btn-removePlays')
+                    .removeClass('btn-success').addClass('btn-danger')
+                    .html('<span class="glyphicon glyphicon-minus"></span>');
+                playIndex++; 
+
+
+              <% for(var i = 1; i < user.portfolio.myPlays.length; i ++ ) { %> 
+                  var controlForm = $('.controls #playPlus:first'),
+                      currentEntry = $(this).find('.playEntry:last'),
+                      newEntry = $(currentEntry).clone().appendTo(controlForm);
+                $(newEntry).attr('id', 'plays' + playIndex);
+                $(newEntry).find('#playsText').val("<%=user.portfolio.myPlays[i].playName%>");
+                $(newEntry).find('#playsLink').val("<%=user.portfolio.myPlays[i].playURL%>");
+                $(newEntry).find('#playsRole').val("<%=user.portfolio.myPlays[i].playContrib%>".split(","));
+                  
+                  controlForm.find('.playEntry:not(:last) .btn-addPlays')
+                      .removeClass('btn-addPlays').addClass('btn-removePlays')
+                      .removeClass('btn-success').addClass('btn-danger')
+                      .html('<span class="glyphicon glyphicon-minus"></span>');
+                  playIndex++; 
+              <% } %>  
+                  var controlForm = $('.controls #playPlus:first'),
+                  currentEntry = $(this).find('.playEntry:last'),
+                  newEntry = $(currentEntry).clone().appendTo(controlForm);
+                  $(newEntry).attr('id', 'plays' + playIndex);
+                  $(newEntry).find('#playsText').val("");
+                  $(newEntry).find('#playsLink').val("");
+                  $(newEntry).find('#playsRole').val("");
+                  newEntry.find('.btn-removePlays').removeClass('btn-removePlays').addClass('btn-addPlays')
+                  .removeClass('btn-danger').addClass('btn-success')
+                    .html('<span class="glyphicon glyphicon-plus"></span>');
+                  playIndex++;  
+          <% } %>
 
      });
 
@@ -726,7 +835,6 @@
               var currentEntry = $('input[id=resume]').parents('div:first');
               $(currentEntry).find('p').remove();
               $(currentEntry).append("<p class=col-md-9><b>" +  "File " + data.resumeName.originalname + " uploaded</b>");
-              alert("data.resumeName.name " + data.resumeName.name)
               $('#myResume').val(data.resumeName.name);
             }
           });
@@ -971,10 +1079,10 @@
       })
       
       $(function() {
-        $(document).on('click', '.btn-add', function(e) {
+        $(document).on('click', '.btn-addVideos', function(e) {
             e.preventDefault();
 
-            insertIframe(this);
+            if(!insertIframe(this)) return false;
             var controlForm = $('.controls #videoPlus:first'),
                 currentEntry = $(this).parents('.entry:first'),
                 newEntry = $(currentEntry).clone().appendTo(controlForm);
@@ -983,14 +1091,36 @@
             $(newEntry).attr('id', 'vid' + vidIndex);
             newEntry.find('input').attr('id', 'videos'+vidIndex);
             newEntry.find('input').val('');
-            controlForm.find('.entry:not(:last) .btn-add')
-                .removeClass('btn-add').addClass('btn-remove')
+            controlForm.find('.entry:not(:last) .btn-addVideos')
+                .removeClass('btn-addVideos').addClass('btn-remove')
                 .removeClass('btn-success').addClass('btn-danger')
                 .html('<span class="glyphicon glyphicon-minus"></span>');
             vidIndex++;    
         }).on('click', '.btn-remove', function(e) {
           portfolioVideos.splice($.inArray(  $(this).parents('.entry:first').find('iframe').attr('src'), portfolioVideos.videoURL),1);
           $(this).parents('.entry:first').remove();
+          e.preventDefault();
+          return false;
+        });
+
+        $(document).on('click', '.btn-addPlays', function(e) {
+            e.preventDefault();
+             
+            var controlForm = $('.controls #playPlus:first'),
+                currentEntry = $(this).parents('.playEntry:first'),
+                newEntry = $(currentEntry).clone().appendTo(controlForm);
+            $(newEntry).attr('id', 'plays' + playIndex);
+            newEntry.find('input').val('');
+            newEntry.find('select').val("");
+            controlForm.find('.playEntry:not(:last) .btn-addPlays')
+                .removeClass('btn-addPlays').addClass('btn-removePlays')
+                .removeClass('btn-success').addClass('btn-danger')
+                .html('<span class="glyphicon glyphicon-minus"></span>');
+            playIndex++;    
+            
+        }).on('click', '.btn-removePlays', function(e) {
+          portfolioPlays.splice($.inArray( $(this).parents('.playEntry:first').find('#playsText').val(), portfolioPlays.playName),1);
+          $(this).parents('.playEntry:first').remove();
           e.preventDefault();
           return false;
         });
@@ -1009,11 +1139,29 @@
             $(currentEntry).append("<div>&nbsp;</div><textarea id=videoText"+ currentEntry.attr('id') + 
                                     " name= videoText"+ currentEntry.attr('id') + " placeholder='Tell us something about this video' " +
                                     "style='min-width:100%';rows=6></textarea>"); 
+            return true;
           } else {
-            alert("Please key in the right URL. If its happening repeatedly please bring to our notice, sorry for any inconvenience");
+            alert("Unable to parse the youtube URL - " + URLText + " Key in the right one directly from url. If its a mistake from us, please bring to our notice, sorry for any inconvenience");
+            currentEntry.find('input').val('');
+            return false
           }
         }    
 
+      }
+
+      function insertURL(element) {
+        // var currentEntry = $(element).parents('.playEntry:first');
+        // var str = $(currentEntry).find('#playsLink').val();
+        var str = $(element).val();
+          var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+          if(!re.test(str)) {
+            $(element).val("");
+            alert("Please enter a valid URL.");
+            return false;
+          } else {
+            return true;
+          }
+      
       }
 
       function convertURLToEmbedVideo(element) {
@@ -1058,6 +1206,9 @@
     $('[id=removetheImg]').click(function(){
       
     }); 
+    // $(document).ready(function() {
+    //     $('#playsRole').multiselect();
+    // })
 
     </script>
 

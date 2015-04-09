@@ -15,7 +15,8 @@ var userSchema = mongoose.Schema({
         privelege    : {type:String, default:"somebody"},
         joiningDate  :Date,
         receiveNotif : {type:Boolean, default:true},
-        notificationClickDate : Date
+        notificationClickDate : Date,
+        lastProfileUpdateDate : Date
     },
     facebook         : {
         id           : String,
@@ -28,6 +29,7 @@ var userSchema = mongoose.Schema({
         myself      : String,
         myPhotos     : [{}],
         myVideos     : [{}],
+        myPlays     :  [{}],
         myResume     : String
     }
 

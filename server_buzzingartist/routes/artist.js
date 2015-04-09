@@ -21,6 +21,7 @@ exports.update = function (req, res) {
   var pfolioPictures;
   var pfolioPicturesToBeRemoved;
   var pfolioVideos;
+  var pfolioPlays;
 	var id = req.body.userId;  
   console.log("Id is " + id);
   if(typeof req.body.mypfolioPics != 'undefined') {
@@ -50,6 +51,12 @@ exports.update = function (req, res) {
     console.log(" req.body.mypfolioVids.length " + req.body.mypfolioVids.length);
     pfolioVideos = JSON.parse(req.body.mypfolioVids);
     console.log("pfolioVideos[0] " + pfolioVideos[0].videoURL)
+  }
+
+  if(typeof req.body.mypfolioPlays != 'undefined' && req.body.mypfolioPlays.length > 0) {
+    console.log(" req.body.mypfolioPlays.length " + req.body.mypfolioPlays.length);
+    pfolioPlays = JSON.parse(req.body.mypfolioPlays);
+    console.log("pfolioVideos[0] " + pfolioPlays[0].playName)
   }  
 
   // if(typeof req.body.mypfolioRemPics != 'undefined') {
@@ -81,15 +88,25 @@ exports.update = function (req, res) {
                db.local.lang = req.body.lang;
                db.portfolio.myself = req.body.myself;
                db.portfolio.myPhotos = pfolioPictures;
-               if(typeof pfolioVideos != 'undefined' && pfolioVideos.length > 0) {
-                for(var i = 0; i < pfolioVideos.length; i++) {
-                  db.portfolio.myVideos.push({
-                        "videoURL": pfolioVideos[i].videoURL,
-                        "videoText": pfolioVideos[i].videoText
-                  })
-                }
-               }
+               // if(typeof pfolioVideos != 'undefined' && pfolioVideos.length > 0) {
+               //  for(var i = 0; i < pfolioVideos.length; i++) {
+               //    db.portfolio.myVideos.push({
+               //          "videoURL": pfolioVideos[i].videoURL,
+               //          "videoText": pfolioVideos[i].videoText
+               //    })
+               //  }
+               // }
+               // if(typeof pfolioPlays != 'undefined' && pfolioPlays.length > 0) {
+               //  for(var i = 0; i < pfolioPlays.length; i++) {
+               //    db.portfolio.myPlays.push({
+               //          "playName": pfolioPlays[i].playName,
+               //          "playURL": pfolioPlays[i].playURL,
+               //          "playContrib" : pfolioPlays[i].playContrib
+               //    })
+               //  }
+               // }
                console.log("req.body.resume = " + req.body.myResume);
+               db.portfolio.myPlays = pfolioPlays
                db.portfolio.myResume = req.body.myResume;
                db.portfolio.myVideos = pfolioVideos;
                console.log("req.body.emailDisplay " + req.body.emailDisplay)
@@ -101,7 +118,7 @@ exports.update = function (req, res) {
                     if (req.body.receiveNotif == "ok") db.local.receiveNotif = true;
                      else db.local.receiveNotif = false;
                }
-
+               db.local.lastProfileUpdateDate = new Date();
                db.save(function (err, user) {
                    if (err) {
                         console.log("ERRRORRRR");

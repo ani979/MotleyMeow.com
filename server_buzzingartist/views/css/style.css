@@ -625,3 +625,7 @@ body.modal-open .supreme-container{
   direction: ltr;
   cursor: pointer;
 }
+
+select {
+    height: 200px !important;
+}
