@@ -318,7 +318,7 @@ app.post( '/update',
 app.get( '/contactArtists', artists.contactArtists);
 app.post( '/getEmails', artists.getEmails);
 app.post( '/getCity', artists.updateCityAndRoles);
-
+app.post( '/showRespect', ensureAuthenticated, artists.showRespect);
 app.get( '/postevents',ensureAuthenticated, post_event.postevents);
 app.get( '/allEvents', ensureAuthenticated, post_event.allEvents);
 app.post( '/posteventDetails', post_event.posteventDetails);
@@ -475,19 +475,6 @@ app.post('/postProfileResume', multer({
                                 }
                     }), artists.postProfileResume);
 
-
-app.use('/upload', function (req, res, next) {
-            // imageVersions are taken from upload.configure() 
-            console.log("i am here in upload");
-            upload.fileHandler({
-                uploadDir: function () {
-                    return __dirname + '/public/uploads/' + req.session.user.facebook.id
-                },
-                uploadUrl: function () {
-                    return '/uploads/' + req.session.user.facebook.id
-                }
-            })(req, res, next);
-});
 
 var mwMulter2 = multer({ dest: './views/tempUploads' });
 app.post('/postPhotos', mwMulter2, post_request.postPhoto);

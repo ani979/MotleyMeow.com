@@ -284,3 +284,52 @@ exports.postProfileResume = function(req,res) {
     console.log("req.files.resume.name " + req.files.resume.name);
     res.send({resumeName: req.files.resume});
 }
+
+exports.showRespect = function(req,res) {
+    console.log("User is " + req.body.curUserId);
+    var found = false;
+    if(typeof req.body.curUserId == 'undefined') {
+      res.send("ERROR");
+    }
+    User.findOne({ 'facebook.id' : req.body.curUserId }, function(error, db) {
+        
+        if (error || !db) {
+            console.log("ERRPRRR in SHOWRESPECT");
+            res.send("ERROR");        
+        } else {
+          for(var i = 0; i < db.respect.userId.length; i++) {
+               if(db.respect.userId[i].fromUserId == req.session.user.facebook.id) {
+                 console.log("FOUNDD")
+                 found = true;
+                 db.respect.userId.splice(i, 1);
+                 break;
+               }
+          }
+            
+                  
+          if( found) {
+              db.save(function (err, user) {
+               if (err) {
+                    console.log("ERRRORRRR");
+                    res.send("ERROR");
+                }
+               res.send({respectCount:user.respect.userId.length, isRemoved:true});
+           });
+         } else {
+           db.respect.userId.push({
+              "fromUserId": req.session.user.facebook.id,
+              "fromUserName" : req.session.user.facebook.name,
+            });
+
+            db.save(function (err, user) {
+               if (err) {
+                    console.log("ERRRORRRR");
+                    res.send("ERROR");
+                }
+
+               res.send({respectCount:user.respect.userId.length, isRemoved:false});
+           });
+         }   
+        }
+    });
+}

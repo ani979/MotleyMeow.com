@@ -49,7 +49,7 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-sm-10">
+      <div class="col-sm-4">
          <h1 class=""><%=user.facebook.name%></h1>
 
         <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
@@ -61,38 +61,67 @@
         <br> 
       </div>
 
-      <div class="col-sm-2"><img title="profile image" class="img-circle img-responsive" src="<%= user.local.picture %>">
+      <div class="col-sm-8">
+
+          <% if (typeof user == 'undefined' || typeof user.respect == 'undefined' || typeof user.respect.userId.length == 'undefined' || 
+            user.respect.userId.length == 0) { %>
+            <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %>
+              <div>&nbsp;</div>
+              <h4><img src="/images/Icon_Respect.gif"> EARN YOUR <b>#RESPECT</b></img></h4>
+              <div>&nbsp;</div>
+              <h4>Announce to the world what you do. SHARE your profile on your wall, earn #RESPECT </h4>
+            <% } else { %>
+              <h4>Earned<img src="/images/Icon_Respect.gif"> #RESPECT of: <text id="numRespect"><%=user.respect.userId.length%></text> artists</img>
+              <div>&nbsp;</div>          
+            <% } %>   
+          <% } else { %>  
+            <h4>Earned<img src="/images/Icon_Respect.gif"> #RESPECT of: <text id="numRespect"><%=user.respect.userId.length%></text> artists</img>
+            <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %>
+              <span class="fieldNote">Announce to the world what you do. SHARE your profile on your wall, earn #RESPECT</span>
+            <% } %>  
+          <% } %>
+
+          <div id = "showRespect">
+            <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id != user.facebook.id) { %> 
+              <button id="respectButton" class="btn btn-respect col-md-12" type="button" style="font-size:18px;" onclick = "showRespect();">
+                            #RESPECT
+              </button>
+              <span class="fieldNote">RESPECT is always earned!!. If you know the artist and respect their art, CLICK THE #RESPECT</span>
+            <% } %>
+          </div>
+
       </div>
     </div>
     <br>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <!--left col-->
             <ul class="list-group">
-                <li class="list-group-item text-muted" contenteditable="false"><h3>Your Profile</h3></li>
+                <li class="list-group-item text-muted" contenteditable="false"><h3>The artist in me</h3></li>
                 <% var isodateString = new Date(user.local.joiningDate).toISOString();
                 var displayableDate = getDate(isodateString) %>
-                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Joined</strong></span> <%=displayableDate%></li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong class="">From city:</strong></span> 
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">I am</strong></span> <%=user.facebook.name%></li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">joined MotleyMeow on</strong></span> <%=displayableDate%></li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Currently residing in:</strong></span> 
                   <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
-                  <p style="color:red"><b>Not Set</b></p>
+                  <p style="color:red"><b>I need to set it</b></p>
                   <% } else { %>  
                   <p><%= user.local.city %></p>
                   <% } %>
 
                 </li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Full name</strong></span> <%=user.facebook.name%></li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Contribution in theatre: </strong></span>
+                
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">My Contribution in theatre: </strong></span>
                           <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
-                              <p style="color:red"><b>Not updated yet</b></p>
+                              <p style="color:red"><b>Will be updating soon</b></p>
                             <% } else { %>  
                               <p><%= user.local.role %></p>
                             <% } %>
                  
                 </li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Comfortable in languages </strong></span>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Languages i am comfortable in </strong></span>
                           <% if(typeof user.local.lang == 'undefined' || user.local.lang.length == 0) { %>
-                              <p style="color:red"><b>Not updated yet</b></p>
+                              <p style="color:red"><b>To be updated</b></p>
                             <% } else { %>  
                               <p><%= user.local.lang %></p>
                             <% } %>
@@ -116,12 +145,12 @@
         </div>    
 
         <!--/col-3-->
-        <div class="col-sm-9" style="" contenteditable="false">
+        <div class="col-sm-8" style="" contenteditable="false">
             <div class="panel panel-default">
-                <div class="panel-heading">The artist that i am</div>
+                <div class="panel-heading">My artistic journey</div>
                 <div class="panel-body"> 
                   <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myself == 'undefined' || user.portfolio.myself == "") { %>
-                    <p class="form-control-static" ><span class="fieldNote">Hold on! I am getting waxed at Madame Tussauds. My hands not free as yet!!</span>
+                    <p class="form-control-static" ><span class="fieldNote">Hold on! I am getting waxed at Madame Tussauds. My hands not free as yet to write!!</span>
                   <%} else {%>
                     <p class="form-control-static" data-linkify="this" ><%=user.portfolio.myself%>
                   <% } %>
@@ -129,7 +158,7 @@
                 </div>
             </div>
             <div class="panel panel-default target">
-                <div class="panel-heading" contenteditable="false">My portfolio pictures</div>
+                <div class="panel-heading" contenteditable="false">My pictures</div>
                   <div class="panel-body">
                     
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
@@ -270,6 +299,40 @@
     $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
+
+    function showRespect() {
+          $.ajax({
+            url: "/showRespect",
+            type: "POST",
+            data: {curUserId: <%=user.facebook.id%>},
+            complete: function() {
+            },
+            success: function(data) {
+              if(data.error) {
+                // alert('Opps, something bad happened');
+                return;
+              }
+              $('#numRespect').text(data.respectCount);
+              if(data.isRemoved) {
+                $('#respectButton').text("#RESPECT")
+              } else {
+                $('#respectButton').text("#IRESPECTYOU")
+              }
+              
+            }
+          });
+    }
+
+    $(document).ready(function(){
+      <% if (typeof user != 'undefined' && typeof user.respect != 'undefined' && typeof user.respect.userId.length != 'undefined' || 
+            user.respect.userId.length != 0) { %>
+            <% for(var i = 0; i < user.respect.userId.length; i++) { %>
+              if(<%=user.respect.userId[i].fromUserId%> == <%=sessionUser.facebook.id%>) {
+                  $('#respectButton').text("#IRESPECTYOU")
+              }
+          <%}%>   
+      <%}%>    
+    });  
 </script>    
 
   </body>

@@ -35,13 +35,7 @@
   </script>
 
 <body>
-  <style>
-    .progress {
-      position: relative;
-      overflow: visible;
-    }
-    
-  </style>    
+     
 
  <% if(typeof user != 'undefined' && user!=null) { %>
  <div id = "headerloggedin"> </div>
@@ -70,38 +64,18 @@
         </div>
       </div>
 <%}%>
-<div> 
 
-<section style="background:#efefe9;">
-        <div class="container">
-            <div class="row">
-                <div class="board">
-                    <!-- <h2>Welcome to IGHALO!<sup>™</sup></h2>-->
-                    <div class="board-inner">
-                    <ul class="nav nav-tabs" id="myTab">
-                    <div class="liner"></div>
-                     <li>
-                     <a href="/home"  title="home">
-                      <span class="round-tabs one">
-                              <i class="glyphicon glyphicon-home"></i>
-                      </span> 
-                  </a></li>
 
-                  <li class="active"><a href="/profile"  title="profile">
-                     <span class="round-tabs two">
-                         <i class="glyphicon glyphicon-user"></i>
-                     </span> 
-                    </a>
-                 </li>
-                 
+ <div class="container" style="min-height:100%;">
+  <div class="row">
+      <div class="col-sm-10">
+         <h1 class=""><%=user.facebook.name%></h1>
+        <br> 
+      </div>
 
-                    
-                     
-                     </ul></div>
-
-                     
-</section>
- <div class="container">
+      
+    </div>
+    <br>
       <div class="row">
       
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 " >
@@ -109,288 +83,338 @@
    
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title">Hi, <%= user.facebook.name %></h3>
+              <h1 class="panel-title" style="font-size:26px;">The artist in you</h1>
               
             </div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:180px;padding-bottom:0px;"> </div>
 
-  <div class=" col-md-9 col-lg-9 "> 
-    <form id = "profileUpdateForm" class="form-horizontal" role="form" enctype="multipart/form-data" action="/update" method="post">
+                <div class=" col-md-9 col-lg-9 "> 
+                  <form id = "profileUpdateForm" class="form-horizontal" role="form" enctype="multipart/form-data" action="/update" method="post">
 
 
-        <fieldset>
-          <legend>Your profile</legend>
-            <div class="panel with-nav-tabs panel-primary">
-                    <div class="panel-heading">
-                            <ul class="nav nav-tabs" id = "btabs">
-                                <li class="active"><a href="#tab1primary" data-toggle="tab">Basic</a></li>
-                                <li><a href="#tab2primary" data-toggle="tab">Your portfolio</a></li>
-                                <!-- <li><a href="#tab3primary" data-toggle="tab">Your portfolio</a></li> -->
-                                
-                                
-                            </ul>
-                    </div>
-                    <div class="panel-body">
-                        <div class="tab-content">
-                            <div class="tab-pane fade in active" id="tab1primary">
-                            
-                              <div class="form-group">
-                                <label class="col-sm-3 control-label" for="fullname">Full Name</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Name" Maxlength="100"
-                                  value = "<%= user.facebook.name %>" >
-                                </div>
+                      <fieldset>
+                        
+                          <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseBasicProfile">Personal Details and Settings</a>
+                                </h4>
                               </div>
-                             <div class="form-group">
-                                 <label class="col-sm-3 control-label" for="email">Email address</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
-                                  value = "<%= user.facebook.email %>" >
-                                  <p><span class="fieldNote">We currently don't do validation of emails. Please ensure you key in the right one else you are easy to miss on important notifications.</span></p>
-                                </div>
-                                  <input type="hidden" name = "userId" value = <%= user.facebook.id %> >
-                              </div>
-                               
-                              <div class="form-group">
-                                 <label class="col-sm-3 control-label" for="city">Location</label>
-                                <div class="col-sm-9">
+                              <div id="collapseBasicProfile" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                      <label class="col-sm-3 control-label" for="fullname">Full Name</label>
+                                      <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Name" Maxlength="100"
+                                        value = "<%= user.facebook.name %>" >
+                                      </div>
+                                    </div>
+                                   
+                                   <div class="form-group">
+                                       <label class="col-sm-3 control-label" for="email">Email address</label>
+                                      <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
+                                        value = "<%= user.facebook.email %>" >
+                                        <p><span class="fieldNote">We currently don't do validation of emails. Please ensure you key in the right one else you are easy to miss on important notifications.</span></p>
+                                      </div>
+                                        <input type="hidden" name = "userId" value = <%= user.facebook.id %> >
+                                    </div>
+                                     
+                                    <div class="form-group">
+                                       <label class="col-sm-3 control-label" for="city">Location</label>
+                                      <div class="col-sm-9">
 
-                                  <select class="form-control" value="<%= user.local.city %>" name="city">
-                                    <% var cities = dropdowns.alldropdowns.cities;
-                                        for(var i = 0; i < cities.length; i ++) {   %> 
-                                            <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
+                                        <select class="form-control" value="<%= user.local.city %>" name="city">
+                                          <% var cities = dropdowns.alldropdowns.cities;
+                                              for(var i = 0; i < cities.length; i ++) {   %> 
+                                                  <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
 
-                                         <% } %>   
-                                  </select> 
+                                               <% } %>   
+                                        </select> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <label class="col-sm-3 control-label" for="emailDisplay">Email privacy setting</label>
+                                      <div class="col-sm-9">
+                                        <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
+                                        <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK to share
+                                        <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK to share
+                                        <br><span class="fieldNote">Please confirm you are ok to share your email id to the artists to mail you regarding their audition or needs in their production. The emails are shared after authenticated by MotleyMeow.</span>
+                                      </div>                                
+                                    </div>
+                                    <div class="form-group">
+                                       <label class="col-sm-3 control-label" for="receiveNotif">Receive newsletters from us</label>
+                                      
+                                      <div class="col-sm-9">
+                                        <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
+                                        <input id="receiveNotif" type="radio" name="receiveNotif" value = "ok"> OK to receive mails
+                                        <input id="receiveNotif" type="radio" name="receiveNotif" value = "nok"> Not OK to receive mails
+                                        <br><span class="fieldNote">MotleyMeow may share some notificiations time to time on whats meowing in the city.</span>
+                                      </div> 
+                                    </div>  
                                   </div>
+                                </div>  
+                            </div>
+                            <!-- Artistic details -->
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseContribution">Your contribution in Theatre</a>
+                                </h4>
                               </div>
-                               <div class="form-group">
-                                 <label class="col-sm-3 control-label" for="emailDisplay">Email privacy setting</label>
-                                <div class="col-sm-9">
-                                  <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
-                                  <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK to share
-                                  <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK to share
-                                  <br><span class="fieldNote">Please confirm you are ok to share your email id to the artists to mail you regarding their audition or needs in their production. The emails are shared after authenticated by MotleyMeow.</span>
-                                </div>                                
-                              </div>
-                              <div class="form-group">
-                                 <label class="col-sm-3 control-label" for="receiveNotif">Receive newsletters from us</label>
-                                
-                                <div class="col-sm-9">
-                                  <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
-                                  <input id="receiveNotif" type="radio" name="receiveNotif" value = "ok"> OK to receive mails
-                                  <input id="receiveNotif" type="radio" name="receiveNotif" value = "nok"> Not OK to receive mails
-                                  <br><span class="fieldNote">MotleyMeow may share some notificiations time to time on whats meowing in the city.</span>
-                                </div> 
-                              </div>  
-                              
-                              So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
-                              <span class="fieldNote">We at MotleyMeow believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
-                              <br>
-                              <div class="form-group">
-                                
-                                <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                    <label class="control-label">Your association or interests in theatre:</label> 
-                                      <br>
-                                </div>      
-                                <div class = "col-sm-9">
-                                  <% var roles = dropdowns.alldropdowns.roles;
-                                  for(var i = 0; i < roles.length; i ++) {   %> 
-                                    <div class = "col-sm-6">
-                                      <label class="checkbox-inline">
-                                            <input type="checkbox" id="checkboxinline<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" ><%=roles[i].text%>
-                                      </label>
-                                   </div>  
-
-                                   <% } %>
-                                 </div> 
-                              </div>   
-
-                              <div class="form-group">
-                                <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                    <label class="control-label">What languages are you most comfortable with:</label> 
-                                      <br>
-                                </div> 
-                                <div class="col-sm-9">
-                                          <% var languages = dropdowns.alldropdowns.languages;
-                                          for(var i = 0; i < languages.length; i ++) {   %> 
-                                          <div class = "col-sm-3">
-                                              <label class="checkbox-inline">
-                                                  <input type="checkbox" id="<%=languages[i]%>lang" value="<%=languages[i]%>" name="lang"/> <%=languages[i]%>
-                                              </label>
-                                          </div>
-                                          <% } %>
-                                </div>
-                              </div>        
-
-                       </div>
-    
-                       <!-- <div  class="tab-pane fade" id="tab2primary">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
-                          <br>
-                          <span class="fieldNote">We at MotleyMeow believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
-                            <div id="animesh" class="form-group" style = "margin-left:1px; margin-right=1px; ">
-                                <label class="control-label">Your association or interests in theatre:</label> 
+                              <div id="collapseContribution" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                  So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
+                                  <br/><span class="fieldNote">We at MotleyMeow believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
                                   <br>
-
-                              <% var roles = dropdowns.alldropdowns.roles;
-                              for(var i = 0; i < roles.length; i ++) {   %> 
-                                <div class = "col-sm-6">
-                                  <label class="checkbox-inline">
-                                        <input type="checkbox" id="checkboxinline<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" ><%=roles[i].text%>
-                                  </label>
-                               </div>  
-                             <% } %>
-
-                          </div>        
-
-                            <div class="form-group" style = "margin-left:1px; margin-right:1px; margin-bottom:5px;"><b>What languages are you most comfortable with:</b>
-                              <div class="panel-body" style = "padding-top:5px; padding-bottom:5px;">
-                                      <% var languages = dropdowns.alldropdowns.languages;
-                                        for(var i = 0; i < languages.length; i ++) {   %> 
-                                      <div class = "col-sm-3">
-                                          <label class="checkbox-inline" style="padding-left:5px;">
-                                              <input type="checkbox" id="<%=languages[i]%>lang" value="<%=languages[i]%>" name="lang"/> <%=languages[i]%>
+                                  <div class="form-group">
+                                    
+                                    <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                        <label class="control-label">Your association or interests in theatre:</label> 
+                                          <br>
+                                    </div>      
+                                    <div class = "col-sm-9">
+                                      <% var roles = dropdowns.alldropdowns.roles;
+                                      for(var i = 0; i < roles.length; i ++) {   %> 
+                                        <div class = "col-sm-6">
+                                          <label class="checkbox-inline">
+                                                <input type="checkbox" id="checkboxinline<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" ><%=roles[i].text%>
                                           </label>
-                                      </div>
-                                      <% } %>
+                                       </div>  
 
-                                      
-                                  </div> 
-                               </div>     
-                       </div>  -->  
+                                       <% } %>
+                                     </div> 
+                                  </div>   
 
-                       <div  class="tab-pane fade" id="tab2primary">
-                              <div class="control-group col-md-12">
-                                <label class="control-label col-md-3">Tell something about your artistic journey:</label>        
-                                  <div class="controls col-md-9">                
-                                <% if (typeof user != 'undefined' && typeof user.portfolio != 'undefined' && typeof user.portfolio.myself != 'undefined') { %>       
-                                    <textarea id="textarea" name="myself" style="min-width:100%;"rows=6><%=user.portfolio.myself%></textarea>
-                                <%} else { %>   
-                                    <textarea id="textarea" name="myself" style="min-width:100%;"rows=6></textarea>
-                                <%}%> 
-                                  </div>
+                                                   
+                                </div>
+                              </div> 
+                            </div>
+
+
+
+                            <!-- Artistic details -->
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseLanguage">Languages that you connect with</a>
+                                </h4>
                               </div>
-                              <div>&nbsp;</div>
-                              <div>&nbsp;</div>
-                              <div class="control-group col-md-12" id = "mypics">
-                                <label class="control-label col-md-3">Add your pictures:</label>
-                                <span class="btn btn-success fileinput-button col-md-9">
-                                  <i class="glyphicon glyphicon-plus"></i>
-                                  <span>Add images(jpg/jpeg/png only)</span>
-                                 <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple style="color: transparent;"/>
-                                </span>
-                                  <!-- <span class="btn btn-default col-md-9">
-                                  <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple style="color: transparent;"/>
-                                  </span> -->
-                                <label class="control-label col-md-12" id="errorMsg" style="display:none;font-size:12px;color:#F50B0B;float:left;text-align:left;">For a better user experience, please upload images of type(either jpeg, jpg or png) and limit its size to 5 MB. Thanks.</label>
-                                 <div>&nbsp;</div> 
-                                  
-                                 <!-- <table role="presentation" class="table table-striped"><tbody class="files"><tr class="template-upload fade in">
-                                      <td>
-                                          <img id="image3" src="/portfolio/10153582015262080/pictures/fe11c01bff834d7bd9686c4efe9ad19b.JPG" alt="No Image Set" style="max-width:200px;max-height:200px">
-                                      </td>
-                                      <td>
-                                         <button class="btn btn-warning cancel" id="removetheImg">
-                                            <i class="glyphicon glyphicon-ban-circle"></i>
-                                              <span>Remove this image</span>
-                                          </button>
-                                      </td>
-                                 </table> --> 
-                                 <input type="hidden" id="mypfolioPics" name = "mypfolioPics">
-                                 <input type="hidden" id="mypfolioRemPics" name = "mypfolioRemPics">
-                                 <div class="progress" style= "display:none;">
-                                      <div class="bar"></div >
-                                      <label class="percent">0</label >
-                                  </div>
-                                  <div class='col-md-9' style='float:right;'><table role="presentation" id = "imageTable" class='table table-striped'><tbody class='files'></tbody>
-                                 </table></div>
-                                  <div id="status"></div>
-                              </div> 
-                              <div>&nbsp;</div>
-                              <div>&nbsp;</div>
-                              <div class="control-group col-md-12" id = "myVideos">
-                                  <div class="control-group" id="fields">
-                                      <label class="control-label col-md-3" for="field1">Add your videos</label>
-
-                                      <div class="controls col-md-9"> 
-                                        <span class="fieldNote">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
-                                          <div id = "videoPlus">
-                                              <div class="entry input-group col-md-12" id="vid0">
-                                                  <input class="col-md-9" id="videos0" name="videos0" type="text" placeholder="Give video URL here" 
-                                                  />
-                                                <span class="input-group-btn col-md-3">
-                                                      <button class="btn btn-success btn-add btn-addVideos" type="button" style="font-size:8px;">
-                                                          <span class="glyphicon glyphicon-plus"></span>
-                                                      </button>
-                                                  </span>
+                              <div id="collapseLanguage" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                  <div class="form-group">
+                                    <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                        <label class="control-label">What languages are you most comfortable with:</label> 
+                                          <br>
+                                    </div> 
+                                    <div class="col-sm-9">
+                                              <% var languages = dropdowns.alldropdowns.languages;
+                                              for(var i = 0; i < languages.length; i ++) {   %> 
+                                              <div class = "col-sm-3">
+                                                  <label class="checkbox-inline">
+                                                      <input type="checkbox" id="<%=languages[i]%>lang" value="<%=languages[i]%>" name="lang"/> <%=languages[i]%>
+                                                  </label>
                                               </div>
-                                           </div>   
-                                      <br>
-                                      <input type="hidden" id="mypfolioVids" name = "mypfolioVids">
-                                      </div>
+                                              <% } %>
+                                    </div>
                                   </div>
-                            </div>
-                            <div>&nbsp;</div>
-                            <div>&nbsp;</div>
-                            <div class="control-group col-md-12" id = "myPlays">
-                                  <div class="control-group">
-                                      <label class="control-label col-md-3" for="field1">Your performances</label>
-
-                                      <div class="panel panel-default controls col-md-9"> 
-                                        
-                                          <div id = "playPlus" class="panel-body">
-                                              <div class="playEntry input-group col-md-12" id="plays0" style="padding-top:15px;">
-                                                  <input class="col-md-12 playsText" id="playsText" name="playsText" type="text" placeholder="Name the play you were part of"/>
-                                                  <div>&nbsp;</div>
-                                                  <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it"onchange="insertURL(this)"/>
-                                                  <div>&nbsp;</div>
-                                                  <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                                      <label class="control-label">Your involvement in this event:(Cntrl-select to add more)</label> 
-                                                        <br>
-                                                  </div> 
-                                                  <div class = "col-sm-5" style="height:100%">
-                                                        <select class="playsRole" id="playsRole" multiple="multiple">
-                                                          <% var roles = dropdowns.alldropdowns.roles;
-                                                          for(var i = 0; i < roles.length; i ++) {   %> 
-                                                                <option value="<%=roles[i].role%>"><%=roles[i].text%></option>
-                                                           <% } %>
-                                                        </select>
-                                                   </div> 
-                                                
-                                                <span class="col-md-12">
-                                                      <button class="btn btn-success btn-addPlays col-md-12" type="button" style="font-size:12px;">
-                                                          <span class="glyphicon glyphicon-plus">Add more experiences</span>
-                                                      </button>
-                                                </span>
-
-                                            </div>
-                                          </div>   
-                                      <br>
-                                      
-                                      <input type="hidden" id="mypfolioPlays" name = "mypfolioPlays">
-                                      </div>
-                                  </div>
-                            </div>
-
-                            <div>&nbsp;</div>
-                            <div>&nbsp;</div>
-                            <div class="control-group col-md-12">
-                                <label class="control-label col-md-3">Add/Update your Artistic Résumé</label>
-                                  <span class="btn btn-default col-md-9">
-                                  <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
-                                  </span>
-                                 <input type="hidden" id="myResume" name = "myResume">
+                                </div>  
                               </div> 
+                            </div>
 
-                       </div>    
+                            <!-- Artistic details -->
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseArtistInYou">Your artistic journey</a>
+                                </h4>
+                              </div>
+                              <div id="collapseArtistInYou" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                  <div class="control-group col-md-12">
+                                    <label class="control-label col-md-3">Tell something about your artistic journey:</label>        
+                                      <div class="controls col-md-9">                
+                                    <% if (typeof user != 'undefined' && typeof user.portfolio != 'undefined' && typeof user.portfolio.myself != 'undefined') { %>       
+                                        <textarea id="textarea" name="myself" style="min-width:100%;"rows=6><%=user.portfolio.myself%></textarea>
+                                    <%} else { %>   
+                                        <textarea id="textarea" name="myself" style="min-width:100%;"rows=6></textarea>
+                                    <%}%> 
+                                      </div>
+                                  </div>
+                                </div>  
+                              </div> 
+                            </div>
+
+
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePictures">Let your pictures talk</a>
+                                </h4>
+                              </div>
+                              <div id="collapsePictures" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="control-group col-md-12" id = "mypics">
+                                        <label class="control-label col-md-3">Add your pictures:</label>
+                                          <span class="btn btn-success fileinput-button col-md-9">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                            <span>Add images(jpg/jpeg/png only)</span>
+                                              <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple style="color: transparent;"/>
+                                            </span>
+
+                                            <label class="control-label col-md-12" id="errorMsg" style="display:none;font-size:12px;color:#F50B0B;float:left;text-align:left;">For a better user experience, please upload images of type(either jpeg, jpg or png) and limit its size to 5 MB. Thanks.</label>
+                                            <div>&nbsp;</div> 
+                                                
+                                               
+                                           <input type="hidden" id="mypfolioPics" name = "mypfolioPics">
+                                           <input type="hidden" id="mypfolioRemPics" name = "mypfolioRemPics">
+                                           <div class="progress" style= "display:none;">
+                                                <div class="bar"></div >
+                                                <label class="percent">0</label >
+                                            </div>
+                                            <div class='col-md-9' style='float:right;'>
+                                              <table role="presentation" id = "imageTable" class='table table-striped'><tbody class='files'></tbody>
+                                              </table>
+                                            </div>
+                                            <div id="status"></div>
+                                    </div> 
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseVideos">Videos that complete you</a>
+                                </h4>
+                              </div>
+                              <div id="collapseVideos" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                     <div class="control-group col-md-12" id = "myVideos">
+                                        <div class="control-group" id="fields">
+                                            <label class="control-label col-md-3" for="field1">Add your videos</label>
+
+                                            <div class="controls col-md-9"> 
+                                              <span class="fieldNote">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
+                                                <div id = "videoPlus">
+                                                    <div class="entry input-group col-md-12" id="vid0">
+                                                        <input class="col-md-9" id="videos0" name="videos0" type="text" placeholder="Give video URL here" 
+                                                        />
+                                                      <span class="input-group-btn col-md-3">
+                                                            <button class="btn btn-success btn-add btn-addVideos" type="button" style="font-size:8px;">
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                 </div>   
+                                            <br>
+                                            <input type="hidden" id="mypfolioVids" name = "mypfolioVids">
+                                            </div>
+                                        </div>
+                                      </div>
+                                </div>
+                              </div>
+                            </div>  
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePlays">Your artistic journey</a>
+                                  </h4>
+                                </div>
+                                <div id="collapsePlays" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                      <div class="control-group col-md-12" id = "myPlays">
+                                          <div class="control-group">
+                                              <label class="control-label col-md-3" for="field1">Your performances</label>
+
+                                              <div class="panel panel-default controls col-md-9"> 
+                                                
+                                                  <div id = "playPlus" class="panel-body">
+                                                      <div class="playEntry input-group col-md-12" id="plays0" style="padding-top:15px;">
+                                                          <input class="col-md-12 playsText" id="playsText" name="playsText" type="text" placeholder="Name the play you were part of"/>
+                                                          <div>&nbsp;</div>
+                                                          <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it"onchange="insertURL(this)"/>
+                                                          <div>&nbsp;</div>
+                                                          <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                                              <label class="control-label">Your involvement in this event:(Cntrl-select to add more)</label> 
+                                                                <br>
+                                                          </div> 
+                                                          <div class = "col-sm-5" style="height:100%">
+                                                                <select class="playsRole" id="playsRole" multiple="multiple">
+                                                                  <% var roles = dropdowns.alldropdowns.roles;
+                                                                  for(var i = 0; i < roles.length; i ++) {   %> 
+                                                                        <option value="<%=roles[i].role%>"><%=roles[i].text%></option>
+                                                                   <% } %>
+                                                                </select>
+                                                           </div> 
+                                                        
+                                                        <span class="col-md-12">
+                                                              <button class="btn btn-success btn-addPlays col-md-12" type="button" style="font-size:12px;">
+                                                                  <span class="glyphicon glyphicon-plus">Add more experiences</span>
+                                                              </button>
+                                                        </span>
+
+                                                    </div>
+                                                  </div>   
+                                              <br>
+                                              
+                                              <input type="hidden" id="mypfolioPlays" name = "mypfolioPlays">
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseResume">More to say...</a>
+                                  </h4>
+                                </div>
+                                <div id="collapseResume" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                       <div class="control-group col-md-12">
+                                              <label class="control-label col-md-3">Add/Update your Artistic Résumé</label>
+                                                <span class="btn btn-default col-md-9">
+                                                <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
+                                                </span>
+                                               <input type="hidden" id="myResume" name = "myResume">
+                                        </div>
+                                  </div>
+                                </div>
+                              </div> 
+                          </div> 
+                                  
+
+                </div>
+                    
+
+              </div>    
                       
 
 
-                    </div>
+            </div>
+            <div class="panel-footer">
+          
+         <!--  <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;">Please confirm you have read and will abide by our
+          <a href="#myModal" role="button" class="btn" data-toggle="modal"> commercialmunity Guidelines. </a></span> -->
+          
+          <!-- <span class="pull-right"> -->
+        <!--       <a href="/update" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a> -->
+              <p style="text-align:center;">Please ensure you have read and will abide by our <b>"Terms of use"</b> located in the footer
+              <p style="text-align:center;"><button id = "submit" type="submit" class="btn btn-primary" type="button" name="btnvalue" value="submit"><i class="glyphicon glyphicon-ok-circle">SUBMIT</i>
+              </button>
+              
+          <!-- </span> -->
+          </div>
+        </fieldset>
 
-            </div>      
+          </div>      
                   
              
         
@@ -400,81 +424,28 @@
          
   
                   
-    <div class="panel-footer">
-          
-         <!--  <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;">Please confirm you have read and will abide by our
-          <a href="#myModal" role="button" class="btn" data-toggle="modal"> commercialmunity Guidelines. </a></span> -->
-          
-          <!-- <span class="pull-right"> -->
-        <!--       <a href="/update" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a> -->
-              <span>While we don't force you to read our humongous <b>"Terms of use"</b> located in the footer, we at MotleyMeow assume you have read it and will abide by it.</a></span>
-              <button id = "submit" type="submit" class="btn btn-primary" type="button" name="btnvalue" value="submit"><i class="glyphicon glyphicon-ok-circle">SUBMIT</i>
-              </button>
-              
-          <!-- </span> -->
-      </div>
-    </fieldset>
+    
 
    </form>  
-
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
          <span class="pull-right"><button id = "delete" type = "submit" title="Remove me from this site" type="button" class="btn btn-sm btn-danger" name="btnvalue" value="delete" data-toggle="modal" data-target="#deleteModal">Remove Me from this site<i class="glyphicon glyphicon-remove"></i></button>
          </span>
         <!-- <button class="btn btn-danger" >Delete Me</button> -->
-   </span>  
-  </div>
-</div>
-          </div>
-                 
-        </div>
-      </div>
+    
     </div>
   </div>
+
+                 
+</div>
+</div>
+</div>
       <!-- footer starts-->
-   <div id = "footer"></div>
-
-<!--    <div class="modal fade col-lg-12" id="myModal" role="dialog" aria-labelledby="myModal" aria-hidden="true" class="open-ViewDialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <input type="hidden" name="vewPostTitle" id="vewPostTitle" value=""/>
-
-              <h4 class="modal-title" id="myModalLabel">Community Guidelines</h4>
-            </div>
-            <div class="modal-body">
-
-              <div class="form-horizontal">
-                
-                <div class="form-group">
-                      <div class="col-sm-12">
-                        <div >
-                          <label>
-                              <p id = "viewPostDesc" class="form-control-static"></p>
-                                <ul>
-                                    <li> Our goal is to create a connected environment where every theatre artists can request for or provide help. These Community Guidelines are here to help you understand what it means to be a member of MotleyMeow</li>
-                                    <li> Don't post commercial messages. Do not promote commercial activities, including related links. Be respectful to each other. Do not vent your frustrations at other members, through any post in the site. There is zero tolerance for predatory behaviour, disparaging or defamatory comments, threats, harassment, illegal activities, invading privacy, propaganda, racial hatred, offensive cultural behaviour, vulgar or obscene content, or other inappropriate behaviour or the revealing of other members' personal information. MotleyMeow reserves the right to remove such a post and also take action against them.</li>
-                                    <li>Please bring to our notice any such inappropriate content.</li>
-                                    <li>We will update these Community Guidelines from time to time, so please check this page regularly.</li>
-                                </ul>  
-                          </label>
-                        </div>
-                      </div>
-                </div>
-              
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->  
-
+<div id = "footer"></div>
 
   
-
-  </div>  
 
 
   <div class="modal fade multi-step" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  

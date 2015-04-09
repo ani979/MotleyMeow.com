@@ -629,3 +629,20 @@ body.modal-open .supreme-container{
 select {
     height: 200px !important;
 }
+
+.progress {
+      position: relative;
+      overflow: visible;
+}
+
+.btn-respect {
+  color: #fff;
+  background-color: #1A1818;
+  border-color: #1F1F1F;
+}
+
+.btn-respect.focus, .btn-respect:focus, .btn-respect:hover {
+  color: #FCFAFA;
+  text-decoration: none;
+  background-color: #060241;
+}

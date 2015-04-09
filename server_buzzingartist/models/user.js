@@ -31,6 +31,9 @@ var userSchema = mongoose.Schema({
         myVideos     : [{}],
         myPlays     :  [{}],
         myResume     : String
+    },
+    respect         : {
+        userId      : [{}]
     }
 
 });
