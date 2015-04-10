@@ -319,6 +319,7 @@ exports.showRespect = function(req,res) {
            db.respect.userId.push({
               "fromUserId": req.session.user.facebook.id,
               "fromUserName" : req.session.user.facebook.name,
+              "repectedDate" : new Date()
             });
 
             db.save(function (err, user) {

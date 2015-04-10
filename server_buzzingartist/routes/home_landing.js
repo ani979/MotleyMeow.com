@@ -258,22 +258,28 @@ exports.landing_home = function(req, res) {
                         if(posts.length > 0) {                            
                             if(typeof notificationClickDate != 'undefined') {
                                 
-                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid':1, commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
                                             { 'post.date': { $gte: notificationClickDate } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
                                                                 function(err, postsinDB) {
                                             if(!err) {
                                                 postsForArtist = postsinDB;
+                                            } else {
+                                                res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
+                                                appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:{}})
                                             }
                                             console.log("postsForArtist length: "+postsForArtist.length);
                                             res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
                                             appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:postsForArtist})
                                         });
                             } else {
-                                Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                                Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1, 'post.userid':1, commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
                                             { 'post.date': { $lte: new Date() } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
                                                                 function(err, postsinDB) {
                                             if(!err) {
                                                 postsForArtist = postsinDB;
+                                            } else {
+                                                res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
+                                            appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:{}})
                                             }
                                             res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
                                             appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:postsForArtist})

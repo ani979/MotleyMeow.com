@@ -95,9 +95,11 @@
                     <li><a href="/comingsoon">Coming soon <span class="sr-only">(current)</span></a></li>
                 </ul>
 
-            <ul class="nav navbar-right navbar-nav">           
-                  <li style = "padding-right:30px;"><a class="btn" href="#" onclick="doorbell.show(); return false;" style="background-color: #F5F5F5;color: #1B1A1A;font-size: 16px;">Send us a quick meow</a></li>
-                  <li><a class="btn btn-primary" onclick="FacebookInviteFriends();" style = "font-size: 16px;color: #F5F5F5; background-color: #132290;"> Invite your friends<span class="sr-only">(current)</span></a></li>       
+            <ul class="nav navbar-right navbar-nav">          
+                         
+
+                  <li style = "padding-right:10px;"><a class="btn" href="#" onclick="doorbell.show(); return false;" style="background-color: #F5F5F5;color: #1B1A1A;font-size: 14px;">Send us a quick meow</a></li>
+                  <li><a class="btn btn-primary" onclick="FacebookInviteFriends();" style = "font-size: 14px;color: #F5F5F5; background-color: #132290;"> Invite your friends<span class="sr-only">(current)</span></a></li>       
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
                     <ul class="dropdown-menu">
@@ -143,6 +145,49 @@
 <%}%> 
 <% var citysel = user.local.city %>
 <div class = "main-container" >
+<div class="col-md-4 col-md-offset-8 notification-dropdown">
+  <div class="dropdown-Notif" style="float:right;">
+                        <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
+                                  <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+                                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="newPosts" >posts <span class="badge"><%= recentPostsForArtist.length %></span></button>
+                                  <%} else {%>
+                                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" >No new posts</button>
+                                  <%}%>
+                        <!-- </a> -->
+                        <div class="dropdown-menu widget-notifications no-padding" style="border:0px;">
+                          <div class="notifications-list" id="main-navbar-notifications">
+
+                              <table id="postsTable" class="table table-striped">
+                                  <% 
+                                  if(typeof recentPostsForArtist == 'undefined' || recentPostsForArtist.length == 0) { %>
+                                    <tr> <td>No New Notifications. SEE OLD NOTIFICATIONS <a href = "/viewNotificationPosts">here</a></td></tr>
+
+                                  <%}  else { %>
+                                          <% for(var i=0; i < recentPostsForArtist.length; i++) { var details="Not Mentioned";%>
+                                            <% if (typeof recentPostsForArtist[i].post.postDetail !='undefined') {
+                                              details = recentPostsForArtist[i].post.postDetail
+                                            }%>
+                                            <tr rel="tooltip" title="<%= details%>">
+                                                  <td><%= recentPostsForArtist[i].post.userid%> posted for the requirement "<%= recentPostsForArtist[i].post.postTitle %>"
+                                                  <td><a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" id ="view" name="<%=recentPostsForArtist[i]._id%>"> View Here</a></td>
+                                                  <input id="_id<%=recentPostsForArtist[i]._id%>" name="_id"  type="hidden" value=<%=recentPostsForArtist[i].post.userid%>>
+                                                  <input id="_postid<%=recentPostsForArtist[i]._id%>"  type="hidden" value=<%=recentPostsForArtist[i]._id%>>
+                                             
+                                            </tr>
+                                            <%  if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+                                                  <a href="/viewNotificationPosts" class="notifications-link">SEE ALL NOTIFICATIONS</a>
+                                            <% } %>
+                                          <% } %>
+                                     <%}%>     
+                                  
+                                  
+                                  
+                              </tbody>
+                            </table>
+                        </div> <!-- / .notifications-list -->
+                    </div> <!-- / .dropdown-menu -->
+                  </div>
+   </div>               
     <!--<div class="col-md-12" style = "text-align: center;">
     <h3 class = "thtrexplore">
       EXPLORE. CONNECT. CONTRIBUTE.
@@ -150,85 +195,29 @@
   </div>-->
 
   <script type="text/javascript">
-  $(document).ready(function() {
-          var timerId;
-          timerId = setInterval(function() {
-            
-            $("#notification").load("/getNotification");
-          }, 20000); 
-          var myEvent = window.attachEvent || window.addEventListener;
-          var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
-          myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
-              //console.log("Clearing the interval")
-              clearInterval(timerId);
-          });
+  // $(document).ready(function() {
+  //         var timerId;
+  //         timerId = setInterval(function() {
+            
+  //           $("#notification").load("/getNotification");
+  //         }, 20000); 
+  //         var myEvent = window.attachEvent || window.addEventListener;
+  //         var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+
+  //         myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+  //             //console.log("Clearing the interval")
+  //             clearInterval(timerId);
+  //         });
           
-    });
+  // });
   </script>
 
-<div id ="notification">
-<ul class="notification_dropdown">
-  <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                  <%
-                                        if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
-                                    <span class="label"><%= recentPostsForArtist.length %></span>
-                                    <%}%>
-                                    <i class="nav-icon fa fa-bullhorn"></i>
-                                    <span class="small-screen-text">Notifications</span>
-                                </a>
-
-                                <!-- NOTIFICATIONS -->
-
-                                
-                                <div class="dropdown-menu widget-notifications no-padding" style="width: 400px">
-                                    <div class="notifications-list" id="main-navbar-notifications">
-
-                                        <table id="postsTable" class="table table-striped">
-                                          <%  if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
-                                              <thead>
-                                                  <tr>
-                                                      <th class ="titlecol" style="text-align:left">Looking for</th>
-                                                      <th class ="contribcol" style="text-align:left">artists required</th>
-                                                      <th class ="citycol" style="text-align:left">in the city</th>
-                                                      <th class ="fbprofilecol" style="text-align:left">Details</th>          
-                                                  </tr>
-                                              </thead>
-                                          <% } %>
-                                      <tbody class="searchablewe">
-                                        
-                                        <% 
-                                        if(typeof recentPostsForArtist == 'undefined' || recentPostsForArtist.length == 0) { %>
-                                          <tr> <td colspan="4">No New Notifications. SEE OLD NOTIFICATIONS <a href = "/viewNotificationPosts">here</a></td></tr>
-
-                                        <%}  else { %>
-                                                <% for(var i=0; i < recentPostsForArtist.length; i++) { %>
-                                                  <tr rel="tooltip" title="<%= recentPostsForArtist[i].post.postDetail%>">
-                                                  <td><%= recentPostsForArtist[i].post.postTitle %></td>
-                                                  <td><%= recentPostsForArtist[i].post.role %></td>
-                                                  <td><%= recentPostsForArtist[i].post.city %></td>
-                                                  
-                                                        <td><a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" id ="view" name="<%=recentPostsForArtist[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></a></td>
-                                                        <input id="_id<%=recentPostsForArtist[i]._id%>" name="_id"  type="hidden" value=<%=recentPostsForArtist[i].post.userid%>>
-                                                        <input id="_postid<%=recentPostsForArtist[i]._id%>"  type="hidden" value=<%=recentPostsForArtist[i]._id%>>
-                                                   
-                                                  </tr>
-                                                <% } %>
-                                           <%}%>     
-                                          
-                                          
-                                          
-                                      </tbody>
-                                    </table>
-                                    </div> <!-- / .notifications-list -->
-                                    <%  if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
-                                      <a href="/viewNotificationPosts" class="notifications-link">SEE ALL NOTIFICATIONS</a>
-                                    <% } %>
-                                </div> <!-- / .dropdown-menu -->
-                            </li>
-                          </ul>
-                        </div>
+  <div id ="notification">
+    <ul class="nav pull-right">
+        
+    </ul>
+  </div>
   
   <div class="container">
     <h2 class="title" style= "text-align:center;">Meeoowww <strong> <%= user.facebook.name %>! </strong></h2>
@@ -295,7 +284,10 @@
 
         <%}  else { %>
                 <% for(var i=0; i < postss.length; i++) { %>
-                  <tr rel="tooltip" title="<%= postss[i].post.postDetail%>">
+                  <% if (typeof postss[i].post.postDetail !='undefined') {
+                                  details = postss[i].post.postDetail
+                  }%>
+                  <tr rel="tooltip" title="<%= details%>">
                   <td><%= postss[i].post.postTitle %></td>
                   <td><%= postss[i].post.role %></td>
                   <td><%= postss[i].post.city %></td>
@@ -579,7 +571,7 @@
   <script src="js/imageCarousel.js"></script>
   <script>
   $(document).ready(function(){
-          $(".notification_dropdown .dropdown").on("show.bs.dropdown", function(e){
+          $(".notification-dropdown .dropdown-Notif").on("show.bs.dropdown", function(e){
                     console.log("SHOW DROPDOWNNNNNNNNNNNN");              
               <% if(typeof recentPostsForArtist != 'undefined') { %>
                 console.log("recentPostsForArtist.length: "+ <%= recentPostsForArtist.length %>);
@@ -592,6 +584,7 @@
                         // data: {$("#myCityForm").serialize(), role: roles},
                         success: function (data) {
                           console.log("SUCCESSSS DROPDOWN");
+                          $('#newPosts').text("No new posts");
                         },
                         error: function (data) {
                           console.log("some error " + data);

@@ -626,7 +626,7 @@ body.modal-open .supreme-container{
   cursor: pointer;
 }
 
-select {
+#collapsePlays select {
     height: 200px !important;
 }
 
@@ -645,4 +645,12 @@ select {
   color: #FCFAFA;
   text-decoration: none;
   background-color: #060241;
+}
+
+/* CSS used here will be applied after bootstrap.css */
+.badge-notify{
+   background:red;
+   position:relative;
+   top: -20px;
+   left: -35px;
 }
