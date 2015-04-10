@@ -326,6 +326,7 @@ exports.viewNotificationPosts = function (req, res) {
     var selectedCity = new Array();
     var notificationClickDate = new Date(foundUser.local.notificationClickDate);
     console.log("found user notificationClickDate: "+notificationClickDate);
+    var postsForArtist = {};
     if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
         if(foundUser.local.city == "Bengaluru" || foundUser.local.city == "Bangalore") {
             selectedCity.push("Bangalore", "Bengaluru");

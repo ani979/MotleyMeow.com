@@ -253,7 +253,7 @@ exports.landing_home = function(req, res) {
                 } 
                     User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             function(err, recentUsers) {
-                             var postsForArtist;
+                             var postsForArtist = {};
                         
                         if(posts.length > 0) {                            
                             if(typeof notificationClickDate != 'undefined') {
