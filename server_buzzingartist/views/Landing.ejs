@@ -21,6 +21,8 @@
     <link href="css/tab.css" rel="stylesheet">
     <link href="indexPage/css/font-awesome.min.css" rel="stylesheet">
     <link href="css/bootstrap-dialog.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
  
   </head>
   
@@ -568,7 +570,7 @@
   <!-- <script src="js/jquery-1.10.2.min.js"></script> -->
   <script src="js/jquery-migrate-1.2.1.min.js"></script>
   <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/imageCarousel.js"></script>
+  <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
   <script>
   $(document).ready(function(){
           $(".notification-dropdown .dropdown-Notif").on("show.bs.dropdown", function(e){
@@ -665,6 +667,175 @@ $("#footer").load("footer.ejs");
 
    
         
+
+
+    function generate(type, layout) {
+        var n = noty({ layout: layout,
+        type: type,
+        text: 'Here i am', // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 5, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+        closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {},
+            afterShow: function() {},
+            onClose: function() {},
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        buttons: false // an array of buttons
+      });
+    }
+
+    function generateNotificationLayout(type, layout, text) {
+        var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text" style="font-size:18px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {},
+            afterShow: function() {},
+            onClose: function() {
+                    
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click"],
+        buttons: [
+            {addClass: 'btn btn-primary', text: 'Show All', onClick: function($noty) {
+              $('#noty_bottomLeft_layout_container').children('li').each(function () {
+                  $('#noty_bottomLeft_layout_container').children('li').each(function () {
+                    //$.noty.close($(this).children('.noty_type_success').attr('id'))    
+                    $(this).children('.noty_type_success').parent().show();               
+                  });
+                });
+                
+              }
+            },
+            {addClass: 'btn btn-danger', text: 'Hide All', onClick: function($noty) {
+                $('#noty_bottomLeft_layout_container').children('li').each(function () {
+                  //$.noty.close($(this).children('.noty_type_success').attr('id'))    
+                  $(this).children('.noty_type_success').parent().hide();               
+                });
+                <% if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+                        $.ajax({
+                              url: "/saveNotificationClickDate",
+                              type: "POST",
+                              // data: {role: roles,city: citiesss},
+                              // data: {$("#myCityForm").serialize(), role: roles},
+                              success: function (data) {
+                                console.log("SUCCESSSS DROPDOWN");
+                                
+                              },
+                              error: function (data) {
+                                console.log("some error " + data);
+                              }
+                              
+                        });
+                <%}%>
+             } 
+            }
+          ]
+      });
+    }
+    var lengthofPosts = -1;
+    function generateNotifications(type, layout, text) {
+        var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 11, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click"],
+        buttons: false
+      });
+    }
+
+    function generateNotificationButton() {
+      <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+        lengthofPosts = <%= recentPostsForArtist.length %>;
+        generateNotificationLayout('notification', 'bottomLeft', '<text id="hero"><%= recentPostsForArtist.length %></text> new posts');
+                                  <% 
+                                  if(typeof recentPostsForArtist == 'undefined' || recentPostsForArtist.length == 0) { %>
+                                    
+
+                                  <%}  else { %>
+                                          <% for(var i=0; i < recentPostsForArtist.length; i++) { var details="Not Mentioned";%>
+                                            <% if (typeof recentPostsForArtist[i].post.postDetail !='undefined') {
+                                              details = recentPostsForArtist[i].post.postDetail
+                                            }%>
+                                            generateNotifications('success', 'bottomLeft', '<%= recentPostsForArtist[i].post.userid%> posted for the requirement <%= recentPostsForArtist[i].post.postTitle %>. <a href=/viewpost?postid=<%=recentPostsForArtist[i]._id%> id =view name=<%=recentPostsForArtist[i]._id%>> View Details</a>',<%= recentPostsForArtist.length %>);
+                                            $('#noty_bottomLeft_layout_container').children('li').each(function () {
+                                              //$.noty.close($(this).children('.noty_type_success').attr('id'))    
+                                              $(this).children('.noty_type_success').parent().hide();               
+                                            }); 
+                                            
+                                          <% } %>
+                                          generateNotifications('notification', 'bottomLeft', '<a href=/viewNotificationPosts> <b>See other notifications here</b></a>');
+                                     <%}%>
+        // <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="newPosts" >posts <%= recentPostsForArtist.length %></span></button>
+          <%} else {%>
+        generateNotifications('warning', 'bottomLeft', 'No new posts since your last visit <br/> <a href=/viewNotificationPosts> <b>See previous notifications here</b></a>');
+        
+      <%}%>
+        // generate('information', 'topLeft');
+        // generate('error', 'topRight');
+        // generate('warning', 'center');
+        // generate('notification', 'centerRight');
+        // generate('success', 'bottomLeft');
+    }
+
+    $(document).ready(function () {
+
+        generateNotificationButton();
+
+    });        
           
     </script>
      <script type="text/javascript">
