@@ -150,6 +150,7 @@ exports.getNotification = function(req, res) {
     var foundUser = req.session.user;
     var selectedCity = new Array();
     var notificationClickDate = new Date(foundUser.local.notificationClickDate);
+    var postsForArtist;
     console.log("found user notificationClickDate: "+notificationClickDate);
     if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
         if(foundUser.local.city == "Bengaluru" || foundUser.local.city == "Bangalore") {
