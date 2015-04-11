@@ -149,9 +149,7 @@ exports.getNotification = function(req, res) {
     console.log("GETNOTIFICATIONNNNNN");
     var foundUser = req.session.user;
     var selectedCity = new Array();
-    var notificationClickDate = new Date(foundUser.local.notificationClickDate);
-    var postsForArtist = {};
-    console.log("found user notificationClickDate: "+notificationClickDate);
+    console.log("found user notificationClickDate: "+foundUser.local.notificationClickDate);
     if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
         if(foundUser.local.city == "Bengaluru" || foundUser.local.city == "Bangalore") {
             selectedCity.push("Bangalore", "Bengaluru");
@@ -166,15 +164,28 @@ exports.getNotification = function(req, res) {
 
     if(typeof selectedCity != undefined && selectedCity.length != 0) {
         console.log("req.session.user role: "+foundUser.local.role[0]);
-                            if(typeof notificationClickDate != 'undefined') {
+                            if(typeof foundUser.local.notificationClickDate != 'undefined') {
                                 
-                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                            { 'post.date': { $gte: notificationClickDate } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
+                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                                            { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
                                                                 function(err, postsinDB) {
+                                            var postsForArtist = {};
                                             if(!err) {
                                                 postsForArtist = postsinDB;
                                             }
-                                            console.log("postsForArtist length: "+postsForArtist.length);
+                                            var postsArray = new Array();
+                                            var j = 0;
+                                            for (var i = postsForArtist.length - 1; i >= 0; i--) {
+                                                // console.log("postsForArtist[i]: "+postsForArtist[i]);
+                                                // console.log("rolee: "+postsForArtist[i].post.role);
+                                                // console.log("postsForArtist[i].post.common: "+postsForArtist[i].post.common);
+                                                // console.log("postsForArtist[i].common: "+postsForArtist[i].common);
+                                                if(typeof postsForArtist[i].common != 'undefined' && postsForArtist[i].common != "") {
+                                                    postsArray[j] = postsForArtist[i];
+                                                    j ++;
+                                                }
+                                            };
+                                            console.log("postsArray length: "+postsArray.length);
                                             res.render("notification", {recentPostsForArtist:postsForArtist})
                                         });
                             } 
@@ -182,8 +193,9 @@ exports.getNotification = function(req, res) {
 };
 
 exports.landing_home = function(req, res) {
-	console.log("req.session " + req.sesson);
+    console.log("req.session " + req.session);
     console.log("req.session.user " + req.session.user);
+    console.log("req.session.user.dateee: "+req.session.user.local.notificationClickDate);
     var posts; 
     var events;
     var playEvents=null;;
@@ -205,9 +217,7 @@ exports.landing_home = function(req, res) {
     //     var then = new Date();
     then.setDate(then.getDate() - 2);
     var selectedCity = new Array();
-    console.log(" foundUser.local.city " + foundUser.local.city);
-    var notificationClickDate = new Date(foundUser.local.notificationClickDate);
-    console.log("found user notificationClickDate: "+notificationClickDate);
+    console.log(" foundUser.local.city " + foundUser.local.city)
     if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
         if(foundUser.local.city == "Bengaluru" || foundUser.local.city == "Bangalore") {
             selectedCity.push("Bangalore", "Bengaluru");
@@ -223,6 +233,7 @@ exports.landing_home = function(req, res) {
     
     console.log("selected city " + selectedCity)
     console.log("selected City length " + selectedCity.length)
+    console.log("found user notificationClickDate: "+foundUser.local.notificationClickDate);
     //Get all posts
     if(typeof selectedCity != undefined && selectedCity.length != 0) {
         Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
@@ -247,42 +258,67 @@ exports.landing_home = function(req, res) {
                             { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] } }, { $sort : { 'event.date' : 1 } }, {$limit:5}]
                         , function(err, eventsInDB) {
                 if(err) {
+                    
+
                     events = {};
                     console.log("Am i here");
                     res.render('Landing', { user: req.session.user, postss: posts, events: events, appId:config.facebook.clientID, dropdowns:dropdowns});
+                    return;
                 } 
                     User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             function(err, recentUsers) {
-                             var postsForArtist = {};
                         
-                        if(posts.length > 0) {                            
-                            if(typeof notificationClickDate != 'undefined') {
+                        
+                        if(posts.length > 0) {   
+                            var postsForArtist = {};                         
+                            if(typeof foundUser.local.notificationClickDate != 'undefined') {
                                 
-                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid':1, commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                            { 'post.date': { $gte: notificationClickDate } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
+                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                                            { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
                                                                 function(err, postsinDB) {
                                             if(!err) {
                                                 postsForArtist = postsinDB;
-                                            } else {
-                                                res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
-                                                appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:{}})
                                             }
                                             console.log("postsForArtist length: "+postsForArtist.length);
+                                            var postsArray = new Array();
+                                            var j = 0;
+                                            for (var i = postsForArtist.length - 1; i >= 0; i--) {
+                                                // console.log("postsForArtist[i]: "+postsForArtist[i]);
+                                                // console.log("rolee: "+postsForArtist[i].post.role);
+                                                // console.log("postsForArtist[i].post.common: "+postsForArtist[i].post.common);
+                                                // console.log("postsForArtist[i].common: "+postsForArtist[i].common);
+                                                if(typeof postsForArtist[i].common != 'undefined' && postsForArtist[i].common != "") {
+                                                    postsArray[j] = postsForArtist[i];
+                                                    j ++;
+                                                }
+                                            };
+                                            console.log("postsArray length: "+postsArray.length);
                                             res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
-                                            appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:postsForArtist})
+                                            appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:postsArray})
                                         });
                             } else {
-                                Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1, 'post.userid':1, commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                                Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1, 'post.userid': 1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
                                             { 'post.date': { $lte: new Date() } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
                                                                 function(err, postsinDB) {
                                             if(!err) {
                                                 postsForArtist = postsinDB;
-                                            } else {
-                                                res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
-                                            appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:{}})
                                             }
+                                            console.log("postsForArtist length ELSE part: "+postsForArtist.length);
+                                            var postsArray = new Array();
+                                            var j = 0;
+                                            for (var i = postsForArtist.length - 1; i >= 0; i--) {
+                                                // console.log("postsForArtist[i]: "+postsForArtist[i]);
+                                                // console.log("rolee: "+postsForArtist[i].post.role);
+                                                // console.log("postsForArtist[i].post.common: "+postsForArtist[i].post.common);
+                                                // console.log("postsForArtist[i].common: "+postsForArtist[i].common);
+                                                if(typeof postsForArtist[i].common != 'undefined' && postsForArtist[i].common != "") {
+                                                    postsArray[j] = postsForArtist[i];
+                                                    j ++;
+                                                }
+                                            };
+                                            console.log("postsArray length: "+postsArray.length);
                                             res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers,
-                                            appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:postsForArtist})
+                                            appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:postsArray})
                                         });
                             }
                         } else {
