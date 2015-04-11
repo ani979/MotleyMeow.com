@@ -200,10 +200,27 @@
                           </div>
 
                       <% } %>
-                    </div>
-                    <%} %>
-                       
-                  
+                      </div>
+                    <% } %>
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myFlickrPics == 'undefined' || user.portfolio.myFlickrPics.length ==0 ) { %>
+                      
+                    <% } else {   %>
+                      <div class="row">
+                        <div class="panel-heading" contenteditable="false">Embedded from Flickr</div>
+                      <% for(var i = 0; i < user.portfolio.myFlickrPics.length; i ++ ) { %> 
+                        
+                          <div class="col-md-8">
+                            <div class="thumbnail">
+                                <a href = "<%=user.portfolio.myFlickrPics[i].flickrURL%>" target="_blank">
+                                  <iframe src="<%=user.portfolio.myFlickrPics[i].flickrURL%>" width="460" height="325" frameborder=0 allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+                                </a>  
+                            </div>
+                          </div>
+                       <%} %> 
+                     </div>
+                    <% } %>     
+                    
+                    
                 </div>  
              </div>
              <div class="panel panel-default target">
