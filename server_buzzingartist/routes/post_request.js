@@ -122,12 +122,13 @@ exports.post = function (req, res) {
 
                    // update the user object found using findOne
                    console.log("req.body.title" + req.body.postTitle);
-                    db.save(function (err, user) {
+                    db.save(function (err, post) {
                                 if (err) {
                                 // res.json(err) ;
                                     req.flash('info', "Error while saving the modifications done in the existing post")
                                     res.redirect('/error');
                                 } else {
+                                    req.session.postId = post.id;
                                     res.redirect('/searchPosts');
                                 }
                             });
@@ -150,11 +151,12 @@ exports.post = function (req, res) {
             } else {
                 newPost.post.imagePath = req.files.imagePost.name;
             }
-            newPost.save(function(err) {
+            newPost.save(function(err, post) {
                        if (err) {
                             req.flash('info', "Error while saving the new Post in the database")
                             res.redirect('/error');  
                         } else {
+                            req.session.postId = post.id;
                             res.redirect('/searchPosts');
                         }
                     });
@@ -164,10 +166,13 @@ exports.post = function (req, res) {
 
 
 exports.searchPosts = function (req, res) {
-	 //console.log("req.session " + req.sesson);
-    //console.log("req.session.user " + req.session.user);
     var allUsers;
+    var recentChangedPostId = "";
     //console.log("req.user.email " + req.session.user.facebook.email);
+    if(typeof req.session.postId !='undefined') {
+        recentChangedPostId = req.session.postId;
+        req.session.postId = null;
+    }
 
     Posts.find({ 'post.userid' : req.session.user.facebook.id }, function(error, db) {
         //     console.log("coming 1");
@@ -177,11 +182,9 @@ exports.searchPosts = function (req, res) {
           req.flash('info', "Error while trying to find the user's post")
           res.redirect('/error'); 
         } else {
-          // console.log("found user " + db.facebook.email);
-          console.log("found user: " + db);
           // console.log("found user's post: " + db.post);
           console.log("found user's post length: " + db.length);
-          res.render('post_search', { postdb: db,  user:req.session.user});
+          res.render('post_search', { postdb: db,  user:req.session.user, recentPostId:recentChangedPostId});
         }    
      });   
 };
