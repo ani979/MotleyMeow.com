@@ -147,16 +147,16 @@
 <%}%> 
 <% var citysel = user.local.city %>
 <div class = "main-container" >
-<div class="col-md-4 col-md-offset-8 notification-dropdown">
+<!--<div class="col-md-4 col-md-offset-8 notification-dropdown">
   <div class="dropdown-Notif" style="float:right;">
                         <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
-                                  <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+                                 <!-- <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
                                   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="newPosts" >posts <span class="badge"><%= recentPostsForArtist.length %></span></button>
                                   <%} else {%>
                                   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" >No new posts</button>
                                   <%}%>
                         <!-- </a> -->
-                        <div class="dropdown-menu widget-notifications no-padding" style="border:0px;">
+                        <!--<div class="dropdown-menu widget-notifications no-padding" style="border:0px;">
                           <div class="notifications-list" id="main-navbar-notifications">
 
                               <table id="postsTable" class="table table-striped">
@@ -187,8 +187,8 @@
                               </tbody>
                             </table>
                         </div> <!-- / .notifications-list -->
-                    </div> <!-- / .dropdown-menu -->
-                  </div>
+                   <!-- </div> <!-- / .dropdown-menu -->
+                 <!-- </div>
    </div>               
     <!--<div class="col-md-12" style = "text-align: center;">
     <h3 class = "thtrexplore">
@@ -215,11 +215,11 @@
   // });
   </script>
 
-  <div id ="notification">
+ <!--  <div id ="notification">
     <ul class="nav pull-right">
         
     </ul>
-  </div>
+  </div> -->
   
   <div class="container">
     <h2 class="title" style= "text-align:center;">Meeoowww <strong> <%= user.facebook.name %>! </strong></h2>
@@ -717,7 +717,9 @@ $("#footer").load("footer.ejs");
         killer: false, // for close all notifications before show
          // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
         callback: {
-            onShow: function() {},
+            onShow: function() {
+              $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-danger').hide()
+            },
             afterShow: function() {},
             onClose: function() {
                     
@@ -734,14 +736,24 @@ $("#footer").load("footer.ejs");
                     $(this).children('.noty_type_success').parent().show();               
                   });
                 });
+                $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-danger').show()
+                $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-primary').hide()
                 
               }
             },
             {addClass: 'btn btn-danger', text: 'Hide All', onClick: function($noty) {
                 $('#noty_bottomLeft_layout_container').children('li').each(function () {
                   //$.noty.close($(this).children('.noty_type_success').attr('id'))    
-                  $(this).children('.noty_type_success').parent().hide();               
+                  $(this).children('.noty_type_success').parent().hide();         
+
                 });
+                $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-danger').hide()
+                $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-primary').show()
+                //children('li').each(function () {
+                  //$.noty.close($(this).children('.noty_type_success').attr('id'))    
+                  // $(this).children('.noty_type_notification').find('.btn-danger').hide();               
+                  // $(this).children('.noty_type_notification').find('.btn-primary').show(); 
+                // });
                 <% if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
                         $.ajax({
                               url: "/saveNotificationClickDate",
