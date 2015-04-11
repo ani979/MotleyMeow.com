@@ -26,6 +26,14 @@
 
 
 <body>
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=<%=appId%>";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
      
 <% getDate = function(x) {
             var retDate;
@@ -41,7 +49,7 @@
             return retDate;
         }
 %>    
- <% if(typeof user != 'undefined' && user!=null) { %>
+ <% if(typeof sessionUser != 'undefined' && sessionUser!=null) { %>
  <div id = "headerloggedin"> </div>
  <% } else { %>
  <div id = "headerloggedout"></div>
@@ -58,6 +66,12 @@
             <button id ="edit" align="center" class="btn btn-success">Edit my profile</button>&nbsp;
           </form>
         <% } %> 
+        <div>&nbsp;</div>
+          <div>
+            <% if(typeof sessionUser != 'undefined' && sessionUser!= null) { %>
+              <a type="button" align="center" class="btn btn-primary" onclick = "shareMe();"> Share it with the world </a>
+            <% } %>
+          </div>
         <br> 
       </div>
 
@@ -69,15 +83,16 @@
               <div>&nbsp;</div>
               <h4><img src="/images/Icon_Respect.gif"> EARN YOUR <b>#RESPECT</b></img></h4>
               <div>&nbsp;</div>
-              <h4>Announce to the world what you do. SHARE your profile on your wall, earn #RESPECT </h4>
+              <h4>Announce to the world what you do. <b><a href="#" onclick = "shareMe();return false;"> SHARE your profile on your wall </a></b>, earn #RESPECT </h4>
             <% } else { %>
               <h4>Earned<img src="/images/Icon_Respect.gif"> #RESPECT of: <text id="numRespect"><%=user.respect.userId.length%></text> artists</img>
               <div>&nbsp;</div>          
             <% } %>   
           <% } else { %>  
             <h4>Earned<img src="/images/Icon_Respect.gif"> #RESPECT of: <text id="numRespect"><%=user.respect.userId.length%></text> artists</img>
+            <div>&nbsp;</div>  
             <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %>
-              <span class="fieldNote">Announce to the world what you do. SHARE your profile on your wall, earn #RESPECT</span>
+              <span class="fieldNote">Announce to the world what you do. <b><a href="#" onclick = "shareMe();return false;"> SHARE your profile on your wall </b></a>, earn #RESPECT</span>
             <% } %>  
           <% } %>
 
@@ -140,6 +155,7 @@
                     Not set
                   <% } %>
                 </div>
+                
             </div>
           </div>
         </div>    
@@ -323,13 +339,24 @@
           });
     }
 
+    function shareMe() {
+          // window.open('https://www.facebook.com/dialog/share?app_id=1402977930010661&display=popup&href=http://localhost:3000&redirect_uri=http://www.motleymeow.com', 'width=800, height=400')
+          FB.ui({
+            method: 'share',
+            // href: 'http://23.251.153.191:8080/profile?fbId=<%=user.facebook.id%>',
+            href: window.location.protocol + "//" + window.location.host +'/profile?fbId=<%=user.facebook.id%>',
+          }, function(response){});
+}
+
     $(document).ready(function(){
       <% if (typeof user != 'undefined' && typeof user.respect != 'undefined' && typeof user.respect.userId.length != 'undefined' || 
             user.respect.userId.length != 0) { %>
             <% for(var i = 0; i < user.respect.userId.length; i++) { %>
-              if(<%=user.respect.userId[i].fromUserId%> == <%=sessionUser.facebook.id%>) {
-                  $('#respectButton').text("#IRESPECTYOU")
-              }
+              <%if(typeof sessionUser != 'undefined') {%>
+                if(<%=user.respect.userId[i].fromUserId%> == <%=sessionUser.facebook.id%>) {
+                    $('#respectButton').text("#IRESPECTYOU")
+                }
+              <%} %>  
           <%}%>   
       <%}%>    
     });  

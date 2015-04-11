@@ -75,28 +75,26 @@ exports.profile = function (req, res) {
     var accessToken = req.session.access_token;
     var fbid = "";
     console.log("accesstoken111: "+ accessToken);
-    if(!accessToken) {
+   // if(!accessToken) {
         console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
-        if(req.isAuthenticated()) {
-            console.log("req.user city " + req.session.user.local.city);
+        //if(req.isAuthenticated()) {
             console.log("req.fbId " + req.query.fbId);
             if(typeof req.query.fbId == 'undefined') {
                 fbid = req.session.user.facebook.id;
             } else {
                 fbid = req.query.fbId;
             }
-            console.log("req.user name " + req.session.user.facebook.name);
             User.findOne({ 'facebook.id' : fbid}, function(error, db) {
-                res.render('profileView', { user: db, dropdowns:dropdowns, sessionUser: req.session.user});
+                res.render('profileView', { user: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
             });    
-        } else {
-            res.redirect('/');
+        // } else {
+        //     res.render('profileView', { user: db, dropdowns:dropdowns, appId:config.facebook.clientID});
             
-        }
-    } else {
-        // res.render('home');
-        res.redirect('/');
-    }
+        // }
+    // } else {
+    //     // res.render('home');
+    //     res.redirect('/');
+    // }
 };
 
 exports.profileEdit = function (req, res) {
