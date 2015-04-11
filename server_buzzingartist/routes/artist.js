@@ -22,6 +22,7 @@ exports.update = function (req, res) {
   var pfolioPicturesToBeRemoved;
   var pfolioVideos;
   var pfolioPlays;
+  var pfolioFlickrPics;
 	var id = req.body.userId;  
   console.log("Id is " + id);
   if(typeof req.body.mypfolioPics != 'undefined') {
@@ -57,6 +58,12 @@ exports.update = function (req, res) {
     console.log(" req.body.mypfolioPlays.length " + req.body.mypfolioPlays.length);
     pfolioPlays = JSON.parse(req.body.mypfolioPlays);
     console.log("pfolioVideos[0] " + pfolioPlays[0].playName)
+  }
+
+  if(typeof req.body.mypfolioFlickrPics != 'undefined' && req.body.mypfolioFlickrPics.length > 0) {
+    console.log(" req.body.mypfolioFlickrPics.length " + req.body.mypfolioFlickrPics.length);
+    pfolioFlickrPics = JSON.parse(req.body.mypfolioFlickrPics);
+    console.log("pfolioFlickrPics[0] " + pfolioFlickrPics[0].flickrURL)
   }  
 
   // if(typeof req.body.mypfolioRemPics != 'undefined') {
@@ -109,6 +116,7 @@ exports.update = function (req, res) {
                db.portfolio.myPlays = pfolioPlays
                db.portfolio.myResume = req.body.myResume;
                db.portfolio.myVideos = pfolioVideos;
+               db.portfolio.myFlickrPics = pfolioFlickrPics;
                console.log("req.body.emailDisplay " + req.body.emailDisplay)
                if(req.body.emailDisplay) {
                     if (req.body.emailDisplay == "ok") db.local.emailDisplay = true;

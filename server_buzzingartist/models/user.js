@@ -30,6 +30,7 @@ var userSchema = mongoose.Schema({
         myPhotos     : [{}],
         myVideos     : [{}],
         myPlays     :  [{}],
+        myFlickrPics     :  [{}],
         myResume     : String
     },
     respect         : {
