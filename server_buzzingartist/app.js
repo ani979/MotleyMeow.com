@@ -269,7 +269,7 @@ app.get('/auth/facebook/callback',
 app.get( '/home',  ensureAuthenticated, home.landing_home);
 app.post( '/saveNotificationClickDate', home.saveNotificationClickDate);
 app.get( '/getNotification', home.getNotification);
-app.get( '/profile', ensureAuthenticated, home.profile);
+app.get( '/profile', home.profile);
 app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
 var mwMulter1 = multer({ dest: './views/uploads' });
