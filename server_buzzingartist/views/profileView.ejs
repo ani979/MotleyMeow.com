@@ -14,12 +14,12 @@
     <% } else { %>  
       <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
     <% } %>
-    <% if(typeof user != 'undefined' && typeof user.portfloio!='undefined' && typeof user.portfloio.myself != 'undefined') { %>
-      <meta property="og:description" content="<%=user.portfloio.myself%>"/>
+    <% if(typeof user != 'undefined' && typeof user.portfolio!='undefined' && typeof user.portfolio.myself != 'undefined') { %>
+      <meta property="og:description" content="<%=user.portfolio.myself%>"/>
     <% } else { %>  
-      <meta property="og:description" content="Read about an artist from <%=user.loca.city%>"/>
+      <meta property="og:description" content="Read about an artist from <%=user.local.city%>"/>
     <% } %>  
-    <meta property="og:title" content="View the artist: <%=user.p.name%>">
+    <meta property="og:title" content="View the artist: <%=user.facebook.name%>">
     <title>MOTLEYMEOW. Hear the artists meow.</title> 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery.js"></script>
@@ -200,7 +200,7 @@
                           <div class="col-md-4">
                             <div class="thumbnail">
                                 <a href = "/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" data-lightbox="image" data-title="Portfolio images">
-                                  <img alt="No image" src="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>">
+                                  <img alt="No image" src="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" style="min-width:200px;max-width:200px;max-height:200px;min-height:200px;">
                                 </a>  
                             </div>
                           </div>

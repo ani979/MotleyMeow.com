@@ -267,7 +267,8 @@
                                                 
                                            <input type="hidden" id="mypfolioPics" name = "mypfolioPics">
                                            <input type="hidden" id="mypfolioRemPics" name = "mypfolioRemPics">
-                                           <div class="progress" style= "display:none;">
+                                           <div>&nbsp;</div>
+                                           <div class="progress col-md-6 col-md-offset-4" style= "display:none;padding:0px;">
                                                 <div class="bar"></div >
                                                 <label class="percent">0</label >
                                             </div>
@@ -746,11 +747,7 @@
                   newEntry.find('input').attr('id', 'fpic'+flickIndex);
                   newEntry.find('input').val("<%=user.portfolio.myFlickrPics[i].flickrURL%>");
                   newEntry.find('iframe').attr('src', "<%=user.portfolio.myFlickrPics[i].flickrURL%>");
-                  // newEntry.append("<div>&nbsp;</div><iframe src=" +  "<%=user.portfolio.myVideos[i].videoURL%>" + " width=500 height=300 frameborder=0 allowfullscreen class=col-md-12></iframe>");
-                  // alert("333")
-                  // newEntry.append("<div>&nbsp;</div> <textarea id=videoText"+ newEntry.attr('id') + 
-                  //             " name= videoText"+ newEntry.attr('id') + " placeholder='Tell us something about this video' " +
-                  //             "style='min-width:100%';rows=6>" + "<%=user.portfolio.myVideos[i].videoText%>" + "</textarea>");     
+   
                   controlForm.find('.fPicentry:not(:last) .btn-addFPics')
                       .removeClass('btn-addFPics ').addClass('btn-removeFPics')
                       .removeClass('btn-success').addClass('btn-danger')

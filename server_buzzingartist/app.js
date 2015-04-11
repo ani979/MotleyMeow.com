@@ -404,10 +404,12 @@ app.post('/postProfilePics', multer({
                     onFileUploadComplete: function (file, req, res) {
                         console.log("now going to resize " + file.path);
                         if(file.size <= (500*1024)) {
-                            if(uploadedFiles.length == req.files.length) {
+                            console.log("req.files.image.length " + req.files.image.length)
+                            console.log("req.files.length " + req.files.length)
+                            if(uploadedFiles.length == req.files.image.length) {
                                 res.end();
-                            }
-                            return;
+                            } 
+                            
                         }
                         im.resize({
                           srcPath: file.path,
