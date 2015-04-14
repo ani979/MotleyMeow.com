@@ -140,6 +140,7 @@ exports.post = function (req, res) {
 
             // set all of the facebook information in our user model
             newPost.post.userid    = req.session.user.facebook.id; 
+            newPost.post.user    = req.session.user; 
             newPost.post.postTitle = req.body.postTitle;
             newPost.post.postDetail = req.body.post;
             newPost.post.date = new Date();
@@ -191,44 +192,52 @@ exports.searchPosts = function (req, res) {
 
 exports.getRecentPosts = function (req, res) {
     //console.log(" here in recent posts");
-     var selectedCity = new Array();
-     //console.log(" req.session.user " + req.session.user)
-    if(typeof req.session.user.local.city != 'undefined' && req.session.user.local.city != "") {
-        if(req.session.user.local.city == "Bengaluru" || req.session.user.local.city == "Bangalore") {
-            selectedCity.push("Bangalore", "Bengaluru");
-        } else if(req.session.user.local.city == "Calcutta" || req.session.user.local.city == "Kolkata") {
-            selectedCity.push("Calcutta", "Kolkata");
-        } else if(req.session.user.local.city == "Mumbai" || req.session.user.local.city == "Bombay") {
-            selectedCity.push("Mumbai", "Bombay");
-        } else if (req.session.user.local.city != "None") {
-            selectedCity.push(req.session.user.local.city);
-        } 
-    
-    
-    
-        // console.log("selected city " + selectedCity[0])
-        // console.log("selected City length " + selectedCity.length)
-         //console.log("new Date() " + new Date())
-        Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                { 'post.date': { $lte: new Date() } } ] } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
-                                function(err, recentPosts) {
-                                  if(typeof recentPosts != 'undefined') {
-                                    // for(var i = 0; i < recentPosts.length; i++) {
-                                    //     console.log("recentPosts in city " + recentPosts[i].post.postTitle);
-                                    // }
-                                      
-                                      res.render("recentPostsPage", {postss:recentPosts, citysel:req.session.user.local.city})
-                                  }    
-                                });  
-    } else {
-         Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
+     //var selectedCity = new Array();
+
+     Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
                                 function(err, recentPosts) {
                                   if(typeof recentPosts != 'undefined') {
                                       console.log("recentPosts " + recentPosts.length);
-                                      res.render("recentPostsPage", {postss:recentPosts})
+                                      res.render("recentPostsPage", {allPosts:recentPosts})
                                   }    
                                 });
-    }    
+     //console.log(" req.session.user " + req.session.user)
+    // if(typeof req.session.user.local.city != 'undefined' && req.session.user.local.city != "") {
+    //     if(req.session.user.local.city == "Bengaluru" || req.session.user.local.city == "Bangalore") {
+    //         selectedCity.push("Bangalore", "Bengaluru");
+    //     } else if(req.session.user.local.city == "Calcutta" || req.session.user.local.city == "Kolkata") {
+    //         selectedCity.push("Calcutta", "Kolkata");
+    //     } else if(req.session.user.local.city == "Mumbai" || req.session.user.local.city == "Bombay") {
+    //         selectedCity.push("Mumbai", "Bombay");
+    //     } else if (req.session.user.local.city != "None") {
+    //         selectedCity.push(req.session.user.local.city);
+    //     } 
+    
+    
+        
+        // console.log("selected city " + selectedCity[0])
+        // console.log("selected City length " + selectedCity.length)
+         //console.log("new Date() " + new Date())
+    //     Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+    //                             { 'post.date': { $lte: new Date() } } ] } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
+    //                             function(err, recentPosts) {
+    //                               if(typeof recentPosts != 'undefined') {
+    //                                 // for(var i = 0; i < recentPosts.length; i++) {
+    //                                 //     console.log("recentPosts in city " + recentPosts[i].post.postTitle);
+    //                                 // }
+                                      
+    //                                   res.render("recentPostsPage", {postss:recentPosts, citysel:req.session.user.local.city})
+    //                               }    
+    //                             });  
+    // } else {
+    //      Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
+    //                             function(err, recentPosts) {
+    //                               if(typeof recentPosts != 'undefined') {
+    //                                   console.log("recentPosts " + recentPosts.length);
+    //                                   res.render("recentPostsPage", {postss:recentPosts})
+    //                               }    
+    //                             });
+    // }    
 };
 
 exports.searchallposts = function (req, res) {
@@ -400,23 +409,27 @@ exports.viewpost = function (req, res) {
                   res.redirect('/error');
                 } else {
                   console.log("found post " + db);
-                  User.findOne({ 'facebook.id' : db.post.userid }, function(error, user) {
-                    if(error || !db) {
-                        console.log("Error in retrieving post, something is not correct. Please try again.");
-                        // res.redirect("/searchposts");
-                        req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
-                        res.redirect('/error');
-                    } else {
-                        console.log("user " + user);
-                        if(user != null) {
-                            res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});   
-                        } else {
-                                                    // res.redirect("/searchposts");
+                  if(typeof db.post.user == 'undefined' || db.post.user == null || db.post.user.length == 0) {
+                      User.findOne({ 'facebook.id' : db.post.userid }, function(error, user) {
+                        if(error || !db) {
+                            console.log("Error in retrieving post, something is not correct. Please try again.");
+                            // res.redirect("/searchposts");
                             req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
                             res.redirect('/error');
-                        }    
-                    }
-                  });     
+                        } else {
+                            if(user != null) {
+                                res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});   
+                            } else {
+                                                        // res.redirect("/searchposts");
+                                req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
+                                res.redirect('/error');
+                            }    
+                        }
+                      });    
+                   } else {
+                    console.log("found user details");
+                    res.render("viewapost", {post:db, user: db.post.user[0], sessionUser: req.session.user}); 
+                   }    
                   
                 }  
             });

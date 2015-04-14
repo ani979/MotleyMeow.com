@@ -277,10 +277,9 @@ imageUpdateField {
 #slide-3 {
   background-color: #000;
   margin: 0 auto;
-  overflow: hidden;
   padding: 0;
   text-align: left;
-  width: 90%;
+  height:500px;
 }
   
   #slide-3 .col-12 {
@@ -653,4 +652,197 @@ body.modal-open .supreme-container{
    position:relative;
    top: -20px;
    left: -35px;
+}
+.span1 {
+  width: 60px;
+}
+
+[class*="span"] {
+  float: left;
+  margin-left: 20px;
+}
+
+.post-userphoto {
+  padding: 15px 0 0 15px;
+}
+
+.post-userphoto a img {
+  -webkit-transition: -webkit-transform .15s linear;
+}
+.member-photo, .team-logo, .league-logo, .league-logo {
+  -webkit-transition: -webkit-transform .1s linear;
+  max-width: 150%;
+  max-height: 150%;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+.span9 {
+  width: 85%;
+  color: #666;
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.post-text {
+  margin-bottom: 0;
+  padding: 5px 5px 5px 0;
+
+  
+}
+.post-text .post-title, .post-text .post-title a:link, .post-text .post-title a:visited {
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-decoration: none;
+  color: #666;
+}  
+
+.post-menu {
+  text-align: left;
+  padding: 3px 10px 8px 10px;
+  border-bottom: dotted 1px #DDD;
+  margin-bottom: 8px;
+  min-height: 19px;
+  font-size: 10px;
+}
+
+.post-menu span a, span.date, .add-comment div a, .details .del a {
+  padding: 0px 3px 2px 3px;
+  color: #999;
+  text-decoration: none;
+}
+
+.post-menu div {
+  display: inline-block;
+  float: right;
+  text-align: right;
+}
+
+div span.user a, .add-post a, .details .del {
+  color: #07C;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0px 2px 0px 2px;
+}  
+
+.notification-panel {
+  height:400px;
+  overflow-y: auto;
+  overflow-x:hidden;
+}
+
+#events-panel {
+  background-color: rgba(63, 3, 3, 0.83);
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+  height:auto;
+  border:0px;
+}
+  
+  #events-panel .col-12 {
+    display: inline-block;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: auto;
+  }
+
+  #events-panel a,
+  #events-panel img {
+    display: inline-block;
+    height: 100%;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  
+@media (max-width: 200px) {
+  #events-panel {
+    text-align: center;
+    width: 100%;
+  }
+  
+  #events-panel .row {
+
+    left: 0 !important;
+    margin: 0;
+    width: 100% !important;
+    overflow: hidden;
+
+  }
+  
+  #events-panel .col-12 {
+    display: inline-block;
+    height: auto;
+    width: 50%
+  }
+
+  #events-panel a,
+  #events-panel img {
+    display: inline-block;
+    height: auto;   
+    width: auto;
+    -webkit-transform: translate3d(0,0,0);
+    oveflow-x:scroll;
+  }
+}
+
+
+
+#artists-panel {
+  background-color: rgba(63, 3, 3, 0.83);
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+  height:auto;
+  border:0px;
+}
+  
+  #artists-panel .col-12 {
+    display: inline-block;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: auto;
+  }
+
+  #artists-panel a,
+  #artists-panel img {
+    display: inline-block;
+    height: 100%;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  
+@media (max-width: 200px) {
+  #artists-panel {
+    text-align: center;
+    width: 100%;
+  }
+  
+  #artists-panel .row {
+
+    left: 0 !important;
+    margin: 0;
+    width: 100% !important;
+    overflow: hidden;
+
+  }
+  
+  #artists-panel .col-12 {
+    display: inline-block;
+    height: auto;
+    width: 50%
+  }
+
+  #artists-panel a,
+  #artists-panel img {
+    display: inline-block;
+    height: auto;   
+    width: auto;
+    -webkit-transform: translate3d(0,0,0);
+    oveflow-x:scroll;
+  }
 }

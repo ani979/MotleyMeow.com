@@ -44,21 +44,18 @@ exports.posteventDetails = function (req, res) {
                                                 console.log(" response.name;  " + response.name);
                                                 newEvent.event.title = response.name; 
                                                 newEvent.event.link = "https://www.facebook.com/events/" + req.body.eventId; 
+                                                newEvent.event.user    = req.session.user; 
 
                                                 FB.api(
-                                                        '/' + req.body.eventId + '/picture',
-                                                        {
-                                                            "redirect": false,
-                                                            "width": "500",
-                                                            "height":"500"
-                                                        },
+                                                        '/' + req.body.eventId + '/?fields=cover' + '&access_token=' + req.session.fbAccessToken + '&appsecret_proof=' + req.session.hashValue,
                                                         function(response) {
 
-                                                            if (typeof response.data != 'undefined' && !response.error) {
-                                                                newEvent.event.eventcover = response.data.url; 
-                                                                console.log("event picture url " + response.data.url);
+                                                            if (typeof response.cover != 'undefined' && !response.error) {
+                                                                newEvent.event.eventcover = response.cover.source; 
+                                                                console.log("event picture url " + response.cover.source);
                                                                 newEvent.save(function(err) {
                                                                     if (err) {
+                                                                        console.log("error is " + err);
                                                                         req.flash('info', "Error while saving the event. Either its already present or some error in retrieving details from Facebook.")
                                                                         res.redirect('/error');
                                                                     }
