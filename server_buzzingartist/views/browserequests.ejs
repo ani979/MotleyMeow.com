@@ -306,40 +306,56 @@ function filterme() {
     }
 
 
-// $(function(){
-//       $('select[value]').each(function(){
-//         $(this).val(this.getAttribute("value"));
-//       });
-     
-//       var values_role = '<%=rolearr%>';
-//       var roleInitValues = values_role.split(",");
+$(function(){
+      // $('select[value]').each(function(){
+      //   $(this).val(this.getAttribute("value"));
+      // });
+      var roleInitValues = ""
+      var langInitValues = ""
+      var cityInitValues = ""
+      var values_city = "Select City";
+      var values_role = "Select the need";
+      var values_lang = "Language comfortability";
 
-//       var values_lang = '<%=langarr%>';
-//       var langInitValues = values_lang.split(",");
+      <% if(typeof rolearr != 'undefined') {%>
+        values_role = '<%=rolearr%>';
+        roleInitValues = values_role.split(",");
+      <% } %> 
 
-//       var values_city = '<%=cityarr%>';
-//       var cityInitValues = values_city.split(",");
+      <% if(typeof langarr != 'undefined') {%>
+        values_lang = '<%=langarr%>';
+        langInitValues = values_lang.split(",");
+      <% } %>  
+
+      <% if(typeof cityarr != 'undefined') {%>
+        values_city = '<%=cityarr%>';
+        cityInitValues = values_city.split(",");
+      <% } %>  
 
 
         
-//       $('input[name=role][type=checkbox]').each(function(){
+      $('input[name=role][type=checkbox]').each(function(){
         
-//         $(this).prop("checked", ($.inArray($(this).val(), roleInitValues) != -1));
+        $(this).prop("checked", ($.inArray($(this).val(), roleInitValues) != -1));
 
-//      });
+     });
 
-//       $('input[name=lang][type=checkbox]').each(function(){
+      $('input[name=lang][type=checkbox]').each(function(){
         
-//         $(this).prop("checked", ($.inArray($(this).val(), langInitValues) != -1));
+        $(this).prop("checked", ($.inArray($(this).val(), langInitValues) != -1));
 
-//      });
+     });
 
-//       $('input[name=city][type=checkbox]').each(function(){
+      $('input[name=city][type=checkbox]').each(function(){
         
-//         $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
+        $(this).prop("checked", ($.inArray($(this).val(), cityInitValues) != -1));
 
-//      });
-//   });    
+     });
+      filterme();
+      $('button[id="citySel"]').html(values_city);
+      $('button[id="artistSel"]').html(values_role);
+      $('button[id="languageSel"]').html(values_lang);
+  });    
     
     </script>
   </body>

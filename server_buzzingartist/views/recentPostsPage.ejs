@@ -55,8 +55,8 @@
                       <img  src="/images/newsfeedImage.png" style="height:30px; width:48px;" class="member-photo"> 
                     </a>
                   <% } else { %>
-                    <a href = "<%=allPosts[i].post.imagePath%>" data-lightbox="image" data-title="post image">
-                    <img  src="<%=allPosts[i].post.imagePath%>" style="height:48px; width:48px;" class="member-photo">
+                    <a href = "uploads/<%=allPosts[i].post.imagePath%>" data-lightbox="image" data-title="post image">
+                    <img  src="uploads/<%=allPosts[i].post.imagePath%>" style="height:48px; width:48px;" class="member-photo">
                   </a>
                   <% } %>
                 </div> 
@@ -73,7 +73,7 @@
                         <% } %>  
                   </div>
 
-                    <text id = "post-detail-text"><%=details%></text><a href="/viewpost?postid=<%=allPosts[i]._id%>" title="click to read the complete post">  more details</a>   
+                    <text class = "post-detail-text"><%=details%></text><a href="/viewpost?postid=<%=allPosts[i]._id%>" title="click to read the complete post">  more details</a>   
                 </div>
                 <div class='post-menu'>
                   <div>
@@ -95,3 +95,12 @@
                   <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/viewallposts" style="color: #ECDEDE;">Older News ›</a></li></ul>
       </div>
     </div>
+
+    <script>
+  $(document).ready(function(){
+
+    $('.post-detail-text').ellipsis({
+    row: 2
+    });
+   });
+ </script>    
