@@ -32,17 +32,17 @@
                               userRole = users[i].local.role
                         }           
 
-                        if(typeof users[i].local.city == 'undefined' || users[i].local.city == "") {
-                              userCity = "Not Set"
+                        if(typeof users[i].local.city == 'undefined' || users[i].local.city == "" || users[i].local.city == "None") {
+                              userCity = ""
                         } else { 
-                              userCity = users[i].local.city
-                        } 
+                              userCity = "from " + users[i].local.city
+                        }
                     }%>
                     <div style="padding-left:25px;padding-right:25px;">
                       <a href = "/profile?fbId=<%=users[i].facebook.id%>" style="max-width:150px;max-height:150px;">
                         <img src="<%= users[i].local.picture %>" border=0   style="max-width:150px;max-height:150px;"/>
                         <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%=users[i].facebook.name%></span>
-                        <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> from <%= userCity %></span>
+                        <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%= userCity %></span>
 
                       </a>
                      </div> 

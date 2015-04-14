@@ -226,13 +226,14 @@ exports.landing_home = function(req, res) {
     var posts = {};
     var events = {};
     var users = {};
-    var allDBEvents = {};
     var allDBPosts = {};
     var postsArray = new Array();
     var recentJoinedUsers = {};
+    var eventsInDB = {};
     async.parallel([
             function(callback){
                 var postsForArtist = {};
+                console.log("i am here1111")
                 if(typeof selectedCity != undefined && selectedCity.length != 0) {
                     if(typeof foundUser.local.notificationClickDate != 'undefined') {
                                     
@@ -285,9 +286,13 @@ exports.landing_home = function(req, res) {
                                 // appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:postsArray})
                              });
                         }
-                    }    
+                    } else {
+                        console.log("DONE with 1111")
+                        callback(null, "DONE1")
+                    }   
             },
             function(callback) {
+                console.log("i am here2222")
                 if(typeof selectedCity != undefined && selectedCity.length != 0) {
                     Event.aggregate([{ $match: { $and: [ { 'event.city': { $in: selectedCity } }, 
                             { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] } }, { $sort : { 'event.date' : 1 } }, {$limit:5}]
@@ -300,10 +305,11 @@ exports.landing_home = function(req, res) {
                          } else {
                             eventsInDB = eventsCriteria;
                          }   
-                         callback(null, "DONE3");
+                         console.log("DONE with 2222")
+                         callback(null, "DONE2");
                     }); 
                  } else {
-                    Event.aggregate([{ $match: { 'event.date': { $gte: new Date() } } }, { $sort : { 'event.date' : 1 } }],
+                    Event.aggregate([{ $match: { 'event.date': { $gte: new Date() } } }, { $sort : { 'event.date' : 1 } }, {$limit:5}],
                             function(err, allEventsInDB) {
                         if(err) {
                             allDBEvents = {};
@@ -312,9 +318,10 @@ exports.landing_home = function(req, res) {
                             //     allPosts: allDBPosts, allEvents: allDBEvents, appId:config.facebook.clientID});
                             return;
                         } else {
-                            allDBEvents = allEventsInDB;
+                            eventsInDB = allEventsInDB;
                         }
-                        callback(null, "DONE3");
+                        console.log("DONE with 2222")
+                        callback(null, "DONE2");
                             // User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             //         function(err, recentUsers) {
                               // res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: allDBPosts, allEvents: allDBEvents,
@@ -326,47 +333,54 @@ exports.landing_home = function(req, res) {
                  }   
             },
             function(callback){
-                Posts.aggregate([{ $match: { 'post.date': { $gte: (then) } } } , { $sort : { 'post.date' : -1 } }],
-                    function(err, allpostsinDB) {
-                     if (err || typeof allpostsinDB == 'undefined') {
-                        console.log("Error while getting posts");
-                        // res.send({ error: error }); 
-                        //req.flash('info', "Error while retrieving posts")
-                        //res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: {}, allEvents: {}, appId:config.facebook.clientID, dropdowns:dropdowns } );
-                        return;       
-                     }    
+                console.log("i am here3333")
+                if(typeof selectedCity != undefined && selectedCity.length != 0) {
+                    Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, { 'post.date': { $gte: (then) } } ] } }, { $sort : { 'post.date' : -1 } }],
+                        function(err, allpostsinDB) {
+                         if (err || typeof allpostsinDB == 'undefined') {
+                            console.log("Error while getting specific posts");
+                            // res.send({ error: error }); 
+                            //req.flash('info', "Error while retrieving posts")
+                            //res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: {}, allEvents: {}, appId:config.facebook.clientID, dropdowns:dropdowns } );
+                            return;       
+                         }    
 
-                    console.log("allDBPosts is " + allpostsinDB.length);
-                    
-                    if(!err) {
-                        allDBPosts = allpostsinDB;
-                    } else {
-                        allDBPosts = {};
-                    }
-                    callback(null, "DONE4")
-                });
+                        console.log("allDBPosts is " + allpostsinDB.length);
+                        
+                        if(!err) {
+                            allDBPosts = allpostsinDB;
+                        } else {
+                            allDBPosts = {};
+                        }
+                        console.log("DONE with 3333")
+                        callback(null, "DONE3")
+                    });
+                } else {
+                    Posts.aggregate([{ $match: { 'post.date': { $gte: (then) } } } , { $sort : { 'post.date' : -1 } } ],
+                        function(err, allpostsinDB) {
+                        if (err || typeof allpostsinDB == 'undefined') {
+                            console.log("Error while getting all posts");
+                            // res.send({ error: error }); 
+                            //req.flash('info', "Error while retrieving posts")
+                            //res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: {}, allEvents: {}, appId:config.facebook.clientID, dropdowns:dropdowns } );
+                            return;       
+                        }    
+
+                        console.log("allpostsinDB is " + allpostsinDB.length);
+                        
+                        if(!err) {
+                            allDBPosts = allpostsinDB;
+                        } else {
+                            allDBPosts = {};
+                        }
+
+                        console.log("DONE with 4444")
+                        callback(null, "DONE4")
+                    });        
+                }
             },
-            function(callback){
-                Event.aggregate([{ $match: { 'event.date': { $gte: new Date() } } }, { $sort : { 'event.date' : 1 } }],
-                            function(err, allEventsInDB) {
-                    if(err) {
-                        allDBEvents = {};
-                        console.log("Error when getting all events in Database");
-                        // res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, 
-                        //     allPosts: allDBPosts, allEvents: allDBEvents, appId:config.facebook.clientID});
-                        return;
-                    } else {
-                        allDBEvents = allEventsInDB;
-                    }
-                    callback(null, "DONE5")
-
-                        // User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
-                        //         function(err, recentUsers) {
-                          // res.render("Landing", {user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: allDBPosts, allEvents: allDBEvents,
-                          // appId:config.facebook.clientID, dropdowns:dropdowns})
-                    
-                });
-            }, function(callback) {
+            function(callback) {
+                console.log("i am here4444")
                 User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                          function(err, recentUsers) {
                     
@@ -379,6 +393,7 @@ exports.landing_home = function(req, res) {
                         } else {
                             recentJoinedUsers = recentUsers;
                         } 
+                        console.log("DONE with 4444")
                     callback(null,"DONE6")    
                 });   
             }   
@@ -387,8 +402,8 @@ exports.landing_home = function(req, res) {
         // optional callback
         function(err, results){
             console.log("Finally")
-            res.render("Landing", {user: req.session.user, events: eventsInDB, users:recentJoinedUsers, allPosts: allDBPosts, allEvents: allDBEvents,
-                          appId:config.facebook.clientID, dropdowns:dropdowns, recentPostsForArtist:postsArray})
+            res.render("Landing", {user: req.session.user, events: eventsInDB, users:recentJoinedUsers, allPosts: allDBPosts, 
+                appId:config.facebook.clientID, dropdowns:dropdowns, recentPostsForArtist:postsArray})
             // the results array will equal ['one','two'] even though
             // the second function had a shorter timeout.
         }

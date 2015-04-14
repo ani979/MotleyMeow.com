@@ -41,11 +41,17 @@ exports.update = function (req, res) {
       }  
     });
   } else {
-    console.log("removing all profile pictures")
-    app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
-        console.log("Removing file " + fileName);
-        app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
-    });
+    if (app.fsExtra.existsSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/')) {
+    // Do something
+      console.log("The directory does exist");
+      console.log("removing all profile pictures")
+      app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+          console.log("Removing file " + fileName);
+          app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
+      });
+    }  else {
+      console.log("The directory for " +  req.session.user.facebook.id + " does exist");
+    }
   }
 
   if(typeof req.body.mypfolioVids != 'undefined' && req.body.mypfolioVids.length > 0) {

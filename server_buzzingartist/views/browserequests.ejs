@@ -317,17 +317,17 @@ $(function(){
       var values_role = "Select the need";
       var values_lang = "Language comfortability";
 
-      <% if(typeof rolearr != 'undefined') {%>
+      <% if(typeof rolearr != 'undefined' && rolearr.length != 0) {%>
         values_role = '<%=rolearr%>';
         roleInitValues = values_role.split(",");
       <% } %> 
 
-      <% if(typeof langarr != 'undefined') {%>
+      <% if(typeof langarr != 'undefined' && langarr.length != 0) {%>
         values_lang = '<%=langarr%>';
         langInitValues = values_lang.split(",");
       <% } %>  
 
-      <% if(typeof cityarr != 'undefined') {%>
+      <% if(typeof cityarr != 'undefined' && cityarr.length != 0) {%>
         values_city = '<%=cityarr%>';
         cityInitValues = values_city.split(",");
       <% } %>  
