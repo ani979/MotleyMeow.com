@@ -232,19 +232,23 @@ exports.landing_home = function(req, res) {
     var recentJoinedUsers = {};
     async.parallel([
             function(callback){
+                var postsForArtist = {};
                 if(typeof selectedCity != undefined && selectedCity.length != 0) {
                     if(typeof foundUser.local.notificationClickDate != 'undefined') {
                                     
-                            Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                            Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
                                 { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
                                                     function(err, postsinDB) {
+                                console.log("have reached here " + postsinDB)
                                 if(!err) {
                                     postsForArtist = postsinDB;
+                                    console.log("have reached here " + postsinDB.length)
                                 }
-                                console.log("postsForArtist length: "+postsForArtist.length);
+                                console.log("postsForArtist length: "+ postsForArtist.length);
                                 
                                 var j = 0;
                                 for (var i = postsForArtist.length - 1; i >= 0; i--) {
+                                    console.log(" postsForArtist[i].common " + postsForArtist[i].common);
                                     if(typeof postsForArtist[i].common != 'undefined' && postsForArtist[i].common != "") {
                                         postsArray[j] = postsForArtist[i];
                                         j ++;
@@ -256,7 +260,7 @@ exports.landing_home = function(req, res) {
                                 // appId:config.facebook.clientID, dropdowns:dropdowns,recentPostsForArtist:postsArray})
                             });
                         } else {
-                            Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1, 'post.userid': 1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                            Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
                                         { 'post.date': { $lte: new Date() } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
                                                             function(err, postsinDB) {
                                 if(!err) {

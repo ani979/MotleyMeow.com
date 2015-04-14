@@ -1058,6 +1058,7 @@ $("#footer").load("footer.ejs");
     function generateNotificationButton() {
       <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
         lengthofPosts = <%= recentPostsForArtist.length %>;
+        <% var nameOfuser = "" %>
         generateNotificationLayout('notification', 'bottomLeft', '<text id="hero"><%= recentPostsForArtist.length %></text> new posts based on your profile');
                                   <% 
                                   if(typeof recentPostsForArtist == 'undefined' || recentPostsForArtist.length == 0) { %>
@@ -1066,7 +1067,12 @@ $("#footer").load("footer.ejs");
                                             <% if (typeof recentPostsForArtist[i].post.postDetail !='undefined') {
                                               details = recentPostsForArtist[i].post.postDetail
                                             }%>
-                                            generateNotifications('success', 'bottomLeft', '<%= recentPostsForArtist[i].post.userid%> posted for the requirement <%= recentPostsForArtist[i].post.postTitle %>. <a href=/viewpost?postid=<%=recentPostsForArtist[i]._id%> id =view name=<%=recentPostsForArtist[i]._id%>> View Details</a>',<%= recentPostsForArtist.length %>);
+                                            <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { 
+                                              nameOfuser = "A member"
+                                             } else {
+                                              nameOfuser = recentPostsForArtist[i].post.user[0].facebook.name
+                                             } %>
+                                            generateNotifications('success', 'bottomLeft', '<%= nameOfuser%> posted for the requirement <%= recentPostsForArtist[i].post.postTitle %>. <a href=/viewpost?postid=<%=recentPostsForArtist[i]._id%> id =view name=<%=recentPostsForArtist[i]._id%>> View Details</a>',<%= recentPostsForArtist.length %>);
                                             $('#noty_bottomLeft_layout_container').children('li').each(function () {
                                               //$.noty.close($(this).children('.noty_type_success').attr('id'))    
                                               $(this).children('.noty_type_success').parent().hide();               

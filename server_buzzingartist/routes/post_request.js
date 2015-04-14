@@ -353,7 +353,7 @@ exports.viewNotificationPosts = function (req, res) {
 
     if(typeof selectedCity != undefined && selectedCity.length != 0) {
         console.log("req.session.user role: "+foundUser.local.role[0]);                                
-                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+                                        Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
                                             { 'post.date': { $lte: new Date() } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
                                                                 function(err, postsinDB) {
                                             if(!err) {
