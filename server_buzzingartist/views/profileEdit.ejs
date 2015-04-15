@@ -116,8 +116,14 @@
                                    <div class="form-group">
                                        <label class="col-sm-3 control-label" for="email">Email address</label>
                                       <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
-                                        value = "<%= user.facebook.email %>" >
+                                        <%if(typeof user.facebook.email == 'undefined') {%>
+                                           <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
+                                            value = "" >
+                                        <% } else { %>
+                                          <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
+                                          value = "<%= user.facebook.email %>" >
+                                        <% } %> 
+                                        
                                         <p><span class="fieldNote">We currently don't do validation of emails. Please ensure you key in the right one else you are easy to miss on important notifications.</span></p>
                                       </div>
                                         <input type="hidden" name = "userId" value = <%= user.facebook.id %> >
@@ -533,11 +539,6 @@
       var playIndex = 0;
       var flickIndex = 0;
       var portfolioImages =new Array();
-      var portfolioRemovedImages =new Array();
-      var portfolioVideos =new Array();
-      var portfolioRemovedVideos =new Array();
-      var portfolioPlays =new Array();
-      var flickrPictures = new Array();
        $('input[id=fileupload]').change(function(e){
           $('#fileupload').fileupload({
               dataType: 'json',
@@ -556,11 +557,44 @@
               }
           });
       });
-      $.validator.setDefaults({ ignore: [] });
-     sendEvent = function(sel, step) {
+
+
+      //$.validator.setDefaults({ ignore: [] });
+      $('#profileUpdateForm').validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            highlight: function (element) {
+                $(element).closest('.form-group').removeClass('success').addClass('error');
+                $('#collapseBasicProfile').addClass("in");
+                $('#collapseBasicProfile').attr("aria-expanded", "true");
+                $('#collapseBasicProfile').attr("style", "");
+
+                  // $("#accordion").accordion("option", "active", 0);
+
+            },
+            success: function (element) {
+                $(element).closest('.form-group').removeClass('error').addClass('success');
+            },
+            ignore: false
+
+      });
+
+      
+      sendEvent = function(sel, step) {
           $(sel).trigger('next.m.' + step);
       }
+
+
       $('#profileUpdateForm').submit(function( event ) {
+        var portfolioRemovedImages =new Array();
+        var portfolioVideos =new Array();
+        var portfolioRemovedVideos =new Array();
+        var portfolioPlays =new Array();
+        var flickrPictures = new Array();
         $('#imagePost').val("");
         $('#mypfolioPics').val(portfolioImages);
         //$('#mypfolioRemPics').val(portfolioRemovedImages);
@@ -622,23 +656,7 @@
             }
         });
 
-      $('#profileUpdateForm').validate({
-            rules: {
-                email: {
-                    required: true,
-                    email: true
-                }
-            },
-            highlight: function (element) {
-                if(element == $('#email')) {
-                  $('#btabs a[href="#tab1primary"]').tab('show');
-                }  
-                $(element).closest('.form-group').removeClass('success').addClass('error');
-            },
-            success: function (element) {
-                $(element).closest('.form-group').removeClass('error').addClass('success');
-            }
-      });
+      
 
       submitForDelete = function() {
           $('#deleteForm').submit();
@@ -823,14 +841,14 @@
     // });
     $(function(){
 
-      $('input[id^=deleteImage]').on('click', function(e){
-          e.preventDefault();
-          // $("#updatedImage").attr("src","");
-          // $("#updatedImage").parents("a").attr("href", "");
-          // $("#updatedImage").parents("a").hide();
-          // $("#imagePost").val("");
-          // $("#postedImage").val("removed");
-      });
+      // $('input[id^=deleteImage]').on('click', function(e){
+      //     e.preventDefault();
+      //     // $("#updatedImage").attr("src","");
+      //     // $("#updatedImage").parents("a").attr("href", "");
+      //     // $("#updatedImage").parents("a").hide();
+      //     // $("#imagePost").val("");
+      //     // $("#postedImage").val("removed");
+      // });
 
       $('input[id=imagePost]').click(function(){
         $('.progress').hide();
@@ -1040,12 +1058,12 @@
           });
       });
     });
-    $(function () {
-      $('#tab1primary a').click(function (e) {
-          e.preventDefault();
-          $('a[href="' + $(this).attr('href') + '"]').tab('show');
-      })
-    });
+    // $(function () {
+    //   $('#tab1primary a').click(function (e) {
+    //       e.preventDefault();
+    //       $('a[href="' + $(this).attr('href') + '"]').tab('show');
+    //   })
+    // });
 
     // function disableSubmit() {
     //   document.getElementById("submit").disabled = true;
@@ -1149,7 +1167,7 @@
                 .html('<span class="glyphicon glyphicon-minus"></span>');
             vidIndex++;    
         }).on('click', '.btn-remove', function(e) {
-          portfolioVideos.splice($.inArray(  $(this).parents('.entry:first').find('iframe').attr('src'), portfolioVideos.videoURL),1);
+          // portfolioVideos.splice($.inArray(  $(this).parents('.entry:first').find('iframe').attr('src'), portfolioVideos.videoURL),1);
           $(this).parents('.entry:first').remove();
           e.preventDefault();
           return false;
@@ -1171,7 +1189,7 @@
             playIndex++;    
             
         }).on('click', '.btn-removePlays', function(e) {
-          portfolioPlays.splice($.inArray( $(this).parents('.playEntry:first').find('#playsText').val(), portfolioPlays.playName),1);
+          // portfolioPlays.splice($.inArray( $(this).parents('.playEntry:first').find('#playsText').val(), portfolioPlays.playName),1);
           $(this).parents('.playEntry:first').remove();
           e.preventDefault();
           return false;
@@ -1196,7 +1214,7 @@
                 .html('<span class="glyphicon glyphicon-minus"></span>');
             flickIndex++;    
         }).on('click', '.btn-removeFPics', function(e) {
-          flickrPictures.splice($.inArray(  $(this).parents('.fPicentry:first').find('iframe').attr('src'), flickrPictures.flickrURL),1);
+          // flickrPictures.splice($.inArray(  $(this).parents('.fPicentry:first').find('iframe').attr('src'), flickrPictures.flickrURL),1);
           $(this).parents('.fPicentry:first').remove();
           e.preventDefault();
           return false;
@@ -1315,12 +1333,7 @@
     //   // setTimeout( progress, 2000 );
     });
 
-    $('[id=removetheImg]').click(function(){
-      
-    }); 
-    // $(document).ready(function() {
-    //     $('#playsRole').multiselect();
-    // })
+    
 
     </script>
 
