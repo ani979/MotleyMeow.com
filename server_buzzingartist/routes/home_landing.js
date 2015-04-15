@@ -166,7 +166,7 @@ exports.getNotification = function(req, res) {
                             if(typeof foundUser.local.notificationClickDate != 'undefined') {
                                 
                                         Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                            { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
+                                            { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } } ] }} ,{$limit:10}],
                                                                 function(err, postsinDB) {
                                             var postsForArtist = {};
                                             if(!err) {
@@ -238,7 +238,7 @@ exports.landing_home = function(req, res) {
                     if(typeof foundUser.local.notificationClickDate != 'undefined') {
                                     
                             Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
+                                { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } } ] }} ,{$limit:10}],
                                                     function(err, postsinDB) {
                                 console.log("have reached here " + postsinDB)
                                 if(!err) {
@@ -262,13 +262,12 @@ exports.landing_home = function(req, res) {
                             });
                         } else {
                             Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                        { 'post.date': { $lte: new Date() } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
+                                        { 'post.date': { $lte: new Date() } } ] }} ,{$limit:10}],
                                                             function(err, postsinDB) {
                                 if(!err) {
                                     postsForArtist = postsinDB;
                                 }
                                 console.log("postsForArtist length ELSE part: "+postsForArtist.length);
-                                var postsArray = new Array();
                                 var j = 0;
                                 for (var i = postsForArtist.length - 1; i >= 0; i--) {
                                     // console.log("postsForArtist[i]: "+postsForArtist[i]);
