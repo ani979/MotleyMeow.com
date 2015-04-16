@@ -117,7 +117,7 @@
                       <th class ="arlang" style="text-align:center">Comfortable in Language</th>
                       <th class ="arcity" style="text-align:center">City</th>
                       <!--<th class ="aremail">profile pic</th>-->
-                      <th class ="arlink">FB profile link</th>
+                      <th class ="arlink">Profile</th>
                    </thead>
                    <tbody class="searchable">
                       
@@ -140,7 +140,7 @@
                             <td><%= user.local.city %></td>
                           <% } %>  
                           <td>
-                           <a href="/profile?fbId=<%=users[i].facebook.id%>" type= "button" id ="viewProfile" align="center" class="btn btn-primary">View Me</a>
+                           <a href="/profile?fbId=<%=user.facebook.id%>" type= "button" id ="viewProfile" align="center" class="btn btn-primary">View Me</a>
                           </td>
 
 
