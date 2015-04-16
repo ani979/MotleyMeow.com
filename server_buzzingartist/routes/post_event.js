@@ -10,14 +10,14 @@ exports.postevents = function (req, res) {
 
 exports.posteventDetails = function (req, res) {
 	var allUsers;
-            console.log("req.body.eventid " + req.body.eventId);
+            console.log("req.body.eventIdAfterConversion " + req.body.eventIdAfterConversion);
            
                 FB.api(
-                            '/' + req.body.eventId + '?access_token=' + req.session.fbAccessToken + '&appsecret_proof=' + req.session.hashValue,
+                            '/' + req.body.eventIdAfterConversion + '?access_token=' + req.session.fbAccessToken + '&appsecret_proof=' + req.session.hashValue,
                             function (response) {
                                 if (response) {
 
-                                    Event.findOne({ 'event.eventId' : req.body.eventId }, function(err, event) {
+                                    Event.findOne({ 'event.eventId' : req.body.eventIdAfterConversion }, function(err, event) {
                                             if (err) {
                                                 console.log("Error in retrieving" + err);
                                                 req.flash('info', "Error while retrieving the event.")
@@ -37,17 +37,17 @@ exports.posteventDetails = function (req, res) {
                                                 
                                                 // set all of the facebook information in our user model
                                                 newEvent.event.userid    = req.session.user._id; 
-                                                newEvent.event.eventId    = req.body.eventId;
+                                                newEvent.event.eventId    = req.body.eventIdAfterConversion;
                                                 newEvent.event.date    = response.start_time;
                                                 newEvent.event.city = req.body.city; 
                                                 newEvent.event.eventCategory = req.body.category; 
                                                 console.log(" response.name;  " + response.name);
                                                 newEvent.event.title = response.name; 
-                                                newEvent.event.link = "https://www.facebook.com/events/" + req.body.eventId; 
+                                                newEvent.event.link = "https://www.facebook.com/events/" + req.body.eventIdAfterConversion; 
                                                 newEvent.event.user    = req.session.user; 
 
                                                 FB.api(
-                                                        '/' + req.body.eventId + '/?fields=cover' + '&access_token=' + req.session.fbAccessToken + '&appsecret_proof=' + req.session.hashValue,
+                                                        '/' + req.body.eventIdAfterConversion + '/?fields=cover' + '&access_token=' + req.session.fbAccessToken + '&appsecret_proof=' + req.session.hashValue,
                                                         function(response) {
 
                                                             if (typeof response.cover != 'undefined' && !response.error) {
