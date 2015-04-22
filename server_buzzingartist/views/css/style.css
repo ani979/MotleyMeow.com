@@ -50,7 +50,7 @@
 }
 .footer-nav a
 {
-	color: #b2b2b2
+color: #E0E0E0;
 }
 .footer-nav a:hover
 {
@@ -61,7 +61,6 @@
 
 .cp-copyright{
 	text-align:center;
-	border-top:1px #f1f2f2 dotted;
 	clear:both;
 }
 
@@ -86,6 +85,12 @@ div.srchBox {
   width: 100%;
   min-height: 100%;
 
+}
+
+.main-landing-container {
+  position:relative;
+  width: 100%;
+  min-height: 90%;
 }
 .thtrexplore {
     letter-spacing: 4px;
@@ -246,8 +251,7 @@ iheader {
 html, body {
    margin:0;
    padding:0;
-   height:100%;
-  background-color: rgba(252, 252, 252, 0.28)
+  
 }
 
 imageUpdateField {
@@ -275,11 +279,8 @@ imageUpdateField {
 
 
 #slide-3 {
-  background-color: #000;
-  margin: 0 auto;
   padding: 0;
   text-align: left;
-  height:500px;
 }
   
   #slide-3 .col-12 {
@@ -681,7 +682,6 @@ body.modal-open .supreme-container{
   width: 85%;
   color: #666;
   font-size: 13px;
-  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 .post-text {
@@ -726,7 +726,7 @@ div span.user a, .add-post a, .details .del {
 }  
 
 .notification-panel {
-  height:400px;
+  height:200px;
   overflow-y: auto;
   overflow-x:hidden;
 }
@@ -846,3 +846,247 @@ div span.user a, .add-post a, .details .del {
     oveflow-x:scroll;
   }
 }
+
+body.modal-open .supreme-container{
+    -webkit-filter: blur(1px);
+    -moz-filter: blur(1px);
+    -o-filter: blur(1px);
+    -ms-filter: blur(1px);
+    filter: blur(1px);
+}
+
+.blur {
+    -webkit-filter: blur(5px) grayscale(50%);
+}
+@media (max-width: 200px) {
+   .landing {
+      background-image: url(../images/bg_landing.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 400%;
+    }
+ } 
+
+ @media (min-width: 201px, max-width: 760px;) {
+   .landing {
+      background-image: url(../images/bg_landing.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 300%;
+    }
+ } 
+
+ @media (min-width: 761px) {
+   .landing {
+      background-image: url(../images/bg_landing.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 150%;
+    }
+ }   
+
+.tree {
+    min-height:20px;
+    padding:19px;
+    margin-bottom:20px;
+    
+}
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:20px 5px 0 5px;
+    position:relative
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1px solid #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+}
+.tree li::after {
+    border-top:1px solid #999;
+    height:20px;
+    top:25px;
+    width:25px
+}
+.tree li span {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #999;
+    border-radius:5px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none
+}
+.tree li.parent_li>span {
+    cursor:pointer
+}
+.tree>ul>li::before, .tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:30px
+}
+.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000;
+}
+
+.badge:hover {
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000;
+}
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    color: #D4C9C9;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #5A0202;
+    border-radius: 10px;
+}
+
+.notification-badge {
+        background:     radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
+        background:    -moz-radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
+        background:     -ms-radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
+        background:      -o-radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
+        background: -webkit-radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
+    background-color: #620404;
+    border: 2px solid white;
+    border-radius: 12px; /* one half of ( (border * 2) + height + padding ) */
+    box-shadow: 1px 1px 1px black;
+    color: white;
+    font: bold 15px/13px Helvetica, Verdana, Tahoma;
+    height: 16px; 
+    padding: 4px 3px 0 3px;
+    text-align: center;
+    min-width: 14px;
+}
+
+.notification-badge:hover {
+    color:white;
+    text-decoration: none;
+}
+
+.dropdown-menu-title {
+    background: none repeat scroll 0% 0% #F6F6F6;
+    color: #646464;
+    padding: 5px 10px;
+    display: block;
+}
+
+ul.messages li .header {
+    display: block;
+}
+
+ul.messages li .header .from {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+ul.notifications li .time, ul.tasks li .header .percent, ul.messages li .header .time {
+    font-size: 11px;
+    font-weight: bold;
+    font-style: italic;
+    right: 5px;
+}
+ul.messages li .message {
+    font-size: 11px;
+}
+
+.dropdown-menu li {
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #F6F6F6;
+}    
+
+.avatar img {
+    float: left;
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+
+@media (max-width: 200px) {
+   .profile {
+      background-image: url(../images/profile_bkg.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 400%;
+    }
+ } 
+
+ @media (min-width: 201px, max-width: 760px;) {
+   .profile {
+      background-image: url(../images/profile_bkg.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 300%;
+    }
+ } 
+
+ @media (min-width: 761px) {
+   .profile {
+      background-image: url(../images/profile_bkg.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 150%;
+    }
+ }   
+
+ .profilePageicon {
+    font-size:24px;
+    width:24px;
+    height:24px;
+    z-index:1000;
+  }
+
+  .profilePageiconRow {
+    font-size:12px;
+    color:rgba(249, 243, 243, 0.95);
+  }
+
+  .panelColors {
+    background-color: rgba(5, 5, 5, 0.76);
+    color: rgb(213, 209, 209);
+  }
+
+  .panelColorsAboutMe {
+    background-color: white;
+    color: black;
+  }

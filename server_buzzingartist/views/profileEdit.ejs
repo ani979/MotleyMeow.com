@@ -115,7 +115,7 @@
                                    
                                    <div class="form-group">
                                        <label class="col-sm-3 control-label" for="email">Email address</label>
-                                      <div class="col-sm-9">
+                                        <div class="col-sm-9">
                                         <%if(typeof user.facebook.email == 'undefined') {%>
                                            <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
                                             value = "" >
@@ -130,7 +130,7 @@
                                     </div>
                                      
                                     <div class="form-group">
-                                       <label class="col-sm-3 control-label" for="city">Location</label>
+                                      <label class="col-sm-3 control-label" for="city">Location</label>
                                       <div class="col-sm-9">
 
                                         <select class="form-control" value="<%= user.local.city %>" name="city">
@@ -342,7 +342,7 @@
                                 </div>
                               </div>
                             </div>  
-                              <div class="panel panel-default">
+                            <div class="panel panel-default">
                                 <div class="panel-heading">
                                   <h4 class="panel-title">
                                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePlays">Your experiences</a>
@@ -360,7 +360,7 @@
                                                       <div class="playEntry input-group col-md-12" id="plays0" style="padding-top:15px;">
                                                           <input class="col-md-12 playsText" id="playsText" name="playsText" type="text" placeholder="Name the play you were part of"/>
                                                           <div>&nbsp;</div>
-                                                          <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it"onchange="insertURL(this)"/>
+                                                          <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it" onchange="insertURL(this)"/>
                                                           <div>&nbsp;</div>
                                                           <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
                                                               <label class="control-label">Your involvement in this event:(Cntrl-select to add more)</label> 
@@ -391,6 +391,61 @@
                                       </div>
                                   </div>
                                 </div>
+                              </div>
+
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSocialPresence">Your social presence</a>
+                                  </h4>
+                                </div>
+                                <div id="collapseSocialPresence" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                      <div class="control-group col-md-12" id = "mySocialPresence">
+                                          <div class="control-group">
+                                            <%if(typeof user.portfolio.mySocialPresence == 'undefined' || user.portfolio.mySocialPresence.length == 0) {%>
+                                              <label class="col-sm-3 control-label" for="socialG">Google+</label>
+                                              <div class="col-sm-9">
+                                                  <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"> 
+                                              </div>
+                                              
+                                              <label class="col-sm-3 control-label" for="socialT">Twitter</label>
+                                              <div class="col-sm-9">
+                                                  <input type="text" class="form-control" name="socialT" id="socialT" placeholder="Your twitter profile link"> 
+                                              </div>    
+
+                                              <label class="col-sm-3 control-label" for="socialLn">LinkedIn</label>
+                                              <div class="col-sm-9">
+                                                  <input type="text" class="form-control" name="socialLn" id="socialLn" placeholder="Your Linkedin profile link"> 
+                                              </div>   
+                                            <% } else { 
+                                               for(var i =0; i < user.portfolio.mySocialPresence.length; i ++) {%>
+                                                  <% if(user.portfolio.mySocialPresence[i].name == "socialG") {%>
+                                                    <label class="col-sm-3 control-label" for="socialG">Google+</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"
+                                                        value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
+                                                    </div>
+                                                  <% } %>  
+                                                  <% if(user.portfolio.mySocialPresence[i].name == "socialT") {%>
+                                                    <label class="col-sm-3 control-label" for="socialT">Twitter</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" name="socialT" id="socialT" placeholder="Your twitter profile link" value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
+                                                    </div>    
+                                                  <% } %>
+                                                  <% if(user.portfolio.mySocialPresence[i].name == "socialLn") {%>
+                                                    <label class="col-sm-3 control-label" for="socialLn">LinkedIn</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" name="socialLn" id="socialLn" placeholder="Your Linkedin profile link" value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
+                                                    </div>  
+                                                  <%} %>  
+                                               <% } %> 
+                                            <% } %>
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+                                <input type = "hidden" id = "mypfolioSocialPres" name = "mypfolioSocialPres"/>
                               </div>
 
 
@@ -539,6 +594,7 @@
       var playIndex = 0;
       var flickIndex = 0;
       var portfolioImages =new Array();
+      var portfolioSocialPres = new Array();
        $('input[id=fileupload]').change(function(e){
           $('#fileupload').fileupload({
               dataType: 'json',
@@ -640,6 +696,21 @@
 
         if(flickrPictures.length > 0 ) {
           $('#mypfolioFlickrPics').val(JSON.stringify(flickrPictures));
+        }
+
+          portfolioSocialPres.push({"icon" : "fa fa-google-plus",
+                                    "URL":$('#socialG').val(),
+                                    "name":"socialG"});
+          portfolioSocialPres.push({"icon" : "fa fa-twitter",
+                                    "URL":$('#socialT').val(),
+                                    "name":"socialT"});
+          portfolioSocialPres.push({"icon" : "fa fa-linkedin ",
+                                    "URL":$('#socialLn').val(),
+                                    "name":"socialLn"});
+        
+
+        if(portfolioSocialPres.length > 0) {
+          $('#mypfolioSocialPres').val(JSON.stringify(portfolioSocialPres));
         }
       });
       $('#deleteForm').validate({

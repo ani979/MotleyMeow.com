@@ -204,7 +204,7 @@ exports.landing_home = function(req, res) {
     var then = new Date();
 
 
-    then.setDate(then.getDate() - 5);
+    then.setDate(then.getDate() - 10);
     var selectedCity = new Array();
     console.log(" foundUser.local.city " + foundUser.local.city)
     if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
@@ -293,29 +293,57 @@ exports.landing_home = function(req, res) {
             function(callback) {
                 console.log("i am here2222")
                 if(typeof selectedCity != undefined && selectedCity.length != 0) {
-                    Event.aggregate([{ $match: { $and: [ { 'event.city': { $in: selectedCity } }, 
-                            { 'event.date': { $gte: new Date(new Date().toISOString()) } } ] } }, { $sort : { 'event.date' : 1 } }, {$limit:5}]
+                    Event.aggregate([{ $match: { $and: [ { 'event.city': { $in: selectedCity } },  
+                                               { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
+                                                        { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
+                                                      ] } ] } }, 
+                                     { $sort : { 'event.date' : 1 } }, {$limit:5}]
+
+                            // ,  
+                            // { 'event.endDate': { $and: [ { $ne : null}, {$lte: new Date(new Date().toISOString()) } ] } } ] } }, 
+                            // { $sort : { 'event.date' : 1 } }, {$limit:5}]
                         , function(err, eventsCriteria) {
                         if(err) {
                             eventsInDB = {};
                             console.log("Event aggregated");
+                            console.log("error is " + err)
                             // res.render('Landing', { user: req.session.user, postss: posts, events: events, appId:config.facebook.clientID, dropdowns:dropdowns});
-                            return;
+                           // return;
                          } else {
                             eventsInDB = eventsCriteria;
+                            if(typeof eventsCriteria != 'undefined' && eventsCriteria.length ==0) {
+                                Event.aggregate([{ $match: { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
+                                                        { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
+                                                      ] } },  { $sort : { 'event.date' : 1 } }, {$limit:5}],
+                                            function(err, allEventsInDB) {
+                                                if(err) {
+                                                    eventsInDB = {};
+                                                    console.log("Error when getting all events in Database when city doesnt have any events");
+                                                } else {
+                                                    eventsInDB = allEventsInDB;
+                                                    console.log("DONE with 2222 FROM EVENTS FROM OTHER CITIES WHILE THE CURRENT CITY DOESNT HV EVENTS")
+                                                    callback(null, "DONE2");
+                                                }
+                                });                
+                            } else {
+                                console.log("DONE with 2222 CURRENT CITY HAS EVENTS")
+                                callback(null, "DONE2");
+                            }
                          }   
-                         console.log("DONE with 2222")
-                         callback(null, "DONE2");
+                         
                     }); 
                  } else {
-                    Event.aggregate([{ $match: { 'event.date': { $gte: new Date() } } }, { $sort : { 'event.date' : 1 } }, {$limit:5}],
+                    Event.aggregate([{ $match: { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
+                                                        { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
+                                                      ] } },  
+                                    { $sort : { 'event.date' : 1 } }, {$limit:5}],
                             function(err, allEventsInDB) {
                         if(err) {
-                            allDBEvents = {};
+                            eventsInDB = {};
                             console.log("Error when getting all events in Database");
                             // res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, 
                             //     allPosts: allDBPosts, allEvents: allDBEvents, appId:config.facebook.clientID});
-                            return;
+                            //return;
                         } else {
                             eventsInDB = allEventsInDB;
                         }
@@ -341,7 +369,7 @@ exports.landing_home = function(req, res) {
                             // res.send({ error: error }); 
                             //req.flash('info', "Error while retrieving posts")
                             //res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: {}, allEvents: {}, appId:config.facebook.clientID, dropdowns:dropdowns } );
-                            return;       
+                            //return;       
                          }    
 
                         console.log("allDBPosts is " + allpostsinDB.length);
@@ -362,7 +390,7 @@ exports.landing_home = function(req, res) {
                             // res.send({ error: error }); 
                             //req.flash('info', "Error while retrieving posts")
                             //res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: {}, allEvents: {}, appId:config.facebook.clientID, dropdowns:dropdowns } );
-                            return;       
+                            //return;       
                         }    
 
                         console.log("allpostsinDB is " + allpostsinDB.length);
@@ -388,7 +416,7 @@ exports.landing_home = function(req, res) {
                             console.log("Error when getting recent joined Users");
                             // res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, 
                             //     allPosts: allDBPosts, allEvents: allDBEvents, appId:config.facebook.clientID});
-                            return;
+                            //return;
                         } else {
                             recentJoinedUsers = recentUsers;
                         } 

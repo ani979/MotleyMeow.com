@@ -15,8 +15,8 @@ var eventSchema = mongoose.Schema({
         eventCategory:String,
         title:String,
         link: String,
-        user : [{}]
-
+        user : [{}],
+        endDate     : Date
     }
 
 });

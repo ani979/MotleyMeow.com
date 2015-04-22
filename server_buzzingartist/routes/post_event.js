@@ -39,6 +39,7 @@ exports.posteventDetails = function (req, res) {
                                                 newEvent.event.userid    = req.session.user._id; 
                                                 newEvent.event.eventId    = req.body.eventIdAfterConversion;
                                                 newEvent.event.date    = response.start_time;
+                                                newEvent.event.endDate    = response.end_time;
                                                 newEvent.event.city = req.body.city; 
                                                 newEvent.event.eventCategory = req.body.category; 
                                                 console.log(" response.name;  " + response.name);
