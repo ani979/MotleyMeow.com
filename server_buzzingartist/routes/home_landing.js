@@ -361,28 +361,28 @@ exports.landing_home = function(req, res) {
             },
             function(callback){
                 console.log("i am here3333")
-                if(typeof selectedCity != undefined && selectedCity.length != 0) {
-                    Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, { 'post.date': { $gte: (then) } } ] } }, { $sort : { 'post.date' : -1 } }],
-                        function(err, allpostsinDB) {
-                         if (err || typeof allpostsinDB == 'undefined') {
-                            console.log("Error while getting specific posts");
-                            // res.send({ error: error }); 
-                            //req.flash('info', "Error while retrieving posts")
-                            //res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: {}, allEvents: {}, appId:config.facebook.clientID, dropdowns:dropdowns } );
-                            //return;       
-                         }    
+                // if(typeof selectedCity != undefined && selectedCity.length != 0) {
+                //     Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, { 'post.date': { $gte: (then) } } ] } }, { $sort : { 'post.date' : -1 } }],
+                //         function(err, allpostsinDB) {
+                //          if (err || typeof allpostsinDB == 'undefined') {
+                //             console.log("Error while getting specific posts");
+                //             // res.send({ error: error }); 
+                //             //req.flash('info', "Error while retrieving posts")
+                //             //res.render('Landing', { user: req.session.user, postss: posts, events: eventsInDB, users:recentUsers, allPosts: {}, allEvents: {}, appId:config.facebook.clientID, dropdowns:dropdowns } );
+                //             //return;       
+                //          }    
 
-                        console.log("allDBPosts is " + allpostsinDB.length);
+                //         console.log("allDBPosts is " + allpostsinDB.length);
                         
-                        if(!err) {
-                            allDBPosts = allpostsinDB;
-                        } else {
-                            allDBPosts = {};
-                        }
-                        console.log("DONE with 3333")
-                        callback(null, "DONE3")
-                    });
-                } else {
+                //         if(!err) {
+                //             allDBPosts = allpostsinDB;
+                //         } else {
+                //             allDBPosts = {};
+                //         }
+                //         console.log("DONE with 3333")
+                //         callback(null, "DONE3")
+                //     });
+                // } else {
                     Posts.aggregate([{ $match: { 'post.date': { $gte: (then) } } } , { $sort : { 'post.date' : -1 } } ],
                         function(err, allpostsinDB) {
                         if (err || typeof allpostsinDB == 'undefined') {
@@ -404,7 +404,7 @@ exports.landing_home = function(req, res) {
                         console.log("DONE with 4444")
                         callback(null, "DONE4")
                     });        
-                }
+                //}
             },
             function(callback) {
                 console.log("i am here4444")

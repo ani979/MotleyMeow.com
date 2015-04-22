@@ -136,8 +136,8 @@
                           </a>
                         </li> 
                     <% } %>
-                    <li>
-                      <span class="message">
+                    <li style="text-align:center;">
+                      <span class="message" style="color:black;">
                         View all posts <a href="/viewNotificationPosts">here</a>
                       </span>
                     </li>  
@@ -291,7 +291,7 @@
                
                 <div class='span1'>
                   <div class="post-userphoto">
-                    <% if(typeof allPosts[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { %>
+                    <% if(typeof allPosts[i].post.user == 'undefined' || allPosts[i].post.user.length == 0) { %>
                       <a href="/images/siteLogo.jpg" data-lightbox="image" data-title="Default image for the post">
                         <img  src="/images/siteLogo.jpg" style="height:30px; width:48px;" class="member-photo"> 
                       </a>
