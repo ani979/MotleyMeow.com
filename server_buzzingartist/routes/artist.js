@@ -2,6 +2,7 @@ var User = require('../models/user.js');
 var Post = require('../models/posts.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var deletedArtists = require('../models/deletedArtists.js');
+var app = require('../app.js');
 
 
 exports.artist = function (req, res) {
@@ -17,8 +18,76 @@ exports.artist = function (req, res) {
 };
 
 exports.update = function (req, res) {
+  var pfolioPictures;
+  var pfolioPicturesToBeRemoved;
+  var pfolioVideos;
+  var pfolioPlays;
+  var pfolioFlickrPics;
+  var pfolioSocialPres;
 	var id = req.body.userId;  
   console.log("Id is " + id);
+  if(typeof req.body.mypfolioPics != 'undefined') {
+    pfolioPictures = req.body.mypfolioPics.split(",");
+    console.log("req.body.mypfolioPics " + pfolioPictures.length);
+     app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+      var found = false;
+      for(var i = 0; i < pfolioPictures.length; i++) {
+        if(pfolioPictures[i] == fileName) {
+          found = true;
+        }  
+      }
+      if(found == false) {
+        console.log("Removing file " + fileName);
+        app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
+      }  
+    });
+  } else {
+    if (app.fsExtra.existsSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/')) {
+    // Do something
+      console.log("The directory does exist");
+      console.log("removing all profile pictures")
+      app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+          console.log("Removing file " + fileName);
+          app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
+      });
+    }  else {
+      console.log("The directory for " +  req.session.user.facebook.id + " does exist");
+    }
+  }
+
+  if(typeof req.body.mypfolioVids != 'undefined' && req.body.mypfolioVids.length > 0) {
+    console.log(" req.body.mypfolioVids.length " + req.body.mypfolioVids.length);
+    pfolioVideos = JSON.parse(req.body.mypfolioVids);
+    console.log("pfolioVideos[0] " + pfolioVideos[0].videoURL)
+  }
+
+  if(typeof req.body.mypfolioPlays != 'undefined' && req.body.mypfolioPlays.length > 0) {
+    console.log(" req.body.mypfolioPlays.length " + req.body.mypfolioPlays.length);
+    pfolioPlays = JSON.parse(req.body.mypfolioPlays);
+    console.log("pfolioVideos[0] " + pfolioPlays[0].playName)
+  }
+
+  if(typeof req.body.mypfolioFlickrPics != 'undefined' && req.body.mypfolioFlickrPics.length > 0) {
+    console.log(" req.body.mypfolioFlickrPics.length " + req.body.mypfolioFlickrPics.length);
+    pfolioFlickrPics = JSON.parse(req.body.mypfolioFlickrPics);
+    console.log("pfolioFlickrPics[0] " + pfolioFlickrPics[0].flickrURL)
+  }
+
+  if(typeof req.body.mypfolioSocialPres != 'undefined' && req.body.mypfolioSocialPres.length > 0) {
+    console.log(" req.body.mypfolioSocialPres.length " + req.body.mypfolioSocialPres.length);
+    pfolioSocialPres = JSON.parse(req.body.mypfolioSocialPres);
+    console.log("pfolioSocialPres[0] " + pfolioSocialPres[0].url)
+  }  
+
+  // if(typeof req.body.mypfolioRemPics != 'undefined') {
+  //   pfolioPicturesToBeRemoved = req.body.mypfolioRemPics.split(",");
+  //   console.log("req.body.mypfolioPics to be removed " + pfolioPicturesToBeRemoved.length);
+  //   for(var i = 0; i < pfolioPicturesToBeRemoved.length; i++) {
+  //       console.log(" Going to remove " + pfolioPicturesToBeRemoved[i]);
+  //       app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + pfolioPicturesToBeRemoved[i]);
+  //   }
+  // } 
+
     User.findOne({ 'facebook.id' : id }, function(error, db) {
         console.log("coming 1");
         if (error || !db) {
@@ -37,6 +106,31 @@ exports.update = function (req, res) {
                // now update it in MongoDB
                db.local.role = req.body.role;
                db.local.lang = req.body.lang;
+               db.portfolio.myself = req.body.myself;
+               db.portfolio.myPhotos = pfolioPictures;
+               // if(typeof pfolioVideos != 'undefined' && pfolioVideos.length > 0) {
+               //  for(var i = 0; i < pfolioVideos.length; i++) {
+               //    db.portfolio.myVideos.push({
+               //          "videoURL": pfolioVideos[i].videoURL,
+               //          "videoText": pfolioVideos[i].videoText
+               //    })
+               //  }
+               // }
+               // if(typeof pfolioPlays != 'undefined' && pfolioPlays.length > 0) {
+               //  for(var i = 0; i < pfolioPlays.length; i++) {
+               //    db.portfolio.myPlays.push({
+               //          "playName": pfolioPlays[i].playName,
+               //          "playURL": pfolioPlays[i].playURL,
+               //          "playContrib" : pfolioPlays[i].playContrib
+               //    })
+               //  }
+               // }
+               console.log("req.body.resume = " + req.body.myResume);
+               db.portfolio.myPlays = pfolioPlays
+               db.portfolio.myResume = req.body.myResume;
+               db.portfolio.myVideos = pfolioVideos;
+               db.portfolio.myFlickrPics = pfolioFlickrPics;
+               db.portfolio.mySocialPresence = pfolioSocialPres;
                console.log("req.body.emailDisplay " + req.body.emailDisplay)
                if(req.body.emailDisplay) {
                     if (req.body.emailDisplay == "ok") db.local.emailDisplay = true;
@@ -46,7 +140,7 @@ exports.update = function (req, res) {
                     if (req.body.receiveNotif == "ok") db.local.receiveNotif = true;
                      else db.local.receiveNotif = false;
                }
-
+               db.local.lastProfileUpdateDate = new Date();
                db.save(function (err, user) {
                    if (err) {
                         console.log("ERRRORRRR");
@@ -58,7 +152,8 @@ exports.update = function (req, res) {
 
                    req.session.user = user;
                    req.session.loggedIn = true;
-                   res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful", dropdowns:dropdowns});
+                   res.redirect('/profile');
+                   //res.render('profileEdit', {user: req.session.user, infomessage: "Your update is successful", dropdowns:dropdowns});
                });
             } 
         }
@@ -200,3 +295,64 @@ exports.updateCityAndRoles = function (req, res) {
         }
     });
 };
+
+exports.postProfilePhoto = function(req,res) {
+    console.log(JSON.stringify(req.files));
+    //res.send({path: req.files.image});
+}
+
+exports.postProfileResume = function(req,res) {
+    console.log(JSON.stringify(req.files));
+    console.log("req.files.resume.name " + req.files.resume.name);
+    res.send({resumeName: req.files.resume});
+}
+
+exports.showRespect = function(req,res) {
+    console.log("User is " + req.body.curUserId);
+    var found = false;
+    if(typeof req.body.curUserId == 'undefined') {
+      res.send("ERROR");
+    }
+    User.findOne({ 'facebook.id' : req.body.curUserId }, function(error, db) {
+        
+        if (error || !db) {
+            console.log("ERRPRRR in SHOWRESPECT");
+            res.send("ERROR");        
+        } else {
+          for(var i = 0; i < db.respect.userId.length; i++) {
+               if(db.respect.userId[i].fromUserId == req.session.user.facebook.id) {
+                 console.log("FOUNDD")
+                 found = true;
+                 db.respect.userId.splice(i, 1);
+                 break;
+               }
+          }
+            
+                  
+          if( found) {
+              db.save(function (err, user) {
+               if (err) {
+                    console.log("ERRRORRRR");
+                    res.send("ERROR");
+                }
+               res.send({respectCount:user.respect.userId.length, isRemoved:true});
+           });
+         } else {
+           db.respect.userId.push({
+              "fromUserId": req.session.user.facebook.id,
+              "fromUserName" : req.session.user.facebook.name,
+              "repectedDate" : new Date()
+            });
+
+            db.save(function (err, user) {
+               if (err) {
+                    console.log("ERRRORRRR");
+                    res.send("ERROR");
+                }
+
+               res.send({respectCount:user.respect.userId.length, isRemoved:false});
+           });
+         }   
+        }
+    });
+}

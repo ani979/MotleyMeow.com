@@ -122,12 +122,13 @@ exports.post = function (req, res) {
 
                    // update the user object found using findOne
                    console.log("req.body.title" + req.body.postTitle);
-                    db.save(function (err, user) {
+                    db.save(function (err, post) {
                                 if (err) {
                                 // res.json(err) ;
                                     req.flash('info', "Error while saving the modifications done in the existing post")
                                     res.redirect('/error');
                                 } else {
+                                    req.session.postId = post.id;
                                     res.redirect('/searchPosts');
                                 }
                             });
@@ -139,6 +140,7 @@ exports.post = function (req, res) {
 
             // set all of the facebook information in our user model
             newPost.post.userid    = req.session.user.facebook.id; 
+            newPost.post.user    = req.session.user; 
             newPost.post.postTitle = req.body.postTitle;
             newPost.post.postDetail = req.body.post;
             newPost.post.date = new Date();
@@ -150,11 +152,12 @@ exports.post = function (req, res) {
             } else {
                 newPost.post.imagePath = req.files.imagePost.name;
             }
-            newPost.save(function(err) {
+            newPost.save(function(err, post) {
                        if (err) {
                             req.flash('info', "Error while saving the new Post in the database")
                             res.redirect('/error');  
                         } else {
+                            req.session.postId = post.id;
                             res.redirect('/searchPosts');
                         }
                     });
@@ -164,10 +167,13 @@ exports.post = function (req, res) {
 
 
 exports.searchPosts = function (req, res) {
-	 //console.log("req.session " + req.sesson);
-    //console.log("req.session.user " + req.session.user);
     var allUsers;
+    var recentChangedPostId = "";
     //console.log("req.user.email " + req.session.user.facebook.email);
+    if(typeof req.session.postId !='undefined') {
+        recentChangedPostId = req.session.postId;
+        req.session.postId = null;
+    }
 
     Posts.find({ 'post.userid' : req.session.user.facebook.id }, function(error, db) {
         //     console.log("coming 1");
@@ -177,55 +183,61 @@ exports.searchPosts = function (req, res) {
           req.flash('info', "Error while trying to find the user's post")
           res.redirect('/error'); 
         } else {
-          // console.log("found user " + db.facebook.email);
-          console.log("found user: " + db);
           // console.log("found user's post: " + db.post);
           console.log("found user's post length: " + db.length);
-          res.render('post_search', { postdb: db,  user:req.session.user});
+          res.render('post_search', { postdb: db,  user:req.session.user, recentPostId:recentChangedPostId});
         }    
      });   
 };
 
 exports.getRecentPosts = function (req, res) {
     //console.log(" here in recent posts");
-     var selectedCity = new Array();
-     //console.log(" req.session.user " + req.session.user)
-    if(typeof req.session.user.local.city != 'undefined' && req.session.user.local.city != "") {
-        if(req.session.user.local.city == "Bengaluru" || req.session.user.local.city == "Bangalore") {
-            selectedCity.push("Bangalore", "Bengaluru");
-        } else if(req.session.user.local.city == "Calcutta" || req.session.user.local.city == "Kolkata") {
-            selectedCity.push("Calcutta", "Kolkata");
-        } else if(req.session.user.local.city == "Mumbai" || req.session.user.local.city == "Bombay") {
-            selectedCity.push("Mumbai", "Bombay");
-        } else if (req.session.user.local.city != "None") {
-            selectedCity.push(req.session.user.local.city);
-        } 
-    
-    
-    
-        // console.log("selected city " + selectedCity[0])
-        // console.log("selected City length " + selectedCity.length)
-         //console.log("new Date() " + new Date())
-        Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                { 'post.date': { $lte: new Date() } } ] } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
-                                function(err, recentPosts) {
-                                  if(typeof recentPosts != 'undefined') {
-                                    // for(var i = 0; i < recentPosts.length; i++) {
-                                    //     console.log("recentPosts in city " + recentPosts[i].post.postTitle);
-                                    // }
-                                      
-                                      res.render("recentPostsPage", {postss:recentPosts, citysel:req.session.user.local.city})
-                                  }    
-                                });  
-    } else {
-         Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
+     //var selectedCity = new Array();
+
+     Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
                                 function(err, recentPosts) {
                                   if(typeof recentPosts != 'undefined') {
                                       console.log("recentPosts " + recentPosts.length);
-                                      res.render("recentPostsPage", {postss:recentPosts})
+                                      res.render("recentPostsPage", {allPosts:recentPosts})
                                   }    
                                 });
-    }    
+     //console.log(" req.session.user " + req.session.user)
+    // if(typeof req.session.user.local.city != 'undefined' && req.session.user.local.city != "") {
+    //     if(req.session.user.local.city == "Bengaluru" || req.session.user.local.city == "Bangalore") {
+    //         selectedCity.push("Bangalore", "Bengaluru");
+    //     } else if(req.session.user.local.city == "Calcutta" || req.session.user.local.city == "Kolkata") {
+    //         selectedCity.push("Calcutta", "Kolkata");
+    //     } else if(req.session.user.local.city == "Mumbai" || req.session.user.local.city == "Bombay") {
+    //         selectedCity.push("Mumbai", "Bombay");
+    //     } else if (req.session.user.local.city != "None") {
+    //         selectedCity.push(req.session.user.local.city);
+    //     } 
+    
+    
+        
+        // console.log("selected city " + selectedCity[0])
+        // console.log("selected City length " + selectedCity.length)
+         //console.log("new Date() " + new Date())
+    //     Posts.aggregate([{ $match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+    //                             { 'post.date': { $lte: new Date() } } ] } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
+    //                             function(err, recentPosts) {
+    //                               if(typeof recentPosts != 'undefined') {
+    //                                 // for(var i = 0; i < recentPosts.length; i++) {
+    //                                 //     console.log("recentPosts in city " + recentPosts[i].post.postTitle);
+    //                                 // }
+                                      
+    //                                   res.render("recentPostsPage", {postss:recentPosts, citysel:req.session.user.local.city})
+    //                               }    
+    //                             });  
+    // } else {
+    //      Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
+    //                             function(err, recentPosts) {
+    //                               if(typeof recentPosts != 'undefined') {
+    //                                   console.log("recentPosts " + recentPosts.length);
+    //                                   res.render("recentPostsPage", {postss:recentPosts})
+    //                               }    
+    //                             });
+    // }    
 };
 
 exports.searchallposts = function (req, res) {
@@ -314,10 +326,65 @@ exports.viewallposts = function (req, res) {
                 console.log("req.user " + req.user);
                 
                             
-                res.render('browserequests', { user: req.session.user, allposts: posts, rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia", dropdowns:dropdowns});
+                res.render('browserequests', { user: req.session.user, allposts: posts, dropdowns:dropdowns});
 
                 
             });
+};
+
+exports.viewNotificationPosts = function (req, res) {
+    // console.log("viewNotificationPostsSSSSSSSSSSSSSSSS");
+    // var foundUser = req.session.user;
+    // var selectedCity = new Array();
+    // var notificationClickDate = new Date(foundUser.local.notificationClickDate);
+    // console.log("found user notificationClickDate: "+notificationClickDate);
+    // var postsForArtist = {};
+    // if(typeof foundUser.local.city != 'undefined' && foundUser.local.city != "") {
+    //     if(foundUser.local.city == "Bengaluru" || foundUser.local.city == "Bangalore") {
+    //         selectedCity.push("Bangalore", "Bengaluru");
+    //     } else if(foundUser.local.city == "Calcutta" || foundUser.local.city == "Kolkata") {
+    //         selectedCity.push("Calcutta", "Kolkata");
+    //     } else if(foundUser.local.city == "Mumbai" || foundUser.local.city == "Bombay") {
+    //         selectedCity.push("Mumbai", "Bombay");
+    //     } else if (foundUser.local.city != "None") {
+    //         selectedCity.push(foundUser.local.city);
+    //     }
+    // }
+
+    // if(typeof selectedCity != undefined && selectedCity.length != 0) {
+    //     console.log("req.session.user role: "+foundUser.local.role[0]);                                
+    //                                     Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, commonToBoth:{ $setIntersection: [ "$post.role", "$foundUser.local.role" ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
+    //                                         { 'post.date': { $lte: new Date() } } ] }},{ $sort : { 'post.date' : -1 } },{$limit:10}],
+    //                                                             function(err, postsinDB) {
+    //                                         if(!err) {
+    //                                             postsForArtist = postsinDB;
+    //                                         }
+    //                                         res.render('browserequests', { user: req.session.user, allposts: postsForArtist, rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia", dropdowns:dropdowns});
+    //                                     });
+    // }
+
+    var then = new Date();
+    then.setDate(then.getDate() - 7);
+
+    console.log("req.session " + req.sesson);
+    console.log("req.session.user " + req.session.user);
+    var allUsers;
+    var posts; 
+    Posts.aggregate([{ $match: { 'post.date': { $lte: new Date() } } }, { $sort : { 'post.date' : -1 } } ],
+                            function(err, postsinDB) {
+        console.log("here");
+        if(!err) {
+            posts = postsinDB;
+        }
+        console.log("posts length is " + posts.length);
+        console.log("req.user " + req.user);
+        
+                    
+        res.render('browserequests', { user: req.session.user, allposts: posts, rolearr:req.session.user.local.role,langarr:req.session.user.local.lang,
+                cityarr:req.session.user.local.city, dropdowns:dropdowns});
+
+        
+    });
 };
 
 exports.postarequest = function (req, res) {
@@ -365,23 +432,27 @@ exports.viewpost = function (req, res) {
                   res.redirect('/error');
                 } else {
                   console.log("found post " + db);
-                  User.findOne({ 'facebook.id' : db.post.userid }, function(error, user) {
-                    if(error || !db) {
-                        console.log("Error in retrieving post, something is not correct. Please try again.");
-                        // res.redirect("/searchposts");
-                        req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
-                        res.redirect('/error');
-                    } else {
-                        console.log("user " + user);
-                        if(user != null) {
-                            res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});   
-                        } else {
-                                                    // res.redirect("/searchposts");
+                  if(typeof db.post.user == 'undefined' || db.post.user == null || db.post.user.length == 0) {
+                      User.findOne({ 'facebook.id' : db.post.userid }, function(error, user) {
+                        if(error || !db) {
+                            console.log("Error in retrieving post, something is not correct. Please try again.");
+                            // res.redirect("/searchposts");
                             req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
                             res.redirect('/error');
-                        }    
-                    }
-                  });     
+                        } else {
+                            if(user != null) {
+                                res.render("viewapost", {post:db, user: user, sessionUser: req.session.user});   
+                            } else {
+                                                        // res.redirect("/searchposts");
+                                req.flash('info', "Error in retrieving post, something is not correct. Please try again.");
+                                res.redirect('/error');
+                            }    
+                        }
+                      });    
+                   } else {
+                    console.log("found user details");
+                    res.render("viewapost", {post:db, user: db.post.user[0], sessionUser: req.session.user}); 
+                   }    
                   
                 }  
             });
