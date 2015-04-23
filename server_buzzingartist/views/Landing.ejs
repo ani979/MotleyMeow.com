@@ -13,19 +13,23 @@
     <title>Motleymeow.com home page</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/jquery.1.11.2.min.js"></script>
     <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.3.3.4.js"></script>
     <script src="js/bootstrap-dialog.js"></script>
+    <script src="js/jquery.ellipsis.min.js"></script>
+    <script src = "js/moment.min.js"></script>
     <link href="css/style.css" rel="stylesheet">       
     <link href="css/tab.css" rel="stylesheet">
     <link href="indexPage/css/font-awesome.min.css" rel="stylesheet">
     <link href="css/bootstrap-dialog.css" rel="stylesheet">
-       
- 
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+    <link href="css/lightbox.css" rel="stylesheet" />
+
   </head>
   
-  <body>
+  <body style="color:#E0DADA;" >
 
 <% getDate = function(x) {
             var retDate;
@@ -41,314 +45,456 @@
             return retDate;
         }
     %>
-<% if(typeof user != 'undefined' && user!=null) { %>
- <div id = "headerloggedin"> 
-  <nav class="navbar navbar-inverse navbar-static-top no-margin">
-    <script src="http://connect.facebook.net/en_US/all.js"></script>
-    <script>
-        FB.init({
-          appId:1381852852123169,
-          cookie:true,
-          status:true,
-          xfbml:true
+<div class = "main-landing-container landing container-fluid" >    
+  <a class="navbar-brand" href="/home" style = "color: #FBF7F7; font-size: 20px;"><img class="highlighted" src ="images/MotleyMeow-logo02.gif" style="max-width:200px;max-height:200px;"> </a>
+    <div>&nbsp;</div>
+    <% if(typeof user != 'undefined' && user!=null) { %>
+    <div id = "headerloggedin" class = "col-md-12">
+      <div class = "col-md-3">
+        <a href="#" onclick="doorbell.show(); return false;" style="color: #F5F5F5;font-size: 16px;">Send us a quick meow</a>
+        <br/>
+        <a href="#" onclick="FacebookInviteFriends();" style = "font-size: 16px;color: #F5F5F5; "> Invite your friends<span class="sr-only">(current)</span></a>
+      </div>  
+        <script src="http://connect.facebook.net/en_US/all.js"></script>
+        <script>
+            FB.init({
+              appId:1381852852123169,
+              cookie:true,
+              status:true,
+              xfbml:true
+            });
+
+        function FacebookInviteFriends()
+        {
+        FB.ui({
+            method: 'send',
+            name: 'Check out this site!',
+            description: 'EXPLORE. CONNECT. CONTRIBUTE!',
+            link: 'http://www.motleymeow.com',
         });
+        }
+        </script>
 
-    function FacebookInviteFriends()
-    {
-    FB.ui({
-        method: 'send',
-        name: 'Check out this site!',
-        description: 'EXPLORE. CONNECT. CONTRIBUTE!',
-        link: 'http://www.motleymeow.com',
-    });
-    }
-    </script>
-  <div class="container-fluid">
-    
+      <div class = "col-md-6">
+        <h2 class="title" style= "text-align:center;margin-top:0px;font-style: italic;">Meeoowww <strong> <%= user.facebook.name %>! </strong></h2>
+        <h1 style= "text-align:center;">LET'S BELL THE CAT!</h1>
+        <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
+        <h4 style= "text-align:center;"><small style="color: #C8C4C4;"> Your location is not set currently and your current email id is set to "<%= user.facebook.email %>". You can always update your location and email id through <a href="/profile">"update profile"</a> and keep yourself updated about happenings in your city only.</small></h4>
+        <% } else { %>  
+        <h4 style= "text-align:center;"><small style="color: #C8C4C4;"> Your current email id is set to "<%= user.facebook.email %>". You can always <a href="/profile">"update it here"</a> to keep yourself updated about latest happenings.</small></h4>
+        <% } %>
+      </div>  
 
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
-                data-target="#bs-project2-navbar-collapse-1" style = "outline: 0px none;">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/home" style = "color: #FBF7F7; font-size: 20px;"><img class="highlighted" src ="images/MotleyMeow-logo02.gif" style="max-width:200px;max-height:200px;"> </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-            
-                <ul class="nav navbar-nav" id="headerlist" style="font-size:16px;">
-                  <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
-                   <li><a href="/profile">Update profile <span class="sr-only">(current)</span></a></li>
-                   <li><a href="/postarequest">Post a request<span class="sr-only">(current)</span></a></li>
-                   </li> 
-                   <li ><a href="/searchPosts">Your posts<span class="sr-only">(current)</span></a></li>
-                   <li><a href="/postevents">Post event from FB <span class="sr-only">(current)</span></a></li>
-                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse</a>
-                      <ul class="dropdown-menu" role="menu">
-                          <li><a href="/artists">Browse Artists</a></li>
-                          <li><a href="/viewallposts">Browse Posts</a></li> 
-                          <li><a href="/allevents">Browse Events</a></li>            
-                      </ul>           
-                   </li>
-                    <li><a href="/comingsoon">Coming soon <span class="sr-only">(current)</span></a></li>
-                </ul>
-
-            <ul class="nav navbar-right navbar-nav">           
-                  <li style = "padding-right:30px;"><a class="btn" href="#" onclick="doorbell.show(); return false;" style="background-color: #F5F5F5;color: #1B1A1A;font-size: 16px;">Send us a quick meow</a></li>
-                  <li><a class="btn btn-primary" onclick="FacebookInviteFriends();" style = "font-size: 16px;color: #F5F5F5; background-color: #132290;"> Invite your friends<span class="sr-only">(current)</span></a></li>       
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="/profile">Profile</a></li>
-                      <li><a href="/logout">Logout</a></li>
-                      
-                    </ul>
-                  </li>
-             </ul>  
-          </div>
-    </div>
-  </nav>
-</div>
- <% } else { %>
- <div id = "headerloggedout">
-  <nav class="navbar navbar-inverse navbar-fixed-top no-margin">
-    <div class="container-fluid">
-      
-
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-project2-navbar-collapse-1">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">MotleyMeow </a>
-          </div>
-
-          <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
-              
-
-               <ul class="nav nav-bar pull-right">
-                          
-                  <li><a class="btn btn-default"  href="/auth/facebook">Login with facebook</a></li>
+      <div class = "col-md-3" style="float:right;">
+          <div class="col-md-6" style="text-align:right;margin-top:5px;">
+             
+          <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) {%>
                 
-              </ul>
-                
-        </div>
-    </div>
-  </nav>
- </div>
-<%}%> 
-<% var citysel = user.local.city %>
-<div class = "main-container" >
-    <!--<div class="col-md-12" style = "text-align: center;">
-    <h3 class = "thtrexplore">
-      EXPLORE. CONNECT. CONTRIBUTE.
-     </h3>
-  </div>-->
-  
-  <div class="container">
-    <h2 class="title" style= "text-align:center;">Meeoowww <strong> <%= user.facebook.name %>! </strong></h2>
-    <h3 style= "text-align:center;"><b>Let's bell the cat!</b></h3>
-    <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
-    <h4 style= "text-align:center;"><small> Your location is not set currently and your current email id is set to "<%= user.facebook.email %>". You can always update your location and email id through <a href="/profile">"update profile"</a> and keep yourself updated about happenings in your city only.</small></h4>
-    <% } else { %>  
-    <h4 style= "text-align:center;"><small> Your current email id is set to "<%= user.facebook.email %>". You can always <a href="/profile">"update it here"</a> to keep yourself updated about latest happenings.</small></h4>
-    <% } %>
+               
+                    <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;">Posts for you: <%= recentPostsForArtist.length %></a>
+                    <ul class="dropdown-menu messages" style=" right: 0px;left: auto;min-width: 350px;">
+                    <% var nameOfuser = "" %>
+                                
+                    <% for(var i=0; i < recentPostsForArtist.length; i++) { %>
+                        <% if (typeof recentPostsForArtist[i].post.postDetail !='undefined') {
+                          details = recentPostsForArtist[i].post.postDetail
+                        }%>
+                        <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { 
+                          nameOfuser = "A member"
+                         } else {
+                          nameOfuser = recentPostsForArtist[i].post.user[0].facebook.name
+                         } %>
+                         <% 
+                         var oneDay = 24*60*60*1000;
+                         var diffDays = Math.round(Math.abs((new Date().getTime() - recentPostsForArtist[i].post.date.getTime())/(oneDay))); 
+                         var diffDaysinStr;
+                         if (diffDays == 0)  {
+                           diffDaysinStr = "today" 
+                         } else if(diffDays == 1) {
+                           diffDaysinStr = "yesterday"
+                         } else { 
+                           diffDaysinStr = diffDays + " days ago"
+                         }%>
+                        <li>
+                          <a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" name="<%=recentPostsForArtist[i]._id%>">
+                            <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { %>
+                              <span class="avatar"><img  src="/images/siteLogo.jpg"></span>
+                            <% } else { %>  
+                              <span class="avatar"><img src="<%=recentPostsForArtist[i].post.user[0].local.picture%>" alt="Avatar"></span>
+                            <% } %>
+                            <span class="header">
+                              <span class="from">
+                                  <%=nameOfuser%>
+                              </span>
+                              <span class="time">
+                                  posted <%=diffDaysinStr%>
+                              </span>
+                            </span>
+                            <span class="message">
+                                <%= recentPostsForArtist[i].post.postTitle %>
+                            </span>  
+                          </a>
+                        </li> 
+                    <% } %>
+                    <li style="text-align:center;">
+                      <span class="message" style="color:black;">
+                        View all posts <a href="/viewNotificationPosts">here</a>
+                      </span>
+                    </li>  
+                    </ul>  
 
-    <hr class="half-rule">
-
-    <div class="Landingrow">
-      <div>&nbsp;</div>
-   <div>&nbsp;</div>
-      <div class="col-md-6 col-xs-6 divrowleft">
-        <a href="/profile" title="Update your profile" data-toggle="tooltip" style= "text-decoration: none;"><i class="homepageicon glyphicon glyphicon-user" style="color:rgba(249, 243, 243, 0.95);"></i><br/><label class="labelrow">PROFILE</label></a>
-      </div>
-      <div class="col-md-6 col-xs-6 divrowright">
-        <a href="/artists" title="Browse artists, posts, events" data-toggle="tooltip" style= "text-decoration: none;"><i class="homepageicon icon icon-search" style="color:rgba(249, 243, 243, 0.95);"></i><br/><label class="labelrow">SEARCH</label></a>
-
-      </div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div class="col-md-4 col-xs-4 divrowleft">
-        <a href="/postarequest" title="Post a request" data-toggle="tooltip" style= "text-decoration: none;"><i class="homepageicon glyphicon glyphicon-edit" style="color:rgba(249, 243, 243, 0.95);"></i><br/><label class="labelrow">POST</label></a>
-       
-      </div>
-       <div class="col-md-4 col-xs-4">
-      </div>
-      <div class="col-md-4 col-xs-4 divrowright">
-        <a href="/allevents" title="Browse Events" data-toggle="tooltip" style= "text-decoration: none;"><i class="homepageicon icon icon-eye-open" style="color:rgba(249, 243, 243, 0.95);"></i><br/><label class="labelrow">EVENTS</label></a>
-        
-      </div>
-    </div>
-    <hr class="half-rule">
-    
-  </div>
-  
-  <div id = "recentPosts" class="col-md-6" style="vertical-align:top;">
-    <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
-        <h2><a href = "/viewallposts">Recent posts in all locations(Click here for more)</a></h2> 
-     <% } else { %>
-        <h2><a href = "/viewallposts">Recent posts in <%=citysel%> (Click here for more)</a></h2>    
-     <% } %>   
-    <table id="postsTable" class="table table-striped">
-      <thead>
-          <tr>
-              <th class ="titlecol" style="text-align:left">Looking for</th>
-              <th class ="contribcol" style="text-align:left">artists required</th>
-              <th class ="citycol" style="text-align:left">in the city</th>
-              <th class ="fbprofilecol" style="text-align:left">Details</th>          
-          </tr>
-      </thead>
-      <tbody class="searchablewe">
-        
-        <% 
-        if(typeof postss == 'undefined' || postss.length == 0) { %>
-          <tr> <td colspan="4">No posts in the last few days. Search for more posts <a href = "/viewallposts">here</a></td></tr>
-
-        <%}  else { %>
-                <% for(var i=0; i < postss.length; i++) { %>
-                  <tr rel="tooltip" title="<%= postss[i].post.postDetail%>">
-                  <td><%= postss[i].post.postTitle %></td>
-                  <td><%= postss[i].post.role %></td>
-                  <td><%= postss[i].post.city %></td>
-                  
-                        <td><a href="/viewpost?postid=<%=postss[i]._id%>" id ="view" name="<%=postss[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></a></td>
-                        <input id="_id<%=postss[i]._id%>" name="_id"  type="hidden" value=<%=postss[i].post.userid%>>
-                        <input id="_postid<%=postss[i]._id%>"  type="hidden" value=<%=postss[i]._id%>>
+                                   
+          <%} else {%>
+          <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown">Posts for you: 0</a>
+                <ul class="dropdown-menu messages" style="font-color:inherit;background-color:inherit;">
                    
-                  </tr>
-                <% } %>
-           <%}%>     
-          
-          
-          
-      </tbody>
-    </table>
-    <script>
-
-    // $('a[id="view"]').on('click', function(e){
-     
-    //   var buttonname = $(this).attr('name');
-    //   var postusername = '_id' + buttonname;
-    //   var postname = '_postid' + buttonname;
-    //   var postval = $('#'+ postname).val();
-    //   var postUserVal = $('#' + postusername).val();
-      
-     
-
-    //   var form = $('#viewPost');
-    //   $('#postid').val(postval)
-    //   form.submit();
-      
-        
-    // });
-    </script>
-  </div>
-  <form id="viewPost" action="/viewpost" method="GET">
-    <input id = "postid" name="postid"  type="hidden">
-  </form>
-  
-
-  <div id="recentArtists" class="col-md-6" style="vertical-align:top;"> 
-    <h2><a href = "/artists">Recent artists joined all locations (Browse them all)</a></h2>
-    <table id="artistsTable" class="table table-striped">
-      <thead>
-          <tr>
-              <th class ="namecol" style="text-align:left">Name</th>
-              <th class ="contribcol" style="text-align:left">Contribution in Theatre</th>
-              <th class ="citycol" style="text-align:left">City</th>
-              <th class ="fbprofilecol" style="text-align:left">FB profile</th>
-          </tr>
-      </thead>
-      <tbody class="searchable">
-        
-                <% if (typeof users != 'undefined') { 
-                  for(var i=0; i < users.length; i++) { %>
-                    <tr>
-                    <td><%= users[i].facebook.name%></td>
-                      <% if(typeof users[i].local.role == 'undefined' || users[i].local.role.length == 0) { %>
-                            <td>Not updated yet</td>
-                      <% } else { %>  
-                            <td><%= users[i].local.role %></td>
-                      <% } %>            
-
-                       <% if(typeof users[i].local.city == 'undefined' || users[i].local.city == "") { %>
-                            <td>Not Set</td>
-                          <% } else { %>  
-                            <td><%= users[i].local.city %></td>
-                          <% } %> 
-                        <% if(users[i].facebook.link) { %>
-                            <td><a href = "<%=users[i].facebook.link%>" target="_blank"><img alt="" src=<%= users[i].local.picture %> class="img-circle" style="max-height:30px;max-width:30px"></a></td>
-                        <% } else { %>
-                            <td>Not shared</td>
-                        <% } %>
-                    
-                    </tr>
-                  <%}%>     
-                <%}%>  
-          
-          
-          
-      </tbody>
-     </table>
-  </div>     
-  
-  
-  <div id="slide-3" style="clear:both;">
-    <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
-        <h2 style="text-align:center;"><a href="/allevents" >Upcoming Events in all locations(Browse all here)</a></h2>
-     <% } else { %>
-        <h2 style="text-align:center;"><a href="/allevents" >Upcoming Events in <%=citysel%> (Browse all here)</a></h2>   
-     <% } %>
-      
-      <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
-        <div id="arrows" style="display:none">
-          <div id="arrow-left"></div>
-          <div id="arrow-right"></div>
-        </div>
-
-          <div class="row" style="position:relative">
-          <% for(var i = 0; i < events.length; i++) {%>
-              <%  var d = new Date(events[i].event.date).toISOString();
-                    var displayableDate = getDate(d);
-              %>
-              <div class="col-12" style="padding-left:25px;padding-right:25px;">
-                    <a href = "<%=events[i].event.link%>" target="_blank" style="max-width:250px;max-height:200px;text-decoration: none;">
-                      <img src="<%=events[i].event.eventcover%>" border=0   style="max-width:250px;max-height:200px;"/>
-                      <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
-                      <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> on <%=displayableDate%></span>
-                      <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
-
-                    </a>
-
-              </div>
+                  <li style="border:0;">
+                    <span class="message" >
+                          No posts for you related to your profile. Do update your profile if you have not. View all posts <a href="/viewNotificationPosts">here</a>
+                    </span>  
+                  </li> 
+                </ul>
+          <%}%>
+         </div> 
+ 
+        <div class="col-md-6">
+          <li class="dropdown pull-right" style="list-style-type: none;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+            <ul class="dropdown-menu">
+              <li><a href="/profile">Profile</a></li>
+              <li><a href="/logout">Logout</a></li>
               
-          <% }  %>
-          </div><!-- /row -->
-      
-      <% } else { %>  
-      <h3 style="text-align:center;"><a href="/allevents" >Sorry, no recent events posted in <%=citysel%>, click here to search events in other locations</a></h3>   
-      <% } %>
-    </div><!-- /slide3 -->
-  
-    
+            </ul>
+          </li>
+        </div>  
+      </div> 
 
+   </div>
+
+    
+   <% } else { %>
+    <div id = "headerloggedout">
+      <a class="navbar-brand" href="/home" style = "color: #FBF7F7; font-size: 20px;"><img class="highlighted" src ="images/MotleyMeow-logo02.gif" style="max-width:200px;max-height:200px;"> </a>
+       <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+                  
+
+         <ul class="pull-right">
+                    
+            <li><a class="btn btn-default"  href="/auth/facebook">Login with facebook</a></li>
+          
+        </ul>
+                  
+       </div>
+    </div>
+  <%}%> 
+  <% var citysel = user.local.city %>
+
+
+<div>&nbsp;</div>
+  <div class = "col-md-11 col-md-offset-1" style="padding-left:0px;padding-right:0px;">
+    <div class="col-md-10 col-md-offset-2">
+      <div class = "col-md-3 tree">
+      <ul>
+          <li>
+              <span class="badge badge-success"><i class="icon-minus-sign" style="font-size:18px;color:inherit">&nbsp;&nbsp;ARTISTS</i></span>
+              <ul>
+                  <li>
+                    <a href="/profile"><span class="badge badge-success"> VIEW YOUR PROFILE </span></a>
+                  </li>
+                  <li>
+                    <a href="/artists"><span class="badge badge-success"> BROWSE ARTISTS </span></a>
+                  </li>
+              </ul>
+          </li>
+        <ul>
+        </div> 
+        <div class = "col-md-3 tree">
+        <ul>
+          <li>
+              <span class="badge badge-success"><i class="icon-minus-sign" style="font-size:18px;color: inherit;">&nbsp;&nbsp;POSTS</i></span>
+              <ul>
+                  <li>
+                    <a href="/postarequest"><span class="badge badge-success"> ADD A NEW POST </span></a>
+                  </li>
+                  <li>
+                    <a href="/searchallposts"><span class="badge badge-success"> BROWSE POSTS </span></a>
+                  </li>
+              </ul>
+          </li>
+        <ul>
+        </div>
+        <div class = "col-md-3 tree">
+        <ul>
+          <li>
+              <span class="badge badge-success"><i class="icon-minus-sign" style="font-size:18px;color: inherit;">&nbsp;&nbsp;EVENTS</i></span>
+              <ul>
+                  <li>
+                    <a href="/postevents"><span class="badge badge-success"> ADD A NEW EVENT </span></a>
+                  </li>
+                  <li>
+                    <a href="/allEvents"><span class="badge badge-success"> BROWSE EVENTS </span></a>
+                  </li>
+              </ul>
+          </li>
+        <ul>
+        </div>  
+        
+    </div>
+    <div> &nbsp;</div>
+    <div class = "col-md-10 col-md-offset-1" id="recentPosts">
+      <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;background-color:#F2F2F2" >          
+        <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
+                
+                
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#5A0202;">
+                  <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;">
+                          <li class="active" style="color:#ECDEDE;">Recent posts <span class="sr-only">(current)</span></li>
+                  </ul>        
+
+                 <!--  <ul class="nav navbar-right navbar-nav" style="font-size:15px;">          
+                      <li style = "padding-right:10px;"><a class="btn btn-primary" style="padding:0px;color: #030303;" href="#postModal" data-toggle="modal" data-backdrop="static"><span class="glyphicon glyphicon-plus"></span> <b>a new Post</b></span></a></a></li>
+                  </ul> -->
+                </div>
+              
+        </nav>
+
+
+        <div class="panel-group notification-panel">
+          <% console.log("allposts.length" + allPosts.length) %>
+          <% if(allPosts.length > 0 ) { %>
+          <% for(var i=0; i < allPosts.length; i++) { 
+              %>
+              <% if (typeof allPosts[i].post.postDetail !='undefined') {
+                              details = allPosts[i].post.postDetail
+              }%>
+              <div class = "row">
+                <% var userPicture, username, fbLink 
+                var oneDay = 24*60*60*1000;
+                var diffDays = Math.round(Math.abs((new Date().getTime() - allPosts[i].post.date.getTime())/(oneDay))); 
+                var diffDaysinStr;
+                if (diffDays == 0)  {
+                  diffDaysinStr = "today" 
+                } else if(diffDays == 1) {
+                  diffDaysinStr = "yesterday"
+                } else { 
+                  diffDaysinStr = diffDays + " days ago"
+                 }%>
+                <% if (typeof allPosts[i].post.user !='undefined' && allPosts[i].post.user.length > 0) {
+                    userPicture = allPosts[i].post.user[0].local.picture
+                    username = allPosts[i].post.user[0].facebook.name
+                    fbLink = '/profile?fbId=' + allPosts[i].post.user[0].facebook.id
+                } else {
+                    userPicture = ""
+                    username = ""
+                    fbLink = '/profile?fbId='+ allPosts[i].post.userid
+                } %>      
+               
+                <div class='span1'>
+                  <div class="post-userphoto">
+                    <% if(typeof allPosts[i].post.user == 'undefined' || allPosts[i].post.user.length == 0) { %>
+                      <a href="/images/siteLogo.jpg" data-lightbox="image" data-title="Default image for the post">
+                        <img  src="/images/siteLogo.jpg" style="height:30px; width:48px;" class="member-photo"> 
+                      </a>
+                    <% } else { %>
+                      <a href = "<%=allPosts[i].post.user[0].local.picture%>" data-lightbox="image" data-title="post image">
+                      <img  src="<%=allPosts[i].post.user[0].local.picture%>" style="height:48px; width:48px;" class="member-photo">
+                    </a>
+                    <% } %>
+                  </div> 
+                </div>   
+               
+                <div class='span9'>
+                  <div class='post-text'>
+                    <div class="post-title">
+                          <a href="/viewpost?postid=<%=allPosts[i]._id%>" title="link to, view, or share the full post" rel="bookmark"><h4><%=allPosts[i].post.postTitle%></h4></a>  
+                          <% if(allPosts[i].post.city != "") { %> 
+                            <span class='user' style="font-size:11px;">in <%=allPosts[i].post.city%></span>
+                          <% } else { %>
+                            <span class='user' style="font-size:11px;">all over India</span>  
+                          <% } %>  
+                    </div>
+
+                      <text class = "post-detail-text"><%=details%></text><a href="/viewpost?postid=<%=allPosts[i]._id%>" title="click to read the complete post">  more details</a>   
+                  </div>
+                  <div class='post-menu'>
+                    <div>
+                      <span class='date timeago' title='time'><%=diffDaysinStr%></span> by
+                      <% if(username != "") { %>
+                        <span class='user'><a href="<%=fbLink%>" title='view users profile'><%=username%></a></span>
+                      <% } else { %>  
+                        <span class='user'><a href="<%=fbLink%>" title='view users profile'>a member</a></span>
+                      <% } %>  
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+          <% } %>
+          <% } else  { %>
+                <div class='span9'>
+                  <div class='post-text'>
+                    <div class="post-title">
+                            <span class='user' style="font-size:20px;">NO NEW POSTS IN THE LAST 5 DAYS</span>  
+                            
+                    </div>
+                  </div>
+                </div>    
+          <% } %>
+          
+        </div>
+        <div class="panel-footer" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
+                    <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/viewallposts" style="color: #ECDEDE;">Older News ›</a></li></ul>
+        </div>
+      </div>
+    </div>   
+
+  </div>
+  <div>&nbsp;</div>
+  <div class = "col-md-11 col-md-offset-1" id="slide-3">
+      <div class = "col-md-10 col-md-offset-1" >
+        <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;" >    
+      
+                       <h3 style="color:#ECDEDE;text-align:center;">Upcoming Events</h3>
+          <!-- <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
+                  
+                  
+                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#5A0202;">
+                    <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;">
+                      <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
+                          <li class="active" style="color:#ECDEDE;">Upcoming events in all the cities<span class="sr-only">(current)</span></li>
+                      <% } else { %>
+                          <li class="active" style="color:#ECDEDE;">Upcoming Events in <%=citysel%><span class="sr-only">(current)</span></li>
+                       <% } %>
+                    </ul>        
+                  </div>
+          </nav> -->
+          <div>&nbsp;</div>
+          <div class="panel-group notification-panel">
+            
+              
+              <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
+                <div id="arrows" style="display:none">
+                  <div id="arrow-left"></div>
+                  <div id="arrow-right"></div>
+                </div>
+
+                  <div class="row" style="position:relative;margin-left: 75px;">
+                  <% for(var i = 0; i < events.length; i++) {%>
+                      <%  var d = new Date(events[i].event.date).toISOString();
+                            var displayableDate = getDate(d);
+                      %>
+                      <div class="col-md-2" style="padding-left:25px;padding-right:25px;">
+                            <a href = "<%=events[i].event.link%>" target="_blank" style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;text-decoration: none;">
+                              <img src="<%=events[i].event.eventcover%>" border=0   style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;"/>
+                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
+                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"> on <%=displayableDate%></span>
+                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
+
+                            </a>
+
+                      </div>
+                      
+                  <% }  %>
+                  </div><!-- /row -->
+              
+              <% } else { %>  
+              <h3 style="text-align:center;"><a href="/allevents" >Sorry, no recent events posted in <%=citysel%>, click here to search events in other locations</a></h3>   
+              <% } %>
+          </div><!-- /slide3 -->
+        <!-- <div class="panel-footer" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
+                    <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/allEvents" style="color: #ECDEDE;">All Events ›</a></li></ul>
+        </div> -->
+       </div> 
+      </div>
+
+    </div>    
+    <div id = "footer">
+         <div class="container col-md-6 pull-right" >
+            <div class="bottom-footer">
+                  <ul class="footer-nav" style="font-size:16px;text-align:right">
+                    <li><a href="/aboutus">About Us |</a></li>
+                    <li><a href="/faq">FAQs |</a></li>
+                    <li><a href="/supportUs">Support US |</a></li>
+                    <li><a href="/credits">Thank You |</a></li>
+                    <li><a href="/terms">Terms Of Use |</a></li>
+                    <li><a href="/terms">Contact Us</a></li>
+                  </ul>
+            </div>
+        
+            
+
+
+            <div class="row cp-copyright" style="text-align:right;">
+                <div class="col-sm-12 col-xs-12">
+                    <small>&copy; 2015 <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. | <a href="/privacy">Privacy Policy</a></small>
+                </div>
+            </div>
+          </div> 
+        </div>   
+   <script src="js/private.js"></script>
+   <link href="css/font-awesome.min.css" rel="stylesheet"> 
+</div>
+</div>
+
+
+
+<div class="modal fade" id="postModal" aria-labelledby="postModal" tabindex="-1" aria-hidden="true">  
+    <div class="modal-dialog">
+        <div class="modal-content" style="font-weight:300;">
+            <div class="modal-header" style = "background-color: #838383;">
+                <h2 class="modal-title" data-step="1">crispost @Motleymeow</h2>
+                <h4 style= "text-align:center;"><small style="color:#333;"><b> Complete your post with just a title and image. For focused attention click on "briskpost".</b></small> </h4>
+            </div>
+            <div class="modal-body">
+              
+                <!-- <form id="requestForm" class="form-horizontal" enctype="multipart/form-data" action="/post" method="post"> -->
+                
+                  <!-- Textarea -->
+                  <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
+                  <div class="control-group">
+                      <label class="control-label col-md-3" for="postTitle">Title of the request</label>
+                      <div class="controls col-md-9">  
+                      <% if (typeof post != 'undefined' && post!= null) { %>   
+                       <input name="_postid"  type="hidden" value=<%=post._id%>>              
+                        <input type="textarea" name="postTitle" id="postTitle" style="width: 60%;" value= "<%=post.post.postTitle%>"> </input>
+                      <% } else { %> 
+                        <input type="textarea" name="postTitle" id="postTitle" placeholder="Need an actor etc." style="width: 60%;" value=""> </input>
+                      <% } %>
+                      </div>
+                  </div>   
+                  <div>&nbsp;</div>
+                  <div>&nbsp;</div>  
+                  <div class="control-group">
+                     <label class="control-label col-md-3" for="checkboxes">Select an image</label>
+                      <span class="btn btn-default btn-file col-md-9">
+                        <a href="" data-lightbox="No Image set" data-title="Post's image">
+                        <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:400px;max-height:400px"/></a>
+                        <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost"/>
+                        
+                          <a href = "" id="updateImage" style="display:none">Update this image</a>
+                          <a href = "" id="deleteImage" style="display:none">Remove this image</a>
+                          <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged"/>
+                      </span>
+                  </div> 
+                <!-- </form>  -->    
+              
+            </div>  
+            <div class="modal-footer">
+                 <span class="pull-left col-md-4 "><a href="/postarequest" class="btn btn-success">Add more with BriskPost</a></span>
+                 <span class = "col-md-4"><button type="button" class="btn btn-primary" data-dismiss="modal">SUBMIT</button></span>
+                 <span class="pull-right col-md-4"><button type="button" class="btn btn-warning" data-dismiss="modal">CLOSE</button></span>
+            </div>
+           
+        </div>
+    </div>
 </div>
 
 
 
          
 
-   <div id = "footer"></div>
- 
+   
+  
   <% var city = user.local.city;
      console.log("cityyyyyyyy: "+city);
      if(city == 'None') { %>
@@ -373,53 +519,7 @@
                     </label>
                  </div>  
                <% } %>
-                <!-- <div class = "col-sm-6">
-                  <label class="checkbox-inline col-sm-3">
-                        <input type="checkbox" id="checkboxinlineActing" name="role" value="Actor" > Acting
-                  </label>
-               </div>  
-                <div class = "col-sm-6">
-                  <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineDirecting" name="role" value="Director" > Direction
-                  </label>
-                </div> 
-                <div class = "col-sm-6">
-                  <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineSound" name="role" value="Sound" > Sound
-                  </label>
-                 </div> 
-                <div class = "col-sm-6">
-                  <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineLights" name="role" value="Lights" > Lights Design
-                  </label>
-                 </div> 
-                <div class = "col-sm-6">
-                  <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineMusic" name="role" value="Music" > Music
-                  </label>
-                 </div> 
-                <div class = "col-sm-6">
-                  <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineScriptwriting" name="role" value="Scriptwriter" > Scriptwriting
-                  </label>
-                </div> 
-               <div class = "col-sm-6">
-                  <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineCostume" name="role" value="Costume" > Costume Designing
-                  </label>
-                 </div> 
-                <div class = "col-sm-6">
-                  <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineSetDesign" name="role"  value="SetDesign" > Set Designing
-                  </label>
-                </div> -->
-<!--                 <div class = "col-sm-12 col-md-12">
-                  <label class="checkbox-inline">
-                        <input type="checkbox" id="checkboxinlineAudience" name="role"  value="Audience"> <strong  style="font-size:16px;"><b>I am mostly a member of audience</b>
-                  </label>
-                </div> -->
-              
-                
+             
             </div>
             
             <button id="donebtn" class="btn btn-primary pull-left" style="margin-top:30px;">DONE</button>
@@ -494,11 +594,50 @@
         </script>      
   <% } %>
 
-  <script src="js/jquery-1.10.2.min.js"></script>
+  <!-- <script src="js/jquery-1.10.2.min.js"></script> -->
   <script src="js/jquery-migrate-1.2.1.min.js"></script>
   <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/imageCarousel.js"></script>
+  <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+  <script src="js/lightbox.min.js"></script>
   <script>
+  $(document).ready(function() {
+    $('.post-detail-text').ellipsis({
+    row: 2
+  });
+          $(".notification-dropdown .dropdown-Notif").on("show.bs.dropdown", function(e){
+                    console.log("SHOW DROPDOWNNNNNNNNNNNN");              
+              <% if(typeof recentPostsForArtist != 'undefined') { %>
+                console.log("recentPostsForArtist.length: "+ <%= recentPostsForArtist.length %>);
+                 <%}%>
+              <% if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+                  $.ajax({
+                        url: "/saveNotificationClickDate",
+                        type: "POST",
+                        // data: {role: roles,city: citiesss},
+                        // data: {$("#myCityForm").serialize(), role: roles},
+                        success: function (data) {
+                          console.log("SUCCESSSS DROPDOWN");
+                          $('#newPosts').text("No new posts");
+                        },
+                        error: function (data) {
+                          console.log("some error " + data);
+                        }
+                        
+                  });
+              <%}%>
+            
+          });
+          $(".notification_dropdown .dropdown").on("hide.bs.dropdown", function(e){
+            console.log("HIDE DROPDOWNNNNNNNNNNNN");
+             
+              <% if(typeof recentPostsForArtist != 'undefined') { %>
+                console.log("recentPostsForArtist.length: "+ <%= recentPostsForArtist.length %>);
+                 <%}%>
+            <% if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+              $("#notification").load("/getNotification");
+            <%}%>
+          });
+        });
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -511,7 +650,7 @@
   <script type="text/javascript">
 
     
-$("#footer").load("footer.ejs"); 
+//$("#footer").load("footer.ejs"); 
   var isMobile = {
                 Android: function() {
                 return navigator.userAgent.match(/Android/i);
@@ -544,9 +683,8 @@ $("#footer").load("footer.ejs");
           var timerId;
           timerId = setInterval(function() {
             
-            $("#recentArtists").load("/getRecentArtists");
-            $("#recentPosts").load("/getRecentPosts");
-          }, 20000); 
+            //$("#recentPosts").load("/getRecentPosts");
+          }, 60000); 
           var myEvent = window.attachEvent || window.addEventListener;
           var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
@@ -559,6 +697,233 @@ $("#footer").load("footer.ejs");
 
    
         
+
+
+    function generate(type, layout) {
+        var n = noty({ layout: layout,
+        type: type,
+        text: 'Here i am', // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 5, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+        closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {},
+            afterShow: function() {},
+            onClose: function() {},
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        buttons: false // an array of buttons
+      });
+    }
+
+    function generateNotificationLayout(type, layout, text) {
+        var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text" style="font-size:18px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+              $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-danger').hide()
+            },
+            afterShow: function() {},
+            onClose: function() {
+                    
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click"],
+        buttons: [
+            {addClass: 'btn btn-primary', text: 'Show All', onClick: function($noty) {
+              $('#noty_bottomLeft_layout_container').children('li').each(function () {
+                  $('#noty_bottomLeft_layout_container').children('li').each(function () {
+                    //$.noty.close($(this).children('.noty_type_success').attr('id'))    
+                    $(this).children('.noty_type_success').parent().show();               
+                  });
+                });
+                $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-danger').show()
+                $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-primary').hide()
+                
+              }
+            },
+            {addClass: 'btn btn-danger', text: 'Hide All', onClick: function($noty) {
+                $('#noty_bottomLeft_layout_container').children('li').each(function () {
+                  //$.noty.close($(this).children('.noty_type_success').attr('id'))    
+                  $(this).children('.noty_type_success').parent().hide();         
+
+                });
+                $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-danger').hide()
+                $('#noty_bottomLeft_layout_container').find('.noty_type_notification').find('.btn-primary').show()
+                //children('li').each(function () {
+                  //$.noty.close($(this).children('.noty_type_success').attr('id'))    
+                  // $(this).children('.noty_type_notification').find('.btn-danger').hide();               
+                  // $(this).children('.noty_type_notification').find('.btn-primary').show(); 
+                // });
+                <% if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+                        $.ajax({
+                              url: "/saveNotificationClickDate",
+                              type: "POST",
+                              // data: {role: roles,city: citiesss},
+                              // data: {$("#myCityForm").serialize(), role: roles},
+                              success: function (data) {
+                                console.log("SUCCESSSS DROPDOWN");
+                                
+                              },
+                              error: function (data) {
+                                console.log("some error " + data);
+                              }
+                              
+                        });
+                <%}%>
+             } 
+            }
+          ]
+      });
+    }
+    var lengthofPosts = -1;
+    function generateNotifications(type, layout, text) {
+        var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 11, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click"],
+        buttons: false
+      });
+    }
+
+
+    function generateNoNotifications(type, layout, text) {
+        var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 11, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["button"]
+      });
+    }
+
+    function generateNotificationButton() {
+      <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+        lengthofPosts = <%= recentPostsForArtist.length %>;
+        <% var nameOfuser = "" %>
+        generateNotificationLayout('notification', 'bottomLeft', '<text id="hero"><%= recentPostsForArtist.length %></text> new posts based on your profile');
+                                  <% 
+                                  if(typeof recentPostsForArtist == 'undefined' || recentPostsForArtist.length == 0) { %>
+                                  <%}  else { %>
+                                          <% for(var i=0; i < recentPostsForArtist.length; i++) { var details="Not Mentioned";%>
+                                            <% if (typeof recentPostsForArtist[i].post.postDetail !='undefined') {
+                                              details = recentPostsForArtist[i].post.postDetail
+                                            }%>
+                                            <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { 
+                                              nameOfuser = "A member"
+                                             } else {
+                                              nameOfuser = recentPostsForArtist[i].post.user[0].facebook.name
+                                             } %>
+                                            generateNotifications('success', 'bottomLeft', '<%= nameOfuser%> posted for the requirement <%= recentPostsForArtist[i].post.postTitle %>. <a href=/viewpost?postid=<%=recentPostsForArtist[i]._id%> id =view name=<%=recentPostsForArtist[i]._id%>> View Details</a>',<%= recentPostsForArtist.length %>);
+                                            $('#noty_bottomLeft_layout_container').children('li').each(function () {
+                                              //$.noty.close($(this).children('.noty_type_success').attr('id'))    
+                                              $(this).children('.noty_type_success').parent().hide();               
+                                            }); 
+                                            
+                                          <% } %>
+                                          generateNotifications('notification', 'bottomLeft', '<a href=/viewNotificationPosts> <b>See other notifications here</b></a>');
+                                     <%}%>
+        // <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="newPosts" >posts <%= recentPostsForArtist.length %></span></button>
+          <%} else {%>
+        generateNoNotifications('warning', 'bottomLeft', 'No new notifications based on your profile since your last visit <br/> <a href=/viewNotificationPosts> <b>See previous notifications here</b></a>');
+        
+      <%}%>
+        // generate('information', 'topLeft');
+        // generate('error', 'topRight');
+        // generate('warning', 'center');
+        // generate('notification', 'centerRight');
+        // generate('success', 'bottomLeft');
+    }
+
+    $(document).ready(function () {
+
+        //generateNotificationButton();
+
+    });        
+
+
+    $('#postModal').on('show.bs.modal', function () {
+     $('.container').addClass('blur');
+    })
+
+    $('#postModal').on('hide.bs.modal', function () {
+       $('.container').removeClass('blur');
+    })
           
     </script>
      <script type="text/javascript">
@@ -568,6 +933,22 @@ $("#footer").load("footer.ejs");
     (function(d, t) {
         var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://doorbell.io/button/978?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
     }(document, 'script'));
+
+
+    $(function () {
+      $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+      $('.tree li.parent_li > span').on('click', function (e) {
+          var children = $(this).parent('li.parent_li').find(' > ul > li');
+          if (children.is(":visible")) {
+              children.hide('fast');
+              $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+          } else {
+              children.show('fast');
+              $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+          }
+          e.stopPropagation();
+      });
+    });
 </script>
   </body>
 </html>

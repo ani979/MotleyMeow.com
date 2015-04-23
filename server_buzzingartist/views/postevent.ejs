@@ -42,6 +42,7 @@
         <label id="eventurl" class="control-label col-md-3" for="textarea">EVENT URL:</label>
         <div class="controls col-md-9" >       
         <input type="textarea" name="eventId" id="eventId" class="input-lg" style="text-align: center; width: 80%;">
+        <input type="hidden" name="eventIdAfterConversion" id="eventIdAfterConversion" class="input-lg" style="text-align: center; width: 80%;">
         </div>
      </div>   
      <div>&nbsp;</div>
@@ -172,7 +173,7 @@
           if (splitEventbyId.length > 0) {
               idOfEvent = splitEventbyId[0];
               if(/^\d.*/.test(idOfEvent)) {
-                document.getElementById("eventId").value = idOfEvent;
+                document.getElementById("eventIdAfterConversion").value = idOfEvent;
               } else {
                 
                 $('#eventErrorModal').modal('show');
@@ -208,7 +209,8 @@
 
             errorPlacement: function(error, element) {
               if (element.attr("type") == "checkbox") {
-                  error.insertAfter($(element).closest('div').prev($('.checkkind')));
+                  error.insertBefore($(element).closest('.control-group'));
+                   $('#category-error').addClass('col-md-9 col-md-offset-3');
               } else {
                   error.insertAfter($(element).closest('div').prev($('.eventurl')));
               }
@@ -216,6 +218,7 @@
             
             highlight: function (element) {
                 $(element).closest('.control-group').removeClass('success').addClass('error');
+                
             },
             success: function (element) {
                 $(element).closest('.control-group').removeClass('error').addClass('success');

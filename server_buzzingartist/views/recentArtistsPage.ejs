@@ -1,42 +1,58 @@
-<h2><a href = "/artists">Recent artists joined all locations (Browse them all)</a></h2>
-    <table id="artistsTable" class="table table-striped">
-      <thead>
-          <tr>
-              <th class ="namecol" style="text-align:left">Name</th>
-              <th class ="contribcol" style="text-align:left">Contribution in Theatre</th>
-              <th class ="citycol" style="text-align:left">City</th>
-              <th class ="fbprofilecol" style="text-align:left">FB profile</th>
-          </tr>
-      </thead>
-      <tbody class="searchable">
-        
-                <% if (typeof users != 'undefined') { 
-                  for(var i=0; i < users.length; i++) { %>
-                    <tr>
-                    <td><%= users[i].facebook.name%></td>
-                      <% if(typeof users[i].local.role == 'undefined' || users[i].local.role.length == 0) { %>
-                            <td>Not updated yet</td>
-                      <% } else { %>  
-                            <td><%= users[i].local.role %></td>
-                      <% } %>            
+<div class ="panel panel-default" id="artists-panel">
+      <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
+          
+          
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#424141;">
+            <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;">
+                  <li class="active" style="color:#ECDEDE;">Just joined <span class="sr-only">(current)</span></li>
+                  <!-- <li class="active" style="color:#ECDEDE;">Recent posts from all over India <span class="sr-only">(current)</span></li> -->
+            </ul>        
+           <!--  <ul class="nav navbar-right navbar-nav">          
+                    <li style = "padding-right:10px;"><a class="btn btn-primary" href="/postarequest" style = "font-size: 14px;color: #F5F5F5; background-color: #132290;">Add a new post</a></li>
+                    <li><a class="btn btn-primary" href="\profile" style = "font-size: 14px;color: #F5F5F5; background-color: #132290;"> View your profile<span class="sr-only">(current)</span></a></li>  
+                    </li>
+               </ul>  
+            </ul> -->
+            <ul class="nav navbar-right navbar-nav" style="font-size:15px;">          
+                  <li style = "padding-right:10px;"><a class="btn btn-success" href="/profile" style="padding:0px;color: #030303;"><b>View your profile</b></span></a></a></li>
+              </ul>
+          </div>
+          
+      </nav>
+                        
+      <div class="panel-group notification-panel">
+        <% if (typeof users != 'undefined') { 
+                  for(var i=0; i < users.length; i++) {
+                    var userRole = "";
+                    var userCity = "";
+                    if(typeof users[i] != 'undefined') {
+                        if(typeof users[i].local.role == 'undefined' || users[i].local.role.length == 0) {
+                              userRole = "Not updated yet"
+                        } else {
+                              userRole = users[i].local.role
+                        }           
 
-                       <% if(typeof users[i].local.city == 'undefined' || users[i].local.city == "") { %>
-                            <td>Not Set</td>
-                          <% } else { %>  
-                            <td><%= users[i].local.city %></td>
-                          <% } %> 
-                        <% if(users[i].facebook.link) { %>
-                            <td><a href = "<%=users[i].facebook.link%>" target="_blank"><img alt="" src=<%= users[i].local.picture %> class="img-circle" style="max-height:30px;max-width:30px"></a></td>
-                        <% } else { %>
-                            <td>Not shared</td>
-                        <% } %>
-                    
-                    </tr>
+                        if(typeof users[i].local.city == 'undefined' || users[i].local.city == "" || users[i].local.city == "None") {
+                              userCity = ""
+                        } else { 
+                              userCity = "from " + users[i].local.city
+                        }
+                    }%>
+                    <div style="padding-left:25px;padding-right:25px;">
+                      <a href = "/profile?fbId=<%=users[i].facebook.id%>" style="max-width:150px;max-height:150px;">
+                        <img src="<%= users[i].local.picture %>" border=0   style="max-width:150px;max-height:150px;"/>
+                        <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%=users[i].facebook.name%></span>
+                        <span style="color:#FFF9F9;font-size:small;position:relative;width:100%;"><%= userCity %></span>
+
+                      </a>
+                     </div> 
+                     <div>&nbsp;</div>
                   <%}%>     
-                <%}%>  
-          
-          
-          
-      </tbody>
-     </table>
+          <%}%>
+      </div>  
+
+      <div class="panel-footer" style="background-color:#424141;padding-top:3px;padding-bottom:5px;">
+                    <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/artists" style="color: #ECDEDE;">Browse all artists ›</a></li></ul>
+      </div>
+    </diV>  
     
