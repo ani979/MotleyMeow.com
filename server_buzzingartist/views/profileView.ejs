@@ -294,11 +294,11 @@
                 </div>  
              </div>
              <div id="myVids" class="panel panel-default target panelColors">
-                <div class="panel-heading" contenteditable="false">My videos</div>
                   <div class="panel-body">
+                    <h3 style="margin-top:0px;">MY VIDEOS</h3>
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myVideos == 'undefined' || user.portfolio.myVideos.length ==0 ) { %>
                       
-                         <p class="form-control-static" ><span class="fieldNote">Rolling the reel in progress. Will be shared soon!!</span>
+                         <p class="form-control-static" ><span class="fieldNote" style="color:inherit">Rolling the reel in progress. Will be shared soon!!</span>
                       
                     <% } else { 
                         for(var i = 0; i < user.portfolio.myVideos.length; i ++ ) { %> 
@@ -322,11 +322,11 @@
                 
            
            <div id="myResume" class="panel panel-default target panelColors">
-                <div class="panel-heading" contenteditable="false">My Résumé</div>
                   <div class="panel-body">
+                    <h3 style="margin-top:0px;">MY RESUME</h3>
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myResume == 'undefined' || user.portfolio.myResume == "" ) { %>
                       
-                        <p class="form-control-static" ><span class="fieldNote">My book is about to be published. Hang on!</span> 
+                        <p class="form-control-static" ><span class="fieldNote" style="color:inherit;">My book is about to be published. Hang on!</span> 
                       
                     <% } else { %>
                         <a href= "/portfolio/<%=user.facebook.id%>/resume/<%=user.portfolio.myResume%>">View it here</a>
