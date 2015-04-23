@@ -157,7 +157,7 @@
                           <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
                               <p style="color:red;"><b>Will be updating soon</b></p>
                             <% } else { %>  
-                              <p style="word-wrap: break-word;"><%= user.local.role %></p>
+                              <p style="word-wrap: break-word;" id="role"><%= user.local.role %></p>
                             <% } %>
                  
                 </li>
@@ -173,7 +173,7 @@
                           <% if(typeof user.local.lang == 'undefined' || user.local.lang.length == 0) { %>
                               <p style="color:red"><b>To be updated</b></p>
                             <% } else { %>  
-                              <p style="word-wrap: break-word;"><%= user.local.lang %></p>
+                              <p style="word-wrap: break-word;" id="lang"><%= user.local.lang %></p>
                             <% } %>
                  
                 </li>
@@ -209,7 +209,7 @@
                 <div class="panel-body"> 
                   <h3 style="margin-top:0px;">ABOUT ME</h3>
                   <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myself == 'undefined' || user.portfolio.myself == "") { %>
-                    <p class="form-control-static" ><span class="fieldNote">Hold on! I am getting waxed at Madame Tussauds. My hands not free as yet to write!!</span>
+                    <p class="form-control-static" ><span class="fieldNote" style="color:inherit">Hold on! I am getting waxed at Madame Tussauds. My hands not free as yet to write!!</span>
                   <%} else {%>
                     <p class="form-control-static" data-linkify="this" ><%=user.portfolio.myself%>
                   <% } %>
@@ -221,7 +221,7 @@
                   <h3 style="margin-top:0px;">MY PREVIOUS EXPERIENCES</h3>
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPlays == 'undefined' || user.portfolio.myPlays.length ==0 ) { %>
                       
-                        <p class="form-control-static" ><span class="fieldNote">The list is big. Its getting posted one by one!</span> 
+                        <p class="form-control-static" ><span class="fieldNote" style="color:inherit">The list is big. Its getting posted one by one!</span> 
                       
                     <% } else { %>
                         <ul> 
@@ -252,7 +252,7 @@
                     <h3 style="margin-top:0px;">MY PICTURES</h3>
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
                       
-                        <p class="form-control-static" ><span class="fieldNote">My portfolio shoot negatives are getting cleaned. Will be up soon!!</span>
+                        <p class="form-control-static" ><span class="fieldNote" style="color:inherit">My portfolio shoot negatives are getting cleaned. Will be up soon!!</span>
                       
                     <% } else { 
 
@@ -402,6 +402,19 @@
 }
 
     $(document).ready(function(){
+      var roleArr = $('#role').text().split(",");
+      var roleText ="";
+      for(var i = 0; i < roleArr.length; i++) {
+        roleText = roleText + roleArr[i] + "<br/>";
+      }
+      $('#role').html(roleText);
+
+      var langArr = $('#lang').text().split(",");
+      var langText ="";
+      for(var i = 0; i < langArr.length; i++) {
+        langText = langText + langArr[i] + "<br/>";
+      }
+      $('#lang').html(langText);
       <% if (typeof user != 'undefined' && typeof user.respect != 'undefined' && typeof user.respect.userId.length != 'undefined' || 
             user.respect.userId.length != 0) { %>
             <% for(var i = 0; i < user.respect.userId.length; i++) { %>
