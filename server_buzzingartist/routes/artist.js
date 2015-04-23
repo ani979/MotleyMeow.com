@@ -265,6 +265,11 @@ exports.updateCityAndRoles = function (req, res) {
             console.log("req.user " + req.user);
             var email = req.user.facebook.email;
             console.log("emaillllllll: "+email);
+            var roles = new Array();
+            console.log("req.body.role " + req.body.role)
+            if(typeof req.body.role != 'undefined' && req.body.role != "") {
+              roles = req.body.role.split(",");
+            }
             User.findOne({ 'facebook.email' : email }, function(error, db) {
         console.log("coming 1");
         if (error || !db) {
@@ -276,7 +281,8 @@ exports.updateCityAndRoles = function (req, res) {
                console.log("city selected " + req.body.city);
                console.log("role selected " + req.body.role);
                db.local.city = req.body.city;
-               db.local.role = req.body.role;
+
+               db.local.role = roles;
 
                db.save(function (err, user) {
                    if (err) {
