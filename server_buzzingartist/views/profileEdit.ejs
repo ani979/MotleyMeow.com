@@ -66,10 +66,10 @@
 <%}%>
 
 
- <div class="container" style="min-height:100%;">
+ <div class="container profile" style="min-height:100%;">
   <div class="row">
       <div class="col-sm-10">
-         <h1 class=""><%=user.facebook.name%></h1>
+         <h1 class="" style="color:#FFFAFA;"><%=user.facebook.name%></h1>
         <br> 
       </div>
 
@@ -81,8 +81,8 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 " >
    
    
-          <div class="panel panel-info">
-            <div class="panel-heading">
+          <div class="panel panel-info" style="background-color:rgba(29, 7, 7, 0.63);">
+            <div class="panel-heading" style="color: #E6EAEC;background-color: rgba(35, 20, 14, 0.32);">
               <h1 class="panel-title" style="font-size:26px;">The artist in you</h1>
               
             </div>
@@ -97,7 +97,7 @@
                       <fieldset>
                         
                           <div class="panel-group" id="accordion">
-                            <div class="panel panel-default">
+                            <div class="panel panel-default panelHeadingColor">
                               <div class="panel-heading">
                                 <h4 class="panel-title">
                                   <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseBasicProfile">Personal Details and Settings</a>
@@ -124,7 +124,7 @@
                                           value = "<%= user.facebook.email %>" >
                                         <% } %> 
                                         
-                                        <p><span class="fieldNote">We currently don't do validation of emails. Please ensure you key in the right one else you are easy to miss on important notifications.</span></p>
+                                        <p><span class="fieldNote" style="color:inherit;">We currently don't do validation of emails. Please ensure you key in the right one else you are easy to miss on important notifications.</span></p>
                                       </div>
                                         <input type="hidden" name = "userId" value = <%= user.facebook.id %> >
                                     </div>
@@ -148,7 +148,7 @@
                                         <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
                                         <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK to share
                                         <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK to share
-                                        <br><span class="fieldNote">Please confirm you are ok to share your email id to the artists to mail you regarding their audition or needs in their production. The emails are shared after authenticated by MotleyMeow.</span>
+                                        <br><span class="fieldNote" style="color:inherit">Please confirm you are ok to share your email id to the artists to mail you regarding their audition or needs in their production. The emails are shared after authenticated by MotleyMeow.</span>
                                       </div>                                
                                     </div>
                                     <div class="form-group">
@@ -158,14 +158,14 @@
                                         <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
                                         <input id="receiveNotif" type="radio" name="receiveNotif" value = "ok"> OK to receive mails
                                         <input id="receiveNotif" type="radio" name="receiveNotif" value = "nok"> Not OK to receive mails
-                                        <br><span class="fieldNote">MotleyMeow may share some notificiations time to time on whats meowing in the city.</span>
+                                        <br><span class="fieldNote" style="color:inherit">MotleyMeow may share some notificiations time to time on whats meowing in the city.</span>
                                       </div> 
                                     </div>  
                                   </div>
                                 </div>  
                             </div>
                             <!-- Artistic details -->
-                            <div class="panel panel-default">
+                            <div class="panel panel-default panelHeadingColor">
                               <div class="panel-heading">
                                 <h4 class="panel-title">
                                   <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseContribution">Your contribution in Theatre</a>
@@ -174,7 +174,7 @@
                               <div id="collapseContribution" class="panel-collapse collapse">
                                 <div class="panel-body">
                                   So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
-                                  <br/><span class="fieldNote">We at MotleyMeow believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
+                                  <br/><span class="fieldNote" style="color:inherit;">We at MotleyMeow believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
                                   <br>
                                   <div class="form-group">
                                     
@@ -203,7 +203,7 @@
 
 
                             <!-- Artistic details -->
-                            <div class="panel panel-default">
+                            <div class="panel panel-default panelHeadingColor">
                               <div class="panel-heading">
                                 <h4 class="panel-title">
                                   <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseLanguage">Languages that you connect with</a>
@@ -232,7 +232,7 @@
                             </div>
 
                             <!-- Artistic details -->
-                            <div class="panel panel-default">
+                            <div class="panel panel-default panelHeadingColor">
                               <div class="panel-heading">
                                 <h4 class="panel-title">
                                   <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseArtistInYou">Your artistic journey</a>
@@ -288,7 +288,7 @@
                                     <div class = "control-group col-md-12" id = "myFlickPics">
                                       <label class="control-label col-md-3" for="field1">Embed from Flickr</label>
                                             <div class="controls col-md-9"> 
-                                              <span class="fieldNote">Ensure that the picture in Flickr is public. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
+                                              <span class="fieldNote" style="color:inherit;">Ensure that the picture in Flickr is public. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
                                                 <div id = "flickrPicPlus">
                                                     <div class="fPicentry input-group col-md-12" id="fpic0">
                                                         <input class="col-md-9" id="fpic0" name="fpic0" type="text" placeholder="Copy and pase the Flickr url" 
@@ -322,7 +322,7 @@
                                             <label class="control-label col-md-3" for="field1">Add your videos</label>
 
                                             <div class="controls col-md-9"> 
-                                              <span class="fieldNote">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
+                                              <span class="fieldNote" style="color:inherit;">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
                                                 <div id = "videoPlus">
                                                     <div class="entry input-group col-md-12" id="vid0">
                                                         <input class="col-md-9" id="videos0" name="videos0" type="text" placeholder="Give video URL here" 
@@ -395,7 +395,7 @@
                                 </div>
                               </div>
 
-                              <div class="panel panel-default">
+                              <div class="panel panel-default panelHeadingColor">
                                 <div class="panel-heading">
                                   <h4 class="panel-title">
                                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSocialPresence">Your social presence</a>
@@ -451,7 +451,7 @@
                               </div>
 
 
-                              <div class="panel panel-default">
+                              <div class="panel panel-default panelHeadingColor">
                                 <div class="panel-heading">
                                   <h4 class="panel-title">
                                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseResume">More to say...</a>
@@ -480,7 +480,7 @@
 
 
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer" style= "background-color: rgba(245, 245, 245, 0);padding: 10px 15px;border:0px;color:#ECE9E9;">
           
          <!--  <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;">Please confirm you have read and will abide by our
           <a href="#myModal" role="button" class="btn" data-toggle="modal"> commercialmunity Guidelines. </a></span> -->

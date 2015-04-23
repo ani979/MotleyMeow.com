@@ -1090,3 +1090,8 @@ ul.messages li .message {
     background-color: white;
     color: black;
   }
+
+  .panelHeadingColor {
+    color: #FFF;
+    background-color: rgba(39, 11, 5, 0.52);
+  }
