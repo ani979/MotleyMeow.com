@@ -1,0 +1,7 @@
+1) Size of profile image is currently limited to 1 MB. Lets see if we can make it more than that.
+
+display: block;
+min-width: 200px;
+min-height: 180px;
+max-width: 300px;
+max-height: 240px;
