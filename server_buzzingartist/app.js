@@ -18,11 +18,13 @@ var moment = require('moment');
 var argv = require('optimist').argv;
 var crypto = require('crypto');
 var fsExtra = require('fs')
+
 exports.fsExtra = fsExtra;
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require('cookie-session');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 var User = require('./models/user.js');
 var app = express();
 // Using the flash middleware provided by connect-flash to store messages in session
@@ -44,7 +46,6 @@ passport.serializeUser(function(user, done) {
     done(null, user._id);
 });
 passport.deserializeUser(function(id, done) {
-    
     User.findById(id, function(err, user) {
             done(err, user);
         });
@@ -70,7 +71,7 @@ passport.use(new FacebookStrategy({
 
                     // if there is an error, stop everything and return that
                     // ie an error connecting to the database
-                    console.log("not found");
+                    console.log("found");
                     console.log("here errrrrr: " + err);
                     if (err) {
                         req.flash('info', "There is an error connecting to the database")
@@ -120,7 +121,7 @@ passport.use(new FacebookStrategy({
                                       }
                                     }
                             );                      
-                        }                        
+                        }           
                         req.session.fbAccessToken = accessToken;
                         
                         console.log("hash is " + hash);
@@ -212,11 +213,14 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 //app.use(logger());
-app.use(cookieParser());
 app.use(session({
- name: 'artistSession',
+ store: new MongoStore({mongooseConnection: mongoose.connection,ttl: 2 * 24 * 60 * 60,autoRemove: 'native'}),
  secret: 'eg[isfd-8gG10]-7w2315df{}}}+I;li;;t;uy',
+ resave:false,
+ saveUninitialized:false
 }));
+ 
+app.use(cookieParser());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -227,6 +231,7 @@ app.use(bodyParser.json())
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
 //app.use(app.router);
 app.use(express.static(__dirname + '/views'));
 
@@ -259,8 +264,7 @@ app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/' }),
     function(req, res) {
      console.log("setting here");
-     console.log("session " + req.session);
-     console.log("user " + req.user);
+     console.log("session " + JSON.stringify(req.session));
      req.session.user = req.user;
      res.redirect('/home');
 });
@@ -482,16 +486,14 @@ var mwMulter2 = multer({ dest: './views/tempUploads' });
 app.post('/postPhotos', mwMulter2, post_request.postPhoto);
 
 function ensureAuthenticated(req, res, next) {
+    console.log("req.user " + req.user)
+    console.log("req.session.user " + req.session.user);
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-           
-
-if (req.isAuthenticated()) { 
-    console.log("here accessToken " + req.session.fbAccessToken);
-
-    return next(); 
-}
-console.log("not authenticated");
-res.redirect('/')
+    if (req.isAuthenticated()) { 
+        return next(); 
+    }
+    console.log("not authenticated");
+    res.redirect('/')
 }
 
 http.createServer(app).listen(app.get('port'), function() {

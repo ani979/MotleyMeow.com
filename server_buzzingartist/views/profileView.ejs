@@ -227,25 +227,13 @@
                         <ul> 
                         <% for(var i = 0; i < user.portfolio.myPlays.length; i ++ ) { %> 
 
-                                <% if(typeof user.portfolio.myPlays[i].playURL != 'undefined' && user.portfolio.myPlays[i].playURL !="") { %>
+                                <% if(typeof user.portfolio.myPlays[i].playName != 'undefined' && user.portfolio.myPlays[i].playName !="") { %>
                                   
+                                  <%=user.portfolio.myPlays[i].playProdYear%>&nbsp; <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;">"<%=user.portfolio.myPlays[i].playName%>"</a>&nbsp;<%=user.portfolio.myPlays[i].playContrib%>&nbsp;&nbsp;<b>"<%=user.portfolio.myPlays[i].playGroup%>"</b>
                                   
-                                  <% console.log("user.portfolio.myPlays[i].playContrib " + user.portfolio.myPlays[i].playContrib)
-                                  if(typeof user.portfolio.myPlays[i].playContrib != 'undefined' && user.portfolio.myPlays[i].playContrib != "" && user.portfolio.myPlays[i].playContrib != null)  {%>
-                                    <li> For a play  <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this"><%=user.portfolio.myPlays[i].playName%></a>, where i contributed as <%=user.portfolio.myPlays[i].playContrib%></li>
-                                  <% } else { %>  
-                                    <li> For a play  <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this"><%=user.portfolio.myPlays[i].playName%></a></li>
-                                  <% } %>  
-                                <% } else {%>
-                                  <% if(typeof user.portfolio.myPlays[i].playContrib != 'undefined' && user.portfolio.myPlays[i].playContrib != "" && user.portfolio.myPlays[i].playContrib != "null")  {%>
-                                  <li> For a play  <%=user.portfolio.myPlays[i].playName%> as <%=user.portfolio.myPlays[i].playContrib%></li> 
-                                    
-                                  <% } else { %>  
-                                    <li> For a play  <%=user.portfolio.myPlays[i].playName%> as <%=user.portfolio.myPlays[i].playContrib%></li> 
-                                  <% } %>
                                 <% } %>  
                                   <div>&nbsp;</div>
-                                  <div>&nbsp;</div>
+                                  
                         <% } %>
                       </ul>
                     <%} %>

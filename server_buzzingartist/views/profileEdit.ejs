@@ -361,6 +361,8 @@
                                                           <input class="col-md-12 playsText" id="playsText" name="playsText" type="text" placeholder="Name the play you were part of"/>
                                                           <div>&nbsp;</div>
                                                           <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it" onchange="insertURL(this)"/>
+                                                          <input class="col-md-12 playsGroup" id="playsGroup" name="playsGroup" type="text" placeholder="The theatre group's name"/>
+                                                          <input class="col-md-12 playsProdYear" id="playsProdYear" name="playsProdYear" type="text" placeholder="The year of production"/>
                                                           <div>&nbsp;</div>
                                                           <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
                                                               <label class="control-label">Your involvement in this event:(Cntrl-select to add more)</label> 
@@ -681,7 +683,10 @@
               portfolioPlays.push({
                     "playName": playName,
                     "playURL": $(this).find('#playsLink').val(),
-                    "playContrib" : $(this).find('#playsRole').val()
+                    "playContrib" : $(this).find('#playsRole').val(),
+                    "playGroup" : $(this).find('#playsGroup').val(),
+                    "playProdYear" : $(this).find('#playsProdYear').val()
+
               }); 
             }  
         });
@@ -747,12 +752,7 @@
                 $('#div' + imageIndex).append("<td> <a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + "<%=user.portfolio.myPhotos[i]%>" + " id = mypicsa" + imageIndex + " data-lightbox='Uploading..' data-title='Portfolio pictures'>");
                 $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=user.portfolio.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
                 $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
-                  // $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-                  // $('#div' + imageIndex).append("<a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + "<%=user.portfolio.myPhotos[i]%>" + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                  // $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=user.portfolio.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                  // $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-                  // $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + "<%=user.portfolio.myPhotos[i]%>" + " />")
-                  // $('#mypics').append("</div>");
+
                   imageIndex++;
                   portfolioImages.push("<%=user.portfolio.myPhotos[i]%>");
             <% } %>
@@ -785,12 +785,7 @@
                   newEntry.find('input').val("<%=user.portfolio.myVideos[i].videoURL%>");
                   newEntry.find('iframe').attr('src', "<%=user.portfolio.myVideos[i].videoURL%>");
                   newEntry.find('textarea').attr('id', "videoText"+ newEntry.attr('id'));
-                  newEntry.find('textarea').val("<%=user.portfolio.myVideos[i].videoText%>");
-                  // newEntry.append("<div>&nbsp;</div><iframe src=" +  "<%=user.portfolio.myVideos[i].videoURL%>" + " width=500 height=300 frameborder=0 allowfullscreen class=col-md-12></iframe>");
-                  // alert("333")
-                  // newEntry.append("<div>&nbsp;</div> <textarea id=videoText"+ newEntry.attr('id') + 
-                  //             " name= videoText"+ newEntry.attr('id') + " placeholder='Tell us something about this video' " +
-                  //             "style='min-width:100%';rows=6>" + "<%=user.portfolio.myVideos[i].videoText%>" + "</textarea>");     
+                  newEntry.find('textarea').val("<%=user.portfolio.myVideos[i].videoText%>");  
                   controlForm.find('.entry:not(:last) .btn-addVideos')
                       .removeClass('btn-addVideos ').addClass('btn-remove')
                       .removeClass('btn-success').addClass('btn-danger')
@@ -869,6 +864,8 @@
                 $(currentEntry).find('#playsText').val("<%=user.portfolio.myPlays[0].playName%>");
                 $(currentEntry).find('#playsLink').val("<%=user.portfolio.myPlays[0].playURL%>");
                 $(currentEntry).find('#playsRole').val("<%=user.portfolio.myPlays[0].playContrib%>".split(","));
+                $(currentEntry).find('#playsGroup').val("<%=user.portfolio.myPlays[0].playGroup%>");
+                $(currentEntry).find('#playsProdYear').val("<%=user.portfolio.myPlays[0].playProdYear%>");
                  
                 controlForm.find('.playEntry .btn-addPlays')
                     .removeClass('btn-addPlays').addClass('btn-removePlays')
@@ -885,6 +882,8 @@
                 $(newEntry).find('#playsText').val("<%=user.portfolio.myPlays[i].playName%>");
                 $(newEntry).find('#playsLink').val("<%=user.portfolio.myPlays[i].playURL%>");
                 $(newEntry).find('#playsRole').val("<%=user.portfolio.myPlays[i].playContrib%>".split(","));
+                $(newEntry).find('#playsGroup').val("<%=user.portfolio.myPlays[0].playGroup%>");
+                $(newEntry).find('#playsProdYear').val("<%=user.portfolio.myPlays[0].playProdYear%>");
                   
                   controlForm.find('.playEntry:not(:last) .btn-addPlays')
                       .removeClass('btn-addPlays').addClass('btn-removePlays')
@@ -899,6 +898,8 @@
                   $(newEntry).find('#playsText').val("");
                   $(newEntry).find('#playsLink').val("");
                   $(newEntry).find('#playsRole').val("");
+                  $(newEntry).find('#playsGroup').val("");
+                  $(newEntry).find('#playsProdYear').val("");
                   newEntry.find('.btn-removePlays').removeClass('btn-removePlays').addClass('btn-addPlays')
                   .removeClass('btn-danger').addClass('btn-success')
                     .html('<span class="glyphicon glyphicon-plus"></span>');
@@ -907,19 +908,9 @@
 
      });
 
-    // $(function(){
-    //   disableSubmit()
-    // });
+
     $(function(){
 
-      // $('input[id^=deleteImage]').on('click', function(e){
-      //     e.preventDefault();
-      //     // $("#updatedImage").attr("src","");
-      //     // $("#updatedImage").parents("a").attr("href", "");
-      //     // $("#updatedImage").parents("a").hide();
-      //     // $("#imagePost").val("");
-      //     // $("#postedImage").val("removed");
-      // });
 
       $('input[id=imagePost]').click(function(){
         $('.progress').hide();
@@ -932,23 +923,7 @@
         $('img[id=image' + imgIndx + ']').attr("src","");
         $('tr[id=div' + imgIndx + ']').remove();
 
-        // $.ajax({
-        //     url: "/removeProfilePics",
-        //     type: "POST",
-        //     data: {image:$('#imageName' + imgIndx).val()},
-        //     complete: function() {
-        //     },
-        //     success: function(data) {
-        //        if(data.error) {
-        //         return;
-        //         }
-        //         portfolioImages.splice($.inArray( $('#imageName' + imgIndx).val(), portfolioImages),1);
-        //         $('img[id=image' + imgIndx + ']').attr("src","");
-        //         $('div[id=div' + imgIndx + ']').remove();
-                
-        //         return false;
-        //     }
-        // });        
+  
       }
 
 
@@ -1070,22 +1045,6 @@
  
 
 
-
-                  // $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-                  // $('#div' + imageIndex).append("<a href=/portfolio/"+ <%=user.facebook.id%> + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                  // $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" +data.path[i].name + 
-                  //                           " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                  // $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-                  // $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + data.path[i].name + " />")
-                  // <a href="" data-lightbox="No Image set" data-title="Portfolio pictures">
-                  // <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
-                  // <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple/>
-                  
-                  //   <a href = "" id="updateImage" style="display:none">Update this image</a>
-                  //   <a href = "" id="deleteImage" style="display:none">Remove this image</a>
-                  //   <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
-                  // $('#mypics').append("<img id=image"+0+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
-                  // $("#image0").attr("src","tempUploads/"+data.path.name);
                   $('#mypics').append("</div>");
                   imageIndex++;
                 }
@@ -1093,35 +1052,7 @@
             },
             
                 
-           //    } else {
-           //      portfolioImages.push(data.path.name);
-           //        // alert("No not an array " + data.path.name)
-           //        $('#mypics').append("<div id=div" + imageIndex + " class = col-md-6 col-sm-6 col-lg-6 style='padding-top:20px;'>");
-           //        $('#div' + imageIndex).append("<a href=/portfolio/" + <%=user.facebook.id%> + "/pictures/" + data.path.name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-           //        $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" + data.path.name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-           //        $('#div' + imageIndex).append("<a href = '' id=deleteImage" + imageIndex + 
-           //                            " onclick='removeThis("+ imageIndex + ");return false;' > Remove</a>");
-           //        $('#div' + imageIndex).append("<input type=hidden id=imageName" + imageIndex + " value= " + data.path.name +  " />")
-           //        // <a href="" data-lightbox="No Image set" data-title="Portfolio pictures">
-           //        // <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
-           //        // <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple/>
-                  
-           //        //   <a href = "" id="updateImage" style="display:none">Update this image</a>
-           //        //   <a href = "" id="deleteImage" style="display:none">Remove this image</a>
-           //        //   <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
-           //        // $('#mypics').append("<img id=image"+0+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
-           //        // $("#image0").attr("src","tempUploads/"+data.path.name);
-           //        $('#mypics').append("</div>");
-                  
-           //        imageIndex++;
-           //        // $("#updatedImage").parents("a").attr("href", "tempUploads/"+data.path.name)
-           //        // $("#updatedImage").parents("a").show();
-           //        // $("#updateImage").show();
-           //        // $("#deleteImage").show();
-           //        // $("#updatedImage").show();
-           //        // $("#postedImage").val("changed");
-           //    }
-           // },
+
 
             error: function() {
               console.log('process error');
@@ -1129,27 +1060,7 @@
           });
       });
     });
-    // $(function () {
-    //   $('#tab1primary a').click(function (e) {
-    //       e.preventDefault();
-    //       $('a[href="' + $(this).attr('href') + '"]').tab('show');
-    //   })
-    // });
-
-    // function disableSubmit() {
-    //   document.getElementById("submit").disabled = true;
-    // }
-
-    // function activateButton(element) {
-
-    //     if(element.checked) {
-    //       document.getElementById("submit").disabled = false;
-    //      }
-    //      else  {
-    //       document.getElementById("submit").disabled = true;
-    //     }
-
-    // } 
+    
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
     $("#footer").load("footer.ejs"); 
@@ -1389,19 +1300,7 @@
           progressLabel.text( "Complete!" );
         }
       });
-   
-    //   function progress() {
-    //     var val = progressbar.progressbar( "value" ) || 0;
-    //    // alert("val is " + val);
-    //     progressbar.progressbar( "value", val + 2 );
-   
-    //   //   if ( val < 99 ) {
-    //   //     //alert(" progressbar.progressbar" + progressbar.progressbar( "value" ))
-    //   //     setTimeout( progress, 80 );
-    //   //   }
-    //   // }
-    //   // //alert(" progressbar.progressbar 222" + progressbar.progressbar( "value" ))
-    //   // setTimeout( progress, 2000 );
+
     });
 
     
