@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Keywords" content="Theatre, Artists, Motleymeow, Sponsor, Events, Bengaluru, Mumbai, Delhi, Chennai, Kolkata, Drama, Naatak,
+    <%=user.facebook.name%>" />
+    <meta property="og:title" content="View the artist: <%=user.facebook.name%>">
+    <meta property="og:type" content="website" />
+    <% if(typeof user != 'undefined' && typeof user.local!='undefined' && typeof user.local.picture != 'undefined' && user.local.picture != "") { %>
+      <meta property="og:image" content="<%=user.local.picture%>"/>
+    <% } else { %>  
+      <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <% } %>
+    <% if(typeof user != 'undefined' && typeof user.portfolio!='undefined' && typeof user.portfolio.myself != 'undefined') { %>
+      <meta property="og:description" content="<%=user.portfolio.myself%>"/>
+    <% } else { %>  
+      <meta property="og:description" content="Read about an artist from <%=user.local.city%>"/>
+    <% } %>  
+    <meta property="og:title" content="View the artist: <%=user.facebook.name%>">
+    <title>MOTLEYMEOW. Hear the artists meow.</title> 
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-dialog.js"></script>
+    <link href="css/lightbox.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet">       
+    <link href="css/tab.css" rel="stylesheet">
+  </head>
+
+
+<body>
+  <div id="fb-root"></div>
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script>
+        FB.init({
+          appId:<%=appId%>,
+          cookie:true,
+          status:true,
+          xfbml:true
+        });
+
+   
+    </script>
+     
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>    
+ <% if(typeof sessionUser != 'undefined' && sessionUser!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout"></div>
+  <%}%> 
+  <div class = "main-landing-container profile container-fluid" >    
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+
+        <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:150px;">
+
+        <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
+         <% console.log("same user as logged in so can edit"); %>
+         <!-- <form action="/profileEdit" method="GET">
+            <button id ="edit" align="center" class="btn btn-success">Edit my profile</button>&nbsp;
+          </form> -->
+        <% } %> 
+        <!-- <div>&nbsp;</div>
+          <div>
+            <% if(typeof sessionUser != 'undefined' && sessionUser!= null) { %>
+              <a type="button" align="center" class="btn btn-primary" onclick = "shareMe();"> Share it with the world </a>
+            <% } %>
+          </div> -->
+      </div>
+
+      <div class="col-md-9">
+          <% var isodateString = new Date(user.local.joiningDate).toISOString();
+                var displayableDate = getDate(isodateString) %>
+          <h1 class="" style="color:rgb(239, 239, 239);"><%=user.facebook.name%></h1>
+          <div>&nbsp;</div>
+
+          <div class = "col-md-12" style="padding-left:0px;">
+
+            <div class="panel panel-body col-md-6" style="background-color:rgba(5, 5, 5, 0.76);padding-top:0px;padding-bottom:5px;float:left;">
+              <ul style="list-style: none;padding:10px;">
+                <li class="text-left" style="color:rgb(239, 239, 239);"><span><strong class="">MEMBER SINCE</strong></span> <%=displayableDate%></li>
+                <%if (typeof user.respect != "undefined" && typeof user.respect.userId != 'undefined' && user.respect.userId.length != 0) { %>
+                  <li class="text-left" style="color:rgb(239, 239, 239);"><span><strong class="">#RESPECT:</strong></span><text id="numRespect"><%=user.respect.userId.length%></text></li>
+                <% } else { %>  
+                  <li class="text-left" style="color:rgb(239, 239, 239);"><span><strong class="">#RESPECT:</strong></span><text id="numRespect">NOT RECEIVED YET</text></li>
+                <% } %>  
+                <!-- <li class="text-left" style="color:rgb(239, 239, 239);"><span><strong class="">MEMBER SINCE</strong></span> <%=displayableDate%></li> -->
+               </ul> 
+            </div> 
+            <div class = "col-md-6" style="float:right;text-align:right">
+
+            <br/>
+              <ul>
+                <li style="display: inline-block;padding-right:20px;">
+                  <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
+                    <% console.log("same user as logged in so can edit"); %>
+                    <div style="text-align:center;">
+                    <a href="/profileEdit" title="Edit profile" data-toggle="tooltip" style= "text-decoration:none;"><i class="profilePageicon glyphicon glyphicon-edit" style="color:rgba(249, 243, 243, 0.95);"></i></a><br/>
+                    <label class="profilePageiconRow" style="display: inline-block;">EDIT</label>
+                    </div>
+                  <% } %>  
+                </li>
+                <% if (typeof sessionUser != 'undefined' && sessionUser!= null) { %>
+                 <li style="display: inline-block;padding-right:20px;">
+                  <div style="text-align:center;">
+                  <a href="#" onclick = "showRespect();" title="Edit profile" data-toggle="tooltip" style= "text-decoration: none;font-size:24px;"><i class="profilePageicon fa fa-star-o" style="color:rgba(249, 243, 243, 0.95);"></i></a><br/>
+                  <label class="profilePageiconRow">ADD RESPECT</label>
+                  </div>
+                  
+                </li>
+                <% } %>
+                 <li style="display: inline-block;padding-right:20px;">
+                  <div style="text-align:center;">
+                  <a href="#" onclick = "shareMe();return false;" title="Edit profile" data-toggle="tooltip" style= "text-decoration: none;font-size:24px;"><i class="profilePageicon fa fa-share" style="color:rgba(249, 243, 243, 0.95);"></i></a><br/>
+                  <label class="profilePageiconRow">SHARE ON FB</label>
+                  </div>
+                  
+                </li>
+                
+              </ul>  
+              <!-- <a href="#" onclick = "showRespect();" title="Edit profile" data-toggle="tooltip" style= "text-decoration: none;"><i class="profilePageicon fa fa-star-o" style="color:rgba(249, 243, 243, 0.95);"></i><br/><label class="profilePageiconRow">ADD RESPECT</label></a>
+              <a href="#" onclick = "shareMe();return false;" title="Edit profile" data-toggle="tooltip" style= "text-decoration: none;"><i class="profilePageicon fa fa-share" style="color:rgba(249, 243, 243, 0.95);"></i><br/><label class="profilePageiconRow">SHARE ON FB</label></a> -->
+              
+           </div>    
+
+      </div>
+      <a href = "#aboutMe" style="padding-right:20px;color:black;"><b>ABOUT ME</a> 
+      <a href = "#myPrevExps" style="padding-right:20px;color:black;">MY EXPERIENCES</a> 
+      <a href = "#myPics" style="padding-right:20px;color:black;">MY PICTURES</a> 
+      <a href = "#myVids" style="padding-right:20px;color:black;">MY VIDEOS</a>
+      <a href = "#myResume" style="padding-right:20px;color:black;">MY RESUME</b></a> 
+    </div>
+  </div>  
+
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group" >
+                <li class="list-group-item text-right panelColors" ><span class="pull-left"><strong class="">CONTRIBUTION: </strong></span><br/>
+                          <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
+                              <p style="color:red;"><b>Will be updating soon</b></p>
+                            <% } else { %>  
+                              <p style="word-wrap: break-word;"><%= user.local.role %></p>
+                            <% } %>
+                 
+                </li>
+                <li class="list-group-item text-right panelColors" ><span class="pull-left"><strong class="">CITY:</strong></span><br/> 
+                  <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
+                  <p style="color:red"><b>I need to set it</b></p>
+                  <% } else { %>  
+                  <p><%= user.local.city %></p>
+                  <% } %>
+
+                </li>
+                <li class="list-group-item text-right panelColors" ><span class="pull-left"><strong class="">LANGUAGES: </strong></span><br/>
+                          <% if(typeof user.local.lang == 'undefined' || user.local.lang.length == 0) { %>
+                              <p style="color:red"><b>To be updated</b></p>
+                            <% } else { %>  
+                              <p style="word-wrap: break-word;"><%= user.local.lang %></p>
+                            <% } %>
+                 
+                </li>
+          </ul>
+         
+            <div class="panel panel-default panelColors">
+                <div class="panel-body">
+                  <h3 style="margin-top:0px;font-size:16px;"><b>SOCIAL PRESENCE</b></h3>
+                  <% if(user.facebook.link) { %>
+                    <div class = "col-md-6" style="margin-bottom:20px;">
+                    <a href = "<%= user.facebook.link %>" target="_blank"><i class = "fa fa-facebook" style="font-size:20px;color:white;"></i></a>
+                  </div>
+                  <% } %>
+                  <% if(typeof user.portfolio.mySocialPresence != "undefined" && user.portfolio.mySocialPresence.length != 0) { %>
+                    <% for (var i = 0; i < user.portfolio.mySocialPresence.length; i++) { 
+                        if(typeof user.portfolio.mySocialPresence[i].URL != 'undefined' &&   user.portfolio.mySocialPresence[i].URL != "") { %>
+
+                          <div class = "col-md-6" style="margin-bottom:20px;">
+                          <a href = "<%= user.portfolio.mySocialPresence[i].URL %>" target="_blank"><i class = "<%=user.portfolio.mySocialPresence[i].icon%>" style="font-size:20px;color:white;  "></i></a>
+                          </div>
+                        <% } %>  
+                    <% } %>
+                  <% } %>  
+                </div>
+                
+            </div>
+          </div>
+
+        <!--/col-3-->
+        <div class="col-sm-9" style="" contenteditable="false">
+            <div id="aboutMe" class="panel panel-default panelColors">
+                
+                <div class="panel-body"> 
+                  <h3 style="margin-top:0px;">ABOUT ME</h3>
+                  <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myself == 'undefined' || user.portfolio.myself == "") { %>
+                    <p class="form-control-static" ><span class="fieldNote">Hold on! I am getting waxed at Madame Tussauds. My hands not free as yet to write!!</span>
+                  <%} else {%>
+                    <p class="form-control-static" data-linkify="this" ><%=user.portfolio.myself%>
+                  <% } %>
+
+                </div>
+            </div>
+            <div id ="myPrevExps" class="panel panel-default target panelColors">
+                <div class="panel-body">
+                  <h3 style="margin-top:0px;">MY PREVIOUS EXPERIENCES</h3>
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPlays == 'undefined' || user.portfolio.myPlays.length ==0 ) { %>
+                      
+                        <p class="form-control-static" ><span class="fieldNote">The list is big. Its getting posted one by one!</span> 
+                      
+                    <% } else { %>
+                        <ul> 
+                        <% for(var i = 0; i < user.portfolio.myPlays.length; i ++ ) { %> 
+
+                                <% if(typeof user.portfolio.myPlays[i].playName != 'undefined' && user.portfolio.myPlays[i].playName !="") { %>
+                                  
+                                  <%=user.portfolio.myPlays[i].playProdYear%>&nbsp; <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;">"<%=user.portfolio.myPlays[i].playName%>"</a>&nbsp;<%=user.portfolio.myPlays[i].playContrib%>&nbsp;&nbsp;<b>"<%=user.portfolio.myPlays[i].playGroup%>"</b>
+                                  
+                                <% } %>  
+                                  <div>&nbsp;</div>
+                                  
+                        <% } %>
+                      </ul>
+                    <%} %>
+                    <!-- <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe><iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>  
+                  </div>   -->
+                </div>
+
+             </div>
+            <div id="myPics" class="panel panel-default target panelColors">
+                
+                  <div class="panel-body">
+                    <h3 style="margin-top:0px;">MY PICTURES</h3>
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
+                      
+                        <p class="form-control-static" ><span class="fieldNote">My portfolio shoot negatives are getting cleaned. Will be up soon!!</span>
+                      
+                    <% } else { 
+
+                        console.log(" user.portfolio.myPhotos.length " + user.portfolio.myPhotos.length) %>
+                        
+                          <div class="row">
+                          <% for(var i = 0; i < user.portfolio.myPhotos.length; i ++ ) { %> 
+                          
+                            <div class="col-md-6">
+                              <div class = "thumbnail">
+                                  <a href = "/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" data-lightbox="image" data-title="Portfolio images">
+                                    <img alt="No image" src="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" style="min-width:200px;max-width:270px;max-height:270px;min-height:200px;">
+                                  </a>  
+                               </div>   
+                            </div>
+
+                          <% } %>
+                          </div>
+                    <% } %>
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myFlickrPics == 'undefined' || user.portfolio.myFlickrPics.length ==0 ) { %>
+                      
+                    <% } else {   %>
+                      <div class="row">
+                        <div class="panel-heading" contenteditable="false">Embedded from Flickr</div>
+                      <% for(var i = 0; i < user.portfolio.myFlickrPics.length; i ++ ) { %> 
+                        
+                          <div class="col-md-6">
+                            <div class="thumbnail">
+                                <a href = "<%=user.portfolio.myFlickrPics[i].flickrURL%>" target="_blank">
+                                  <iframe src="<%=user.portfolio.myFlickrPics[i].flickrURL%>" width="270" height="200" frameborder=0 allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+                                </a>  
+                            </div>
+                          </div>
+                       <%} %> 
+                     </div>
+                    <% } %>     
+                    
+                    
+                </div>  
+             </div>
+             <div id="myVids" class="panel panel-default target panelColors">
+                <div class="panel-heading" contenteditable="false">My videos</div>
+                  <div class="panel-body">
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myVideos == 'undefined' || user.portfolio.myVideos.length ==0 ) { %>
+                      
+                         <p class="form-control-static" ><span class="fieldNote">Rolling the reel in progress. Will be shared soon!!</span>
+                      
+                    <% } else { 
+                        for(var i = 0; i < user.portfolio.myVideos.length; i ++ ) { %> 
+                          
+                                <iframe src="<%=user.portfolio.myVideos[i].videoURL%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
+                                <p> <%=user.portfolio.myVideos[i].videoText%>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                        <% } %>
+                    <%} %>
+                    <!-- <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe><iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>  
+                  </div>   -->
+                </div>
+
+             </div>   
+
+                
+           
+           <div id="myResume" class="panel panel-default target panelColors">
+                <div class="panel-heading" contenteditable="false">My Résumé</div>
+                  <div class="panel-body">
+                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myResume == 'undefined' || user.portfolio.myResume == "" ) { %>
+                      
+                        <p class="form-control-static" ><span class="fieldNote">My book is about to be published. Hang on!</span> 
+                      
+                    <% } else { %>
+                        <a href= "/portfolio/<%=user.facebook.id%>/resume/<%=user.portfolio.myResume%>">View it here</a>
+                        
+                        <div>&nbsp;</div>
+                
+                    <% } %>
+                    <!-- <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe><iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>  
+                  </div>   -->
+                </div>
+
+             </div>   
+           </div>
+         </div>  
+
+  </div>
+ </div>
+</div>  
+</div>
+
+
+
+<!-- footer starts-->
+<div id = "footer"></div>
+
+    <script src="js/linkified-min.js"></script>
+    <script src="js/lightbox.min.js"></script>
+
+
+<script>
+    $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
+
+    function showRespect() {
+          $.ajax({
+            url: "/showRespect",
+            type: "POST",
+            data: {curUserId: <%=user.facebook.id%>},
+            complete: function() {
+            },
+            success: function(data) {
+              if(data.error) {
+                // alert('Opps, something bad happened');
+                return;
+              }
+              if(data.respectCount == 0){
+                $('#numRespect').text("NOT RECEIVED YET");
+              } else {
+                $('#numRespect').text(data.respectCount);
+              }
+              if(data.isRemoved) {
+                $('#respectButton').text("#RESPECT")
+              } else {
+                $('#respectButton').text("#IRESPECTYOU")
+              }
+              
+            }
+          });
+    }
+
+    function shareMe() {
+          // window.open('https://www.facebook.com/dialog/share?app_id=1402977930010661&display=popup&href=http://localhost:3000&redirect_uri=http://www.motleymeow.com', 'width=800, height=400')
+          FB.ui({
+            method: 'share',
+            // href: 'http://23.251.153.191:8080/profile?fbId=<%=user.facebook.id%>',
+            href: window.location.protocol + "//" + window.location.host +'/profile?fbId=<%=user.facebook.id%>',
+          }, function(response){});
+}
+
+    $(document).ready(function(){
+      <% if (typeof user != 'undefined' && typeof user.respect != 'undefined' && typeof user.respect.userId.length != 'undefined' || 
+            user.respect.userId.length != 0) { %>
+            <% for(var i = 0; i < user.respect.userId.length; i++) { %>
+              <%if(typeof sessionUser != 'undefined') {%>
+                if(<%=user.respect.userId[i].fromUserId%> == <%=sessionUser.facebook.id%>) {
+                    $('#respectButton').text("#IRESPECTYOU")
+                }
+              <%} %>  
+          <%}%>   
+      <%}%>    
+    });  
+</script>    
+
+  </body>
+
+
+</html>
