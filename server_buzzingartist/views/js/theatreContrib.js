@@ -6,7 +6,7 @@ module.exports = { alldropdowns: {
                             { role: "MakeUp", text:"Make-up"},
     						{ role: "SetDesign", text:"Set Designing"},{ role: "StageManager", text:"Managing Production"}, 
                             { role: "Backstage", text:"Production/Backstage Crew"}, { role: "Trainer", text:"Training"},
-                            { role: "Audience", text:"Mostly into Audience"}],
+                            { role: "Audience", text:"Love to watch plays"}],
     				cities: [{ city: "Bengaluru", text: "Bengaluru"}, {city: "Bhopal", text: "Bhopal"}, {city:"Chennai", text:"Chennai"}, 
                              {city: "Chandigarh", text: "Chandigarh"}, {city:"Delhi", text:"Delhi"}, {city: "Hyderabad", text: "Hyderabad"},
     						 {city: "Kolkata", text:"Kolkata"}, {city: "Mumbai", text: "Mumbai"}, {city: "Pune", text: "Pune"}, 
@@ -29,6 +29,6 @@ module.exports = { alldropdowns: {
                             { role: "Lights", text:"Lighting Designer"}, { role: "Dramaturgist", text:"Dramaturgist"},{ role: "Sound", text:"Sound Designer"},
                             { role: "Music", text:"Music Composer"},{ role: "Costume", text:"Costume Designer"}, { role: "MakeUp", text:"Make-up artist"},
                             { role: "SetDesign", text:"Set Designer"},{ role: "StageManager", text:"Production Manager"}, 
-                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"}, { role: "Audience", text:"Mostly into Audience"}]
+                            { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"}, { role: "Audience", text:"Love to watch plays"}]
     			}
 }

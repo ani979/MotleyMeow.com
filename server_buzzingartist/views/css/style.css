@@ -251,6 +251,9 @@ iheader {
 html, body {
    margin:0;
    padding:0;
+  height:100%;
+  background-color: rgba(252, 252, 252, 0.28)
+
   
 }
 
@@ -890,7 +893,7 @@ body.modal-open .supreme-container{
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 150%;
+      min-height: 100%;
     }
  }   
 
@@ -1095,3 +1098,39 @@ ul.messages li .message {
     color: #FFF;
     background-color: rgba(39, 11, 5, 0.52);
   }
+
+  @media (max-width: 200px) {
+   .credits {
+      background-image: url(../images/thankYouPage.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 400%;
+    }
+ } 
+
+ @media (min-width: 201px, max-width: 760px;) {
+   .credits {
+      background-image: url(../images/thankYouPage.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 300%;
+    }
+ } 
+
+ @media (min-width: 761px) {
+   .credits {
+      background-image: url(../images/thankYouPage.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+      min-height: 150%;
+    }
+ }   
