@@ -861,7 +861,7 @@ body.modal-open .supreme-container{
 .blur {
     -webkit-filter: blur(5px) grayscale(50%);
 }
-@media (max-width: 200px) {
+@media (max-width: 350px) {
    .landing {
       background-image: url(../images/bg_landing.jpg);
       -webkit-background-size: cover;
@@ -869,11 +869,11 @@ body.modal-open .supreme-container{
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 400%;
+      min-height: 100%;
     }
  } 
 
- @media (min-width: 201px, max-width: 760px;) {
+ @media (max-width: 760px) and (min-width: 351px) {
    .landing {
       background-image: url(../images/bg_landing.jpg);
       -webkit-background-size: cover;
@@ -881,7 +881,7 @@ body.modal-open .supreme-container{
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 300%;
+      min-height: 100%;
     }
  } 
 
@@ -1036,7 +1036,7 @@ ul.messages li .message {
 }
 
 
-@media (max-width: 200px) {
+@media (max-width: 350px) {
    .profile {
       background-image: url(../images/profile_bkg.jpg);
       -webkit-background-size: cover;
@@ -1044,11 +1044,11 @@ ul.messages li .message {
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 400%;
+      min-height: 100%;
     }
  } 
 
- @media (min-width: 201px, max-width: 760px;) {
+ @media (max-width: 760px) and (min-width: 351px) {
    .profile {
       background-image: url(../images/profile_bkg.jpg);
       -webkit-background-size: cover;
@@ -1056,7 +1056,7 @@ ul.messages li .message {
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 300%;
+      min-height: 100%;
     }
  } 
 
@@ -1068,7 +1068,7 @@ ul.messages li .message {
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 150%;
+      min-height: 100%;
     }
  }   
 
@@ -1099,7 +1099,7 @@ ul.messages li .message {
     background-color: rgba(39, 11, 5, 0.52);
   }
 
-  @media (max-width: 200px) {
+  @media (max-width: 350px) {
    .credits {
       background-image: url(../images/thankYouPage.jpg);
       -webkit-background-size: cover;
@@ -1107,11 +1107,11 @@ ul.messages li .message {
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 400%;
+      min-height: 100%;
     }
  } 
 
- @media (min-width: 201px, max-width: 760px;) {
+ @media (max-width: 760px) and (min-width: 351px) {
    .credits {
       background-image: url(../images/thankYouPage.jpg);
       -webkit-background-size: cover;
@@ -1119,7 +1119,7 @@ ul.messages li .message {
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 300%;
+      min-height: 100%;
     }
  } 
 
@@ -1131,6 +1131,6 @@ ul.messages li .message {
       -o-background-size: cover;
       background-size: 100% 100%;
       width: 100%;
-      min-height: 150%;
+      min-height: 100%;
     }
  }   
