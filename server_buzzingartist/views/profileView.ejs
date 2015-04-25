@@ -9,7 +9,9 @@
     <%=user.facebook.name%>" />
     <meta property="og:title" content="View the artist: <%=user.facebook.name%>">
     <meta property="og:type" content="website" />
-    <% if(typeof user != 'undefined' && typeof user.local!='undefined' && typeof user.local.picture != 'undefined' && user.local.picture != "") { %>
+    <% if(typeof user.portfolio != 'undefined' || typeof user.portfolio.myPhotos != 'undefined' || user.portfolio.myPhotos.length !=0) { %>
+      <meta property="og:image" content="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[0]%>"/>
+    <% } else if(typeof user != 'undefined' && typeof user.local!='undefined' && typeof user.local.picture != 'undefined' && user.local.picture != "") { %>
       <meta property="og:image" content="<%=user.local.picture%>"/>
     <% } else { %>  
       <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
