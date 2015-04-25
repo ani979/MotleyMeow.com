@@ -49,7 +49,7 @@
   <a class="navbar-brand" href="/home" style = "color: #FBF7F7; font-size: 20px;"><img class="highlighted" src ="images/MotleyMeow-logo02.gif" style="max-width:200px;max-height:200px;"> </a>
     <div>&nbsp;</div>
     <% if(typeof user != 'undefined' && user!=null) { %>
-    <div id = "headerloggedin" class = "col-md-12">
+    <div id = "headerloggedin">
       <div class = "col-md-3">
         <a href="#" onclick="doorbell.show(); return false;" style="color: #F5F5F5;font-size: 16px;">Send us a quick meow</a>
         <br/>
@@ -190,7 +190,8 @@
   <% var citysel = user.local.city %>
 
 
-<div>&nbsp;</div>
+
+<div class = "col-md-12">
   <div class = "col-md-11 col-md-offset-1" style="padding-left:0px;padding-right:0px;">
     <div class="col-md-10 col-md-offset-2">
       <div class = "col-md-3 tree">
@@ -408,6 +409,7 @@
       </div>
 
     </div>    
+</div>    
     <div id = "footer">
          <div class="container col-md-6 pull-right" >
             <div class="bottom-footer">

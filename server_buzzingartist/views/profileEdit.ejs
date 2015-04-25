@@ -13,7 +13,6 @@
         <link href="css/lightbox.css" rel="stylesheet" />
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
         <script src="js/bootstrap-dialog.js"></script>
-        <script src="js/dropzone.js"></script>
 <!-- 
 <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
  -->
@@ -244,9 +243,9 @@
                                     <label class="control-label col-md-3">Tell something about your artistic journey:</label>        
                                       <div class="controls col-md-9">                
                                     <% if (typeof user != 'undefined' && typeof user.portfolio != 'undefined' && typeof user.portfolio.myself != 'undefined') { %>       
-                                        <textarea id="textarea" name="myself" style="min-width:100%;"rows=6><%=user.portfolio.myself%></textarea>
+                                        <textarea id="textarea" name="myself" style="min-width:100%;color:black;"rows=6><%=user.portfolio.myself%></textarea>
                                     <%} else { %>   
-                                        <textarea id="textarea" name="myself" style="min-width:100%;"rows=6></textarea>
+                                        <textarea id="textarea" name="myself" style="min-width:100%;color:black;"rows=6></textarea>
                                     <%}%> 
                                       </div>
                                   </div>
@@ -288,6 +287,7 @@
                                     <div class = "control-group col-md-12" id = "myFlickPics">
                                       <label class="control-label col-md-3" for="field1">Embed from Flickr</label>
                                             <div class="controls col-md-9"> 
+                                              <span class="question">?</span>
                                               <span class="fieldNote" style="color:inherit;">Ensure that the picture in Flickr is public. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
                                                 <div id = "flickrPicPlus">
                                                     <div class="fPicentry input-group col-md-12" id="fpic0">
@@ -322,6 +322,7 @@
                                             <label class="control-label col-md-3" for="field1">Add your videos</label>
 
                                             <div class="controls col-md-9"> 
+                                              <span class="question">?</span>
                                               <span class="fieldNote" style="color:inherit;">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
                                                 <div id = "videoPlus">
                                                     <div class="entry input-group col-md-12" id="vid0">
@@ -362,7 +363,15 @@
                                                           <div>&nbsp;</div>
                                                           <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it" onchange="insertURL(this)"/>
                                                           <input class="col-md-12 playsGroup" id="playsGroup" name="playsGroup" type="text" placeholder="The theatre group's name"/>
-                                                          <input class="col-md-12 playsProdYear" id="playsProdYear" name="playsProdYear" type="text" placeholder="The year of production"/>
+                                                          
+                                                          <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                                              <label class="control-label">Which year was the play produced</label> 
+                                                                <br>
+                                                          </div> 
+                                                          <div class = "col-sm-5">
+                                                           <select class="col-sm-7" id="playsProdYear" name="playsProdYear" placeholder="The year of production" style="max-height:20px;"></select>
+                                                          </div> 
+                                                        
                                                           <div>&nbsp;</div>
                                                           <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
                                                               <label class="control-label">Your involvement in this event:(Cntrl-select to add more)</label> 
@@ -678,14 +687,28 @@
         });
 
         $('#playPlus').children('div').each(function () {
+
             var playName = $(this).find('#playsText').val();
+            var playGroupName = "";
+            var playProdyearVal = "";
+            var playRoleVal = "";
             if(playName != 'undefined' && playName != "") {
+              if( $(this).find('#playsGroup').val() != "") {
+                playGroupName = $(this).find('#playsGroup').val();
+              } 
+
+              if($(this).find('#playsProdYear').val() != "" && $(this).find('#playsProdYear').val() != null) {
+                playProdyearVal = $(this).find('#playsProdYear').val();
+              }
+              if($(this).find('#playsRole').val() != null && $(this).find('#playsRole').val() !="") {
+                playRoleVal = $(this).find('#playsRole').val();
+              }
               portfolioPlays.push({
                     "playName": playName,
                     "playURL": $(this).find('#playsLink').val(),
-                    "playContrib" : $(this).find('#playsRole').val(),
-                    "playGroup" : $(this).find('#playsGroup').val(),
-                    "playProdYear" : $(this).find('#playsProdYear').val()
+                    "playContrib" : playRoleVal,
+                    "playGroup" : playGroupName,
+                    "playProdYear" : playProdyearVal
 
               }); 
             }  
@@ -739,6 +762,20 @@
       }
 
      $(window).ready(function(){
+            var max = new Date().getFullYear(),
+            min = max - 30,
+            select = document.getElementById('playsProdYear');
+            for (var i = min; i<=max; i++) {
+                var opt = document.createElement('option');
+                opt.value = i;
+                opt.innerHTML = i;
+                select.appendChild(opt);
+            }
+            $('#playsProdYear').prepend($('<option/>', { 
+              value: "",
+              text : "Select Year",
+              selected : true
+          }));
           $('#successprofile').modal('show');
           <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
           <% } else { %>
@@ -857,7 +894,6 @@
           // Add the experience with plays
         <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPlays == 'undefined' || user.portfolio.myPlays.length <= 0 ) { %>
           <% } else { %>
-
                 // if(user.portfolio.myVideos.length == 1) { %>
                 var controlForm = $('.controls #playPlus:first'),
                     currentEntry = $(this).find('.playEntry:first');
@@ -882,8 +918,8 @@
                 $(newEntry).find('#playsText').val("<%=user.portfolio.myPlays[i].playName%>");
                 $(newEntry).find('#playsLink').val("<%=user.portfolio.myPlays[i].playURL%>");
                 $(newEntry).find('#playsRole').val("<%=user.portfolio.myPlays[i].playContrib%>".split(","));
-                $(newEntry).find('#playsGroup').val("<%=user.portfolio.myPlays[0].playGroup%>");
-                $(newEntry).find('#playsProdYear').val("<%=user.portfolio.myPlays[0].playProdYear%>");
+                $(newEntry).find('#playsGroup').val("<%=user.portfolio.myPlays[i].playGroup%>");
+                $(newEntry).find('#playsProdYear').val("<%=user.portfolio.myPlays[i].playProdYear%>");
                   
                   controlForm.find('.playEntry:not(:last) .btn-addPlays')
                       .removeClass('btn-addPlays').addClass('btn-removePlays')
@@ -1114,9 +1150,11 @@
 
 
       $('[data-toggle="tooltip"]').tooltip();
+
       $(function(){
           $('a[title]').tooltip();
       });
+
 
       $('#deleteModal').on('hide.bs.modal', function () {
         $('.step-1').hide();
@@ -1277,6 +1315,9 @@
       }
 
       function convertURLToEmbedVideo(element) {
+        if(element.indexOf("embed") != -1) {
+          return element;
+        }  
         var splitURLbyEqualTo = element.split("=");
         if(splitURLbyEqualTo.length > 1) {
           var videoId = splitURLbyEqualTo[1];
@@ -1302,6 +1343,20 @@
       });
 
     });
+
+    $(document).ready(function(){
+      $(".question").hover(function () {
+        //alert("hello")
+        $(this).append('<div class=tooltip><p>Just copy paste the URL from address bar</p></div>');
+        },
+        function () {
+          $("div.tooltip").remove();
+          
+        }
+      );
+
+      
+    });  
 
     
 

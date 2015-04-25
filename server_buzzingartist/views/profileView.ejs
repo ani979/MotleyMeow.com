@@ -28,6 +28,8 @@
     <link href="css/lightbox.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet">       
     <link href="css/tab.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/blueimp-gallery.min.css">
+    <link rel="stylesheet" href="css/bootstrap-image-gallery.min.css">
   </head>
 
 
@@ -67,7 +69,7 @@
   <div class = "main-landing-container profile container-fluid" >    
   <div class="container">
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-sm-3" style="padding:30px;">
 
         <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:150px;">
 
@@ -119,7 +121,7 @@
                 <% if (typeof sessionUser != 'undefined' && sessionUser!= null) { %>
                  <li style="display: inline-block;padding-right:20px;">
                   <div style="text-align:center;">
-                  <a href="#" onclick = "showRespect();" title="Edit profile" data-toggle="tooltip" style= "text-decoration: none;font-size:24px;"><i class="profilePageicon fa fa-star-o" style="color:rgba(249, 243, 243, 0.95);"></i></a><br/>
+                  <a href="#" onclick = "showRespect();" title="Show respect" data-toggle="tooltip" style= "text-decoration: none;font-size:24px;"><i class="profilePageicon fa fa-star-o" style="color:rgba(249, 243, 243, 0.95);"></i></a><br/>
                   <label class="profilePageiconRow">ADD RESPECT</label>
                   </div>
                   
@@ -127,7 +129,7 @@
                 <% } %>
                  <li style="display: inline-block;padding-right:20px;">
                   <div style="text-align:center;">
-                  <a href="#" onclick = "shareMe();return false;" title="Edit profile" data-toggle="tooltip" style= "text-decoration: none;font-size:24px;"><i class="profilePageicon fa fa-share" style="color:rgba(249, 243, 243, 0.95);"></i></a><br/>
+                  <a href="#" onclick = "shareMe();return false;" title="Share on your wall or any group" data-toggle="tooltip" style= "text-decoration: none;font-size:24px;"><i class="profilePageicon fa fa-share" style="color:rgba(249, 243, 243, 0.95);"></i></a><br/>
                   <label class="profilePageiconRow">SHARE ON FB</label>
                   </div>
                   
@@ -231,7 +233,7 @@
 
                                 <% if(typeof user.portfolio.myPlays[i].playName != 'undefined' && user.portfolio.myPlays[i].playName !="") { %>
                                   
-                                  <%=user.portfolio.myPlays[i].playProdYear%>&nbsp; <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;">"<%=user.portfolio.myPlays[i].playName%>"</a>&nbsp;<%=user.portfolio.myPlays[i].playContrib%>&nbsp;&nbsp;<b>"<%=user.portfolio.myPlays[i].playGroup%>"</b>
+                                  <%=user.portfolio.myPlays[i].playProdYear%>&nbsp; <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;">"<%=user.portfolio.myPlays[i].playName%>"</a>&nbsp;<%=user.portfolio.myPlays[i].playContrib%>&nbsp;&nbsp;<b><%=user.portfolio.myPlays[i].playGroup%></b>
                                   
                                 <% } %>  
                                   <div>&nbsp;</div>
@@ -260,16 +262,18 @@
 
                         console.log(" user.portfolio.myPhotos.length " + user.portfolio.myPhotos.length) %>
                         
-                          <div class="row">
+                          <div id="links" class="row">
                           <% for(var i = 0; i < user.portfolio.myPhotos.length; i ++ ) { %> 
-                          
-                            <div class="col-md-6">
-                              <div class = "thumbnail">
+<!--                               <div class = "thumbnail">
                                   <a href = "/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" data-lightbox="image" data-title="Portfolio images">
                                     <img alt="No image" src="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" style="min-width:200px;max-width:270px;max-height:270px;min-height:200px;">
                                   </a>  
-                               </div>   
-                            </div>
+                               </div>   --> 
+                               
+                                <a href="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" title="Portfolio image" data-gallery>
+                                    <div class="img" style="background-image:url('/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>');"></div>
+                                    <!-- <img alt="No image" src="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" style="min-width:200px;max-width:270px;max-height:270px;min-height:200px;"> -->
+                                </a>
 
                           <% } %>
                           </div>
@@ -278,18 +282,15 @@
                       
                     <% } else {   %>
                       <div class="row">
-                        <div class="panel-heading" contenteditable="false">Embedded from Flickr</div>
+                        <h4 style="padding-left:20px;">Embedded from Flickr</h4>
                       <% for(var i = 0; i < user.portfolio.myFlickrPics.length; i ++ ) { %> 
                         
-                          <div class="col-md-6">
-                            <div class="thumbnail">
                                 <a href = "<%=user.portfolio.myFlickrPics[i].flickrURL%>" target="_blank">
                                   <iframe src="<%=user.portfolio.myFlickrPics[i].flickrURL%>" width="270" height="200" frameborder=0 allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
                                 </a>  
-                            </div>
-                          </div>
                        <%} %> 
                      </div>
+
                     <% } %>     
                     
                     
@@ -357,10 +358,44 @@
 
 <!-- footer starts-->
 <div id = "footer"></div>
-
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body next"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <script src="js/linkified-min.js"></script>
     <script src="js/lightbox.min.js"></script>
-
+    <script src="js/jquery.blueimp-gallery.min.js"></script>
+    <script src="js/bootstrap-image-gallery.min.js"></script>
 
 <script>
     $("#footer").load("footer.ejs"); 
@@ -371,7 +406,7 @@
           $.ajax({
             url: "/showRespect",
             type: "POST",
-            data: {curUserId: <%=user.facebook.id%>},
+            data: {curUserId: "<%=user.facebook.id%>"},
             complete: function() {
             },
             success: function(data) {
@@ -412,6 +447,7 @@
       $('#role').html(roleText);
 
       var langArr = $('#lang').text().split(",");
+      langArr.sort();
       var langText ="";
       for(var i = 0; i < langArr.length; i++) {
         langText = langText + langArr[i] + "<br/>";
