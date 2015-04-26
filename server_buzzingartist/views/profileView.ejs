@@ -11,7 +11,7 @@
     <meta property="og:type" content="website" />
     <% if(typeof user.portfolio != 'undefined' && typeof user.portfolio.myPhotos != 'undefined' && user.portfolio.myPhotos.length !=0) { %>
       <% 
-      var i = Math.floor((Math.random() * user.portfolio.myPhotos.length))
+      var i = Math.floor((Math.random() * user.portfolio.myPhotos.length)) %>
       <meta property="og:image" content="http://www.motleymeow.com/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>"/>
     <% } else if(typeof user != 'undefined' && typeof user.local !='undefined' && typeof user.local.picture != 'undefined' && user.local.picture != "") { %>
       <meta property="og:image" content="<%=user.local.picture%>"/>

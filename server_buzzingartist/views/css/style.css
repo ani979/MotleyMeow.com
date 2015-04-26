@@ -652,10 +652,9 @@ body.modal-open .supreme-container{
 
 /* CSS used here will be applied after bootstrap.css */
 .badge-notify{
-   background:red;
+   background-color:red;
    position:relative;
    top: -20px;
-   left: -35px;
 }
 .span1 {
   width: 60px;

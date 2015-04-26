@@ -16,7 +16,8 @@ var userSchema = mongoose.Schema({
         joiningDate  :Date,
         receiveNotif : {type:Boolean, default:true},
         notificationClickDate : Date,
-        lastProfileUpdateDate : Date
+        lastProfileUpdateDate : Date,
+        notificationCount : String
     },
     facebook         : {
         id           : String,
@@ -72,4 +73,4 @@ userSchema.methods.validPassword = function(password) {
 module.exports = mongoose.model('User', userSchema);
 // // create the model for users and expose it to our app
 // module.exports = mongoose.model('Post', postSchema);
-	
+    

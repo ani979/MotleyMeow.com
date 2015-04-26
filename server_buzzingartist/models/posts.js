@@ -10,7 +10,8 @@ var postsSchema = mongoose.Schema({
         city         :[{}],
         role         :[{}],
         lang         :[{}],
-        imagePath		 : String
+        imagePath		 : String,
+        user : [{}]
     }
 
 });

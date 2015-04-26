@@ -1,64 +1,60 @@
-<ul class="notification_dropdown">
-  <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                  <% 
-                                        if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
-                                    <span class="label"><%= recentPostsForArtist.length %></span>
-                                    <%}%>
-                                    <i class="nav-icon fa fa-bullhorn"></i>
-                                    <span class="small-screen-text">Notifications</span>
-                                </a>
-
-                                <!-- NOTIFICATIONS -->
-                                
-                                <div class="dropdown-menu widget-notifications no-padding" style="width: 400px">
-                                    <div class="notifications-list" id="main-navbar-notifications">
-
-                                        <table id="postsTable" class="table table-striped">
-                                          <%  if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
-                                              <thead>
-                                                  <tr>
-                                                      <th class ="titlecol" style="text-align:left">Looking for</th>
-                                                      <th class ="contribcol" style="text-align:left">artists required</th>
-                                                      <th class ="citycol" style="text-align:left">in the city</th>
-                                                      <th class ="fbprofilecol" style="text-align:left">Details</th>          
-                                                  </tr>
-                                              </thead>
-                                          <% } %>
-                                      <tbody class="searchablewe">
-                                        
-                                        <% 
-                                        if(typeof recentPostsForArtist == 'undefined' || recentPostsForArtist.length == 0) { %>
-                                          <tr> <td colspan="4">No New Notifications. SEE OLD NOTIFICATIONS <a href = "/viewNotificationPosts">here</a></td></tr>
-
-                                        <%}  else { %>
-                                                <% for(var i=0; i < recentPostsForArtist.length; i++) { %>
-                                                  <tr rel="tooltip" title="<%= recentPostsForArtist[i].post.postDetail%>">
-                                                  <td><%= recentPostsForArtist[i].post.postTitle %></td>
-                                                  <td><%= recentPostsForArtist[i].post.role %></td>
-                                                  <td><%= recentPostsForArtist[i].post.city %></td>
-                                                  
-                                                        <td><a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" id ="view" name="<%=recentPostsForArtist[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></a></td>
-                                                        <input id="_id<%=recentPostsForArtist[i]._id%>" name="_id"  type="hidden" value=<%=recentPostsForArtist[i].post.userid%>>
-                                                        <input id="_postid<%=recentPostsForArtist[i]._id%>"  type="hidden" value=<%=recentPostsForArtist[i]._id%>>
-                                                   
-                                                  </tr>
-                                                <% } %>
-                                           <%}%>     
-                                          
-                                          
-                                          
-                                      </tbody>
-                                    </table>
-                                    </div> <!-- / .notifications-list -->
-                                    <%  if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
-                                      <a href="/viewNotificationPosts" class="notifications-link">SEE ALL NOTIFICATIONS</a>
-                                    <% } %>
-                                </div> <!-- / .dropdown-menu -->
-                            </li>
-                          </ul>
-
-
+             
+                    <%if(typeof notificationCount != 'undefined' && notificationCount != 0) {%>
+                      <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;">Posts for you</a><span class="badge-notify badge" style="background-color:red;"><%= notificationCount %></span>
+                    <% } else { %> 
+                    <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;">No new posts</a>
+                    <% } %>
+                    <ul class="dropdown-menu messages" style="right: 0px;left: auto;min-width:350px;">
+                    <% var nameOfuser = "" %>
+                    <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) {%>            
+                      <% for(var i=0; i < recentPostsForArtist.length; i++) { %>
+                          <% if (typeof recentPostsForArtist[i].post.postDetail !='undefined') {
+                            details = recentPostsForArtist[i].post.postDetail
+                          }%>
+                          <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { 
+                            nameOfuser = "A member"
+                           } else {
+                            nameOfuser = recentPostsForArtist[i].post.user[0].facebook.name
+                           } %>
+                           <% 
+                           var oneDay = 24*60*60*1000;
+                           var diffDays = Math.round(Math.abs((new Date().getTime() - recentPostsForArtist[i].post.date.getTime())/(oneDay))); 
+                           var diffDaysinStr;
+                           if (diffDays == 0)  {
+                             diffDaysinStr = "today" 
+                           } else if(diffDays == 1) {
+                             diffDaysinStr = "yesterday"
+                           } else { 
+                             diffDaysinStr = diffDays + " days ago"
+                           }%>
+                          <li class ="dropdown">
+                            <a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" name="<%=recentPostsForArtist[i]._id%>">
+                              <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { %>
+                                <span class="avatar"><img  src="/images/siteLogo.jpg"></span>
+                              <% } else { %>  
+                                <span class="avatar"><img src="<%=recentPostsForArtist[i].post.user[0].local.picture%>" alt="Avatar"></span>
+                              <% } %>
+                              <span class="header">
+                                <span class="from">
+                                    <%=nameOfuser%>
+                                </span>
+                                <span class="time">
+                                    posted <%=diffDaysinStr%>
+                                </span>
+                              </span>
+                              <span class="message">
+                                  <%= recentPostsForArtist[i].post.postTitle %>
+                              </span>  
+                            </a>
+                          </li> 
+                    <% } %>
+                      <li style="text-align:center;">
+                        <span class="message" style="color:black;">
+                          View all posts <a href="/viewNotificationPosts">here</a>
+                        </span>
+                      </li>  
+                     </ul>  
+                  <%} %>
 <script type="text/javascript">
 $(document).ready(function(){
           $(".notification_dropdown .dropdown").on("show.bs.dropdown", function(e){
@@ -66,10 +62,12 @@ $(document).ready(function(){
                     <% if(typeof recentPostsForArtist != 'undefined') { %>
                       console.log("recentPostsForArtist.length: "+ <%= recentPostsForArtist.length %>);
                  <%}%>
-              <% if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+              <% if(typeof notificationCount != 'undefined' && notificationCount != "") { %>
+              var count =<%= notificationCount %>;
                   $.ajax({
                         url: "/saveNotificationClickDate",
                         type: "POST",
+                        data: {notificationCount: count},
                         success: function (data) {
                           console.log("SUCCESSSS DROPDOWN");
                         },
@@ -86,7 +84,7 @@ $(document).ready(function(){
             <% if(typeof recentPostsForArtist != 'undefined') { %>
                       console.log("recentPostsForArtist.length: "+ <%= recentPostsForArtist.length %>);
                  <%}%>
-            <% if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) { %>
+            <% if(typeof notificationCount != 'undefined' && notificationCount != "") { %>
               $("#notification").load("/getNotification");
             <%}%>
           });
