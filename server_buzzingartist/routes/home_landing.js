@@ -299,14 +299,14 @@ exports.landing_home = function(req, res) {
                 console.log("i am here1111")
                 if(typeof selectedCity != undefined && selectedCity.length != 0) {
                     Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                        { 'post.date': { $lte: new Date() } } ] }} ,{$limit:10}],
+                                        { 'post.date': { $lte: new Date() } } ] }} ,{ $sort : { 'post.date' : -1 } }, {$limit:10}],
                                                             function(err, postsinDB) {
                                 if(!err) {
                                     postsForArtist = postsinDB;
                                 }
                                 console.log("postsForArtist length ELSE part: "+postsForArtist.length);
                                 var j = 0;
-                                for (var i = postsForArtist.length - 1; i >= 0; i--) {
+                                 for (var i = 0; i < postsForArtist.length; i++) {
                                     if(typeof postsForArtist[i].common != 'undefined' && postsForArtist[i].common != "") {
                                         postsArray[j] = postsForArtist[i];
                                         j ++;
@@ -317,7 +317,7 @@ exports.landing_home = function(req, res) {
                                         var recentPosts = {};
                                         // var recentPostsArray = new Array();
                                         Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1,'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                        { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } }, { 'post.userid': { $ne: req.session.user.facebook.id} } ] }} ,{$limit:10}],
+                                        { 'post.date': { $gte: new Date(foundUser.local.notificationClickDate) } }, { 'post.userid': { $ne: req.session.user.facebook.id} } ] }} ,{ $sort : { 'post.date' : -1 } }, {$limit:10}],
                                                             function(err, postsinDB) {
                                         if(!err) {
                                             recentPosts = postsinDB;
@@ -326,9 +326,8 @@ exports.landing_home = function(req, res) {
                                         console.log("postsForArtist length: "+ recentPosts.length);
                                         
                                         var j = 0;
-                                        for (var i = recentPosts.length - 1; i >= 0; i--) {
-                                            console.log(" postsForArtist[i].common " + recentPosts[i].common);
-                                            if(typeof postsForArtist[i].common != 'undefined' && recentPosts[i].common != "") {
+                                        for (var i = 0 ; i < recentPosts.length; i++) {
+                                            if(typeof recentPosts[i].common != 'undefined' && recentPosts[i].common != "") {
                                                 recentPostsArray[j] = recentPosts[i];
                                                 j ++;
                                             }
