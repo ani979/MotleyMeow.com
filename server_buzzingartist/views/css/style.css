@@ -973,15 +973,15 @@ body.modal-open .supreme-container{
 }
 
 .notification-badge {
-        background:     radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
-        background:    -moz-radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
-        background:     -ms-radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
-        background:      -o-radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
-        background: -webkit-radial-gradient( 5px -9px, circle, white 8%, #620404 26px );
+        background:     radial-gradient( 5px -9px, circle, #000 8%, #0C0000 26px );
+        background:    -moz-radial-gradient( 5px -9px, circle, #000 8%, #0C0000 26px );
+        background:     -ms-radial-gradient( 5px -9px, circle, #000 8%, #0C0000 26px );
+        background:      -o-radial-gradient( 5px -9px, circle, #000 8%, #0C0000 26px );
+        background: -webkit-radial-gradient( 5px -9px, circle, #000 8%, #0C0000 26px );
     background-color: #620404;
     border: 2px solid white;
     border-radius: 12px; /* one half of ( (border * 2) + height + padding ) */
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 2px 2px 3px 3px #FFF;
     color: white;
     font: bold 15px/13px Helvetica, Verdana, Tahoma;
     height: 16px; 
