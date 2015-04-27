@@ -195,7 +195,7 @@ exports.getNotification = function(req, res) {
 
 
                             Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                        { 'post.date': { $lte: new Date() } } ] }} ,{$limit:10}],
+                                        { 'post.date': { $lte: new Date() } } ,{ 'post.userid': { $ne: req.session.user.facebook.id} }] }} ,{$limit:10}],
                                                             function(err, postsinDB) {
                                 if(!err) {
                                     postsForArtist = postsinDB;
