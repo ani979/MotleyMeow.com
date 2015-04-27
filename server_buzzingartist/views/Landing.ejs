@@ -85,23 +85,23 @@
         <% } %>
       </div>  
 
-<script type="text/javascript">
-  $(document).ready(function() {
-          var timerId;
-          // timerId = setInterval(function() {
+<!--<script type="text/javascript">
+  // $(document).ready(function() {
+  //         var timerId;
+  //         // timerId = setInterval(function() {
             
-          //   $("#notification").load("/getNotification");
-          // }, 20000); 
-          var myEvent = window.attachEvent || window.addEventListener;
-          var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+  //         //   $("#notification").load("/getNotification");
+  //         // }, 20000); 
+  //         var myEvent = window.attachEvent || window.addEventListener;
+  //         var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
 
-          myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
-              //console.log("Clearing the interval")
-              clearInterval(timerId);
-          });
+  //         myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+  //             //console.log("Clearing the interval")
+  //             clearInterval(timerId);
+  //         });
           
-    });
-  </script> 
+  //   });
+  </script> -->
 
       <div class = "col-md-3" style="float:right;">
           <div class="col-md-6" id="notification" style="text-align:right;margin-top:5px;">
@@ -109,9 +109,9 @@
               <li class="dropdown pull-right"> -->
              
                     <%if(typeof notificationCount != 'undefined' && notificationCount != 0) {%>
-                      <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;">Posts for you</a><span class="badge-notify badge" style="background-color:red;"><%= notificationCount %></span>
+                      <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;" title="These are the posts chosen for you based on your profile">Posts for you</a><span class="badge-notify badge" style="background-color:red;"><%= notificationCount %></span>
                     <% } else { %> 
-                    <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;">View old posts</a>
+                    <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;" title="These are the posts chosen for you based on your profile">Posts for you</a>
                     <% } %>
                     <ul class="dropdown-menu messages" style="right: 0px;left: auto;min-width:350px;">
                     <% var nameOfuser = "" %>
@@ -266,8 +266,8 @@
                 
                 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#5A0202;">
-                  <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;">
-                          <li class="active" style="color:#ECDEDE;">Recent posts <span class="sr-only">(current)</span></li>
+                  <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;" title="Incoming posts irespective of location, language or contribution">
+                          <li class="active" style="color:#ECDEDE;">Recent posts of all categories<span class="sr-only" >(current)</span></li>
                   </ul>        
 
                  <!--  <ul class="nav navbar-right navbar-nav" style="font-size:15px;">          
