@@ -145,17 +145,18 @@
                               <li class ="dropdown">
                            <% } %>   
                           
-                            <a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" name="<%=recentPostsForArtist[i]._id%>" title="<%=details%>">
+                            
                               <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { %>
-                                <span class="avatar"><img  src="/images/siteLogo.jpg"></span>
+                                <a href="/profile?fbId=<%=recentPostsForArtist[i].post.userid%>" title="View profile"><span class="avatar"><img  src="/images/siteLogo.jpg"></span></a>
                               <% } else { %>  
-                                <span class="avatar"><img src="<%=recentPostsForArtist[i].post.user[0].local.picture%>" alt="Avatar"></span>
+                                <a href="/profile?fbId=<%=recentPostsForArtist[i].post.user[0].facebook.id%>" title="View profile"><span class="avatar"><img src="<%=recentPostsForArtist[i].post.user[0].local.picture%>" alt="Avatar"></span></a>
                               <% } %>
-                              <span class="header antiguaFontSmall">
-                                <span class="from">
+                              <a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" name="<%=recentPostsForArtist[i]._id%>" title="<%=details%>"
+                                style="clear:none;"><span class="header">
+                                <span class="from" style="font-style: normal;">
                                     <%=nameOfuser%>
                                 </span>
-                                <span class="time">
+                                <span class="time" style="font-style: normal;">
                                     posted <%=diffDaysinStr%>
                                 </span>
                               </span>
@@ -316,11 +317,11 @@
                 <div class='span1'>
                   <div class="post-userphoto">
                     <% if(typeof allPosts[i].post.user == 'undefined' || allPosts[i].post.user.length == 0) { %>
-                      <a href="/images/siteLogo.jpg" data-lightbox="image" data-title="Default image for the post">
+                      <a href="/profile?fbId=<%=allPosts[i].post.userid%>" title="View profile">
                         <img  src="/images/siteLogo.jpg" style="height:30px; width:48px;" class="member-photo"> 
                       </a>
                     <% } else { %>
-                      <a href = "<%=allPosts[i].post.user[0].local.picture%>" data-lightbox="image" data-title="post image">
+                      <a href="/profile?fbId=<%=allPosts[i].post.user[0].facebook.id%>" title="View profile">
                       <img  src="<%=allPosts[i].post.user[0].local.picture%>" style="height:48px; width:48px;" class="member-photo">
                     </a>
                     <% } %>
