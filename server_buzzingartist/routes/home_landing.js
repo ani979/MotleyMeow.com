@@ -299,7 +299,7 @@ exports.landing_home = function(req, res) {
                 console.log("i am here1111")
                 if(typeof selectedCity != undefined && selectedCity.length != 0) {
                     Posts.aggregate([{ $project: {'post.role': 1, 'post.city': 1, 'post.date': 1, 'post.postTitle': 1,'post.postDetail': 1,'post.userid': 1, 'post.user': 1, 'post.lang':1, common:{ $setIntersection: [ "$post.role", foundUser.local.role ]},_id: 1 } }, {$match: { $and: [ { 'post.city': { $in: selectedCity } }, 
-                                        { 'post.date': { $lte: new Date() } } ] }} ,{ $sort : { 'post.date' : -1 } }, {$limit:10}],
+                                        { 'post.date': { $lte: new Date() } }, { 'post.userid': { $ne: req.session.user.facebook.id} } ] } } ,{ $sort : { 'post.date' : -1 } }, {$limit:10}],
                                                             function(err, postsinDB) {
                                 if(!err) {
                                     postsForArtist = postsinDB;

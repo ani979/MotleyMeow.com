@@ -34,17 +34,18 @@
      </h3>
   </div>-->
   <% getDate = function(x) {
-            var retDate;
-            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
-              10:"October", 11:"November", 12:"December"};
+           var oneDay = 24*60*60*1000;
+           var diffDays = Math.round(Math.abs((new Date().getTime() - x)/(oneDay))); 
+           var diffDaysinStr;
+           if (diffDays == 0)  {
+            diffDaysinStr = "today" 
+           } else if(diffDays == 1) {
+            diffDaysinStr = "yesterday"
+           } else { 
+            diffDaysinStr = diffDays + " days ago"
+           }
+           return diffDaysinStr;
 
-            xx = x.replace(
-                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
-                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
-                      retDate= MM[parseInt($3)]+" "+$4+", "+$2+" - "+$5+":"+$6 + "hrs"
-                  }
-                ); 
-            return retDate;
         }
     %>
   <div class="col-md-12" style = "text-align: center;" id = "searchposts" style="display:none;">
@@ -127,7 +128,7 @@
                <table id="mytable" style="display:none;">
                 <thead>
                     <tr>
-                        <th class ="ardate">Posted On</th>
+                        <th class ="ardate">Posted</th>
                         <th class ="arname">Looking for</th>
                         <th class ="arrole">Artists needed</th>
                         <th class ="arcity">City or cities</th>
@@ -143,7 +144,7 @@
                       console.log("user.post.length is " + allposts.length);
                       %>
                       <% var isodateString = new Date(allposts[i].post.date).toISOString();
-                                    var displayableDate = getDate(isodateString) %>
+                                    var displayableDate = getDate(allposts[i].post.date.getTime()) %>
                     <tr>
                       <td ><%= displayableDate %></td>
                       <td ><%= allposts[i].post.postTitle %></td>

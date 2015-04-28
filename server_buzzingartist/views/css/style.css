@@ -1095,7 +1095,7 @@ ul.messages li .message {
   }
 
   .panelHeadingColor {
-    color: #FFF;
+    color: #E0E0E0;
     background-color: rgba(39, 11, 5, 0.52);
   }
 
@@ -1187,4 +1187,57 @@ div.tooltip p {
     background-position: 50% 50%;
     background-repeat:   no-repeat;
     background-size:     cover;
+}
+
+.oratorFont {
+  font-family: Orator,Roboto,sans-serif;
+}
+
+.antiguaFont {
+  font-family: Book Antigua,Roboto,sans-serif;
+  font-size:16px;
+}
+
+.panel-title {
+  font-family: Orator,Roboto,sans-serif;
+}
+
+.panel-body {
+  font-family: Book Antigua,Roboto,sans-serif;
+  font-size:16px;
+}
+
+.controlLabelText {
+  font-family: Orator,Roboto,sans-serif;
+  font-size:14px;
+}
+
+
+
+
+@font-face {
+  font-family: 'Orator';
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/OratorStd.otf");
+}
+@font-face {
+  font-family: 'Orator';
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/OratorStd.otf");
+}
+@font-face {
+  font-family: 'Orator';
+  font-style: bold;
+  font-weight: 700;
+  src: url("../fonts/OratorBold.ttf");
+}
+
+@font-face {
+  font-family: 'Book Antigua';
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/Book Antiqua Regular.ttf");
+
 }

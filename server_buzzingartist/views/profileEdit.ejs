@@ -68,7 +68,7 @@
  <div class="container profile" style="min-height:100%;">
   <div class="row">
       <div class="col-sm-10">
-         <h1 class="" style="color:#FFFAFA;"><%=user.facebook.name%></h1>
+         <h1 class="oratorFont" style="color:#FFFAFA;"><%=user.facebook.name%></h1>
         <br> 
       </div>
 
@@ -105,7 +105,7 @@
                               <div id="collapseBasicProfile" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="form-group">
-                                      <label class="col-sm-3 control-label" for="fullname">Full Name</label>
+                                      <label class="col-sm-3 control-label controlLabelText" for="fullname">Full Name</label>
                                       <div class="col-sm-9">
                                         <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Name" Maxlength="100"
                                         value = "<%= user.facebook.name %>" >
@@ -113,7 +113,7 @@
                                     </div>
                                    
                                    <div class="form-group">
-                                       <label class="col-sm-3 control-label" for="email">Email address</label>
+                                       <label class="col-sm-3 control-label controlLabelText" for="email">Email address</label>
                                         <div class="col-sm-9">
                                         <%if(typeof user.facebook.email == 'undefined') {%>
                                            <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
@@ -129,7 +129,7 @@
                                     </div>
                                      
                                     <div class="form-group">
-                                      <label class="col-sm-3 control-label" for="city">Location</label>
+                                      <label class="col-sm-3 control-label controlLabelText" for="city">Location</label>
                                       <div class="col-sm-9">
 
                                         <select class="form-control" value="<%= user.local.city %>" name="city">
@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                       <label class="col-sm-3 control-label" for="emailDisplay">Email privacy setting</label>
+                                       <label class="col-sm-3 control-label controlLabelText" for="emailDisplay">Email privacy setting</label>
                                       <div class="col-sm-9">
                                         <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
                                         <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK to share
@@ -151,7 +151,7 @@
                                       </div>                                
                                     </div>
                                     <div class="form-group">
-                                       <label class="col-sm-3 control-label" for="receiveNotif">Receive newsletters from us</label>
+                                       <label class="col-sm-3 control-label controlLabelText" for="receiveNotif">Receive newsletters from us</label>
                                       
                                       <div class="col-sm-9">
                                         <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
@@ -172,13 +172,13 @@
                               </div>
                               <div id="collapseContribution" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                  So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! 
-                                  <br/><span class="fieldNote" style="color:inherit;">We at MotleyMeow believe in the saying that, you are never too old to try out anything new, so if something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
+                                  <text class="controlLabelText">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! </text>
+                                  <br/><span class="fieldNote" style="color:inherit;font-size:12px;">If something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
                                   <br>
                                   <div class="form-group">
                                     
                                     <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                        <label class="control-label">Your association or interests in theatre:</label> 
+                                        <label class="control-label controlLabelText">Your association or interests in theatre:</label> 
                                           <br>
                                     </div>      
                                     <div class = "col-sm-9">
@@ -212,7 +212,7 @@
                                 <div class="panel-body">
                                   <div class="form-group">
                                     <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                        <label class="control-label">What languages are you most comfortable with:</label> 
+                                        <label class="control-label controlLabelText">What languages are you most comfortable with:</label> 
                                           <br>
                                     </div> 
                                     <div class="col-sm-9">
@@ -240,7 +240,7 @@
                               <div id="collapseArtistInYou" class="panel-collapse collapse">
                                 <div class="panel-body">
                                   <div class="control-group col-md-12">
-                                    <label class="control-label col-md-3">Tell something about your artistic journey:</label>        
+                                    <label class="control-label col-md-3 controlLabelText">Tell something about your artistic journey:</label>        
                                       <div class="controls col-md-9">                
                                     <% if (typeof user != 'undefined' && typeof user.portfolio != 'undefined' && typeof user.portfolio.myself != 'undefined') { %>       
                                         <textarea id="textarea" name="myself" style="min-width:100%;color:black;"rows=6><%=user.portfolio.myself%></textarea>
@@ -263,7 +263,7 @@
                               <div id="collapsePictures" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="control-group col-md-12" id = "mypics">
-                                        <label class="control-label col-md-3">Upload your pictures:</label>
+                                        <label class="control-label col-md-3 controlLabelText">Upload your pictures:</label>
                                           <span class="btn btn-success fileinput-button col-md-9">
                                             <i class="glyphicon glyphicon-plus"></i>
                                             <span>Add images(jpg/jpeg/png only)</span>
@@ -285,7 +285,7 @@
                                             <div id="status"></div>
                                     </div> 
                                     <div class = "control-group col-md-12" id = "myFlickPics">
-                                      <label class="control-label col-md-3" for="field1">Embed from Flickr</label>
+                                      <label class="control-label col-md-3 controlLabelText" for="field1">Embed from Flickr</label>
                                             <div class="controls col-md-9"> 
                                               <span class="question">?</span>
                                               <span class="fieldNote" style="color:inherit;">Ensure that the picture in Flickr is public. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
@@ -319,7 +319,7 @@
                                 <div class="panel-body">
                                      <div class="control-group col-md-12" id = "myVideos">
                                         <div class="control-group" id="fields">
-                                            <label class="control-label col-md-3" for="field1">Add your videos</label>
+                                            <label class="control-label col-md-3 controlLabelText" for="field1">Add your videos</label>
 
                                             <div class="controls col-md-9"> 
                                               <span class="question">?</span>
@@ -353,7 +353,7 @@
                                   <div class="panel-body">
                                       <div class="control-group col-md-12" id = "myPlays">
                                           <div class="control-group">
-                                              <label class="control-label col-md-3" for="field1">Your performances</label>
+                                              <label class="control-label col-md-3 controlLabelText" for="field1">Your performances</label>
 
                                               <div class="panel panel-default controls col-md-9"> 
                                                 
@@ -415,37 +415,37 @@
                                       <div class="control-group col-md-12" id = "mySocialPresence">
                                           <div class="control-group">
                                             <%if(typeof user.portfolio.mySocialPresence == 'undefined' || user.portfolio.mySocialPresence.length == 0) {%>
-                                              <label class="col-sm-3 control-label" for="socialG">Google+</label>
+                                              <label class="col-sm-3 control-label  controlLabelText" for="socialG">Google+</label>
                                               <div class="col-sm-9">
                                                   <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"> 
                                               </div>
                                               
-                                              <label class="col-sm-3 control-label" for="socialT">Twitter</label>
+                                              <label class="col-sm-3 control-label  controlLabelText" for="socialT">Twitter</label>
                                               <div class="col-sm-9">
                                                   <input type="text" class="form-control" name="socialT" id="socialT" placeholder="Your twitter profile link"> 
                                               </div>    
 
-                                              <label class="col-sm-3 control-label" for="socialLn">LinkedIn</label>
+                                              <label class="col-sm-3 control-label  controlLabelText" for="socialLn">LinkedIn</label>
                                               <div class="col-sm-9">
                                                   <input type="text" class="form-control" name="socialLn" id="socialLn" placeholder="Your Linkedin profile link"> 
                                               </div>   
                                             <% } else { 
                                                for(var i =0; i < user.portfolio.mySocialPresence.length; i ++) {%>
                                                   <% if(user.portfolio.mySocialPresence[i].name == "socialG") {%>
-                                                    <label class="col-sm-3 control-label" for="socialG">Google+</label>
+                                                    <label class="col-sm-3 control-label controlLabelText" for="socialG">Google+</label>
                                                     <div class="col-sm-9">
                                                         <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"
                                                         value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
                                                     </div>
                                                   <% } %>  
                                                   <% if(user.portfolio.mySocialPresence[i].name == "socialT") {%>
-                                                    <label class="col-sm-3 control-label" for="socialT">Twitter</label>
+                                                    <label class="col-sm-3 control-label controlLabelText" for="socialT">Twitter</label>
                                                     <div class="col-sm-9">
                                                         <input type="text" class="form-control" name="socialT" id="socialT" placeholder="Your twitter profile link" value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
                                                     </div>    
                                                   <% } %>
                                                   <% if(user.portfolio.mySocialPresence[i].name == "socialLn") {%>
-                                                    <label class="col-sm-3 control-label" for="socialLn">LinkedIn</label>
+                                                    <label class="col-sm-3 control-label controlLabelText" for="socialLn">LinkedIn</label>
                                                     <div class="col-sm-9">
                                                         <input type="text" class="form-control" name="socialLn" id="socialLn" placeholder="Your Linkedin profile link" value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
                                                     </div>  
@@ -469,11 +469,20 @@
                                 <div id="collapseResume" class="panel-collapse collapse">
                                   <div class="panel-body">
                                        <div class="control-group col-md-12">
-                                              <label class="control-label col-md-3">Add/Update your Artistic Résumé</label>
+                                        <% if( typeof user.portfolio.myResume != 'undefined' && user.portfolio.myResume != "") { %>
+                                              <label class="control-label col-md-3 controlLabelText">Update your Artistic Résumé</label>
+                                                <a href= "/portfolio/<%=user.facebook.id%>/resume/<%=user.portfolio.myResume%>" class="antiguaFont" style="color:inherit;">View it here</a>
+                                                <span class="btn btn-default col-md-9">
+                                                <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
+                                                </span>
+                                                <input type="hidden" id="myResume" name = "myResume">
+                                         <% } else { %>      
+                                               <label class="control-label col-md-3 controlLabelText">Add your Artistic Résumé</label>
                                                 <span class="btn btn-default col-md-9">
                                                 <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
                                                 </span>
                                                <input type="hidden" id="myResume" name = "myResume">
+                                          <% } %>      
                                         </div>
                                   </div>
                                 </div>
@@ -496,7 +505,7 @@
           
           <!-- <span class="pull-right"> -->
         <!--       <a href="/update" title="Submit the form" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-upload"></i></a> -->
-              <p style="text-align:center;">Please ensure you have read and will abide by our <b>"Terms of use"</b> located in the footer
+              <p style="text-align:center;" class="antiguaFont">Please ensure you have read and will abide by our <b>"Terms of use"</b> located in the footer
               <p style="text-align:center;"><button id = "submit" type="submit" class="btn btn-primary" type="button" name="btnvalue" value="submit"><i class="glyphicon glyphicon-ok-circle">SUBMIT</i>
               </button>
               
@@ -986,7 +995,7 @@
               }
               var currentEntry = $('input[id=resume]').parents('div:first');
               $(currentEntry).find('p').remove();
-              $(currentEntry).append("<p class=col-md-9><b>" +  "File " + data.resumeName.originalname + " uploaded</b>");
+              $(currentEntry).append("<p class=col-md-9>" +  "File " + data.resumeName.originalname + " uploaded");
               $('#myResume').val(data.resumeName.name);
             }
           });
