@@ -1,16 +1,17 @@
-             
                     <%if(typeof notificationCount != 'undefined' && notificationCount != 0) {%>
-                      <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;">Posts for you</a><span class="badge-notify badge" style="background-color:red;"><%= notificationCount %></span>
+                      <a href="#" class="notification-badge dropdown-toggle oratorFont" data-toggle="dropdown" style="white-space: wrap;" title="These are the posts chosen for you based on your profile">Posts for you</a><span class="badge-notify badge" style="background-color:red;"><%= notificationCount %></span>
                     <% } else { %> 
-                    <a href="#" class="notification-badge dropdown-toggle" data-toggle="dropdown" style="white-space: wrap;">No new posts</a>
+                    <a href="#" class="notification-badge dropdown-toggle oratorFont" data-toggle="dropdown" style="white-space: wrap;" title="These are the posts chosen for you based on your profile">Posts for you</a>
                     <% } %>
                     <ul class="dropdown-menu messages" style="right: 0px;left: auto;min-width:350px;">
                     <% var nameOfuser = "" %>
-                    <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) {%>            
-                      <% for(var i=0; i < recentPostsForArtist.length; i++) { %>
+                    <%if(typeof recentPostsForArtist != 'undefined' && recentPostsForArtist.length != 0) {%>  
+                      <% var details= ""; for(var i=0; i < recentPostsForArtist.length; i++) { %>
                           <% if (typeof recentPostsForArtist[i].post.postDetail !='undefined') {
                             details = recentPostsForArtist[i].post.postDetail
-                          }%>
+                          } else { 
+                            details=""
+                          } %>
                           <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { 
                             nameOfuser = "A member"
                            } else {
@@ -27,18 +28,25 @@
                            } else { 
                              diffDaysinStr = diffDays + " days ago"
                            }%>
-                          <li class ="dropdown">
-                            <a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" name="<%=recentPostsForArtist[i]._id%>">
+                           <% if(i <= notificationCount -1) { %>
+                              <li class ="dropdown" style="background-color:rgba(234, 151, 7, 0.51);">
+
+                           <% } else { %>
+                              <li class ="dropdown">
+                           <% } %>   
+                          
+                            
                               <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { %>
-                                <span class="avatar"><img  src="/images/siteLogo.jpg"></span>
+                                <a href="/profile?fbId=<%=recentPostsForArtist[i].post.userid%>" title="View profile"><span class="avatar"><img  src="/images/siteLogo.jpg"></span></a>
                               <% } else { %>  
-                                <span class="avatar"><img src="<%=recentPostsForArtist[i].post.user[0].local.picture%>" alt="Avatar"></span>
+                                <a href="/profile?fbId=<%=recentPostsForArtist[i].post.user[0].facebook.id%>" title="View profile"><span class="avatar"><img src="<%=recentPostsForArtist[i].post.user[0].local.picture%>" alt="Avatar"></span></a>
                               <% } %>
-                              <span class="header">
-                                <span class="from">
+                              <a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" name="<%=recentPostsForArtist[i]._id%>" title="<%=details%>"
+                                style="clear:none;"><span class="header">
+                                <span class="from" style="font-style: normal;">
                                     <%=nameOfuser%>
                                 </span>
-                                <span class="time">
+                                <span class="time" style="font-style: normal;">
                                     posted <%=diffDaysinStr%>
                                 </span>
                               </span>
@@ -49,12 +57,13 @@
                           </li> 
                     <% } %>
                       <li style="text-align:center;">
-                        <span class="message" style="color:black;">
+                        <span class="message antiguaFontSmall" style="color:black;">
                           View all posts <a href="/viewNotificationPosts">here</a>
                         </span>
                       </li>  
                      </ul>  
-                  <%} %>
+                  <%} %>    
+
 <script type="text/javascript">
 $(document).ready(function(){
           $(".notification_dropdown .dropdown").on("show.bs.dropdown", function(e){
