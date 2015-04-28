@@ -143,8 +143,7 @@
                   for(var i=0; i < allposts.length; i++) { 
                       console.log("user.post.length is " + allposts.length);
                       %>
-                      <% var isodateString = new Date(allposts[i].post.date).toISOString();
-                                    var displayableDate = getDate(allposts[i].post.date.getTime()) %>
+                      <% var displayableDate = getDate(allposts[i].post.date.getTime()) %>
                     <tr>
                       <td ><%= displayableDate %></td>
                       <td ><%= allposts[i].post.postTitle %></td>
