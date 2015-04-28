@@ -143,7 +143,7 @@
                               <li class ="dropdown">
                            <% } %>   
                           
-                            <a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" name="<%=recentPostsForArtist[i]._id%>">
+                            <a href="/viewpost?postid=<%=recentPostsForArtist[i]._id%>" name="<%=recentPostsForArtist[i]._id%>" title="<%=recentPostsForArtist[i].post.postDetail%>">
                               <% if(typeof recentPostsForArtist[i].post.user == 'undefined' || recentPostsForArtist[i].post.user.length == 0) { %>
                                 <span class="avatar"><img  src="/images/siteLogo.jpg"></span>
                               <% } else { %>  
@@ -325,7 +325,7 @@
                 <div class='span9 antiguaFont'>
                   <div class='post-text'>
                     <div class="post-title">
-                          <a href="/viewpost?postid=<%=allPosts[i]._id%>" title="link to, view, or share the full post" rel="bookmark"><h4><%=allPosts[i].post.postTitle%></h4></a>  
+                          <a href="/viewpost?postid=<%=allPosts[i]._id%>" title="<%=allPosts[i].post.postDetail%>" rel="bookmark"><h4><%=allPosts[i].post.postTitle%></h4></a>  
                           <% if(allPosts[i].post.city != "") { %> 
                             <span class='user' style="font-size:11px;">in <%=allPosts[i].post.city%></span>
                           <% } else { %>
