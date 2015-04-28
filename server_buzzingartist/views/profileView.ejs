@@ -77,18 +77,7 @@
 
         <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:150px;">
 
-        <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
-         <% console.log("same user as logged in so can edit"); %>
-         <!-- <form action="/profileEdit" method="GET">
-            <button id ="edit" align="center" class="btn btn-success">Edit my profile</button>&nbsp;
-          </form> -->
-        <% } %> 
-        <!-- <div>&nbsp;</div>
-          <div>
-            <% if(typeof sessionUser != 'undefined' && sessionUser!= null) { %>
-              <a type="button" align="center" class="btn btn-primary" onclick = "shareMe();"> Share it with the world </a>
-            <% } %>
-          </div> -->
+       
       </div>
 
       <div class="col-md-9">
