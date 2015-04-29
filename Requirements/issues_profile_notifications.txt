@@ -1,0 +1,9 @@
+1) Fonts in both pages
+2) Date in posts
+3) Session invalid should be moved
+
+1) if Post length is more the text goes out of bounds - DONE
+2) Back from event from FB leads to your posts
+3) When sharing profile..image of user should be seen
+4) Sharing the profile (add an URL). Profile URL
+5) default image for post

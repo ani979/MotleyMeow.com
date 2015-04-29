@@ -1246,3 +1246,30 @@ div.tooltip p {
   src: url("../fonts/Book Antiqua Regular.ttf");
 
 }
+
+.postTitleNot {
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width:275px;
+  overflow:hidden;
+}
+
+.ellip {
+  display: block;
+  height: 100%;
+}
+
+.ellip-line {
+  display: inline-block;
+  text-overflow: hidden;
+  white-space: nowrap;
+  word-wrap: normal;
+  max-width: 100%;
+}
+
+.ellip,
+.ellip-line {
+  position: relative;
+  overflow: hidden;
+}

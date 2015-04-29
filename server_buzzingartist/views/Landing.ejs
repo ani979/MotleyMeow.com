@@ -161,7 +161,7 @@
                                 </span>
                               </span>
                               <span class="message">
-                                  <%= recentPostsForArtist[i].post.postTitle %>
+                                  <text class="postTitleNot"> <%= recentPostsForArtist[i].post.postTitle %></text>
                               </span>  
                             </a>
                           </li> 
@@ -182,7 +182,7 @@
           <li class="dropdown pull-right" style="list-style-type: none;">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
             <ul class="dropdown-menu">
-              <li><a href="/profile" class="antiguaFontSmall">Profile</a></li>
+              <li><a href="/profile?fbId=<%=user.facebook.id%>" class="antiguaFontSmall">Profile</a></li>
               <li><a href="/logout" class = "antiguaFontSmall">Logout</a></li>
               
             </ul>
@@ -221,7 +221,7 @@
               <span class="badge badge-success"><i class="icon-minus-sign" style="font-size:20px;color:inherit"><text class = "oratorFont"><b>&nbsp;&nbsp;ARTISTS</b></text></i></span>
               <ul>
                   <li>
-                    <a href="/profile"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">VIEW YOUR PROFILE</text></span></a>
+                    <a href="/profile?fbId=<%=user.facebook.id%>"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">VIEW YOUR PROFILE</text></span></a>
                   </li>
                   <li>
                     <a href="/artists"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">BROWSE ARTISTS </text></span></a>
@@ -627,7 +627,6 @@
   <script src="js/lightbox.min.js"></script>
   <script>
   function notificationClicked () {
-      alert("here")
       <% if(typeof recentPostsForArtist != 'undefined') { %>
                 console.log("recentPostsForArtist.length: "+ <%= recentPostsForArtist.length %>);
                  <%}%>
