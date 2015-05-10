@@ -204,8 +204,7 @@ exports.getEmails = function (req, res) {
     for(var i =0; i < cityarr.length; i++) {
       selectedCity.push(cityarr[i].city)
     }
-    selectedCity.push(null);  
-
+    selectedCity.push("")
   } else {
     var selectedCity = req.body.cities.split(",");
   }
@@ -217,8 +216,6 @@ exports.getEmails = function (req, res) {
     for(var i =0; i < rolearr.length; i++) {
       selectedRoles.push(rolearr[i].role)
     }
-    selectedRoles.push(null);  
-
   } else {
     var selectedRoles = req.body.roles.split(",");
   }
@@ -230,21 +227,29 @@ exports.getEmails = function (req, res) {
     for(var i =0; i < langarr.length; i++) {
       selectedLang.push(langarr[i])
     }
-    selectedLang.push(null);  
-
   } else {
     var selectedLang = req.body.lang.split(",");
   }  
 
-  User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
-                                            {"local.role": { $in: selectedRoles } },
-                                            {"local.lang": { $in: selectedLang } },
+  User.distinct("facebook.email", { $and: [ { $or: [ {"local.city": { $in: selectedCity } }, {"local.city": null} ] }, 
+                                            { $or: [ {"local.role": { $in: selectedRoles } }, {"local.role": null}, {"local.role": {$size: 0} } ] },
+                                            { $or: [ {"local.lang": { $in: selectedLang } }, {"local.lang": null}, {"local.lang": {$size: 0} } ] },
                                             {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
                           function(err, emails) {
               
       res.send({selectedEmails: emails});
 
   });
+
+  //   User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
+  //                                           {"local.role": { $in: selectedRoles } },
+  //                                           {"local.lang": { $in: selectedLang } },
+  //                                           {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
+  //                         function(err, emails) {
+              
+  //     res.send({selectedEmails: emails});
+
+  // });
    
 
 
