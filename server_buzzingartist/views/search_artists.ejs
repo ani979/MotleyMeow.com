@@ -12,14 +12,11 @@
         <script src="js/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/dropdowns-enhancement.js"></script>
-        <script src="js/jquery.searcher.min.js"></script>
-
         <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
         <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
         <link href="css/style.css" rel="stylesheet">       
         <link href="css/tab.css" rel="stylesheet">
         <link rel="stylesheet" href="css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="css/searcher_style.css">
 
   </head>
   
@@ -37,72 +34,207 @@
       EXPLORE. CONNECT. CONTRIBUTE.
      </h3>
   </div>-->
-  <div class="col-md-12" style = "text-align: center;" id = "searchartists">
+  <div class="col-md-12" style = "text-align: center; display:none;" id = "searchartists">
     <h3>
       ARTISTS AROUND YOU
-    </h3>
+     </h3>
+     
+       <div class="row">    
+          <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement id="citySel"></button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <% var cities = dropdowns.alldropdowns.citiesForPost;
+                    for(var i = 0; i < cities.length; i ++) {   %>
+                      <li><input class = "citycheck" type="checkbox" id="<%=cities[i].city%>" name="city" value="<%=cities[i].city%>" onchange="filterme()"><label for="<%=cities[i].city%>"><%=cities[i].text%></label></li>
+                    <% } %>  
+                <!-- <ul class="dropdown-menu">
+                  <li><input class = "citycheck" type="checkbox" id="Bengaluru" name="city" value="Bengaluru" onchange="filterme()"><label for="Bengaluru">Bengaluru</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Chennai" name="city" value="Chennai" onchange="filterme()"><label for="Chennai">Chennai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Delhi" name="city" value="Delhi" onchange="filterme()"><label for="Delhi">Delhi</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Mumbai" name="city" value="Mumbai" onchange="filterme()"><label for="Mumbai">Mumbai</label></li>
+                  <li><input class = "citycheck" type="checkbox" id="Kolkata" name="city" value="Kolkata" onchange="filterme()"><label for="Kolkata">Kolkata</label></li> -->
+                  
+                  <input type="hidden" name="selectedcity" id="selected" value="">
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement id = "artistSel"></button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <% var roles = dropdowns.alldropdowns.roles;
+                    for(var i = 0; i < roles.length; i ++) {   %>
+                      <li><input class = "artistscheck" type="checkbox" id="<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" onchange="filterme()"><label for="<%=roles[i].role%>"><%=roles[i].text%></label></li>
+                    <% } %>
+                  <!-- <li><input class = "artistscheck" type="checkbox" id="Actor" name="role" value="Actor" onchange="filterme()"><label for="Actor">Actor</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Director" name="role" value="Director" onchange="filterme()"><label for="Director">Director</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Lights" name="role" value="Lights" onchange="filterme()"><label for="Lights">Lights Designer</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Sound" name="role" value="Sound" onchange="filterme()"><label for="Sound">Sound</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Music" name="role" value="Music" onchange="filterme()"><label for="Music">Music</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="Scriptwriter" name="role" value="Scriptwriter" onchange="filterme()"><label for="Scriptwriter">Scriptwriter/Translator</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="CostumeDesign" name="role" value="Costume" onchange="filterme()"><label for="CostumeDesign">Costume Designer</label></li>
+                  <li><input class = "artistscheck" type="checkbox" id="SetDesign" name="role" value="SetDesign" onchange="filterme()"><label for="SetDesign">Set Design</label></li> -->
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement id="languageSel"></button>
+              <button type ="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <% var languages = dropdowns.alldropdowns.languages;
+                    for(var i = 0; i < languages.length; i ++) {   %>
+                      <li><input class = "langcheck" type="checkbox" id="<%=languages[i]%>" name="lang" value="<%=languages[i]%>" onchange="filterme()"><label for="<%=languages[i]%>"><%=languages[i]%></label></li>
+                  <% } %>
+                  <!-- <li><input class = "langcheck" type="checkbox" id="Hindi" name="lang" value="Hindi" onchange="filterme()"><label for="Hindi">Hindi</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Kannada" name="lang" value="Kannada"onchange="filterme()"><label for="Kannada">Kannada</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Marathi" name="lang" value="Marathi"onchange="filterme()"><label for="Marathi">Marathi</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Bengali" name="lang" value="Bengali"onchange="filterme()"><label for="Bengali">Bengali</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="Tamil" name="lang" value="Tamil"onchange="filterme()"><label for="Tamil">Tamil</label></li>
+                  <li><input class = "langcheck" type="checkbox" id="English" name="lang" value="English"onchange="filterme()"><label for="English">English</label></li> -->
+                 
+              </ul>
+           </div>
+           <div class="btn-group">
+              <button type ="button" class="btn btn-primary" data-label-placement onclick = "uncheckAll()">CLEAR ALL</button>
+           </div>
+           <div class="btn-group">
+           <a class="btn btn-success" href="/contactArtists" role="button">Contact artists</a>
+           </div>
+      </div>
     
-    </br></br></br>
-    <label style="font-size:20px">Search for: <input id="cardsearchinput" type="text" style="font-size:15px"/></label>
-    </br>
-    </br>
-    <text id="No_result_found" style="float:center;text-align:center;font-size:20px;display:none;">No results found</text>
-    <div id="carddata">
-      <% users.forEach(function(user){ %>
-         <div class="card" style="width:390px;">
-            <div class="container">
-                <div class="col-sm-1" style="float:left;text-align:left;padding:5px;">
-                  <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:150px;">
-                </div>
-                </br></br></br>
-                <div class="col-sm-10" style="float:right;text-align:left;font-size:20px"><%= user.facebook.name %></div>
-              </br>
-                <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
-                  <div class="col-sm-10" style="float:right;text-align:left">Not Set</div>
-                <% } else { %>
-                  <div class="col-sm-10" style="float:right;text-align:left"><%= user.local.city %></div>
-                <% } %>
-                </br></br></br>
-                <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
-                  <div class="col-sm-10" style="float:right;text-align:left">Not updated yet</div>
-                <% } else { %>
-                  <div class="col-sm-10" style="float:right;text-align:left"><%= user.local.role %></div>
-                <% } %>
-            </div>
-          </div>              
-      <% }); %>
+    <div class="row col-md-8 col-md-offset-2">
+    
+        
+      <div>
+        
+        <div class="table-responsive">
+
+                
+              <table id="mytable" style=" display:none;">
+                   
+                   <thead>
+                      <th class ="arname" style="text-align:center">Name</th>
+                      <th class ="arrole" style="text-align:center">Contribution in theatre</th>
+                      <th class ="arlang" style="text-align:center">Comfortable in Language</th>
+                      <th class ="arcity" style="text-align:center">City</th>
+                      <!--<th class ="aremail">profile pic</th>-->
+                      <th class ="arlink">Profile</th>
+                   </thead>
+                   <tbody class="searchable">
+                      
+                      <% users.forEach(function(user){ %>
+                        <tr>
+                          <td><%= user.facebook.name %></td>
+                          <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
+                            <td>Not updated yet</td>
+                          <% } else { %>  
+                            <td><%= user.local.role %></td>
+                          <% } %>
+                          <% if(typeof user.local.lang == 'undefined' || user.local.lang.length == 0) { %>
+                            <td>Not updated yet</td>
+                          <% } else { %>  
+                            <td><%= user.local.lang %></td>
+                          <% } %>
+                          <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
+                            <td>Not Set</td>
+                          <% } else { %>  
+                            <td><%= user.local.city %></td>
+                          <% } %>  
+                          <td>
+                           <a href="/profile?fbId=<%=user.facebook.id%>" type= "button" id ="viewProfile" align="center" class="btn btn-primary">View Me</a>
+                          </td>
+
+
+                        </tr> 
+                      <% }); %>
+                        
+                  </tbody>
+              </table>
+        </div>
     </div>
+    
   </div>
-</div>
+ </div>
   
 
          
 
     <!-- footer starts-->
    <div id = "footer"></div>
+    
    <!-- footer ends-->
 
     <script type="text/javascript">
      $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("/header");
     $("#headerloggedout").load("headerloggedout.ejs");
+    var selectCity = "Select City";
+    var selectRole = "Select Artists";
+    var selectLang = "Language comfortability";
+    var filterTable;
+    $(document).ready(function(){
 
-    $("#carddata").searcher({
-        itemSelector: ".card",
-        textSelector: "div",
-        inputSelector: "#cardsearchinput",
-        highlight: "<span class='highlight'>$1</span>",
-        toggle: function(item, containsText) {
-          console.log("containsText: "+containsText);
-          if (containsText){
-            /*$('#No_result_found').hide();*/
-            $(item).fadeIn();
-          } else{
-            $(item).fadeOut();
-            /*$('#No_result_found').show();*/
-          }
-        }
-      });
+      filterTable = $('#mytable').DataTable({
+        stateSave: true});
+      $('#mytable').show();
+      $('button[id="citySel"]').html(selectCity);
+      $('button[id="artistSel"]').html(selectRole);
+      $('button[id="languageSel"]').html(selectLang);
+      $('#searchartists').show();
+    });
+
+
+    function filterme() {
+        var colCity = $('.arcity').index();
+        var colRole = $('.arrole').index();
+        var colLang = $('.arlang').index();
+       
+        //build a regex filter string with an or(|) condition
+        var cities = $('input:checkbox[name="city"]:checked').map(function() {
+
+          return '^' + this.value + '$';
+        }).get().join('|');
+        
+        filterTable
+          .columns( colCity )
+          .search( cities, true, false,false )
+          .draw();
+
+        //build a regex filter string with an or(|) condition
+        var roles = $('input:checkbox[name="role"]:checked').map(function() {
+
+          return this.value + '*';
+        }).get().join('|');
+      
+        filterTable
+        .columns( colRole )
+        .search( roles, true, false,false )
+        .draw();
+
+        //build a regex filter string with an or(|) condition
+        var lang = $('input:checkbox[name="lang"]:checked').map(function() {
+          return this.value + '*';
+        }).get().join('|');
+      
+        filterTable
+        .columns( colLang )
+        .search( lang, true, false,false )
+        .draw();
+ 
+    }
+
+    function uncheckAll(){
+      //alert("here");
+      $('input[type="checkbox"]:checked').prop('checked',false);
+      $('button[id="citySel"]').html(selectCity);
+      $('button[id="artistSel"]').html(selectRole);
+      $('button[id="languageSel"]').html(selectLang);
+      filterme();
+    }
+    
+   $(document).ready(function(){
+
+
+    });
     </script>
   </body>
 </html>
