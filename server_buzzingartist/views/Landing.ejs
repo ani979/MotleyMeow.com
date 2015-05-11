@@ -213,8 +213,59 @@
 
 
 <div class = "col-md-12" style="clear:both;">
-  <div class = "col-md-11 col-md-offset-1" style="padding-left:0px;padding-right:0px;">
-    <div class="col-md-10 col-md-offset-2">
+   <div class = "col-md-2" id="slide-3">
+        <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;" >    
+      
+                       <h3 style="color:#ECDEDE;text-align:center;" class ="oratorFont">Recently updated profiles</h3>
+          <!-- <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
+                  
+                  
+                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#5A0202;">
+                    <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;">
+                      <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
+                          <li class="active" style="color:#ECDEDE;">Upcoming events in all the cities<span class="sr-only">(current)</span></li>
+                      <% } else { %>
+                          <li class="active" style="color:#ECDEDE;">Upcoming Events in <%=citysel%><span class="sr-only">(current)</span></li>
+                       <% } %>
+                    </ul>        
+                  </div>
+          </nav> -->
+          <div>&nbsp;</div>
+          <div class="panel-group artists-events-panel">
+            
+              
+              <% if (typeof lastProfileUpdtd != 'undefined' && lastProfileUpdtd != null && lastProfileUpdtd.length != 0) { %>
+                <div id="arrows" style="display:none">
+                  <div id="arrow-left"></div>
+                  <div id="arrow-right"></div>
+                </div>
+
+                  <div class="row" style="position:relative;" class ="antiguaFontSmall" >
+                  <% for(var i = 0; i < lastProfileUpdtd.length; i++) {%>
+                     
+                      <div class="col-md-12" style="padding-left:25px;padding-right:25px;">
+                            <a href = "/profile?fbId=<%=lastProfileUpdtd[i].facebook.id%>" target="_blank" style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;text-decoration: none;">
+                              <img src="<%=lastProfileUpdtd[i].local.picture%>" border=0   style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;"/>
+                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"><%=lastProfileUpdtd[i].facebook.name%></span>
+
+                            </a>
+
+                      </div>
+                      
+                  <% }  %>
+                  </div><!-- /row -->
+              
+              <% } %>  
+              
+          </div><!-- /slide3 -->
+        <!-- <div class="panel-footer" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
+                    <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/allEvents" style="color: #ECDEDE;">All Events ›</a></li></ul>
+        </div> -->
+      </div>
+
+    </div>
+  <div class = "col-md-8" style="padding-left:0px;padding-right:0px;">
+    <div class="col-md-11 col-md-offset-1" style="text-align:center;">
       <div class = "col-md-3 tree oratorFont">
       <ul>
           <li>
@@ -262,7 +313,7 @@
         </div>  
         
     </div>
-    <div> &nbsp;</div>
+
     <div class = "col-md-10 col-md-offset-1" id="recentPosts">
       <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;background-color:#F2F2F2" >          
         <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
@@ -281,9 +332,10 @@
         </nav>
 
 
-        <div class="panel-group notification-panel">
+        
           <% console.log("allposts.length" + allPosts.length) %>
           <% if(allPosts.length > 0 ) { %>
+          <div class="panel-group notification-panel">
           <% var details="";
            for(var i=0; i < allPosts.length; i++) { 
               %>
@@ -356,6 +408,7 @@
               </div>
           <% } %>
           <% } else  { %>
+          <div class="panel-group notification-panel" style="height:100px;">
                 <div class='span9 oratorFont'>
                   <div class='post-text'>
                     <div class="post-title">
@@ -374,9 +427,8 @@
     </div>   
 
   </div>
-  <div>&nbsp;</div>
-  <div class = "col-md-11 col-md-offset-1" id="slide-3">
-      <div class = "col-md-10 col-md-offset-1" >
+   
+  <div class = "col-md-2" id="slide-3">
         <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;" >    
       
                        <h3 style="color:#ECDEDE;text-align:center;" class ="oratorFont">Upcoming Events</h3>
@@ -394,7 +446,7 @@
                   </div>
           </nav> -->
           <div>&nbsp;</div>
-          <div class="panel-group notification-panel">
+          <div class="panel-group artists-events-panel">
             
               
               <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
@@ -403,12 +455,12 @@
                   <div id="arrow-right"></div>
                 </div>
 
-                  <div class="row" style="position:relative;margin-left: 75px;" class ="antiguaFontSmall" >
+                  <div class="row" style="position:relative;" class ="antiguaFontSmall" >
                   <% for(var i = 0; i < events.length; i++) {%>
                       <%  var d = new Date(events[i].event.date).toISOString();
                             var displayableDate = getDate(d);
                       %>
-                      <div class="col-md-2" style="padding-left:25px;padding-right:25px;">
+                      <div class="col-md-12" style="padding-left:25px;padding-right:25px;">
                             <a href = "<%=events[i].event.link%>" target="_blank" style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;text-decoration: none;">
                               <img src="<%=events[i].event.eventcover%>" border=0   style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;"/>
                               <span style="color:#FFF;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
@@ -429,7 +481,6 @@
         <!-- <div class="panel-footer" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
                     <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/allEvents" style="color: #ECDEDE;">All Events ›</a></li></ul>
         </div> -->
-       </div> 
       </div>
 
     </div>    

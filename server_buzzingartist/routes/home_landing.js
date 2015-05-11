@@ -266,6 +266,7 @@ exports.landing_home = function(req, res) {
     var allDBPosts = {};
     var postsArray = new Array();
     var recentPostsArray = new Array();
+    var allLastUpdtdUsers = new Array();
     var recentJoinedUsers = {};
     var eventsInDB = {};
     async.parallel([
@@ -438,14 +439,35 @@ exports.landing_home = function(req, res) {
                         console.log("DONE with 4444")
                     callback(null,"DONE4")    
                 });   
-            }   
+            },
+            function(callback){
+                console.log("i am here5555")
+                
+                User.aggregate([{ $match: { 'local.lastProfileUpdateDate': { $lte: new Date() } } } , { $sort : { 'local.lastProfileUpdateDate' : -1 } }, {$limit:5} ],
+                    function(err, lastUpdtdUsers) {
+                    if (err || typeof lastUpdtdUsers == 'undefined') {
+                        console.log("Error while getting last updated users");
+                    }    
+
+                    console.log("lastUpdatedUsers length is " + lastUpdtdUsers.length);
+                    
+                    if(!err) {
+                        allLastUpdtdUsers = lastUpdtdUsers;
+                    } else {
+                        allLastUpdtdUsers = {};
+                    }
+
+                    console.log("DONE with 5555")
+                    callback(null, "DONE5")
+                }); 
+            }
 
         ],
         // optional callback
         function(err, results){
             console.log("Finally")
             res.render("Landing", {user: req.session.user, events: eventsInDB, users:recentJoinedUsers, allPosts: allDBPosts, 
-                appId:config.facebook.clientID, dropdowns:dropdowns, recentPostsForArtist:postsArray,notificationCount:recentPostsArray.length})
+                appId:config.facebook.clientID, dropdowns:dropdowns, recentPostsForArtist:postsArray,notificationCount:recentPostsArray.length, lastProfileUpdtd:allLastUpdtdUsers})
             // the results array will equal ['one','two'] even though
             // the second function had a shorter timeout.
         }
