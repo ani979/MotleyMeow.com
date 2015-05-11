@@ -458,13 +458,19 @@
                   <div class="row" style="position:relative;" class ="antiguaFontSmall" >
                   <% for(var i = 0; i < events.length; i++) {%>
                       <%  var d = new Date(events[i].event.date).toISOString();
-                            var displayableDate = getDate(d);
+                            var displayableStartDate = getDate(d);
+                            var displayableEndDate = displayableStartDate;
+                            if(typeof events[i].event.endDate != 'undefined' && events[i].event.endDate != "" && events[i].event.endDate != null) {
+                              var endDate = new Date(events[i].event.endDate).toISOString();
+                              displayableEndDate = getDate(endDate);
+                            }  
                       %>
                       <div class="col-md-12" style="padding-left:25px;padding-right:25px;">
                             <a href = "<%=events[i].event.link%>" target="_blank" style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;text-decoration: none;">
                               <img src="<%=events[i].event.eventcover%>" border=0   style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;"/>
                               <span style="color:#FFF;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
-                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"> on <%=displayableDate%></span>
+                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"> from <%=displayableStartDate%></span>
+                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"> until <%=displayableEndDate%></span>
                               <span style="color:#FFF;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
 
                             </a>
