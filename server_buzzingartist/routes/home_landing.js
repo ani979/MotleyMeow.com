@@ -177,7 +177,7 @@ exports.getNotification = function(req, res) {
                                 }
                                 console.log("ALL POSTS till NOW: "+postsForArtist.length);
                                 var j = 0;
-                                for (var i = 0; i < postsForArtist.length; i++) {
+                                for (var i = postsForArtist.length - 1; i >= 0; i--) {
                                     // console.log("postsForArtist[i]: "+postsForArtist[i]);
                                     // console.log("rolee: "+postsForArtist[i].post.role);
                                     // console.log("postsForArtist[i].post.common: "+postsForArtist[i].post.common);
