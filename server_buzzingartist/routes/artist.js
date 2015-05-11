@@ -204,7 +204,6 @@ exports.getEmails = function (req, res) {
     for(var i =0; i < cityarr.length; i++) {
       selectedCity.push(cityarr[i].city)
     }
-    selectedCity.push("")
   } else {
     var selectedCity = req.body.cities.split(",");
   }
@@ -231,8 +230,8 @@ exports.getEmails = function (req, res) {
     var selectedLang = req.body.lang.split(",");
   }  
 
-  User.distinct("facebook.email", { $and: [ { $or: [ {"local.city": { $in: selectedCity } }, {"local.city": null} ] }, 
-                                            { $or: [ {"local.role": { $in: selectedRoles } }, {"local.role": null}, {"local.role": {$size: 0} } ] },
+  User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
+                                            {"local.role": { $in: selectedRoles } },
                                             { $or: [ {"local.lang": { $in: selectedLang } }, {"local.lang": null}, {"local.lang": {$size: 0} } ] },
                                             {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
                           function(err, emails) {
