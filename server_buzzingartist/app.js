@@ -35,6 +35,10 @@ var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     FacebookStrategy = require('passport-facebook');
 
+var mailer   = require("mailer")            //required for setting mail server
+  , mailerUsername = "motleymeow@gmail.com"
+  , mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+
 //var expressSession = require('express-session');
 
 var dbConfig = require('./db');
@@ -181,9 +185,29 @@ passport.use(new FacebookStrategy({
                                 res.redirect('/error');
                                 return done(err);
                             }
-
-                            // if successful, return the new user
-                            return done(null, newUser);
+                            else {
+                                mailer.send(
+                                {   host:           "smtp.mandrillapp.com"
+                                  , port:           587                         //any port like port 25 can be used here 
+                                  , to:             newUser.facebook.email
+                                  , from:           "noreply@motleymeow.com"
+                                  , subject:        "Welcome to MotleyMeow!"
+                                  , body:           "Hello from MotleyMeow"
+                                  , authentication: "login"
+                                  , username:       mailerUsername
+                                  , password:       mailerPassword
+                                  }, function(err, result){
+                                    if(err){
+                                      console.log(err);
+                                    }
+                                    else {
+                                      console.log("Mail sent");
+                                    }
+                                  }
+                                );
+                                // if successful, return the new user
+                                return done(null, newUser);
+                            }
                         });
                     }
 
