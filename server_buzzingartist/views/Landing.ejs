@@ -287,7 +287,7 @@
               <span class="badge badge-success"><i class="icon-minus-sign" style="font-size:18px;color: inherit;"><text class = "oratorFont"><b>&nbsp;&nbsp;POSTS</b></text></i></span>
               <ul>
                   <li>
-                    <a href="/postarequest"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">ADD A NEW POST </text></span></a>
+                    <a href="#postModal" data-toggle="modal" data-backdrop="static"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">ADD A NEW POST </text></span></a>
                   </li>
                   <li>
                     <a href="/viewallposts"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">BROWSE POSTS </text></span></a>
@@ -524,34 +524,34 @@
 <div class="modal fade" id="postModal" aria-labelledby="postModal" tabindex="-1" aria-hidden="true">  
     <div class="modal-dialog">
         <div class="modal-content" style="font-weight:300;">
-            <div class="modal-header" style = "background-color: #838383;">
-                <h2 class="modal-title" data-step="1">crispost @Motleymeow</h2>
-                <h4 style= "text-align:center;"><small style="color:#333;"><b> Complete your post with just a title and image. For focused attention click on "briskpost".</b></small> </h4>
+            <div class="modal-header oratorFont" style = "background-color: #483A3A;">
+                <h2 class="modal-title" style= "text-align:center;">crispost @Motleymeow</h2>
+                <h4 class="modal-title" style= "text-align:center;"><small><b> Complete your post with just a title and image. For focused attention click on "Add more details".</small> </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="color:black;">
               
-                <!-- <form id="requestForm" class="form-horizontal" enctype="multipart/form-data" action="/post" method="post"> -->
+                <form id="postSubmitForm" class="form-horizontal" enctype="multipart/form-data" action="/post" method="post">
                 
                   <!-- Textarea -->
                   <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
-                  <div class="control-group">
-                      <label class="control-label col-md-3" for="postTitle">Title of the request</label>
+                 <div class="control-group col-md-12">
+                      <label class="control-label col-md-3 oratorFont" for="postTitle">Title of the post</label>
                       <div class="controls col-md-9">  
                       <% if (typeof post != 'undefined' && post!= null) { %>   
                        <input name="_postid"  type="hidden" value=<%=post._id%>>              
                         <input type="textarea" name="postTitle" id="postTitle" style="width: 60%;" value= "<%=post.post.postTitle%>"> </input>
                       <% } else { %> 
-                        <input type="textarea" name="postTitle" id="postTitle" placeholder="Need an actor etc." style="width: 60%;" value=""> </input>
+                        <input type="textarea" name="postTitle" id="postTitle" placeholder="Any event or an audition" style="width: 100%;" value=" "> </input>
                       <% } %>
                       </div>
                   </div>   
                   <div>&nbsp;</div>
                   <div>&nbsp;</div>  
-                  <div class="control-group">
+                  <div class="control-group col-md-12 oratorFont">
                      <label class="control-label col-md-3" for="checkboxes">Select an image</label>
                       <span class="btn btn-default btn-file col-md-9">
                         <a href="" data-lightbox="No Image set" data-title="Post's image">
-                        <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:400px;max-height:400px"/></a>
+                        <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
                         <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost"/>
                         
                           <a href = "" id="updateImage" style="display:none">Update this image</a>
@@ -559,15 +559,23 @@
                           <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged"/>
                       </span>
                   </div> 
-                <!-- </form>  -->    
+                  <div>&nbsp;</div>  
+                </form>
               
             </div>  
-            <div class="modal-footer">
-                 <span class="pull-left col-md-4 "><a href="/postarequest" class="btn btn-success">Add more with BriskPost</a></span>
-                 <span class = "col-md-4"><button type="button" class="btn btn-primary" data-dismiss="modal">SUBMIT</button></span>
+            <div class="modal-footer oratorFont">
+                 <span class="pull-left col-md-4 "><a href="#" onclick="redirect();" class="btn btn-success">Add more details</a></span>
+                 <span class="col-md-4 "><button type="button" class="btn btn-primary" onclick="submitForPost()">SUBMIT</button></span>
                  <span class="pull-right col-md-4"><button type="button" class="btn btn-warning" data-dismiss="modal">CLOSE</button></span>
             </div>
-           
+           <script>
+
+            function redirect() {
+                window.location="/postarequest?title=" + $('#postTitle').val();
+                return false;
+            }    
+
+            </script> 
         </div>
     </div>
 </div>
@@ -680,6 +688,7 @@
   <!-- <script src="js/jquery-1.10.2.min.js"></script> -->
   <script src="js/jquery-migrate-1.2.1.min.js"></script>
   <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery-validate.js"></script>
   <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
   <script src="js/lightbox.min.js"></script>
   <script>
@@ -811,18 +820,86 @@
 
 
     $(document).ready(function () {
+        $("#updateImage").on('click', function(e){
+          e.preventDefault();
+          $("#imagePost").trigger('click');
+        });
+        
+        $("#deleteImage").on('click', function(e){
+          e.preventDefault();
+          $("#updatedImage").attr("src","");
+          $("#updatedImage").parents("a").attr("href", "");
+          $("#updatedImage").parents("a").hide();
+          $("#imagePost").val("");
+          $("#postedImage").val("removed");
+          $("#deleteImage").hide();
+          $("#updateImage").hide();
+        });
 
-        //generateNotificationButton();
+        $('input[id=imagePost]').change(function(e){
+          var data = new FormData();
+          data.append('image', $('input[id=imagePost]')[0].files[0]); 
+          // alert("Data is " + data);
+          $.ajax({
+            url: "/postPhotos",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: data,
+            complete: function() {
+              console.log('process complete');
+            },
+
+            success: function(data) {
+               if(data.error) {
+                console.log('Opps, something bad happened');
+                return;
+                }
+              console.log("here success");  
+              console.log("Data.path is" + data.path);
+              
+              $("#updatedImage").attr("src","tempUploads/"+data.path);
+              $("#updatedImage").parents("a").show();
+              $("#updatedImage").parents("a").attr("href", "tempUploads/"+data.path)
+              $("#updatedImage").siblings("a").show();
+              $("#updateImage").show();
+              $("#deleteImage").show();
+              $("#updatedImage").show();
+              $("#postedImage").val(data.path);
+           },
+
+            error: function() {
+              console.log('process error');
+            },
+          });
+      });
+       $('#postSubmitForm').validate({
+          rules: {
+              postTitle: {
+                  required: true
+              }
+          },
+          highlight: function (element) {
+              $(element).closest('.control-group').removeClass('success').addClass('error');
+          },
+          success: function (element) {
+              element.text('OK!').addClass('valid')
+                  .closest('.control-group').removeClass('error').addClass('success');
+          }
+      });
+      submitForPost = function() {
+          $('#postSubmitForm').submit();
+      }
 
     });        
 
 
     $('#postModal').on('show.bs.modal', function () {
-     $('.container').addClass('blur');
+     $('.main-landing-container').addClass('blur');
     })
 
     $('#postModal').on('hide.bs.modal', function () {
-       $('.container').removeClass('blur');
+       $('.main-landing-container').removeClass('blur');
     })
           
     </script>

@@ -78,7 +78,7 @@
               <% var displayableDate = getDate(posts[i].post.date.getTime()) %>
                 <tr>
                   <td><%=displayableDate%></td>
-                  <td><%= posts[i].post.role %></td>
+                  <td><%= posts[i].requirement.role %></td>
                   <td><%= posts[i].post.postTitle %></td>
                   <td><%= posts[i].post.city %></td>
                    <form action="/editpost" method="POST">

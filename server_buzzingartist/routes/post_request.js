@@ -117,8 +117,8 @@ exports.post = function (req, res) {
                     }
                     db.post.date = new Date();
                     db.post.city = cityarr;
-                    db.post.role = rolearr;
-                    db.post.lang = langarr;
+                    db.requirement.role = rolearr;
+                    db.requirement.lang = langarr;
 
                    // update the user object found using findOne
                    console.log("req.body.title" + req.body.postTitle);
@@ -145,9 +145,14 @@ exports.post = function (req, res) {
             newPost.post.postDetail = req.body.post;
             newPost.post.date = new Date();
             newPost.post.city = cityarr;
-            newPost.post.role = rolearr;
-            newPost.post.lang = langarr;
+            newPost.requirement.role = rolearr;
+            newPost.requirement.lang = langarr;
+            console.log("req.files " + JSON.stringify(req.files));
+            //console.log("req.body.imagePost " + req.body.postedImage);
             if(typeof req.files == 'undefined' || typeof req.files.imagePost == 'undefined') {
+                // if(req.body.postedImage != "" && req.body.postedImage != "notChanged") {
+                //     newPost.post.imagePath = req.body.postedImage;
+                // }
                 newPost.post.imagePath = "";    
             } else {
                 newPost.post.imagePath = req.files.imagePost.name;
@@ -389,8 +394,10 @@ exports.viewNotificationPosts = function (req, res) {
 
 exports.postarequest = function (req, res) {
 	var allUsers;
+    console.log("req.title " + req.query.title);
+    console.log("req.image " + req.query.postedImage);
     console.log("req.user " + req.user);
-    res.render('postarequest', { user: req.session.user, users: allUsers, dropdowns:dropdowns }); 
+    res.render('postarequest', { user: req.session.user, users: allUsers, dropdowns:dropdowns, postTitle:req.query.title, postedImage: req.query.postedImage}); 
 };
 
 exports.editpost = function (req, res) {

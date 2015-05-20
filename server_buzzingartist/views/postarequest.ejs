@@ -53,10 +53,115 @@
 <%}%> 
 
 <div class = "main-container">
+<!-- <div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>  
+  
+    <button id="auditionButton" name="auditionButton" class="btn btn-primary col-md-2 col-md-offset-2" style="text-align:center;">Add an audition/requirement</button>
+    <button id="eventButton" name="eventButton" class="btn btn-primary col-md-2 col-md-offset-2" style="text-align:center;">Add an event from FB</button>
+ 
+<div>&nbsp;</div>  
+<div>&nbsp;</div>  
+<div>&nbsp;</div>   -->
+<div class="col-md-12 no-margin no-padding" style="display:none;" id="eventPost">
+    <form id = "eventform" class="form-horizontal" action="/posteventDetails" method="post">
+    <%if (typeof errorMessage != 'undefined' && errorMessage == 1) { %>
+    <h3>Sorry that Event is already registered in our database. If its not appearing in the front page slider, please call us on the number provided in "Where we are" section. It was a mistake, Try again below</h3>
+     <%}%>
+
+    <!-- Form Name -->
+    <legend style = "text-align: center;">Post an event in our main page</legend>
+     <span class="fieldNote" style = "text-align: center;"><h4>Just copy paste the event url from facebook. Eg. of an event URL https://www.facebook.com/events/1234567/?ref_dashboard_filter....."</h4> </span>
+
+    <!-- Textarea -->
+    <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
+    <div class="control-group col-md-12">
+        <label id="eventurl" class="control-label col-md-3" for="textarea">EVENT URL:</label>
+        <div class="controls col-md-9" >       
+        <input type="textarea" name="eventId" id="eventId" class="input-lg" style="text-align: center; width: 80%;">
+        <input type="hidden" name="eventIdAfterConversion" id="eventIdAfterConversion" class="input-lg" style="text-align: center; width: 80%;">
+        </div>
+     </div>   
+     <div>&nbsp;</div>
+     <div class="control-group col-md-12">
+      <label class="control-label col-md-3" id= "checkkind" for="checkboxes">Select the kind of event:</label>
+      <div class="controls col-md-9">
+      <% var eventCats = dropdowns.alldropdowns.eventCategories;
+            for(var i = 0; i < eventCats.length; i ++) {   %>
+              <label class="checkbox-inline" for="checkboxes-<%=eventCats[i].category%>">
+                <input name="category" id="checkboxes-<%=eventCats[i].category%>" type="checkbox" value="<%=eventCats[i].category%>"><%=eventCats[i].text%>
+              </label>  
+         <% } %>
+      
+        <!-- <label class="checkbox-inline" for="checkboxes-0">
+          <input name="category" id="checkboxes-0" type="checkbox" value="Play">
+         Play
+        </label>
+        <label class="checkbox-inline" for="checkboxes-1">
+          <input name="category" id="checkboxes-1" type="checkbox"  value="Workshop">
+         Workshop
+        </label>
+        <label class="checkbox-inline" for="checkboxes-4">
+          <input name="category" id="checkboxes-4" type="checkbox" value="Others">
+          Other events or festivals
+        </label> -->
+        
+      </div>
+    </div>
+    <div>&nbsp;</div>
+    <div class="control-group col-md-12">
+       <label class="control-label col-md-3" for="city">In which city</label>
+       <div class="controls col-md-9" style="width:20%;">
+
+          <select class="form-control" name="city">
+            <% var cities = dropdowns.alldropdowns.citiesForPost;
+              for(var i = 0; i < cities.length; i ++) {   %> 
+                <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
+                                            <!-- <option>Bengaluru</option>
+                                            <option>Chennai</option>
+                                            <option>Delhi</option>
+                                            <option>Mumbai</option>
+                                            <option>Kolkata</option>
+                                            <option value="">None of the above</option> -->
+            <% } %>  
+            <!--         <option>Bengaluru</option>
+                    <option>Chennai</option>
+                    <option>Delhi</option>
+                    <option>Mumbai</option>
+                    <option>Kolkata</option> -->
+          </select> 
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+      <div class="control-group col-md-12" style = "text-align:center;">
+      <label class="control-label" for="submitbuttonForEvent" style= "font-size:20px;"><strong>Submit your request</strong></label>
+      <div class="controls">
+        <button id="submitbuttonForEvent" name="submitbuttonForEvent" class="btn btn-primary" type="submit">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:history.go(-1);"><input type="button" class="btn btn-primary" value="Back" />
+            </a>
+      </div>
+
+    </div>
 
 
+        
+  
+    </form>
+    
+    <!-- <form action="/goback" method="post">
+    <div class="control-group">
+      <label class="control-label" for="cancelbutton">Exit the page</label>
+      <div class="controls">
+        <button id="cancelbutton" name="cancelbutton" class="btn btn-primary">Cancel</button>
+      </div>
+    </div>
+  </form> -->
 
-  <div class="col-md-12" >
+  </div>  
+
+
+  <div class="col-md-12" id="auditionPost">
     <form id="requestForm" class="form-horizontal" enctype="multipart/form-data" action="/post" method="post">
     
 
@@ -71,9 +176,11 @@
         <% if (typeof post != 'undefined' && post!= null) { %>   
          <input name="_postid"  type="hidden" value=<%=post._id%>>              
         <input type="textarea" name="postTitle" id="postTitle" style="width: 60%;" value= "<%=post.post.postTitle%>"> </input>
-        <% } else { %> 
+        <% } else if(typeof postTitle != 'undefined' && postTitle != null){ %> 
+          <input type="textarea" name="postTitle" id="postTitle" style="width: 60%;" value="<%=postTitle%>"> </input>
+        <% } else { %>
           <input type="textarea" name="postTitle" id="postTitle" placeholder="Need an actor etc." style="width: 60%;" value=""> </input>
-        <% } %>
+        <% } %>  
         </div>
      </div>   
       <div>&nbsp;</div>
@@ -233,21 +340,37 @@
 
       </div> 
 
-    <% } else  { %>
+    <% } else if(typeof postedImage != 'undefined' && postedImage != null && postedImage != 'notChanged') { %> 
+         <div class="control-group col-md-12" >
+                <label class="control-label col-md-3" for="checkboxes">Current post image</label>
+                <div class="col-md-9">
+                  <a href="tempUploads/<%=postedImage%>" data-lightbox="No Image set" data-title="Post's image"><img id="updatedImage" src="tempUploads/<%=postedImage%>" alt="No image set" style="max-width:400px;max-height:400px"/></a>
 
-      <div class="control-group col-md-12">
-            <label class="control-label col-md-3" for="checkboxes">Select an image</label>
-              <span class="btn btn-default btn-file">
-              <a href="" data-lightbox="No Image set" data-title="Post's image">
-              <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:400px;max-height:400px"/></a>
-              <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost"/>
-              
-                <a href = "" id="updateImage" style="display:none">Update this image</a>
-                <a href = "" id="deleteImage" style="display:none">Remove this image</a>
-                <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
-              </span>
-      </div>    
-    <% } %>    
+                 
+                  <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" value="<%=postedImage%>" style="display:none;"/>
+                    
+                  <div>
+                    <a href = "" id="updateImage">Update this image</a>
+                    <p><a href = "" id="deleteImage">Remove this image</a></p>
+                  </div>
+              </div>
+                <input id = "postedImage" name="postedImage"  type="hidden" value="<%=postedImage%>"> 
+
+        </div> 
+        <% } else { %>
+          <div class="control-group col-md-12">
+                <label class="control-label col-md-3" for="checkboxes">Select an image</label>
+                  <span class="btn btn-default btn-file">
+                  <a href="" data-lightbox="No Image set" data-title="Post's image">
+                  <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:400px;max-height:400px"/></a>
+                  <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost"/>
+                  
+                    <a href = "" id="updateImage" style="display:none">Update this image</a>
+                    <a href = "" id="deleteImage" style="display:none">Remove this image</a>
+                    <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged">
+                  </span>
+          </div>    
+      <% } %>    
                            
     <div class="control-group col-md-12" style = "text-align:center;">
       <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;color: #FF1919;"><b>Please confirm you have read and will abide by our<a href="#guidelinesModal" role="button" class="btn" data-toggle="modal">Posting Guidelines.</a></b></span>
@@ -266,7 +389,28 @@
 
 
   </div>  
-</div>    
+</div>   
+  <div class="modal fade" id="eventErrorModal" role="dialog" aria-labelledby="eventErrorModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style = "background-color: #528FCC;">
+                <h4 class="modal-title" data-step="1">Error occurred</h4>
+                
+            </div>
+            <div class="modal-body" style="text-align:left;">
+                            
+                              There is a wrong event URL given, please check again. It must be in this format:
+                              https://www.facebook.com/events/12345678900/?ref_dashboard_filter.....
+                        
+            </div>
+            
+            <div class="modal-footer">
+                <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close and try again</button></span>
+            </div>
+            
+        </div>
+    </div>
+  </div> 
 <div class="modal fade" id="guidelinesModal" role="dialog" aria-labelledby="guidelinesModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
       <div class="modal-dialog">
           <div class="modal-content">
@@ -380,11 +524,11 @@
   $(function(){
     
       <% if (typeof post != 'undefined' && post!= null) { %>
-          var values_role = '<%=post.post.role%>';
+          var values_role = '<%=post.requirement.role%>';
           console.log("values are " + values_role);
           var roleInitValues = values_role.split(",");
 
-          var values_lang = '<%=post.post.lang%>';
+          var values_lang = '<%=post.requirement.lang%>';
           var langInitValues = values_lang.split(",");
 
           var values_city = '<%=post.post.city%>';
@@ -498,20 +642,95 @@
 
 
     $(document).ready(function() {
-        disableSubmit();
-        $('#requestForm').validate({
-            rules: {
-                postTitle: {
-                    required: true
-                }
-            },
-            highlight: function (element) {
-                $(element).closest('.control-group').removeClass('success').addClass('error');
-            },
-            success: function (element) {
-                element.text('OK!').addClass('valid')
-                    .closest('.control-group').removeClass('error').addClass('success');
+
+      $( "#auditionButton" ).click(function() {
+        $('#eventPost').hide();
+        $('#auditionPost').show();
+      });
+
+      $( "#eventButton" ).click(function() {
+        $('#auditionPost').hide();
+        $('#eventPost').show();
+      });
+
+      disableSubmit();
+      $('#requestForm').validate({
+          rules: {
+              postTitle: {
+                  required: true
+              }
+          },
+          highlight: function (element) {
+              $(element).closest('.control-group').removeClass('success').addClass('error');
+          },
+          success: function (element) {
+              element.text('OK!').addClass('valid')
+                  .closest('.control-group').removeClass('error').addClass('success');
+          }
+      });
+
+        $('#eventform').submit(function(event) {
+         
+            var eventDetails = document.getElementById("eventId").value;
+            var splitEventbyEvent = eventDetails.split("/events/");
+            var splitEventbyId;
+            var idOfEvent;
+            
+            var lengthofSplitEvent = splitEventbyEvent.length;
+            if(lengthofSplitEvent > 1) {
+              splitEventbyId = splitEventbyEvent[1].split("/");
+              if (splitEventbyId.length > 0) {
+                  idOfEvent = splitEventbyId[0];
+                  if(/^\d.*/.test(idOfEvent)) {
+                    document.getElementById("eventIdAfterConversion").value = idOfEvent;
+                  } else {
+                    
+                    $('#eventErrorModal').modal('show');
+                    event.preventDefault();
+                    return;
+                  }
+              }  else {
+                
+                $('#eventErrorModal').modal('show');
+                event.preventDefault();
+                return;
+              }
+            } else {
+              
+              $('#eventErrorModal').modal('show');
+               event.preventDefault();
+              return;
             }
+
+        });
+
+        $('#eventform').validate({
+              rules: {
+                  eventId: {
+                    required: true
+                  },
+                  category: {
+                    required: true
+                  }                                
+                 
+              },
+
+              errorPlacement: function(error, element) {
+                if (element.attr("type") == "checkbox") {
+                    error.insertBefore($(element).closest('.control-group'));
+                     $('#category-error').addClass('col-md-9 col-md-offset-3');
+                } else {
+                    error.insertAfter($(element).closest('div').prev($('.eventurl')));
+                }
+              },  
+              
+              highlight: function (element) {
+                  $(element).closest('.control-group').removeClass('success').addClass('error');
+                  
+              },
+              success: function (element) {
+                  $(element).closest('.control-group').removeClass('error').addClass('success');
+              }
         });
     }); 
 
@@ -531,53 +750,6 @@
     } 
 
 
-    //   status('Choose a file :)');
-    //   alert("coming here");
-       
-    //   // Check to see when a user has selected a file
-    //   var timerId;
-    //   timerId = setInterval(function() {
-    //      if($('#imagePost').val() != "") {
-    //       alert("image value " + $('#imagePost').val());
-    //       clearInterval(timerId);
-    //       alert("after clearing the interval"); 
-    //       $('#uploadForm').submit();
-    //       alert("form submitted");
-    //     }
-    //   }, 5000);
-       
-    //   $('#uploadForm').submit(function() {
-    //     alert("submitting here");
-    //     status('uploading the file ...');
-         
-    //     $(this).ajaxSubmit({
-         
-    //       error: function(xhr) {
-    //         status('Error: ' + xhr.status);
-    //       },
-         
-    //       success: function(response) {
-    //        if(response.error) {
-    //           status('Opps, something bad happened');
-    //           return;
-    //           }
-               
-    //           var imageUrlOnServer = response.path;
-               
-    //           status('Success, file uploaded to:' + imageUrlOnServer);
-    //           $('<img/>').attr('src', imageUrlOnServer).appendTo($('body'));
-    //         } 
-    //     });
-       
-    //     // Have to stop the form from submitting and causing
-    //     // a page refresh - don't forget this
-    //     return false;
-    //   });
-       
-    //   function status(message) {
-    //   $('#status').text(message);
-    //   }
-    // }); 
     </script>
   </body>
 </html>
