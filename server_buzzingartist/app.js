@@ -35,9 +35,12 @@ var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     FacebookStrategy = require('passport-facebook');
 
-var mailer   = require("mailer")            //required for setting mail server
-  , mailerUsername = "motleymeow@gmail.com"
-  , mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+//var mailer   = require("mailer")            //required for setting mail server
+  //, mailerUsername = "motleymeow@gmail.com"
+  //, mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+
+var mandrill = require('mandrill-api/mandrill');
+var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
 
 //var expressSession = require('express-session');
 
@@ -186,7 +189,7 @@ passport.use(new FacebookStrategy({
                                 return done(err);
                             }
                             else {
-                                mailer.send(
+                                /*mailer.send(
                                 {   host:           "smtp.mandrillapp.com"
                                   , port:           587                         //any port like port 25 can be used here 
                                   , to:             newUser.facebook.email
@@ -204,7 +207,27 @@ passport.use(new FacebookStrategy({
                                       console.log("Mail sent");
                                     }
                                   }
-                                );
+                                );*/
+                                var params = {
+                                    "template_name": "MotleyMeow Welcome Email",
+                                    "template_content": [
+                                        {
+                                            "name": "example name",
+                                            "content": "example content"
+                                        }
+                                    ],
+
+                                    "message": {
+                                        "from_email":"noreply@motleymeow.com",
+                                        "from_name":"Motley Meow",
+                                        "to":[{"email":newUser.facebook.email}],
+                                        "subject": "Welcome to MotleyMeow!",
+                                        "text": "text in the message"
+                                    }
+                                };
+
+                                sendTheMail(params);
+
                                 // if successful, return the new user
                                 return done(null, newUser);
                             }
@@ -528,3 +551,12 @@ http.createServer(app).listen(app.get('port'), function() {
 // app.listen(8080,argv.fe_ip);
 // console.log("Express serverrrr listening on port 8080");
 
+function sendTheMail(params) {
+// Send the email!
+
+m.messages.sendTemplate(params, function(res) {
+    console.log(res);
+}, function(err) {
+    console.log(err);
+});
+}
