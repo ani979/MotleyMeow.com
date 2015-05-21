@@ -147,9 +147,17 @@
                     <tr>
                       <td ><%= displayableDate %></td>
                       <td ><%= allposts[i].post.postTitle %></td>
-                      <td ><%= allposts[i].requirement.role %></td>
+                      <%if (typeof allposts[i].requirement != 'undefined' && typeof allposts[i].requirement.role != 'undefined') { %>
+                        <td ><%= allposts[i].requirement.role %></td>
+                      <% } else { %>
+                        <td ><%= allposts[i].post.role %></td>
+                      <% } %>  
                       <td ><%= allposts[i].post.city %></td>
-                      <td ><%= allposts[i].requirement.lang %></td>
+                      <%if (typeof allposts[i].requirement != 'undefined' && typeof allposts[i].requirement.lang != 'undefined') { %>
+                        <td ><%= allposts[i].requirement.lang %></td>
+                      <% } else { %>
+                        <td ><%= allposts[i].post.lang %></td>
+                      <% } %> 
                       <!-- <form action="/viewpost" method="GET"> -->
                         <td style = "text-align:center;"><a href="/viewpost?postid=<%=allposts[i]._id%>" id ="view" name="<%=allposts[i]._id%>"> <span class="glyphicon glyphicon-info-sign"></span></a></td>
                         <input name="postid"  type="hidden" value=<%=allposts[i]._id%>>
