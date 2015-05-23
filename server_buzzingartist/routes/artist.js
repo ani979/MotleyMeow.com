@@ -283,7 +283,7 @@ exports.sendMailsToArtists = function (req, res){
   mailer.send(
   { host:           "smtp.mandrillapp.com"
   , port:           587
-  , to:             "mallika13055@iiitd.ac.in"
+  , to:             "motleymeow@gmail.com"
   , bcc:            bccEmails
   , from:           email
   , subject:        "MotleyMeow: "+ name + " wants to contact you!"
