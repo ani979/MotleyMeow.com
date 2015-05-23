@@ -19,6 +19,8 @@ var argv = require('optimist').argv;
 var crypto = require('crypto');
 var fsExtra = require('fs')
 
+
+
 exports.fsExtra = fsExtra;
 
 var cookieParser = require('cookie-parser');
@@ -269,7 +271,7 @@ app.use(session({
  
 app.use(cookieParser());
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
 app.use(bodyParser.json())
@@ -368,6 +370,7 @@ app.post( '/update',
                     }), ensureAuthenticated, artists.update);
 app.get( '/contactArtists', artists.contactArtists);
 app.post( '/getEmails', artists.getEmails);
+app.post('/sendMailsToArtists', artists.sendMailsToArtists);
 app.post( '/getCity', artists.updateCityAndRoles);
 app.post( '/showRespect', ensureAuthenticated, artists.showRespect);
 app.get( '/postevents',ensureAuthenticated, post_event.postevents);
