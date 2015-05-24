@@ -337,7 +337,8 @@ $('#send_btn').popover({content: 'Mail Sent!'},'click');
                   //buttonEmailArt.disabled = false;
                   $("#emailArt").attr("disabled", false);
                   $("#toArtists").attr("rows", (data.selectedEmails.length)+1);
-                  $("#toArtists").attr("placeholder", data.selectedEmails).val("").focus().blur();
+                  //$("#toArtists").attr("placeholder", data.selectedEmails).val("").focus().blur();
+                  $("#toArtists").val(data.selectedEmails);
                 }
             },
             error: function (data) {
