@@ -127,6 +127,7 @@
           
           </div>
       </div>  
+     
   <div class="container"> 
       <!-- <div class="form-group">
         <label class="col-md-4 control-label" for="singlebutton"></label>
@@ -138,10 +139,13 @@
       </div> -->
 
       <!-- button to trigger modal -->
-      <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal">Email Artists! </a>
-
+      <div style="text-align:center">
+        <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal" id="emailArt" name="emailArt" disabled>Email Artists! </a>
+      </div>
       <!-- Modal -->
+      
     <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      
         <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -170,6 +174,12 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-md-4" for="comment">To</label>
+                    <div class="col-md-6">
+                        <textarea rows="6" class="form-control" id="toArtists" name="toArtists"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-md-4" for="comment">Email Body</label>
                     <div class="col-md-6">
                         <textarea rows="6" class="form-control" id="comments" name="comments" placeholder="Please type the e-mail here, we will send it to all artists you selected.."></textarea>
@@ -188,15 +198,43 @@
         </div><!-- End of Modal body -->
         </div><!-- End of Modal content -->
         </div><!-- End of Modal dialog -->
-    </div><!-- End of Modal -->
+
+    </div><!-- End of Modal --> 
+
     </div><!-- End of container -->
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script>
-$('#send_btn').popover({content: 'Mail Sent!'},'click'); 
+    /*$('#send_btn').click(function(e) {
+        this.disabled = true;
+
+        var data={
+            first_name: $('#first_name').val(),
+            last_name: $('#last_name').val(),
+            email: $('#email').val(),
+            comments: $('#comments').val()
+            }
+
+             $.ajax({ 
+           url: '/sendMailsToArtists',
+           type: 'POST',
+           cache: false, 
+           data: data
+
+           success: function(data){
+              alert('Success!')
+              console.log("This is executing");
+           }
+           , error: function(jqXHR, textStatus, err){
+               alert('text status '+textStatus+', err '+err)
+           }
+        });
+
+      return false;
+
+
+    });*/
+$('#send_btn').popover({content: 'Mail Sent!'},'click');
+ 
 </script>
 
 <% } %>
@@ -216,6 +254,7 @@ $('#send_btn').popover({content: 'Mail Sent!'},'click');
 
     function getEmail() {
         var roles, lang;
+        //var buttonEmailArt = document.getElementbyId("emailArt");
        
         var selectedCitiesValue, selectedLangValue, selectedRoleValue;
         // //build a regex filter string with an or(,) condition
@@ -294,6 +333,11 @@ $('#send_btn').popover({content: 'Mail Sent!'},'click');
                                                "Count of email ids found : " + data.selectedEmails.length + "\n" + 
                                                "Email ids based on above query : " + data.selectedEmails);
                   $("#bcc_Emails").val(data.selectedEmails);
+
+                  //buttonEmailArt.disabled = false;
+                  $("#emailArt").attr("disabled", false);
+                  $("#toArtists").attr("rows", (data.selectedEmails.length)+1);
+                  $("#toArtists").attr("placeholder", data.selectedEmails).val("").focus().blur();
                 }
             },
             error: function (data) {
@@ -302,6 +346,11 @@ $('#send_btn').popover({content: 'Mail Sent!'},'click');
             
         });
        
+    }
+
+    function clearModal(elementID){
+      console.log("Cleared!");
+      document.getElementbyId(elementID).innerHTML = "";
     }
 
     function uncheckAll(){
