@@ -271,6 +271,8 @@ exports.contactArtists = function (req, res) {
 
 exports.sendMailsToArtists = function (req, res){
 
+  console.log(req.body);
+  //res.send();
   
   //console.log(req.body.bcc_Emails);
   //console.log(typeof bccEmails);
@@ -279,6 +281,8 @@ exports.sendMailsToArtists = function (req, res){
       email = req.body.email,
       emailText = req.body.comments,
       bccEmails = req.body.bcc_Emails;
+
+  //var obj = {name:name, email:email, emailText:emailText, bccEmails};
 
   mailer.send(
   { host:           "smtp.mandrillapp.com"
@@ -294,12 +298,16 @@ exports.sendMailsToArtists = function (req, res){
   }, function(err, result){
     if(err){
       console.log(err);
+      res.redirect('/error');
     }
     else {
       console.log("Mail sent!");
+      res.send();
     }
   }
   );
+
+  //res.send();
   
 
 
