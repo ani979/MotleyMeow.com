@@ -298,11 +298,11 @@ exports.sendMailsToArtists = function (req, res){
   }, function(err, result){
     if(err){
       console.log(err);
-      res.redirect('/error');
+      res.send({completed:"NOK"});
     }
     else {
-      console.log("Mail sent!");
-      res.send();
+      console.log("Mail sent!" + result);
+      res.send({completed:"OK"});
     }
   }
   );

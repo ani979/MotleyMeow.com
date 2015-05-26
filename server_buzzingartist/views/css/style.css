@@ -221,6 +221,10 @@ right:50%;
 outline: none;
 }
 
+#emailModal .modal-dialog{
+  width:800px;
+}  
+
 @media (max-width: 767px) {
   .with-hover-text{
     margin-bottom: 2em;

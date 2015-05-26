@@ -17,6 +17,9 @@
         <link href="css/tab.css" rel="stylesheet">
         <link rel="stylesheet" href="css/font-awesome.min.css">
 
+        <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+
     </head>
 
   
@@ -140,11 +143,16 @@
 
       <!-- button to trigger modal -->
       <div style="text-align:center">
-        <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal" id="emailArt" name="emailArt" disabled>Email Artists! </a>
+        <a href="#emailModal" role="button" class="btn btn-primary" data-toggle="modal" id="emailArt" name="emailArt" disabled>Email Artists! </a>
       </div>
       <!-- Modal -->
       
-    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    
+
+<% } %>
+</div>  
+
+<div id="emailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
       
         <div class="modal-dialog">
         <div class="modal-content">
@@ -157,7 +165,7 @@
             <form class="form-horizontal" name="commentform" id="commentform">
                 <div class="form-group">
                     <label class="control-label col-md-4" for="first_name">Your Name</label>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                       <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Your full name"/>
                     </div>
                 </div>
@@ -170,20 +178,20 @@
                 <div class="form-group">
                     <label class="control-label col-md-4" for="email">Your Email Address</label>
                     <div class="col-md-6 input-group">
-                    <span class="input-group-addon">@</span>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Your Email Address"/>
+                      <span class="input-group-addon">@</span>
+                      <input type="email" class="form-control" id="email" name="email" placeholder="Your Email Address"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4" for="comment">To</label>
-                    <div class="col-md-6">
-                        <textarea rows="6" class="form-control" id="toArtists" name="toArtists"></textarea>
+                    <label class="control-label col-md-4" for="To">To</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" id="toArtists" name="toArtists"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4" for="comment">Email Body</label>
-                    <div class="col-md-6">
-                        <textarea rows="6" class="form-control" id="comments" name="comments" placeholder="Please type the e-mail here, we will send it to all artists you selected.."></textarea>
+                    <label class="control-label col-md-4" for="body">Email Body</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" id="comments" name="comments" placeholder="Please type the e-mail here, we will send it to all artists you selected.." style="min-height:300px;"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -203,10 +211,7 @@
     </div><!-- End of Modal --> 
 
     <!--</div> End of container -->
-
-<% } %>
-</div>  
-
+<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
 <script>
     function sendMails(){
 
@@ -217,7 +222,7 @@
             email: $("#email").val(),
             toArtists: $("#toArtists").val(),
             comments: $("#comments").val(),
-            bcc_Emails: $("#bcc_Emails").val()
+            bcc_Emails: $("#toArtists").val()
             };
 
           $.ajax({ 
@@ -233,23 +238,29 @@
               //console.log("This is executingggggg");
               //$("#send_btn").attr("disabled", true);
               //document.getElementbyId(myModal).innerHTML = "";
-              $("#emailArt").attr("disabled", true);                 //disable send button again 
-              $("#commentform").empty();                             //clear modal body
-              $("#modalbody").html("<h3>Mail Sent!</h3");            //display mail sent on browser
-              setTimeout('closeModal();', 1000);                     //close modal after a second
-              window.location.replace("/contactArtists");            //refresh all data and page
-
+              //$("#emailArt").attr("disabled", true);                 //disable send button again 
+              //$("#commentform").empty();        
+                                   //clear modal body
+              //$("#modalbody").html("<h3>Mail Sent!</h3");            //display mail sent on browser
+              //setTimeout('closeModal();', 1000);                     //close modal after a second
+              //window.location.replace("/contactArtists");            //refresh all data and page
+              closeModal();
               /*$("#myModal").on('hide', function() {
                 window.location.reload();
               });*/
 
               //uncheckAll();
               //$("#emailDisplayField").val("");
+              if(data.completed == "OK") {
+                generateNotificationLayout('success', 'topCenter', 'Email is sent');
+              } else {
+                generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+              }  
            }
            , 
            error: function(jqXHR, textStatus, err){
                console.log('text status '+textStatus+', err '+err);
-               window.location.replace("/error");
+               generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
            }
         });
 
@@ -259,7 +270,7 @@
 
    function closeModal()  //function to close modal 
    {
-      $("#myModal").empty();
+      $("#emailModal").modal('hide');
    }
 </script>
 
@@ -359,7 +370,6 @@
                   //buttonEmailArt.disabled = false;
                   $("#emailArt").attr("disabled", false);
                   $("#toArtists").attr("rows", (data.selectedEmails.length)+1);
-                  //$("#toArtists").attr("placeholder", data.selectedEmails).val("").focus().blur();
                   $("#toArtists").val(data.selectedEmails);
                 }
             },
@@ -390,6 +400,45 @@
       $('button[id="languageSel"]').html(selectLang);
 
     });
+
+   function generateNotificationLayout(type, layout, text) {
+       var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+                    
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click","button"],
+        buttons: [
+            {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+              $noty.close();
+                }
+             }
+            
+          ]
+      });
+    }
 
 
     </script>
