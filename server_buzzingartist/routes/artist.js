@@ -5,9 +5,26 @@ var deletedArtists = require('../models/deletedArtists.js');
 
 var app = require('../app.js');
 
-var mailer   = require("mailer")            //required for setting mail server
-  , mailerUsername = "motleymeow@gmail.com"
-  , mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+//var mailer   = require("mailer")            //required for setting mail server
+  //, mailerUsername = "motleymeow@gmail.com"
+  //, mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+
+'use strict';
+var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
+var transport = nodemailer.createTransport(mandrillTransport({
+  auth: {
+    apiKey: '_r3bNHCw5JzpjPLfVRu24g'
+  }
+}));
+
+/*var smtpTransport = nodemailer.createTransport("SMTP",{
+    service: "Mandrill",
+    auth: {
+        user: "motleymeow@gmail.com",
+        pass: "_r3bNHCw5JzpjPLfVRu24g"
+    }
+});*/
 
 exports.artist = function (req, res) {
 	 var allUsers;
@@ -280,11 +297,30 @@ exports.sendMailsToArtists = function (req, res){
   var name = req.body.first_name,
       email = req.body.email,
       emailText = req.body.comments,
-      bccEmails = req.body.bcc_Emails;
+      bccEmails = req.body.bcc_Emails,
+      toArtists = req.body.toArtists;
 
+      transport.sendMail({
+        //host: "smtp.mandrillapp.com",
+        to:             'motleymeow@gmail.com',
+        subject:        "MotleyMeow: "+ name + " wants to contact you!",
+        bcc:            toArtists,
+        from:           email,
+        body:           emailText
+      }, 
+
+      function(err, info) {
+        if (err) {
+          console.log(err);
+          res.send({completed:"NOK"});
+        } else {
+          console.log("Mail sent!" + info);
+          res.send({completed:"OK"});
+        }
+      });
   //var obj = {name:name, email:email, emailText:emailText, bccEmails};
 
-  mailer.send(
+  /*mailer.send(
   { host:           "smtp.mandrillapp.com"
   , port:           587
   , to:             "motleymeow@gmail.com"
@@ -305,7 +341,7 @@ exports.sendMailsToArtists = function (req, res){
       res.send({completed:"OK"});
     }
   }
-  );
+  );*/
 
   //res.send();
   
