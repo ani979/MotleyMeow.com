@@ -298,13 +298,12 @@ exports.sendMailsToArtists = function (req, res){
       email = req.body.email,
       emailText = req.body.comments,
       bccEmails = req.body.bcc_Emails,
-      toArtists = req.body.toArtists;
+      toArtists = req.body.toArtists + ",motleymeow@gmail.com";
 
       transport.sendMail({
         //host: "smtp.mandrillapp.com",
-        to:             'motleymeow@gmail.com',
+        to:             toArtists,
         subject:        "MotleyMeow: "+ name + " wants to contact you!",
-        bcc:            toArtists,
         from:           email,
         body:           emailText
       }, 
@@ -314,7 +313,7 @@ exports.sendMailsToArtists = function (req, res){
           console.log(err);
           res.send({completed:"NOK"});
         } else {
-          console.log("Mail sent!" + info);
+          console.log("Mail sent!" + JSON.stringify(info));
           res.send({completed:"OK"});
         }
       });
