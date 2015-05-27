@@ -50,6 +50,85 @@ passport.deserializeUser(function(id, done) {
             done(err, user);
         });
 });
+//
+passport.use('local-login', new LocalStrategy({
+        // by default, local strategy uses username and password, we will override with email
+        usernameField : 'email',
+        passwordField : 'password',
+        passReqToCallback : true // allows us to pass back the entire request to the callback
+    },
+    function(req, email, password, done) { // callback with email and password from our form
+
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        User.findOne({ 'facebook.email' :  email }, function(err, user) {
+            // if there are any errors, return the error before anything else
+            if (err)
+                return done(err);
+
+            // if no user is found, return the message
+            if (!user)
+                return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+
+            // if the user is found but the password is wrong
+            if (!user.validPassword(password))
+                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+
+            // all is well, return successful user
+            return done(null, user);
+        });
+
+    }));
+
+
+    passport.use('local-signup', new LocalStrategy({
+        // by default, local strategy uses username and password, we will override with email
+        
+        usernameField : 'email',
+        passwordField : 'password',
+        passReqToCallback : true // allows us to pass back the entire request to the callback
+    },
+    function(req, email, password, done) {
+
+        // asynchronous
+        // User.findOne wont fire unless data is sent
+        process.nextTick(function() {
+
+        // find a user whose email is the same as the forms email
+        // we are checking to see if the user trying to login already exists
+        User.findOne({ 'facebook.email' :  email }, function(err, user) {
+            // if there are any errors, return the error
+            if (err)
+                return done(err);
+
+            // check to see if theres already a user with that email
+            if (user) {
+                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+            } else {
+
+                // if there is no user with that email
+                // create the user
+                var newUser            = new User();
+
+                // set the user's local credentials
+                newUser.facebook.email    = email;
+                newUser.local.password = newUser.generateHash(password);
+
+                // save the user
+                newUser.save(function(err) {
+                    if (err)
+                        throw err;
+                    return done(null, newUser);
+                });
+            }
+
+        });    
+
+        });
+
+    }));
+
+
 
 
 // config
@@ -268,6 +347,62 @@ app.get('/auth/facebook/callback',
      req.session.user = req.user;
      res.redirect('/home');
 });
+
+ app.post('/home', passport.authenticate('local-login', {
+        successRedirect : '/home', // redirect to the secure profile section
+        failureRedirect : '/', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+    // app.post('/login', do all our passport stuff here);
+
+    // =====================================
+    // SIGNUP ==============================
+    // =====================================
+    // show the signup form
+    app.get('/signup', function(req, res) {
+
+        // render the page and pass in any flash data if it exists
+        res.render('signup.ejs', { message: req.flash('signupMessage') });
+    });
+
+    // process the signup form
+     app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/home', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+    // app.post('/signup', do all our passport stuff here);
+
+    // =====================================
+    // PROFILE SECTION =====================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/landing', isLoggedIn, function(req, res) {
+        res.render('landing.ejs', {
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+
+
+    // =====================================
+    // LOGOUT ==============================
+    // =====================================
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the landing page
+    res.redirect('/');
+}
 
 
 app.get( '/home',  ensureAuthenticated, home.landing_home);
