@@ -53,14 +53,46 @@
 				<!-- </div>	 -->
 			</div><!-- /row -->
 
+
+
 			<div id="home-row-2" class="row clearfix" style= "float:center;padding-top:0px;">
+
 
 				<div class="col-12" class="row clearfix" style="float:center;height:100%;padding-top:0px;">
 			  		<div>
-			     		<form class="form-signin" action="" method="post">
+
+
+			     		<form class="form-signin" action="/home" method="post">
 				        	<h3 class="heading-desc">
 				        		Login to join the online theatre community</h3>
-				        	<div class="social-box">
+				        		<div >
+
+
+
+    
+
+    <!-- show any messages that come back with authentication -->
+   <div class="col-md-8 with-hover-text">
+    <!-- LOGIN FORM -->
+        <div style="font-size:23px">
+            <label>Email</label>
+            <input type="text" name="email">
+        </div>
+        <div style="font-size:23px">
+            <label>Password</label>
+            <input type="password" name="password">
+        </div>
+
+        <button type="submit" >Login</button>
+    </form>
+
+
+
+    <p style="font-size:18px;">Need an account? <a href="/signup">Signup</a></p>
+</div>   
+
+</div>
+				        	<div class="social-box" style="margin-left:340px; margin-top:-100px;">
 				            	<div class="row mg-btm">
 				               		<div class="col-md-8 with-hover-text">
 				                  		<a id="FBlogin" class="btn btn-primary btn-block" href="/auth/facebook">
