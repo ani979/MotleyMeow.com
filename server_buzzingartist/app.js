@@ -10,6 +10,7 @@ var express       = require('express'),
     post_request  = require('./routes/post_request'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
+    blog = require('./routes/blog'),
     multer  = require('multer'),
     argv = require('optimist').argv,
     im = require('imagemagick');
@@ -495,6 +496,9 @@ function ensureAuthenticated(req, res, next) {
     console.log("not authenticated");
     res.redirect('/')
 }
+
+app.get('/newBlogPost', blog.newBlogPost);
+app.post('/saveNewBlogPostData', blog.saveNewBlogPostData);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));

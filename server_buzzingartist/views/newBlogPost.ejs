@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Bootstrap, from Twitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/tag-it.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link href="css/jquery.tagit.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        var sampleTags = ['c++', 'java', 'php', 'coldfusion', 'javascript', 'asp', 'ruby', 'python', 'c', 'scala', 'groovy', 'haskell', 'perl', 'erlang', 'apl', 'cobol', 'go', 'lua'];
+        
+         $('#myTags').tagit();
+    });
+</script>
+
+  </head>
+
+  <body>
+
+    <!--<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Project name</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+    <div class="container">
+
+      <h1>Blogging</h1>
+      <p>What would you like to share?</p>
+
+      <form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>New Post</legend>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="postTitle">Title </label>
+  <div class="controls">
+    <input id="postTitle" name="postTitle" type="text" placeholder="Enter a title for your post" class="input-xlarge" required="">
+    
+  </div>
+</div>
+
+<!-- Textarea -->
+<div class="control-group">
+  <label class="control-label" for="postBody">Body </label>
+  <div class="controls">                     
+    <textarea id="postBody" style="width: 350px; height: 300px;" name="postBody" rows="10" cols="100"></textarea>
+  </div>
+</div>
+
+<!-- Multiple Checkboxes (inline) -->
+<div class="control-group">
+  <label class="control-label" for="postCategories">Choose Categories</label>
+  <div class="controls" id="postCategoriesSelector">
+    <label class="checkbox inline" for="postCategories-0">
+      <input type="checkbox" name="postCategories" id="postCategories-0" value="1">
+      1
+    </label>
+    <label class="checkbox inline" for="postCategories-1">
+      <input type="checkbox" name="postCategories" id="postCategories-1" value="2">
+      2
+    </label>
+    <label class="checkbox inline" for="postCategories-2">
+      <input type="checkbox" name="postCategories" id="postCategories-2" value="3">
+      3
+    </label>
+    <label class="checkbox inline" for="postCategories-3">
+      <input type="checkbox" name="postCategories" id="postCategories-3" value="4">
+      4
+    </label>
+    <label class="checkbox inline" for="postCategories-4">
+      <input type="checkbox" name="postCategories" id="postCategories-4" value="5">
+      5
+    </label>
+  </div>
+</div>
+
+  <ul id="myTags"></ul> <!--field for tags-->
+
+
+<!-- Button (Double) -->
+<div class="control-group">
+  <label class="control-label" for="buttonPublish">Final things</label>
+  <div class="controls">
+    <button id="buttonPublish" name="buttonPublish" class="btn btn-success" type="button" value="submit" onclick="savePostData()">Publish Post</button>
+    <button id="buttonCancel" name="buttonCancel" class="btn btn-danger">Cancel Post</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap-transition.js"></script>
+    <script src="js/bootstrap-alert.js"></script>
+    <script src="js/bootstrap-modal.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
+    <script src="js/bootstrap-scrollspy.js"></script>
+    <script src="js/bootstrap-tab.js"></script>
+    <script src="js/bootstrap-tooltip.js"></script>
+    <script src="js/bootstrap-popover.js"></script>
+    <script src="js/bootstrap-button.js"></script>
+    <script src="js/bootstrap-collapse.js"></script>
+    <script src="js/bootstrap-carousel.js"></script>
+    <script src="js/bootstrap-typeahead.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/jquery.js"></script>
+<script>
+
+  function savePostData(){
+
+          console.log("This is executing");
+
+          var checkBoxes = [];
+          $.each($("input[name='postCategories']:checked"), function(){
+            checkBoxes.push($(this).val());
+          });
+
+          var data = {
+            postTitle: $("#postTitle").val(),
+            postBody: $("#postBody").val(),
+            categories: checkBoxes
+          };
+
+          console.log(checkBoxes);
+          console.log(data);
+
+          $.ajax({ 
+           url: "/saveNewBlogPostData",
+           type: "POST",
+           cache: false, 
+           async: true,
+           data: data,
+
+           success: function(data){
+              console.log('Success!');
+              
+              if(data.completed == "OK") {
+                generateNotificationLayout('success', 'topCenter', 'Post published');
+              } else {
+                generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+              }
+           }, 
+
+           error: function(jqXHR, textStatus, err){
+               console.log('text status '+textStatus+', err '+err);
+               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+           }
+        }); //end of ajax function 
+  } //end of savePostData function
+</script>
+
+</body>
+</html>
