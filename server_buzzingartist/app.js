@@ -111,6 +111,8 @@ passport.use('local-login', new LocalStrategy({
             newUser.facebook.name    = req.body.username;
                         newUser.facebook.email    = email;
                         newUser.local.password = newUser.generateHash(password);
+                        newUser.local.joiningDate  = new Date().toISOString();
+                         newUser.facebook.id      = Math.floor(Math.random()*1000000001);
         //    newUser.user.name   = ''
         //    newUser.user.address    = ''
                         newUser.save(function(err) {
