@@ -9,7 +9,7 @@ var userSchema = mongoose.Schema({
     local            : {
         password     : String,
         picture      : String,
-        city         : {type: String,default:'None'},
+        city         : {type: String,default:'Chennai'},
         role         :[{}],
         lang         :[{}],
         emailDisplay : {type:Boolean, default:true},
