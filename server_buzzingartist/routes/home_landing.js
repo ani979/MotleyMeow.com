@@ -79,6 +79,7 @@ app.get('/auth/facebook/callback',
         successRedirect : '/landing', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
+
     }));
     // app.post('/signup', do all our passport stuff here);
 
@@ -164,6 +165,10 @@ exports.logout = function (req, res) {
 
 
 exports.profile = function (req, res) {
+    console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     
     var accessToken = req.session.access_token;
     var fbid = "";
     console.log("accesstoken111: "+ accessToken);
