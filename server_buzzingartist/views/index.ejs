@@ -19,7 +19,11 @@
 	
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,600,300,200&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 	
+
+
+
 	
 	
 		
@@ -61,12 +65,18 @@
 				<div class="col-12" class="row clearfix" style="float:center;height:100%;padding-top:0px;">
 			  		<div>
 
-
-			     		<form class="form-signin" action="/home" method="post">
-				        	<h3 class="heading-desc">
+			  			<!-- show any messages that come back with authentication -->
+   
+			     			<% if (message.length > 0) { %>
+      						  <div class=""><%= message %></div>
+   							 <% } %>
+				        	 
+			     		<form class="form-signin" action="/landing" method="post">
+			     			<h3 class="">
 				        		Login to join the online theatre community</h3>
 				        		<div >
-
+<div class="line"><span></span></div>
+			
 
 
     
@@ -75,13 +85,11 @@
    <div class="col-md-8 with-hover-text">
     <!-- LOGIN FORM -->
         <div style="font-size:23px">
-            <label>Email</label>
-            <input type="text" name="email">
-        </div>
+            <input type="text" name = "email" class="text" value="E-mail address" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'E-mail address';}" >
+				</div>
         <div style="font-size:23px">
-            <label>Password</label>
-            <input type="password" name="password">
-        </div>
+            <input type="password" value="Password" name="password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}">
+				</div>
 
         <button type="submit" >Login</button>
     </form>
@@ -90,9 +98,9 @@
 
     <p style="font-size:18px;">Need an account? <a href="/signup">Signup</a></p>
 </div>   
-
+					
 </div>
-				        	<div class="social-box" style="margin-left:340px; margin-top:-100px;">
+				        	<div class="social-box" style="margin-left:32%; margin-top:-10%;">
 				            	<div class="row mg-btm">
 				               		<div class="col-md-8 with-hover-text">
 				                  		<a id="FBlogin" class="btn btn-primary btn-block" href="/auth/facebook">
