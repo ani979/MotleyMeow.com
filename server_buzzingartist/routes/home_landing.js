@@ -57,7 +57,7 @@ app.get('/auth/facebook/callback',
  
 
     // process the login form
-    app.post('/home', passport.authenticate('local-login', {
+    app.post('/landing', passport.authenticate('local-login', {
         successRedirect : '/landing', // redirect to the secure profile section
         failureRedirect : '/', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
