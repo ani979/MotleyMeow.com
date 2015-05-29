@@ -74,7 +74,8 @@ passport.use('local-login', new LocalStrategy({
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
-            // all is well, return successful user
+            // all is well, return su
+        
             return done(null, user);
         });
 
@@ -106,21 +107,17 @@ passport.use('local-login', new LocalStrategy({
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
 
-                // if there is no user with that email
-                // create the user
-                var newUser            = new User();
-
-                // set the user's local credentials
-                newUser.facebook.email    = email;
-                newUser.local.password = newUser.generateHash(password);
-
-                // save the user
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, newUser);
-                });
-            }
+               var newUser            = new User();
+            newUser.facebook.name    = req.body.username;
+                        newUser.facebook.email    = email;
+                        newUser.local.password = newUser.generateHash(password);
+        //    newUser.user.name   = ''
+        //    newUser.user.address    = ''
+                        newUser.save(function(err) {
+                            if (err)
+                                throw err;
+                            return done(null, newUser);
+                        });            }
 
         });    
 
@@ -329,10 +326,10 @@ var isAuthenticated = function (req, res, next) {
 }
 
 // routes
-app.get( '/', home.index);
-// app.get('/', function(req, res) {
-//     res.render('index');
-//     });
+app.get( '/',  function(req, res) {
+     res.render('index.ejs', { message: req.flash('loginMessage') });
+
+     });
 
 app.get('/auth/facebook',
     passport.authenticate('facebook', { scope: [ 'email' ] }),
@@ -348,8 +345,8 @@ app.get('/auth/facebook/callback',
      res.redirect('/home');
 });
 
- app.post('/home', passport.authenticate('local-login', {
-        successRedirect : '/home', // redirect to the secure profile section
+ app.post('/landing', passport.authenticate('local-login', {
+        successRedirect : '/landing', // redirect to the secure profile section
         failureRedirect : '/', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -367,13 +364,13 @@ app.get('/auth/facebook/callback',
 
     // process the signup form
      app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/home', // redirect to the secure profile section
+        successRedirect : '/landing', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
     // app.post('/signup', do all our passport stuff here);
 
-    // =====================================
+    // ====================================
     // PROFILE SECTION =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
