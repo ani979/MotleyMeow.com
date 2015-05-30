@@ -1,57 +1,273 @@
-<!-- views/signup.ejs -->
+
 <!doctype html>
 <html>
-<head>
-    <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+    <title>MOTLEYMEOW. Hear the artists meow.</title> 
+    <meta name="description" content="Hear the artists meow." />        
+    <meta name="Keywords" content="Theatre, Artists, Motleymeow, Sponsor, Events, Bengaluru, Mumbai, Delhi, Chennai, Kolkata, Drama, Naatak" />
+    <meta property="og:title" content="MOTLEYMEOW. Hear the artists meow."/>
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <meta property="og:url" content="http://www.motleymeow.com" />
+    <link rel="stylesheet" type="text/css" href="indexPage/css/bootstrap.min.css">
+    <link rel="stylesheet" href="indexPage/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="indexPage/css/style.css">  
+    
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,600,300,200&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    
+
+ 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <style>
-        body        { padding-top:80px; }
-    </style>
+    
+
+      <!--[if lt IE 9]-->
+      <script src="static/js/html5shiv.min.js" type="text/javascript"></script>
+      <script src="static/js/respond.min.js" type="text/javascript"></script>
+      <!--[endif]-->
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
+      
+      
+
+
+      <link rel="icon"  type = "image/png" href="static/images/favicon32.png" sizes="32x32"/>
+      <link rel="icon"  type = "image/png" href="static/images/favicon48.png" sizes="48x48"/>
+      <link rel="icon"  type = "image/png" href="static/images/favicon64.png" sizes="64x64"/>
+      <link rel="apple-touch-icon"  type = "image/png" href="images/icons/apple-touch-icon.html" />
+
+      <link rel="shortcut icon"  type = "image/png" href="static/images/favicon32.png" />
+
+   
+   <style type="text/css">
+ .hrInline {
+      display: inline-block;
+      border: 0;
+      margin: 0%;
+      width: 33.2%;
+      height: 1px;
+      margin-bottom: 2px;
+      background: #D8D8D8;
+  }
+  .hrtext {
+      display: inline-block;
+      margin: 0;
+      text-align: center;
+      width: 7%;
+      font-size: 14px;
+  }
+  .EmailBtn {
+  margin-bottom: 2%;
+  margin-top: 2%;
+  border: 1px solid #02A6D8;
+  width: 70%;
+  height: 40px;
+  font-family: 'Open Sans';
+  font-size: 17px;
+  color: #02A6D8;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+  line-height: 17px;
+}
+</style>
+
+  
+    
+    
+        
 </head>
+
 <body>
-<div class="container">
+    
+    
+    <!-- === MAIN Background === -->
+    <div class="slide story" id="slide-1" data-slide="1" style = "max-height:100%; padding-top:0px;">
+        <div class="container">
+            <div id="home-row-1" class="row clearfix" style="padding-top:0px;padding-left:0px;">
+                <div class="col-12">
+                    <h1 class="font-semibold" style="padding-top:0px;"><img src ="./images/MotleyMeow-logo02.gif"></h1>
+                </div><!-- /col-12 -->
+                                    <h5 class="tlt" id ="codeVisualizer" style="font-style:italic;font-size:32px;margin:0px;color:rgba(227, 220, 255, 0.92);padding-top:20px;padding-bottom:20px;"><span style="visibility:hidden;">ABC</span></h5>
+                <div class="col-4" style="float:left;">
+                    <h4 class="font-light" id="artistsCount">1</h4>
+                    <span class="font-light" style="font-size:28px;">Artists</span>
+                </div><!-- /col-4-->
+                <div class="col-4" style="float:left;">
+                    <h4 class="font-light" id="postsCount">1</h4>
+                    <span class="font-light" style="font-size:28px;">Posts</span>
+                </div><!-- /col-4-->
+                <div class="col-4" style="float:left;">
+                    <h4 class="font-light" id="eventCount">1</h4>
+                    <span class="font-light" style="font-size:28px;">Events</span>
+                </div><!-- /col-4-->
+                <!-- <div class="col-12" style="float:center;"> -->
 
-<div class="col-sm-6 col-sm-offset-3">
+                <!-- </div>  -->
+            </div><!-- /row -->
 
-    <h1><span class="fa fa-sign-in"></span> Signup</h1>
 
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
+
+            <div id="home-row-2" class="row clearfix" style= "float:center;padding-top:0px;">
+
+
+                <div class="col-12" class="row clearfix" style="float:center;height:90%;padding-top:0px;">
+                    <div>
+
+                 
+                        <!-- show any messages that come back with authentication -->
+   
+                            
+                             
+                        <form class="form-signin" action="/signup" method="post">
+                            
+                
+                                <div style="margin-top:3px; "><font style="margin-top:3px;">Sign Up to join the online theatre <br>community</font></div>
+                                <div >
+                       
+                      
+                   
+
+<% if (message.length > 0) { %>
+        <div class="alert alert-danger" style="font-size:20px;"><%= message %></div>
+    <% } %>
+<% if (message.length == 0) { %>
+        <div class="alert alert-danger" style="font-size:20px;"><br></div>
     <% } %>
 
+    
+
+    <!-- show any messages that come back with authentication -->
+   <div class="col-md-8 with-hover-text">
     <!-- LOGIN FORM -->
-    <form action="/signup" method="post">
+        <div style="font-size:23px; ">
+            
+        <input autofocus class="form-control emailTxt centerAlign" id="username" name="username" placeholder="email" type="text" value="" ">        
+        </div>
         
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control" name="name">
-            </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" name="email">
+        <div style="font-size:23px;">
+            
+        <input autofocus class="form-control emailTxt centerAlign" id="username" name="email" placeholder="email" type="text" value="" ">        
         </div>
+        <div style="font-size:23px;">
+          <input class="form-control emailTxt centerAlign" id="password" name="password" placeholder="password" type="password" value=""  >
+      </div>
+<div>
+      <div style="font-size:23px;">
+         <button  type="submit" class="btn  btn-lg EmailBtn centerAlign" id="login" style="background-color: #383838;">
+         Sign Up Now
 
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-
-        <div class="form-group">
-            <label>Confirm Password</label>
-            <input type="password" class="form-control" name="conpassword">
-        </div>
-        <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+         </a>
+      </div>
+   </div>
+   
+        
     </form>
 
-    <hr>
 
-    <p>Already have an account? <a href="/">Login</a></p>
-   
 
+    <p style="font-size:14px; margin-left:55%;">Go to <a href="/">home</a></p>
+</div>   
+                    
 </div>
+                            <div style="margin-top:23px; line-height: 7px;">      
+                                Just a click above 
+                                <span class="clearfix"></span>  
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+            </div><!-- /row -->
+            <div>&nbsp;</div>
+            <div id="contact-row-1" class="row">
+                <div class="col-12 with-hover-text" style="font-size: 20px;"><a href="/aboutus"><i class="icon icon-lightbulb" style="text-decoration:none;"></i></a></p>ABOUT US</div>
+            </div><!-- /row -->
+                
 
-</div>
+        </div><!-- /container -->
+    </div><!-- /slide1 -->
+    
+
+
+    
 </body>
+
+    
+    <script src="indexPage/js/html5shiv.js"></script>
+    <script src="indexPage/js/jquery-1.10.2.min.js"></script>
+    <script src="indexPage/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="indexPage/js/bootstrap.min.js"></script>
+    <script src="indexPage/js/jquery.easing.1.3.js"></script>
+    <script src="indexPage/js/script.js"></script>
+    <script src="js/countUp.min.js"></script>
+    <script src="js/jquery.textillate.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <script src="js/jquery.lettering.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-61218032-1', 'auto');
+      ga('send', 'pageview');
+
+
+
+    </script>
+    <script type="text/javascript">
+
+    // var demo, code, data, stars;
+
+    // create instance
+    window.onload = function() {
+        var aCount = 0;
+        var pCount = 0;
+        var eCount=  0;
+         <% if(typeof aCount != 'undefined' && aCount !=0) { console.log("aCount is" + aCount);%>
+            aCount = <%=aCount%>;
+         <%}%>
+         <% if(typeof pCount != 'undefined' && pCount !=0) { console.log("pCount is" + pCount);%>
+            pCount = <%=pCount%>;
+         <%}%>
+         <% if(typeof eCount != 'undefined' && eCount !=0) { console.log("eCount is" + eCount);%>
+            eCount = <%=eCount%>;
+         <%}%>
+
+        // setup countUp object 
+        if(aCount != 0) {
+            artistsCount = new countUp('artistsCount', 0, aCount);
+            artistsCount.start(methodToCallOnComplete);
+        }
+        
+        
+        if(pCount != 0) {
+            postsCount = new countUp('postsCount', 0, pCount);
+            postsCount.start();
+        }    
+
+        if(eCount != 0) {
+            eventCount = new countUp('eventCount', 0, eCount);
+            eventCount.start();
+        }    
+    }
+
+
+    function methodToCallOnComplete() {
+        $('.tlt').textillate({ in: { effect: 'flipInY'}});
+        $('.tlt').find('.texts li:first').text("The cat is out of the bag!");
+        $('.tlt').textillate('start');
+
+    }
+
+
+
+    </script>
+
 </html>
