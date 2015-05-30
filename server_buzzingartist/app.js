@@ -1,4 +1,8 @@
 
+
+
+
+
 var express       = require('express'),
     FB            = require('fb'),
     http          = require('http'),
@@ -70,6 +74,8 @@ passport.use('local-login', new LocalStrategy({
             if (!user)
                 return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
 
+            if (user.local.password=='0')
+                return done(null, false, req.flash('loginMessage', 'Email registered with Facebook Login.'));
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
@@ -107,12 +113,12 @@ passport.use('local-login', new LocalStrategy({
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
             } else {
 
-               var newUser            = new User();
-            newUser.facebook.name    = req.body.username;
+                        var newUser            = new User();
+                        newUser.facebook.name    = req.body.username;
                         newUser.facebook.email    = email;
                         newUser.local.password = newUser.generateHash(password);
                         newUser.local.joiningDate  = new Date().toISOString();
-                         newUser.facebook.id      = Math.floor(Math.random()*1000000001);
+                        newUser.facebook.id      = Math.floor(Math.random()*1000000001);
         //    newUser.user.name   = ''
         //    newUser.user.address    = ''
                         newUser.save(function(err) {
@@ -215,6 +221,7 @@ passport.use(new FacebookStrategy({
                         newUser.facebook.id    = profile.id; // set the users facebook id                   
                         newUser.facebook.token = profile.token; // we will save the token that facebook provides to the user                    
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+                        newUser.local.password = '0';
                         console.log("facebook name " + newUser.facebook.name);
                         if(typeof profile.emails == 'undefined' || profile.emails.length == 0) {
                             newUser.facebook.email = "";
@@ -248,7 +255,7 @@ passport.use(new FacebookStrategy({
                         //             }
                         // );    
                         newUser.facebook.link  = "https://www.facebook.com/" + profile.id;
-                        console.log("email id " + newUser.facebook.email);
+                    //    console.log("email id " + newUser.facebook.email);
                         req.session.fbAccessToken = accessToken;
 
 
