@@ -21,6 +21,97 @@ var profile = {
     email:'',
     gender:'',
 };
+exports.module = function(app, passport) {
+
+    // =====================================
+    // HOME PAGE (with login links) ========
+    // =====================================
+    app.get('/', function(req, res) {
+        res.render('index.ejs'); // load the index.ejs file
+    });
+
+    // =====================================
+    // LOGIN ===============================
+    // =====================================
+       
+
+app.get('/auth/facebook',
+    passport.authenticate('facebook', { scope: [ 'email' ] }),
+    function(req, res){
+
+    });
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/' }),
+    function(req, res) {
+     console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     res.redirect('/home');
+});
+
+
+     // =====================================
+    // LOGIN ===============================
+    // =====================================
+    // show the login form
+ 
+
+    // process the login form
+    app.post('/landing', passport.authenticate('local-login', {
+        successRedirect : '/landing', // redirect to the secure profile section
+        failureRedirect : '/', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+    // app.post('/login', do all our passport stuff here);
+
+    // =====================================
+    // SIGNUP ==============================
+    // =====================================
+    // show the signup form
+    app.get('/signup', function(req, res) {
+
+        // render the page and pass in any flash data if it exists
+        res.render('signup.ejs', { message: req.flash('signupMessage') });
+    });
+
+    // process the signup form
+     app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/landing', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+
+    }));
+    // app.post('/signup', do all our passport stuff here);
+
+    // =====================================
+    // PROFILE SECTION =====================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/landing', isLoggedIn, function(req, res) {
+        res.render('landing.ejs', {
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+
+
+    // =====================================
+    // LOGOUT ==============================
+    // =====================================
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+};
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
 
 exports.index = function(req, res) {
 
@@ -32,7 +123,7 @@ exports.index = function(req, res) {
     //         });
     // }
     var accessToken = req.session.access_token;
-    console.log("accesstoken: "+ accessToken);
+    
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     if(typeof accessToken == 'undefined' || !accessToken) {
         console.log("isAuthenticatedddddddd: "+ req.isAuthenticated());
@@ -74,6 +165,10 @@ exports.logout = function (req, res) {
 
 
 exports.profile = function (req, res) {
+    console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     
     var accessToken = req.session.access_token;
     var fbid = "";
     console.log("accesstoken111: "+ accessToken);
