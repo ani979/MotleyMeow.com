@@ -2007,7 +2007,7 @@ fieldset[disabled] .btn-link:focus {
 
 .btn-block {
   display: block;
-  width: 100%;
+  width: 50%;
   padding-right: 0;
   padding-left: 0;
 }
