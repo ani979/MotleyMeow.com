@@ -89,3 +89,21 @@ exports.displayBlogPost = function(req, res){
             }
     });
 };
+
+exports.allBlogs = function(req, res){
+
+    BlogPost.find(function(err, allblogposts)
+    {
+        //console.log(blogposts);
+        //console.log(count);
+        if(err)
+        {
+            console.log("errror in fetching all blog posts");
+        }
+        else
+        {
+            console.log(allblogposts);
+            res.render('allBlogs.ejs', {allposts: allblogposts, user: req.session.user});
+        } 
+    });
+}
