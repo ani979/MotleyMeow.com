@@ -80,7 +80,9 @@ passport.use('local-login', new LocalStrategy({
             if (!user)
                 return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
 
-            if (user.local.password=='0')
+            //if (user.local.password=='0')
+              if (typeof user.local.password == 'undefined' || user.local.password=='0' )
+
                 return done(null, false, req.flash('loginMessage', 'Email registered with Facebook Login.'));
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
