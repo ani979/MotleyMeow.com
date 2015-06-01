@@ -80,9 +80,12 @@
                     <h4>Leave a Comment:</h4>
                     <form role="form">
                         <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea class="form-control" rows="3" id="comment"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="form-group">
+                            <input class="form-control" id="postid" value="<%= post._id %>" type="hidden"></input>
+                        </div>
+                        <button type="submit" class="btn btn-primary" onclick="saveComment()">Submit</button>
                     </form>
                 </div>
 
@@ -141,7 +144,47 @@
     </div>
     <!-- /.container -->
 
-    
+
+<script>
+
+  function saveComment(){
+
+          console.log("This is executing");
+
+          var data = {
+            comment: $("#comment").val(),
+            postid: $("#postid").val()
+          };
+
+          //console.log(checkBoxes);
+          console.log(data);
+
+          $.ajax({ 
+           url: "/saveCommentBlogPost",
+           type: "POST",
+           cache: false, 
+           async: true,
+           data: data,
+
+           success: function(data){
+              console.log('Success!');
+              
+              if(data.completed == "OK") {
+                console.log("OK");
+                //generateNotificationLayout('success', 'topCenter', 'Post published');
+              } else {
+                console.log("NOK");
+                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+              }
+           }, 
+
+           error: function(jqXHR, textStatus, err){
+               console.log('text status '+textStatus+', err '+err);
+               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+           }
+        }); //end of ajax function 
+  } //end of savePostData function
+</script>
 
 </body>
 

@@ -107,3 +107,43 @@ exports.allBlogs = function(req, res){
         } 
     });
 }
+
+exports.saveCommentBlogPost = function(req, res){
+
+    console.log(req.body.comment);
+    console.log(req.body.postid);
+    console.log(req.session.user.facebook.id);
+
+    BlogPost.findOne({'_id' : req.body.postid}, function(err, blogpost)
+    {
+        //console.log(blogposts);
+        //console.log(count);
+        if(err)
+        {
+            console.log("errror in fetching all blog posts");
+        }
+        else
+        {
+            console.log(blogpost);
+            var arr = blogpost.blogPost.comments;
+            var d = new Date();
+            console.log(d);
+            arr.push({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
+                comment:req.body.comment, date:d});
+            blogpost.blogPost.comments = arr;
+            //newblogpost.blogPost.date = new Date();
+            //console.log(newblogpost.blogPost.date); 
+
+            blogpost.save(function(err, post) {
+                               if (err) {
+                                    console.log("Error in saving" + err);
+                                    res.send({completed: "NOK"});  
+                                } else {
+                                    console.log("Saved");
+                                    res.send({completed: "OK"});
+                                }
+                    });
+        } 
+    });
+
+}
