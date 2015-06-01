@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/dropdowns-enhancement.js"></script>
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+
+        <!--include this for sidebar to work-->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <style>
+             body    { padding-top:50px; }
+
+             .jumbotron {
+                height: 250px; 
+                position: relative; }
+
+             .well {
+                height: 500px; }    
+
+             .bottom-right {
+                position: absolute;
+                right: 20px;
+                bottom: 20px;  }         
+        </style>
+
+  </head>
+
+<body class="container">
+
+    <main>
+        <div class="row">
+            <div class="col-sm-8">
+                   <!--<p><%= user.facebook.name %></p>-->
+
+                     <% userblogposts.forEach(function(bpost) { %>
+                        <div class="jumbotron"> <!--make a jumbotron for every post-->
+                        
+                        <h2><%= bpost.blogPost.postTitle %></h2> 
+
+                        <p><%= bpost.blogPost.postBody.substr(0, 200) %>...</p>
+                            <div class="bottom-right">
+                                <!--<input type="hidden" id="postid" name="postid">
+                                <input type="submit" value="View Full Post" id="viewFullPost" class="btn btn-xs btn-warning"    onclick="displayPost('<%=bpost._id%>')">-->
+                                <a href="displayBlogPost/<%=bpost._id%>" class="btn btn-xs btn-warning">View full post</a>
+                            </div>
+                        </div>
+                    <% }); %>                
+            </div>
+            
+            <div class="col-sm-4">
+                
+                <div class="well">
+                    <h2>Sidebar</h3>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+
+<!--<script type="text/javascript">
+
+    function displayPost(postid){
+
+          console.log("This is executing");
+
+
+      var data={
+          postid: postid
+          } 
+
+        $.ajax({ 
+           url: "/displayFullBlogPost",
+           type: "POST",
+           cache: false, 
+           async: true,
+           data: data,
+
+           success: function(data){
+              console.log('Success!');
+              if(data.completed == "OK")
+              {
+                window.location = '/displayBlogPost';
+              }
+           }
+           , 
+           error: function(jqXHR, textStatus, err){
+               alert('text status '+textStatus+', err '+err);
+           }
+       });
+
+      //return false;
+
+   }
+    
+</script>-->
+
+</body>
+</html>

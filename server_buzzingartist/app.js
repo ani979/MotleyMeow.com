@@ -10,6 +10,7 @@ var express       = require('express'),
     post_request  = require('./routes/post_request'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
+    blog = require('./routes/blog'),
     multer  = require('multer'),
     argv = require('optimist').argv,
     im = require('imagemagick');
@@ -222,7 +223,7 @@ app.use(session({
  
 app.use(cookieParser());
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
 app.use(bodyParser.json())
@@ -495,6 +496,14 @@ function ensureAuthenticated(req, res, next) {
     console.log("not authenticated");
     res.redirect('/')
 }
+
+app.get('/newBlogPost', blog.newBlogPost);
+app.post('/saveNewBlogPostData', blog.saveNewBlogPostData);
+app.get('/myBlogPosts', blog.myBlogPosts);
+//app.post('/displayFullBlogPost', blog.displayFullBlogPost);
+app.get('/displayBlogPost/:blogpostid', blog.displayBlogPost);
+
+
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
