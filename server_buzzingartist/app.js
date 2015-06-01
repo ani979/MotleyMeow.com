@@ -499,10 +499,6 @@ function ensureAuthenticated(req, res, next) {
 
 app.get('/newBlogPost', blog.newBlogPost);
 app.post('/saveNewBlogPostData', blog.saveNewBlogPostData);
-app.get('/myBlogPosts', blog.myBlogPosts);
-//app.post('/displayFullBlogPost', blog.displayFullBlogPost);
-app.get('/displayBlogPost/:blogpostid', blog.displayBlogPost);
-
 
 
 http.createServer(app).listen(app.get('port'), function() {
