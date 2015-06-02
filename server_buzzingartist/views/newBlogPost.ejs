@@ -15,6 +15,20 @@
       }
     </style>
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Formatting toolbar script --> 
+    <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="application/x-javascript">
+      tinymce.init({
+        selector:'#postBody'
+        //save_onsavecallback: "savePostData"      
+      });
+    </script>
+    <!-- Formatting toolbar ends here -->
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
@@ -50,7 +64,7 @@
       <h1>Blogging</h1>
       <p>What would you like to share?</p>
 
-      <form class="form-horizontal">
+<form class="form-horizontal">
 <fieldset>
 
 <!-- Form Name -->
@@ -65,6 +79,7 @@
   </div>
 </div>
 
+
 <!-- Textarea -->
 <div class="control-group">
   <label class="control-label" for="postBody">Body </label>
@@ -72,6 +87,10 @@
     <textarea id="postBody" style="width: 350px; height: 300px;" name="postBody" rows="10" cols="100"></textarea>
   </div>
 </div>
+
+<!--Hideen field-->
+<input type="hidden" id="hiddenbody" name="question_html" />
+<!--<script>$('#hiddenbody').val(tinyMCE.get('#postbody').getContent());</script>-->
 
 <!-- Multiple Checkboxes (inline) -->
 <div class="control-group">
@@ -122,18 +141,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.js"></script>
-    <script src="js/bootstrap-transition.js"></script>
-    <script src="js/bootstrap-alert.js"></script>
-    <script src="js/bootstrap-modal.js"></script>
-    <script src="js/bootstrap-dropdown.js"></script>
-    <script src="js/bootstrap-scrollspy.js"></script>
-    <script src="js/bootstrap-tab.js"></script>
-    <script src="js/bootstrap-tooltip.js"></script>
-    <script src="js/bootstrap-popover.js"></script>
-    <script src="js/bootstrap-button.js"></script>
-    <script src="js/bootstrap-collapse.js"></script>
-    <script src="js/bootstrap-carousel.js"></script>
-    <script src="js/bootstrap-typeahead.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/jquery.js"></script>
 <script>
@@ -141,6 +148,18 @@
   function savePostData(){
 
           console.log("This is executing");
+          /*var ed = tinyMCE.get('content');
+          console.log(ed);
+
+          $('#postBody').bind('form-pre-serialize', function(e) {
+           tinyMCE.triggerSave();
+          });
+
+          var ef = tinyMCE.get('#postBody');
+          console.log(ef);*/
+         // console.log($("#hiddenbody").val());
+
+         tinyMCE.triggerSave(); //this gives the textarea the value from tinyMCE editor
 
           var checkBoxes = [];
           $.each($("input[name='postCategories']:checked"), function(){
@@ -153,7 +172,7 @@
             categories: checkBoxes
           };
 
-          console.log(checkBoxes);
+          //console.log(checkBoxes);
           console.log(data);
 
           $.ajax({ 
