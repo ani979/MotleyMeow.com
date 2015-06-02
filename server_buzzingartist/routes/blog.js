@@ -85,7 +85,7 @@ exports.displayBlogPost = function(req, res){
             }
         else
             {
-                res.render('displayBlogPost.ejs', {post: blogpost, user: req.session.user});
+                res.render('displayBlogPost.ejs', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
             }
     });
 };
