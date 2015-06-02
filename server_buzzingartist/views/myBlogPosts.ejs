@@ -1,110 +1,160 @@
 <!DOCTYPE html>
-<html>
-  <head>
-   
+<html lang="en">
+
+<head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
-        <link href="/blog/bootstrap.min.css" rel="stylesheet">
-        <link href="css/dropdowns-enhancement.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="blog/jquery.js"></script>
-        <script src="blog/bootstrap.min.js"></script>
-        <script src="js/dropdowns-enhancement.js"></script>
-        <link href="css/style.css" rel="stylesheet">       
-        <link href="css/tab.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/font-awesome.min.css">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <!--include this for sidebar to work-->
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <style>
-             body    { padding-top:50px; }
+    <title>MotleyMeow|My Blogs</title>
 
-             .jumbotron {
-                height: 250px; 
-                position: relative; }
+    <!-- Bootstrap Core CSS -->
+    <link href="/bloghome/bootstrap.min.css" rel="stylesheet">
 
-             .well {
-                height: 500px; }    
+    <!-- Custom CSS -->
+    <link href="/bloghome/blog-home.css" rel="stylesheet">
 
-             .bottom-right {
-                position: absolute;
-                right: 20px;
-                bottom: 20px;  }         
-        </style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-  </head>
+</head>
 
-<body class="container">
+<body>
 
-    <main>
+    
+    <!-- Page Content -->
+    <div class="container">
+
         <div class="row">
-            <div class="col-sm-8">
-                   <!--<p><%= user.facebook.name %></p>-->
 
-                     <% userblogposts.forEach(function(bpost) { %>
-                        <div class="jumbotron"> <!--make a jumbotron for every post-->
-                        
-                        <h2><%= bpost.blogPost.postTitle %></h2> 
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
 
-                        <p><%= bpost.blogPost.postBody.substr(0, 200) %>...</p>
-                            <div class="bottom-right">
-                                <!--<input type="hidden" id="postid" name="postid">
-                                <input type="submit" value="View Full Post" id="viewFullPost" class="btn btn-xs btn-warning"    onclick="displayPost('<%=bpost._id%>')">-->
-                                <a href="displayBlogPost/<%=bpost._id%>" class="btn btn-xs btn-warning">View full post</a>
-                            </div>
-                        </div>
-                    <% }); %>                
-            </div>
-            
-            <div class="col-sm-4">
+                <h1 class="page-header">
+                    Your Blogs
+                    <small>..this is what you've been upto</small>
+                </h1>
+
+
+                <% userblogposts.forEach(function(post) { %>
+                    <!-- Every Blog Post -->
+                    <h2>
+                        <a><%= post.blogPost.postTitle %></a>
+                    </h2>
+                    <p class="lead">
+                        by <a><%= post.blogPost.authorName %></a>
+                    </p>
+                    <p><span class="glyphicon glyphicon-time"></span> Posted on <%= post.blogPost.date %> </p>
+                    
+                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                    
+                    <%= post.blogPost.postBody.substr(0, 200) %>...
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
+                    <a class="btn btn-primary" href="displayBlogPost/<%=post._id%>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                    <hr>
+                <% }); %> 
                 
+
+                
+
+                
+
+                <!-- Pager -->
+                <!--<ul class="pager">
+                    <li class="previous">
+                        <a href="#">&larr; Older</a>
+                    </li>
+                    <li class="next">
+                        <a href="#">Newer &rarr;</a>
+                    </li>
+                </ul>-->
+
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+                <!-- Blog Search Well -->
                 <div class="well">
-                    <h2>Sidebar</h3>
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                    <!-- /.input-group -->
+                </div>
+
+                <!-- Blog Categories Well -->
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+
+                <!-- Side Widget Well -->
+                <div class="well">
+                    <h4>Side Widget Well</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
                 </div>
 
             </div>
+
         </div>
-    </main>
+        <!-- /.row -->
 
+        <hr>
 
-<!--<script type="text/javascript">
+        <!-- Add Footer here-->
+        
 
-    function displayPost(postid){
+    </div>
+    <!-- /.container -->
 
-          console.log("This is executing");
+    <!-- jQuery -->
+    <script src="/bloghome/jquery.js"></script>
 
-
-      var data={
-          postid: postid
-          } 
-
-        $.ajax({ 
-           url: "/displayFullBlogPost",
-           type: "POST",
-           cache: false, 
-           async: true,
-           data: data,
-
-           success: function(data){
-              console.log('Success!');
-              if(data.completed == "OK")
-              {
-                window.location = '/displayBlogPost';
-              }
-           }
-           , 
-           error: function(jqXHR, textStatus, err){
-               alert('text status '+textStatus+', err '+err);
-           }
-       });
-
-      //return false;
-
-   }
-    
-</script>-->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/bloghome/bootstrap.min.js"></script>
 
 </body>
+
 </html>
