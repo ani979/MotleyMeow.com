@@ -1783,13 +1783,16 @@ fieldset[disabled] .btn-default.active {
   background-color: #474949;
   border-color: #474949;
 }
-
 .btn-primary {
   color: #ffffff;
   background-color: #428bca;
   border-color: #428bca;
 }
-
+.btn-primary1 {
+  color: #ffffff;
+  background-color: #D74025;
+  border-color: #D74025;
+}
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
@@ -2007,8 +2010,8 @@ fieldset[disabled] .btn-link:focus {
 }
 
 .btn-block {
-  display: block;
-  width: 87%;
+  
+  width: 32%;
   padding-right: 0;
   padding-left: 0;
 }

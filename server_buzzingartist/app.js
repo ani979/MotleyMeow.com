@@ -44,7 +44,8 @@ var flash = require('connect-flash');
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     FacebookStrategy = require('passport-facebook');
-
+    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+     TwitterStrategy  = require('passport-twitter').Strategy;
 //var expressSession = require('express-session');
 
 var dbConfig = require('./db');
@@ -287,6 +288,99 @@ passport.use(new FacebookStrategy({
 ));
 
 
+passport.use(new GoogleStrategy({
+
+        clientID        : config.googleAuth.clientID,
+        clientSecret    : config.googleAuth.clientSecret,
+        callbackURL     : config.googleAuth.callbackURL,
+
+    },
+    function(token, refreshToken, profile, done) {
+
+        // make the code asynchronous
+        // User.findOne won't fire until we have all our data back from Google
+        process.nextTick(function() {
+
+            // try to find the user based on their google id
+            User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+                if (err)
+                    return done(err);
+
+                if (user) {
+
+                    // if a user is found, log them in
+                    return done(null, user);
+                } else {
+                    // if the user isnt in our database, create a new user
+                    var newUser          = new User();
+
+                    // set all of the relevant information
+                    newUser.facebook.id    = profile.id;
+                    newUser.facebook.token = token;
+                    newUser.facebook.name  = profile.displayName;
+                    newUser.facebook.email = profile.emails[0].value; // pull the first email
+                    newUser.local.joiningDate  = Date();
+                    newUser.local.password='0';
+
+                    // save the user
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+            });
+        });
+
+    }));
+
+ passport.use(new TwitterStrategy({
+
+        consumerKey     : config.twitterAuth.consumerKey,
+        consumerSecret  : config.twitterAuth.consumerSecret,
+        callbackURL     : config.twitterAuth.callbackURL
+
+    },
+    function(token, tokenSecret, profile, done) {
+
+        // make the code asynchronous
+    // User.findOne won't fire until we have all our data back from Twitter
+        process.nextTick(function() {
+
+            User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+                // if there is an error, stop everything and return that
+                // ie an error connecting to the database
+                if (err)
+                    return done(err);
+
+                // if the user is found then log them in
+                if (user) {
+                    return done(null, user); // user found, return that user
+                } else {
+                    // if there is no user, create them
+                    var newUser                 = new User();
+
+                    // set all of the user data that we need
+                    newUser.facebook.id          = profile.id;
+                    newUser.facebook.token       = token;
+                    newUser.facebook.name    = profile.displayName;
+                    newUser.facebook.email = profile.username;
+                     
+                    newUser.local.joiningDate  = Date();
+                    newUser.local.password='0';
+
+                    // save our user into the database
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+            });
+
+    });
+}));
 
 var app = express();
 
@@ -362,7 +456,34 @@ app.get('/auth/facebook/callback',
      res.redirect('/home');
 });
 
- app.post('/landing', passport.authenticate('local-login', {
+app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+    // the callback after google has authenticated the user
+    app.get('/auth/google/callback',
+           passport.authenticate('google', { failureRedirect: '/' }),
+    function(req, res) {
+     console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     res.redirect('/home');
+            });
+
+     app.get('/auth/twitter', passport.authenticate('twitter'));
+
+    // handle the callback after twitter has authenticated the user
+    app.get('/auth/twitter/callback',
+           passport.authenticate('twitter', { failureRedirect: '/' }),
+    function(req, res) {
+     console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     res.redirect('/home');
+            });
+
+
+
+ app.post('/landing', 
+    passport.authenticate('local-login', {
         successRedirect : '/landing', // redirect to the secure profile section
         failureRedirect : '/', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
@@ -395,8 +516,11 @@ app.get('/auth/facebook/callback',
     app.get('/landing', isLoggedIn, function(req, res) {
         res.render('landing.ejs', {
             user : req.user // get the user out of session and pass to template
+   
         });
     });
+
+
 
 
     // =====================================
@@ -421,9 +545,9 @@ function isLoggedIn(req, res, next) {
 app.get('/forgot', function(req, res) {
   res.render('forgot', {
     user: req.user,
-    
-    message: req.flash('error')
-    
+ //   message: req.flash('info'),
+    message: req.flash('error'),
+    failureFlash : true
   });
 });
 
@@ -486,8 +610,12 @@ app.get('/reset/:token', function(req, res) {
       return res.redirect('/forgot');
     }
     res.render('reset.ejs', {
-      user: req.user
+      user: req.user,
+      message: req.flash('success')
+      
+  
     });
+
   });
 });
 app.post('/reset/:token', function(req, res) {

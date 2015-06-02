@@ -124,18 +124,17 @@
    
                             
                              
-                        <form class="form-signin" action="/reset:token" method="post">
+                        <form class="form-signin" action="/reset/:token" method="post">
                             
                   
                                 <div style="margin-top:3px; "><font style="margin-top:3px; line-height:4;">Reset password</font></div>
                                 <div ><p><font style="font-size:20px;"> Create new password </font></p></div>
-                       
-                      <% if ( expressFlash.length > 0 ) { %>
-  <p>Message: <%= expressFlash %> </p>
-<% } %>
-                   
-
-
+                     <% if (message.length > 0) { %>
+        <div class="alert alert-danger" style="font-size:20px;"><%= message %></div>
+    <% } %>
+<% if (message.length == 0) { %>
+        <div class="alert alert-danger" style="font-size:20px;"><br></div>
+    <% } %>
 
     
 

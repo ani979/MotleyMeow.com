@@ -49,7 +49,29 @@ app.get('/auth/facebook/callback',
      res.redirect('/home');
 });
 
+app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
+    // the callback after google has authenticated the user
+    app.get('/auth/google/callback',
+           passport.authenticate('google', { failureRedirect: '/' }),
+    function(req, res) {
+     console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     res.redirect('/home');
+            });
+    
+     app.get('/auth/twitter', passport.authenticate('twitter'));
+
+    // handle the callback after twitter has authenticated the user
+    app.get('/auth/twitter/callback',
+           passport.authenticate('twitter', { failureRedirect: '/' }),
+    function(req, res) {
+     console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     res.redirect('/home');
+            });
      // =====================================
     // LOGIN ===============================
     // =====================================
