@@ -37,7 +37,9 @@ var app = express();
 // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
  var async = require('async');
-
+var validator = require('validator');
+ 
+ //=> true 
 
 var flash = require('connect-flash');
 // Configuring Passport
@@ -112,6 +114,8 @@ passport.use('local-login', new LocalStrategy({
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
+        if (validator.isEmail(req.body.email)) {
+
         if (req.body.password!=req.body.confirmPass)
            {
          return done(null, false, req.flash('passerror', "Password do not match"));
@@ -143,7 +147,13 @@ passport.use('local-login', new LocalStrategy({
 
         });    
 
-        });
+        }
+        else
+             {
+         return done(null, false, req.flash('emailerror', "Enter a valid email"));
+                    }
+
+    });
 
     }));
 
