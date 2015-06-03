@@ -112,6 +112,11 @@ passport.use('local-login', new LocalStrategy({
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
+        if (req.body.password!=req.body.confirmPass)
+           {
+         return done(null, false, req.flash('passerror', "Password do not match"));
+                    }
+        else
         User.findOne({ 'facebook.email' :  email }, function(err, user) {
             // if there are any errors, return the error
             if (err)
@@ -364,9 +369,9 @@ passport.use(new GoogleStrategy({
                     // set all of the user data that we need
                     newUser.facebook.id          = profile.id;
                     newUser.facebook.token       = token;
-                    newUser.facebook.name    = profile.displayName;
-                    newUser.facebook.email = profile.username;
-                     
+                    newUser.facebook.name    =     profile.displayName;
+                    newUser.facebook.email =       profile.username;
+
                     newUser.local.joiningDate  = Date();
                     newUser.local.password='0';
 
@@ -482,12 +487,14 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
 
 
 
- app.post('/landing', 
-    passport.authenticate('local-login', {
-        successRedirect : '/landing', // redirect to the secure profile section
-        failureRedirect : '/', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
+  app.post('/landing', 
+        passport.authenticate('local-login', { failureRedirect: '/' }),
+    function(req, res) {
+     console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     res.redirect('/home');
+            });
     // app.post('/login', do all our passport stuff here);
 
     // =====================================
@@ -501,27 +508,24 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
     });
 
     // process the signup form
-     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/landing', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-    // app.post('/signup', do all our passport stuff here);
+     app.post('/signup', passport.authenticate('local-signup',{ failureRedirect: '/signup' }),
+    function(req, res) {
+     console.log("setting here");
+     console.log("session " + JSON.stringify(req.session));
+     req.session.user = req.user;
+     res.redirect('/home');
+            });    // app.post('/signup', do all our passport stuff here);
 
-    // ====================================
+    // =====================================
     // PROFILE SECTION =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/landing', isLoggedIn, function(req, res) {
-        res.render('landing.ejs', {
+        res.render('/home', {
             user : req.user // get the user out of session and pass to template
-   
         });
     });
-
-
-
 
     // =====================================
     // LOGOUT ==============================

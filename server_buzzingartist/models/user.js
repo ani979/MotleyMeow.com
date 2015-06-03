@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
         
         password     : String,
         picture      : String,
-        city         : {type: String,default:'Chennai'},
+        city         : {type: String,default:'None'},
         role         :[{}],
         lang         :[{}],
         emailDisplay : {type:Boolean, default:true},
