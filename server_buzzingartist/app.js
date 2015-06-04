@@ -619,6 +619,7 @@ app.post('/forgot', function(req, res, next) {
 });
 app.get('/reset/:token', function(req, res) {
   User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
+    console.log( Date.now());
     if (!user) {
       req.flash('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
@@ -638,12 +639,12 @@ app.post('/reset/:token', function(req, res) {
       User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
         if (!user) {
           req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('back');
+          return res.redirect('/forgot');
         }
 
         user.local.password = req.body.password;
-        user.local.resetPasswordToken = undefined;
-        user.local.resetPasswordExpires = undefined;
+     //   user.local.resetPasswordToken = undefined;
+     //   user.local.resetPasswordExpires = undefined;
 
         user.save(function(err) {
           req.logIn(user, function(err) {
@@ -669,6 +670,7 @@ app.post('/reset/:token', function(req, res) {
       };
       smtpTransport.sendMail(mailOptions, function(err) {
         req.flash('success', 'Success! Your password has been changed.');
+        return res.redirect('/');
         done(err);
       });
     }
