@@ -114,7 +114,7 @@ passport.use('local-login', new LocalStrategy({
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        if (validator.isEmail(req.body.email)) {
+     
 
         if (req.body.password!=req.body.confirmPass)
            {
@@ -147,11 +147,6 @@ passport.use('local-login', new LocalStrategy({
 
         });    
 
-        }
-        else
-             {
-         return done(null, false, req.flash('emailerror', "Enter a valid email"));
-                    }
 
     });
 
@@ -175,7 +170,7 @@ passport.use(new FacebookStrategy({
             process.nextTick(function() {
 
                 // find the user in the database based on their facebook id
-                User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+                User.findOne({ 'facebook.email' : profile.email }, function(err, user) {
 
                     // if there is an error, stop everything and return that
                     // ie an error connecting to the database
@@ -626,7 +621,8 @@ app.get('/reset/:token', function(req, res) {
     }
     res.render('reset.ejs', {
       user: req.user,
-      message: req.flash('success')
+      message: req.flash('success'),
+       
       
   
     });
