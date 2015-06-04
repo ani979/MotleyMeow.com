@@ -312,7 +312,7 @@ passport.use(new GoogleStrategy({
         process.nextTick(function() {
 
             // try to find the user based on their google id
-            User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+            User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
                 if (err)
                     return done(err);
 
@@ -375,7 +375,7 @@ passport.use(new GoogleStrategy({
                     newUser.facebook.id          = profile.id;
                     newUser.facebook.token       = token;
                     newUser.facebook.name    =     profile.displayName;
-                    newUser.facebook.email =       profile.username;
+                    newUser.facebook.email =       profile.email;
 
                     newUser.local.joiningDate  = Date();
                     newUser.local.password='0';
