@@ -55,8 +55,13 @@
                     
                     <img class="img-responsive" src="http://placehold.it/900x300" alt="">
                     
-                    <%= post.blogPost.postBody.substr(0, 200) %>...
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
+                    <!--<p id="everypost"></p>
+                    <script>
+                            var newVar = <%- JSON.stringify(post.blogPost.postBody.substr(0, 500)) %>;
+                            document.getElementById("everypost").innerHTML = newVar;
+                    </script>-->
+                    <p class="lead"> <%= post.blogPost.postBody.substr(0, 250) %> ...</p>
+                    
                     <a class="btn btn-primary" href="displayBlogPost/<%=post._id%>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                     <hr>

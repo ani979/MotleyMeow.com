@@ -15,6 +15,9 @@
       }
     </style>
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap-tagsinput.css">
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link href="css/jquery.tagit.css" rel="stylesheet" type="text/css">
 
     <!-- Formatting toolbar script --> 
     <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
@@ -93,7 +96,7 @@
 <!--<script>$('#hiddenbody').val(tinyMCE.get('#postbody').getContent());</script>-->
 
 <!-- Multiple Checkboxes (inline) -->
-<div class="control-group">
+<!--<div class="control-group">
   <label class="control-label" for="postCategories">Choose Categories</label>
   <div class="controls" id="postCategoriesSelector">
     <label class="checkbox inline" for="postCategories-0">
@@ -119,7 +122,19 @@
   </div>
 </div>
 
-  <ul id="myTags"></ul> <!--field for tags-->
+  <ul id="myTags"></ul> -->
+
+<!-- Tags -->
+  <div class="control-group">
+  <label class="control-label" for="postCategories">Add Tags</label>
+
+  <div class="controls" >
+    <ul id="tagsForPost" style="margin-left:0px;"></ul>
+  </div>
+
+</div>
+
+  <ul id="tagsForPost"></ul> <!--field for tags-->
 
 
 <!-- Button (Double) -->
@@ -142,9 +157,14 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap-tagsinput.js"></script>
+    <!-- The JQUERY UI is very much needed for tag and just after jquery UI.js we need to add tag it.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/tag-it.min.js" type="text/javascript" charset="utf-8"></script>
 <script>
-
+  $(document).ready(function() {
+        $("#tagsForPost").tagit();
+    });
   function savePostData(){
 
           console.log("This is executing");
@@ -161,15 +181,15 @@
 
          tinyMCE.triggerSave(); //this gives the textarea the value from tinyMCE editor
 
-          var checkBoxes = [];
+          /*var checkBoxes = [];
           $.each($("input[name='postCategories']:checked"), function(){
             checkBoxes.push($(this).val());
-          });
+          });*/
 
           var data = {
             postTitle: $("#postTitle").val(),
             postBody: $("#postBody").val(),
-            categories: checkBoxes
+            postTags: $("#tagsForPost li").map(function() { if($(this).children('.tagit-hidden-field').val() != "") { return $(this).children('.tagit-hidden-field').val() } }).get()
           };
 
           //console.log(checkBoxes);
