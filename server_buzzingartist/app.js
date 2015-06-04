@@ -331,8 +331,8 @@ passport.use(new GoogleStrategy({
                     newUser.facebook.email = profile.emails[0].value; // pull the first email
                     newUser.local.joiningDate  = Date();
                     newUser.local.password='0';
-
-                    // save the user
+                    newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyATYAkqODkreE8--b2CAKxtTxr-Zer5mi0";
+                                        // save the user
                     newUser.save(function(err) {
                         if (err)
                             throw err;
