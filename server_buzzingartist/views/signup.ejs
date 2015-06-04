@@ -1,9 +1,4 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
+
 <!DOCTYPE html>
 <html>
 <title>MOTLEYMEOW. Hear the artists meow.</title> 
@@ -30,6 +25,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!--//webfonts-->
 </head>
 <body>
+<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
 
 <!--/start-login-one-->	
 		<h1>Sign Up Form</h1>
@@ -66,7 +66,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			
 		</div>
 
-   <div id = "footer" style="margin-top:-.5%"></div>
+   <div id = "footer" style="margin-top:-3%"></div>
    <!-- footer ends-->
 
 
@@ -81,7 +81,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 	});
 		$("#footer").load("footer.ejs"); 
-		</script>
+		$("#headerloggedin").load("/header");
+		$("#headerloggedout").load("headerloggedout.ejs");
+	</script>
 
-</html>
 </html>
