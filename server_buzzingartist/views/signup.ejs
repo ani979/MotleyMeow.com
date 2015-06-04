@@ -31,12 +31,13 @@
 	<div id = "headerloggedout"></div>
 	<%}%> 
 
+
 <!--/start-login-one-->	
 		<h1>Sign Up Form</h1>
 		<h6> Fill the form to join the online theatre community.</h6>
 		<div class="login">
 
-			<form action="/signup" method="post">
+			<form id="signupp" action="/signup" method="post">
 				<% if (message.length > 0) { %>
         <div  style="font-size:20px;"><%= message %></div>
     <% } %>
@@ -45,7 +46,7 @@
 						<a href="#" class=" icon user"></a><input type="text" class="text" name="username" value="Your Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Name';}" >
 					</li>
 					<li>
-						<a href="#" class=" icon mail"></a><input type="text" class="text" name="email" value="Your Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Email';}" >
+						<a href="#" class=" icon mail"></a><input type="email" class="email" name="email" value="Your Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Email';}" >
 					</li>
 					<div class="dumy">
 					<li class="psw">
@@ -80,6 +81,7 @@
 		<% } %>
 
 	});
+	
 		$("#footer").load("footer.ejs"); 
 		$("#headerloggedin").load("/header");
 		$("#headerloggedout").load("headerloggedout.ejs");

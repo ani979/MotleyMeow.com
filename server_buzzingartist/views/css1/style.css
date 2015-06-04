@@ -103,7 +103,7 @@ form {
 .key {
     background: url(../images/icons.png) no-repeat 0px -57px;
 }
-.login input[type="text"],.login input[type="password"] {
+.login input[type="text"],.login input[type="email"],.login input[type="password"] {
    width: 86.9%;
   padding:1em 1em 1em 3em;
   color: #999;
