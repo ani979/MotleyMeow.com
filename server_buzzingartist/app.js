@@ -504,6 +504,10 @@ app.get('/myBlogPosts', blog.myBlogPosts);
 app.get('/displayBlogPost/:blogpostid', blog.displayBlogPost);
 app.get('/allBlogs', blog.allBlogs);
 app.post('/saveCommentBlogPost', blog.saveCommentBlogPost);
+app.get('/editBlogPost/:blogpostid', blog.editBlogPost);
+app.post('/editBlogPostData', blog.editBlogPostData);
+app.post('/searchBlogPosts', blog.searchBlogPosts);
+app.get('/searchallblogposts/:search', blog.searchallblogposts);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));

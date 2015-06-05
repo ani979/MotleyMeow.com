@@ -52,6 +52,12 @@
                     by <a href="#"><%= post.blogPost.authorName %></a>
                 </p>
 
+                <% if(post.blogPost.authorid == user.facebook.id)
+                  { %>
+                      <a href="/editBlogPost/<%=post._id%>" class="btn btn-xs btn-danger">Edit Post</a>
+
+                  <% } %> <!--if- close-->
+
                 <hr>
 
                 <!-- Date/Time -->

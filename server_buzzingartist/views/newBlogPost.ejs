@@ -8,6 +8,7 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
+    <link href="css/style.css" rel="stylesheet">
     <link href="/blog/bootstrap.css" rel="stylesheet">
     <style>
       body {
@@ -37,11 +38,16 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-
+  
   </head>
 
   <body>
 
+    <% if(typeof user != 'undefined' && user!=null) { %>
+      <div id = "headerloggedin"> </div>
+      <% } else { %>
+      <div id = "headerloggedout"></div>
+    <%}%> 
     <!--<div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -161,10 +167,12 @@
     <!-- The JQUERY UI is very much needed for tag and just after jquery UI.js we need to add tag it.js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="/js/tag-it.min.js" type="text/javascript" charset="utf-8"></script>
+
 <script>
   $(document).ready(function() {
         $("#tagsForPost").tagit();
     });
+
   function savePostData(){
 
           console.log("This is executing");
@@ -207,7 +215,7 @@
               
               if(data.completed == "OK") {
                 console.log("OK");
-                //generateNotificationLayout('success', 'topCenter', 'Post published');
+                
               } else {
                 console.log("NOK");
                 //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
@@ -223,4 +231,10 @@
 </script>
 
 </body>
+  
+  <script>
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
+  </script>
+
 </html>

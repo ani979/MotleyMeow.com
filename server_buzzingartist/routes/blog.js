@@ -15,7 +15,7 @@ exports.saveNewBlogPostData = function(req, res){
 
 	newblogpost.blogPost.postTitle = req.body.postTitle;
 	newblogpost.blogPost.postBody = req.body.postBody;
-	newblogpost.blogPost.categories = req.body.categories;
+	//newblogpost.blogPost.categories = req.body.categories;
 	newblogpost.blogPost.authorid = req.session.user.facebook.id; 
     newblogpost.blogPost.authorName = req.session.user.facebook.name;
     console.log(" req.body.postTags " + req.body.postTags);
@@ -92,6 +92,61 @@ exports.displayBlogPost = function(req, res){
     });
 };
 
+
+exports.editBlogPost = function(req, res){
+
+    console.log(req.params.blogpostid);
+    BlogPost.findOne({'_id' : req.params.blogpostid}, function(err, blogpost)
+    {
+        if(err)
+            {
+                console.log("Error in fetching post");
+            }
+        else
+            {
+                res.render('editBlogPost.ejs', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
+            }
+    });
+    
+};
+
+
+exports.editBlogPostData = function(req, res){
+   
+    console.log(req.body);
+
+    BlogPost.findOne({'_id' : req.body.postid}, function(err, blogpost)
+    {
+        //console.log(blogposts);
+        //console.log(count);
+        if(err)
+        {
+            console.log("errror in fetching blog post");
+        }
+        else
+        {
+            console.log(blogpost);
+            blogpost.blogPost.postTitle = req.body.postTitle;
+            blogpost.blogPost.postBody = req.body.postBody;
+            blogpost.blogPost.tags = req.body.postTags;
+    
+            //var d = new Date();
+            //console.log(d);
+            
+            blogpost.save(function(err, post) {
+                               if (err) {
+                                    console.log("Error in saving" + err);
+                                    res.send({completed: "NOK"});  
+                                } else {
+                                    console.log("Saved");
+                                    res.send({completed: "OK"});
+                                }
+            });
+        } 
+    }); //end of find function
+
+}; //endof complete function
+
 exports.allBlogs = function(req, res){
 
     BlogPost.find(function(err, allblogposts)
@@ -105,10 +160,11 @@ exports.allBlogs = function(req, res){
         else
         {
             console.log(allblogposts);
-            res.render('allBlogs.ejs', {allposts: allblogposts, user: req.session.user});
+            res.render('allBlogs.ejs', {allposts: allblogposts, user: req.session.user, search:null});
         } 
     });
 }
+
 
 exports.saveCommentBlogPost = function(req, res){
 
@@ -148,4 +204,47 @@ exports.saveCommentBlogPost = function(req, res){
         } 
     });
 
+}
+
+exports.searchBlogPosts = function(req, res){
+
+    console.log(req.body.search);
+    if(req.body.search)
+    {
+        var redirect = "/searchallblogposts"+"/"+req.body.search;
+        console.log(redirect);
+        res.send({user: req.session.user, search: req.body.search, redirect: redirect, completed:"OK"});
+    }
+    else{
+        res.send({completed:"NOK"})
+    }
+    
+
+};
+
+exports.searchallblogposts = function(req, res){
+
+    var search = req.params.search;
+
+    BlogPost.find({
+        $or:[
+        {'blogPost.postBody' : new RegExp(search, 'i')},
+        {'blogPost.postTitle' : new RegExp(search, 'i')},
+        {'blogPost.tags': search}]}, function(err, allblogposts)
+    {
+        //console.log(blogposts);
+        //console.log(count);
+        if(err)
+        {
+            console.log("error in fetching all blog posts");
+        }
+        else
+        {
+            console.log(allblogposts);
+            
+            res.render("allBlogs.ejs", {allposts: allblogposts, user: req.session.user, search: search});
+            
+            //res.redirect("allBlogs.ejs", {allposts: allblogposts, user: req.session.user, search: req.body.search});
+        } 
+    });
 }
