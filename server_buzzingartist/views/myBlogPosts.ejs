@@ -44,6 +44,8 @@
 
 
                 <% userblogposts.forEach(function(post) { %>
+                <% if(post.blogPost.approved == true)
+                    { %>
                     <!-- Every Blog Post -->
                     <h2>
                         <a><%= post.blogPost.postTitle %></a>
@@ -60,6 +62,7 @@
                     <a class="btn btn-primary" href="displayBlogPost/<%=post._id%>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                     <hr>
+                    <% } %> <!--if-loop close-->
                 <% }); %> 
                 
 

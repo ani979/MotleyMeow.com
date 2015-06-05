@@ -3,7 +3,7 @@ var User = require('../models/user.js');	//load up user model
 var app = require('../app.js');
 
 exports.newBlogPost = function(req, res){
-	res.render('newBlogPost.ejs');
+	res.render('newBlogPost.ejs', {user: req.session.user});
 	console.log("User is " + req.session.user.facebook.email);
 }
 
