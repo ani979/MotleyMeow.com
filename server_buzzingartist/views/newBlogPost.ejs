@@ -88,6 +88,15 @@
   </div>
 </div>
 
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="postSubtitle">Sub-title </label>
+  <div class="controls">
+    <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" class="input-xlarge" required="">
+    
+  </div>
+</div>
+
 
 <!-- Textarea -->
 <div class="control-group">
@@ -196,6 +205,7 @@
 
           var data = {
             postTitle: $("#postTitle").val(),
+            postSubtitle: $("#postSubtitle").val(),
             postBody: $("#postBody").val(),
             postTags: $("#tagsForPost li").map(function() { if($(this).children('.tagit-hidden-field').val() != "") { return $(this).children('.tagit-hidden-field').val() } }).get()
           };

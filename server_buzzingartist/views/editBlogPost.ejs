@@ -78,6 +78,15 @@
   </div>
 </div>
 
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="postSubtitle">Sub-title </label>
+  <div class="controls">
+    <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" value="<%=post.blogPost.postSubtitle%>" class="input-xlarge" required="">
+    
+  </div>
+</div>
+
 <div class="control-group">
   <input id="postid" value="<%= post._id %>" type="hidden"></input>
 </div>
@@ -89,6 +98,8 @@
     <textarea id="postBody" style="width: 350px; height: 300px;" name="postBody" rows="10" cols="100"></textarea>
   </div>
 </div>
+
+
 
 <script>
   var originalpostbody = <%- JSON.stringify(post.blogPost.postBody) %> ; 
@@ -193,6 +204,7 @@
 
           var data = {
             postTitle: $("#postTitle").val(),
+            postSubtitle: $("#postSubtitle").val(),
             postBody: $("#postBody").val(),
             postTags: $("#tagsForPost li").map(function() { if($(this).children('.tagit-hidden-field').val() != "") { return $(this).children('.tagit-hidden-field').val() } }).get(),
             postid: $("#postid").val()

@@ -14,6 +14,7 @@ exports.saveNewBlogPostData = function(req, res){
 	var newblogpost = new BlogPost();
 
 	newblogpost.blogPost.postTitle = req.body.postTitle;
+    newblogpost.blogPost.postSubtitle = req.body.postSubtitle;
 	newblogpost.blogPost.postBody = req.body.postBody;
 	//newblogpost.blogPost.categories = req.body.categories;
 	newblogpost.blogPost.authorid = req.session.user.facebook.id; 
@@ -131,6 +132,7 @@ exports.editBlogPostData = function(req, res){
         {
             console.log(blogpost);
             blogpost.blogPost.postTitle = req.body.postTitle;
+            blogpost.blogPost.postSubtitle = req.body.postSubtitle;
             blogpost.blogPost.postBody = req.body.postBody;
             blogpost.blogPost.tags = req.body.postTags;
     
@@ -253,6 +255,7 @@ exports.searchallblogposts = function(req, res){
         $or:[
         {'blogPost.postBody' : new RegExp(search, 'i')},
         {'blogPost.postTitle' : new RegExp(search, 'i')},
+        {'blogPost.postSubtitle' : new RegExp(search, 'i')},
         {'blogPost.tags': search}]}, function(err, allblogposts)
     {
         //console.log(blogposts);
@@ -283,6 +286,7 @@ exports.searchmyblogposts = function(req, res){
         { $or:[
         {'blogPost.postBody' : new RegExp(search, 'i')},
         {'blogPost.postTitle' : new RegExp(search, 'i')},
+        {'blogPost.postSubtitle' : new RegExp(search, 'i')},
         {'blogPost.tags': search}]}
         ]}, function(err, allblogposts)
     {

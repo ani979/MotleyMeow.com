@@ -7,6 +7,7 @@ var blogPostSchema = mongoose.Schema({
         authorid        : String, //author's facebook unique_ID
         authorName      : String, //author's fb name
         postTitle       : {type: String, default:'Not mentioned'},
+        postSubtitle    : {type: String, default:'Not mentioned'},
         postBody        : {type: String, default:'Not mentioned'},
         date            : {type: Date, default: Date.now},
         categories      : [{}],
