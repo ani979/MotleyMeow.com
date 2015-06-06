@@ -71,8 +71,6 @@
                 
                 <% userblogposts.forEach(function(post) { %>
 
-                    <% if(post.blogPost.approved == true)
-                    { %>
                             <!--Every post-->
                             <div class="post-preview">
                                 <a href="http://localhost:3000/displayBlogPost/<%=post._id%>">
@@ -89,10 +87,17 @@
                                     var x = n.substr(0, 25);
                                 </script>
                                 <p class="post-meta">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= post.blogPost.date %></p>
+                                <% if(post.blogPost.approved == true)
+                                    { %>
+                                        <h4> Status: Published </h4>
+                                    <% }
+                                else { %>
+                                        <h4 style="color:grey"> Status: Draft </h4>
+                                    <%} %>
                             </div>
                             <hr>
 
-                    <% } %> <!--if-block close-->
+                    
                 <% }); %> 
                 
                 
