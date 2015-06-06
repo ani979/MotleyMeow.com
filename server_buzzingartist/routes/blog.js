@@ -52,8 +52,8 @@ exports.myBlogPosts = function(req, res){
         }
         else
         {
-        	console.log(blogposts);
-        	res.render('myBlogPosts.ejs', {userblogposts: blogposts, user: user});
+        	//console.log(blogposts);
+        	res.render('myBlogPosts.ejs', {userblogposts: blogposts, user: user, search:null});
         }
     });
 
@@ -208,15 +208,33 @@ exports.saveCommentBlogPost = function(req, res){
 
 exports.searchBlogPosts = function(req, res){
 
-    console.log(req.body.search);
-    if(req.body.search)
+    console.log(req.body);
+
+    if(req.body.option==null)
     {
-        var redirect = "/searchallblogposts"+"/"+req.body.search;
-        console.log(redirect);
-        res.send({user: req.session.user, search: req.body.search, redirect: redirect, completed:"OK"});
+        console.log("all")
+        if(req.body.search)
+        {
+            var redirect1 = "/searchallblogposts"+"/"+req.body.search;
+            console.log(redirect1);
+            res.send({user: req.session.user, search: req.body.search, redirect: redirect1, completed:"OK"});
+        }
+        else{
+            res.send({completed:"NOK"})
+        }
     }
-    else{
-        res.send({completed:"NOK"})
+    else if(req.body.option == "my")
+    {
+         console.log("mine");
+         if(req.body.search)
+        {
+            var redirect2 = "/searchmyblogposts"+"/"+req.body.search;
+            console.log(redirect2);
+            res.send({user: req.session.user, search: req.body.search, redirect: redirect2, completed:"OK"});
+        }
+        else{
+            res.send({completed:"NOK"})
+        }
     }
     
 
@@ -225,6 +243,7 @@ exports.searchBlogPosts = function(req, res){
 exports.searchallblogposts = function(req, res){
 
     var search = req.params.search;
+    console.log("or am i here");
 
     BlogPost.find({
         $or:[
@@ -240,9 +259,40 @@ exports.searchallblogposts = function(req, res){
         }
         else
         {
-            console.log(allblogposts);
+            //console.log(allblogposts);
             
             res.render("allBlogs.ejs", {allposts: allblogposts, user: req.session.user, search: search});
+            
+            //res.redirect("allBlogs.ejs", {allposts: allblogposts, user: req.session.user, search: req.body.search});
+        } 
+    });
+}
+
+exports.searchmyblogposts = function(req, res){
+
+    var search = req.params.search;
+    var user = req.session.user;
+
+    console.log("am i here????");
+
+    BlogPost.find({$and:[{'blogPost.authorid' : user.facebook.id},
+        { $or:[
+        {'blogPost.postBody' : new RegExp(search, 'i')},
+        {'blogPost.postTitle' : new RegExp(search, 'i')},
+        {'blogPost.tags': search}]}
+        ]}, function(err, allblogposts)
+    {
+        //console.log(blogposts);
+        //console.log(count);
+        if(err)
+        {
+            console.log("error in fetching all blog posts");
+        }
+        else
+        {
+            //console.log(allblogposts);
+            
+            res.render("myBlogPosts.ejs", {userblogposts: allblogposts, user: user, search: search});
             
             //res.redirect("allBlogs.ejs", {allposts: allblogposts, user: req.session.user, search: req.body.search});
         } 
