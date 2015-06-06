@@ -96,6 +96,7 @@ passport.use('local-login', new LocalStrategy({
             return done(null, user);
         });
 
+
     }));
 
 
@@ -331,8 +332,11 @@ passport.use(new GoogleStrategy({
                     newUser.facebook.email = profile.emails[0].value; // pull the first email
                     newUser.local.joiningDate  = Date();
                     newUser.local.password='0';
-                    newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyATYAkqODkreE8--b2CAKxtTxr-Zer5mi0";
+
+                    newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyAyDiSzWn36310CxR7rbmbu2A_Iu0E-5PI";
+                    //"https://www.googleapis.com/plusDomains/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyATYAkqODkreE8--b2CAKxtTxr-Zer5mi0";
                                         // save the user
+                                      //  https://www.googleapis.com/plus/v1/activities/z12gtjhq3qn2xxl2o224exwiqruvtda0i?fields=url,object(content,attachments/url)&key=YOUR-API-KEY
                     newUser.save(function(err) {
                         if (err)
                             throw err;
@@ -503,7 +507,7 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the landing page
     res.redirect('/');
 }
-
+ 
 app.get('/forgot', function(req, res) {
   res.render('forgot', {
     user: req.user,
@@ -566,17 +570,18 @@ app.post('/forgot', function(req, res, next) {
   });
 });
 app.get('/reset/:token', function(req, res) {
+
+    
   User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
-    console.log( Date.now());
+       
     if (!user) {
       req.flash('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
     }
+
     res.render('reset.ejs', {
       user: req.user,
-      message: req.flash('success'),
-       
-      
+       message: req.flash('error')
   
     });
 
@@ -585,17 +590,18 @@ app.get('/reset/:token', function(req, res) {
 app.post('/reset/:token', function(req, res) {
   async.waterfall([
     function(done) {
-      User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
-        if (!user) {
+     User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
+  
+     if (!user) {
           req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('/forgot');
+          return res.redirect('back');
         }
+        user.local.password = user.generateHash(req.body.password);
+        
+        user.local.resetPasswordToken = undefined;
+        user.local.resetPasswordExpires = undefined;
 
-        user.local.password = req.body.password;
-     //   user.local.resetPasswordToken = undefined;
-     //   user.local.resetPasswordExpires = undefined;
-
-        user.save(function(err) {
+         user.save(function(err) {
           req.logIn(user, function(err) {
             done(err, user);
           });
@@ -604,7 +610,7 @@ app.post('/reset/:token', function(req, res) {
     },
     function(user, done) {
       var smtpTransport = nodemailer.createTransport('SMTP', {
-        service: 'Gmail',
+        service: 'gmail',
         auth: {
           user: 'sarora2k11@gmail.com',
           pass: '9897355445678'
@@ -619,7 +625,6 @@ app.post('/reset/:token', function(req, res) {
       };
       smtpTransport.sendMail(mailOptions, function(err) {
         req.flash('success', 'Success! Your password has been changed.');
-        return res.redirect('/');
         done(err);
       });
     }
