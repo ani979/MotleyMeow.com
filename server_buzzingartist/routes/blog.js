@@ -29,7 +29,8 @@ exports.saveNewBlogPostData = function(req, res){
                             res.send({completed: "NOK"});  
                         } else {
                             console.log("Saved");
-                            res.send({completed: "OK"});
+                            req.session.blogId = newblogpost._id;
+                            res.send({completed: "OK", redirect: "/myBlogPosts"});
                         }
                     });
 
@@ -38,9 +39,12 @@ exports.saveNewBlogPostData = function(req, res){
 exports.myBlogPosts = function(req, res){
 
 	var user = req.session.user;
-	
+	var recentChangedBlogId = "";
 	console.log(user.facebook.id);
-
+    if(typeof req.session.blogId !='undefined') {
+        recentChangedBlogId = req.session.blogId;
+        req.session.blogId = null;
+    }
 	var userblogposts;
     BlogPost.find({'blogPost.authorid' : user.facebook.id}, function(err, blogposts)
     {
@@ -53,7 +57,7 @@ exports.myBlogPosts = function(req, res){
         else
         {
         	//console.log(blogposts);
-        	res.render('myBlogPosts.ejs', {userblogposts: blogposts, user: user, search:null});
+        	res.render('myBlogPosts.ejs', {userblogposts: blogposts, user: user, search:null, recentBlogId:recentChangedBlogId});
         }
     });
 
