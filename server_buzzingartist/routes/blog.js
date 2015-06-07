@@ -41,11 +41,24 @@ exports.myBlogPosts = function(req, res){
 
 	var user = req.session.user;
 	var recentChangedBlogId = "";
+    var recentEditedBlogId ="";
+
 	console.log(user.facebook.id);
-    if(typeof req.session.blogId !='undefined') {
+    console.log(req.session.blogId);
+    console.log(req.session.editedblogId);
+    //if(typeof req.session.blogId !='undefined') {
+    if(req.session.blogId){
+        console.log("New blog!!!")
         recentChangedBlogId = req.session.blogId;
         req.session.blogId = null;
     }
+    //else if(typeof req.session.editedblogId != 'undefined'){
+    else if(req.session.editedblogId){
+        console.log("Edited!!!")
+        recentEditedBlogId = req.session.editedblogId;
+        req.session.editedblogId = null;
+    }
+
 	var userblogposts;
     BlogPost.find({'blogPost.authorid' : user.facebook.id}, function(err, blogposts)
     {
@@ -58,7 +71,7 @@ exports.myBlogPosts = function(req, res){
         else
         {
         	//console.log(blogposts);
-        	res.render('myBlogPosts.ejs', {userblogposts: blogposts, user: user, search:null, recentBlogId:recentChangedBlogId});
+        	res.render('myBlogPosts.ejs', {userblogposts: blogposts, user: user, search:null, recentBlogId:recentChangedBlogId, editedBlogId: recentEditedBlogId});
         }
     });
 
@@ -145,7 +158,8 @@ exports.editBlogPostData = function(req, res){
                                     res.send({completed: "NOK"});  
                                 } else {
                                     console.log("Saved");
-                                    res.send({completed: "OK"});
+                                    req.session.editedblogId = blogpost._id;
+                                    res.send({completed: "OK", redirect:"/myBlogPosts"});
                                 }
             });
         } 
