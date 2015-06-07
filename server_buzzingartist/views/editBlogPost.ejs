@@ -74,7 +74,7 @@
 <div class="control-group">
   <label class="control-label" for="postTitle">Title </label>
   <div class="controls">
-    <input id="postTitle" name="postTitle" type="text" placeholder="Enter a title for your post" value="<%=post.blogPost.postTitle%>" class="input-xlarge" required="">
+    <input id="postTitle" name="postTitle" type="text" placeholder="Enter a title for your post" value="<%=post.blogPost.postTitle%>" class="input-xlarge">
     
   </div>
 </div>
@@ -83,7 +83,7 @@
 <div class="control-group">
   <label class="control-label" for="postSubtitle">Sub-title </label>
   <div class="controls">
-    <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" value="<%=post.blogPost.postSubtitle%>" class="input-xlarge" required="">
+    <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" value="<%=post.blogPost.postSubtitle%>" class="input-xlarge">
     
   </div>
 </div>
@@ -168,7 +168,7 @@
   <label class="control-label" for="buttonPublish">Final things</label>
   <div class="controls">
     <button id="buttonPublish" name="buttonPublish" class="btn btn-success" type="button" value="submit" onclick="savePostData()">Publish Post</button>
-    <button id="buttonCancel" name="buttonCancel" class="btn btn-danger">Cancel Post</button>
+    <button id="buttonCancel" name="buttonCancel" class="btn btn-danger" type="button" onclick="cancelPost()">Cancel Post</button>
   </div>
 </div>
 
@@ -241,6 +241,11 @@
            }
         }); //end of ajax function 
   } //end of savePostData function
+
+  function cancelPost(){
+    //console.log("I decided to cancel");
+    window.location = "/myBlogPosts";
+  }
 </script>
 
 </body>
