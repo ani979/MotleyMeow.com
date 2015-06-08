@@ -497,18 +497,18 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/')
 }
 
-app.get('/newBlogPost', blog.newBlogPost);
-app.post('/saveNewBlogPostData', blog.saveNewBlogPostData);
-app.get('/myBlogPosts', blog.myBlogPosts);
+app.get('/newBlogPost', ensureAuthenticated, blog.newBlogPost);
+app.post('/saveNewBlogPostData', ensureAuthenticated, blog.saveNewBlogPostData);
+app.get('/myBlogPosts', ensureAuthenticated, blog.myBlogPosts);
 //app.post('/displayFullBlogPost', blog.displayFullBlogPost);
-app.get('/displayBlogPost/:blogpostid', blog.displayBlogPost);
-app.get('/allBlogs', blog.allBlogs);
-app.post('/saveCommentBlogPost', blog.saveCommentBlogPost);
-app.get('/editBlogPost/:blogpostid', blog.editBlogPost);
-app.post('/editBlogPostData', blog.editBlogPostData);
-app.post('/searchBlogPosts', blog.searchBlogPosts);
-app.get('/searchallblogposts/:search', blog.searchallblogposts);
-app.get('/searchmyblogposts/:search', blog.searchmyblogposts);
+app.get('/displayBlogPost', blog.displayBlogPost);
+app.get('/allBlogs', ensureAuthenticated, blog.allBlogs);
+app.post('/saveCommentBlogPost', ensureAuthenticated, blog.saveCommentBlogPost);
+app.get('/editBlogPost', ensureAuthenticated, blog.editBlogPost);
+app.post('/editBlogPostData', ensureAuthenticated, blog.editBlogPostData);
+app.post('/searchBlogPosts', ensureAuthenticated, blog.searchBlogPosts);
+app.get('/searchallblogposts', ensureAuthenticated, blog.searchallblogposts);
+app.get('/searchmyblogposts', ensureAuthenticated, blog.searchmyblogposts);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));

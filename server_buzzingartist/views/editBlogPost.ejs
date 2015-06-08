@@ -34,30 +34,16 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>-->
-
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet"> 
   </head>
 
   <body>
-
-    <!--<div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Project name</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>-->
+<% if(typeof user != 'undefined' && user!=null) { %>
+  <div id = "headerloggedin"> </div>
+<% } else { %>
+  <div id = "headerloggedout"></div>
+<%}%> 
 
     <div class="container">
 
@@ -116,34 +102,7 @@
 
 <!--Hideen field-->
 <input type="hidden" id="hiddenbody" name="question_html" />
-<!--<script>$('#hiddenbody').val(tinyMCE.get('#postbody').getContent());</script>-->
 
-<!-- Multiple Checkboxes (inline) -->
-<!--<div class="control-group">
-  <label class="control-label" for="postCategories">Choose Categories</label>
-  <div class="controls" id="postCategoriesSelector">
-    <label class="checkbox inline" for="postCategories-0">
-      <input type="checkbox" name="postCategories" id="postCategories-0" value="1">
-      1
-    </label>
-    <label class="checkbox inline" for="postCategories-1">
-      <input type="checkbox" name="postCategories" id="postCategories-1" value="2">
-      2
-    </label>
-    <label class="checkbox inline" for="postCategories-2">
-      <input type="checkbox" name="postCategories" id="postCategories-2" value="3">
-      3
-    </label>
-    <label class="checkbox inline" for="postCategories-3">
-      <input type="checkbox" name="postCategories" id="postCategories-3" value="4">
-      4
-    </label>
-    <label class="checkbox inline" for="postCategories-4">
-      <input type="checkbox" name="postCategories" id="postCategories-4" value="5">
-      5
-    </label>
-  </div>
-</div>-->
 
 
 <!-- Tags -->
@@ -177,18 +136,28 @@
 
 
     </div> <!-- /container -->
+<div id = "footer"></div>
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+        <script src="/cleanblog/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/cleanblog/js/bootstrap.min.js"></script>
     <script src="/js/jquery.js"></script>
     <script src="/js/jquery.1.11.2.min.js"></script>
     <!--<script src="/js/bootstrap-tagsinput.js"></script>-->
     <!-- The JQUERY UI is very much needed for tag and just after jquery UI.js we need to add tag it.js -->
     <script src="/js/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="/js/tag-it.min.js" type="text/javascript" charset="utf-8"></script>
+
     
 <script>
+  $("#footer").load("footer.ejs"); 
+  $("#headerloggedin").load("/header");
+  $("#headerloggedout").load("headerloggedout.ejs");
+
   $(document).ready(function() {
         $("#tagsForPost").tagit();
     });
@@ -250,9 +219,6 @@
 
 </body>
   
-  <script>
-    $("#headerloggedin").load("/header");
-    $("#headerloggedout").load("headerloggedout.ejs");
-  </script>
+  
 
 </html>

@@ -71,7 +71,7 @@ exports.myBlogPosts = function(req, res){
         else
         {
         	//console.log(blogposts);
-        	res.render('myBlogPosts.ejs', {userblogposts: blogposts, user: user, search:null, recentBlogId:recentChangedBlogId, editedBlogId: recentEditedBlogId});
+        	res.render('myBlogPosts', {userblogposts: blogposts, user: user, search:null, recentBlogId:recentChangedBlogId, editedBlogId: recentEditedBlogId});
         }
     });
 
@@ -95,9 +95,9 @@ exports.myBlogPosts = function(req, res){
 };*/
 
 exports.displayBlogPost = function(req, res){
-    console.log(req.params.blogpostid);
+    console.log(req.query.blogpostid);
 
-    BlogPost.findOne({'_id' : req.params.blogpostid}, function(err, blogpost)
+    BlogPost.findOne({'_id' : req.query.blogpostid}, function(err, blogpost)
     {
         if(err)
             {
@@ -105,7 +105,7 @@ exports.displayBlogPost = function(req, res){
             }
         else
             {
-                res.render('displayBlogPost.ejs', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
+                res.render('displayBlogPost', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
             }
     });
 };
@@ -113,8 +113,8 @@ exports.displayBlogPost = function(req, res){
 
 exports.editBlogPost = function(req, res){
 
-    console.log(req.params.blogpostid);
-    BlogPost.findOne({'_id' : req.params.blogpostid}, function(err, blogpost)
+    console.log("req.query.blogpostid " + req.query.blogpostid);
+    BlogPost.findOne({'_id' : req.query.blogpostid}, function(err, blogpost)
     {
         if(err)
             {
@@ -122,7 +122,7 @@ exports.editBlogPost = function(req, res){
             }
         else
             {
-                res.render('editBlogPost.ejs', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
+                res.render('editBlogPost', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
             }
     });
     
@@ -180,7 +180,7 @@ exports.allBlogs = function(req, res){
         else
         {
             console.log(allblogposts);
-            res.render('allBlogs.ejs', {allposts: allblogposts, user: req.session.user, search:null});
+            res.render('allBlogs', {allposts: allblogposts, user: req.session.user, search:null});
         } 
     });
 }
@@ -235,7 +235,7 @@ exports.searchBlogPosts = function(req, res){
         console.log("all")
         if(req.body.search)
         {
-            var redirect1 = "/searchallblogposts"+"/"+req.body.search;
+            var redirect1 = "/searchallblogposts"+"?search="+req.body.search;
             console.log(redirect1);
             res.send({user: req.session.user, search: req.body.search, redirect: redirect1, completed:"OK"});
         }
@@ -248,7 +248,7 @@ exports.searchBlogPosts = function(req, res){
          console.log("mine");
          if(req.body.search)
         {
-            var redirect2 = "/searchmyblogposts"+"/"+req.body.search;
+            var redirect2 = "/searchmyblogposts"+"?search="+req.body.search;
             console.log(redirect2);
             res.send({user: req.session.user, search: req.body.search, redirect: redirect2, completed:"OK"});
         }
@@ -262,7 +262,7 @@ exports.searchBlogPosts = function(req, res){
 
 exports.searchallblogposts = function(req, res){
 
-    var search = req.params.search;
+    var search = req.query.search;
     console.log("or am i here");
 
     BlogPost.find({
@@ -282,7 +282,7 @@ exports.searchallblogposts = function(req, res){
         {
             //console.log(allblogposts);
             
-            res.render("allBlogs.ejs", {allposts: allblogposts, user: req.session.user, search: search});
+            res.render("allBlogs", {allposts: allblogposts, user: req.session.user, search: search});
             
             //res.redirect("allBlogs.ejs", {allposts: allblogposts, user: req.session.user, search: req.body.search});
         } 
@@ -291,7 +291,7 @@ exports.searchallblogposts = function(req, res){
 
 exports.searchmyblogposts = function(req, res){
 
-    var search = req.params.search;
+    var search = req.query.search;
     var user = req.session.user;
 
     console.log("am i here????");
@@ -314,7 +314,7 @@ exports.searchmyblogposts = function(req, res){
         {
             //console.log(allblogposts);
             
-            res.render("myBlogPosts.ejs", {userblogposts: allblogposts, user: user, search: search});
+            res.render("myBlogPosts", {userblogposts: allblogposts, user: user, search: search});
             
             //res.redirect("allBlogs.ejs", {allposts: allblogposts, user: req.session.user, search: req.body.search});
         } 

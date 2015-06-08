@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MM|My Blogs</title>
+    <title>My Blogs</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/cleanblog/css/bootstrap.min.css" rel="stylesheet">
@@ -24,6 +24,7 @@
 
     <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
     <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,7 +35,20 @@
     
 
 </head>
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
 
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>
 <body>
 
     
@@ -43,12 +57,18 @@
     <!-- Set your background image for this header on the line below. -->
     <header class="intro-header" style="background-image: url('/cleanblog/img/home-curtain.jpg')">
         <div class="container">
+            <% if(typeof user != 'undefined' && user!=null) { %>
+        <div id = "headerloggedin"> </div>
+            <% } else { %>
+        <div id = "headerloggedout"></div>
+            <% } %>
+        <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
                 <% if(search == null) { %>
                     <div class="site-heading">
-                        <h1>My Blogs</h1>
+                        <h1 class="oratorFont" style="font-size:36px;">My Blogs</h1>
                         <hr class="small">
                         <span class="subheading">This is what you've been upto</span>
                     </div>
@@ -56,7 +76,7 @@
 
                 else { %>
                     <div class="site-heading">
-                        <h1>My Blogs</h1>
+                        <h1 class="oratorFont" style="font-size:36px;">My Blogs</h1>
                         <hr class="small">
                         <span class="subheading">Showing results in your blogs for <%= search %></span>
                     </div>
@@ -76,26 +96,28 @@
 
                             <!--Every post-->
                             <div class="post-preview">
-                                <a href="http://localhost:3000/displayBlogPost/<%=post._id%>">
-                                    <h2 class="post-title">
+                                <a href="http://localhost:3000/displayBlogPost?blogpostid=<%=post._id%>">
+                                    <h2 class="post-title panel-title" style="font-size:24px;">
                                         <%= post.blogPost.postTitle %>
                                     </h2>
-                                    <h3 class="post-subtitle">
+                                    <h3 class="post-subtitle antiguaFont" style="font-size:20px;">
                                         <%= post.blogPost.postSubtitle %>
                                     </h3>
                                 </a>
                                 <script>
-                                    var d = <%- JSON.stringify(post.blogPost.date) %>;
-                                    var n = d.toString();
-                                    var x = n.substr(0, 25);
+                                    // var d = <%- JSON.stringify(post.blogPost.date) %>;
+                                    // var n = d.toString();
+                                    // var x = n.substr(0, 25);
                                 </script>
-                                <p class="post-meta">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= post.blogPost.date %></p>
+                                 <% var isodateString = post.blogPost.date.toISOString();
+                                    var displayableDate = getDate(isodateString) %>
+                                <p class="post-meta oratorFont" style="font-size:18px;">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= displayableDate %></p>
                                 <% if(post.blogPost.approved == true)
                                     { %>
-                                        <h4> Status: Published </h4>
+                                        <h4 class="oratorFont" style="font-size:16px;"> Status: Published </h4>
                                     <% }
                                 else { %>
-                                        <h4 style="color:grey"> Status: Draft </h4>
+                                        <h4 style="color:grey;font-size:16px;" class="oratorFont" style=""> Status: Draft </h4>
                                     <%} %>
                             </div>
                             <hr>
@@ -120,7 +142,7 @@
                     <!-- Blog Search Well -->
                     <div style="padding-top:25px">
                         <div class="well" style="">
-                            <h4>Blog Search</h4>
+                            <h4 class="oratorFont" style="font-size:16px;">Blog Search</h4>
                             <div class="input-group">
                                 <input type="text" class="form-control" style="height:52px" id="search">
                                 <span class="input-group-btn">
@@ -137,46 +159,11 @@
         </div>
     </div>
 
-    <hr>
 
     
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted">Copyright &copy; Your Website 2014</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div id = "footer"></div>
 
     <!-- jQuery -->
     <script src="/cleanblog/js/jquery.js"></script>
@@ -189,6 +176,9 @@
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
 
 <script>
+  $("#footer").load("footer.ejs"); 
+  $("#headerloggedin").load("/header");
+  $("#headerloggedout").load("headerloggedout.ejs");
     function searchPosts(){
         console.log("Searching");
 
@@ -232,12 +222,12 @@
     $(document).ready(function() {
 
     <%if(typeof recentBlogId != 'undefined' && recentBlogId != "" && recentBlogId != null) { %>
-        generateNotificationLayout('success', 'topCenter', 'Thanks for this blog. <b><a href = /displayBlogPost/<%=recentBlogId%>>View it here</a></b>');
+        generateNotificationLayout('success', 'topCenter', 'Thanks for this blog. <b><a href = /displayBlogPost?blogpostid=<%=recentBlogId%>>View it here</a></b>');
       <% }  
     
 
     else if(typeof editedBlogId != 'undefined' && editedBlogId != "" && editedBlogId != null) { %>
-        generateNotificationLayout('success', 'topCenter', 'Changes have been saved. <b><a href = /displayBlogPost/<%=editedBlogId%>>View them here</a></b>');
+        generateNotificationLayout('success', 'topCenter', 'Changes have been saved. <b><a href = /displayBlogPost?blogpostid=<%=editedBlogId%>>View them here</a></b>');
       <% } %>  
     });  
 

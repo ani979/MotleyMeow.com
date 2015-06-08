@@ -15,16 +15,18 @@
     <title>Blog Post</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/css/blog-post.css" rel="stylesheet">
+    <link href="css/blog-post.css" rel="stylesheet">
 
 	<!-- jQuery -->
-    <script src="/js/jquery.js"></script>
+    <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="/js/bootstrap.min.js"></script>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet"> 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,7 +52,11 @@
 %>  
 
 <body>
-
+<% if(typeof user != 'undefined' && user!=null) { %>
+  <div id = "headerloggedin"> </div>
+<% } else { %>
+  <div id = "headerloggedout"></div>
+<%}%> 
     <!-- Page Content -->
     <div class="container">
 
@@ -71,7 +77,7 @@
 
                 <% if(post.blogPost.authorid == user.facebook.id)
                   { %>
-                      <a href="/editBlogPost/<%=post._id%>" class="btn btn-xs btn-danger">Edit Post</a>
+                      <a href="/editBlogPost?blogpostid=<%=post._id%>" class="btn btn-xs btn-danger">Edit Post</a>
 
                   <% } %> <!--if- close-->
 
@@ -140,10 +146,18 @@
 
     </div>
     <!-- /.container -->
+<div id = "footer"></div>
+    <!-- jQuery -->
+    <script src="/cleanblog/js/jquery.js"></script>
 
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/cleanblog/js/bootstrap.min.js"></script>
 
+    
 <script>
-
+$("#footer").load("footer.ejs"); 
+$("#headerloggedin").load("/header");
+$("#headerloggedout").load("headerloggedout.ejs");
   function saveComment(){
           console.log("This is executing");
 

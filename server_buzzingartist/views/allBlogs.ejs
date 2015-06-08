@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MM|All Blogs</title>
+    <title>All Blogs</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/cleanblog/css/bootstrap.min.css" rel="stylesheet">
@@ -21,6 +21,7 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'> <!--Let this be http-->
+    <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,19 +47,24 @@
         }
 %> 
 <body>
-
+    
     
 
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
     <header class="intro-header" style="background-image: url('/cleanblog/img/home-curtain.jpg')">
-        <div class="container">
+      <div class="container">
+            <% if(typeof user != 'undefined' && user!=null) { %>
+      <div id = "headerloggedin"> </div>
+            <% } else { %>
+      <div id = "headerloggedout"></div>
+    <%}%> 
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 
                 <% if(search == null) { %>
                     <div class="site-heading">
-                        <h1>All Blogs</h1>
+                        <h1 class="oratorFont" style="font-size:36px;">All Blogs</h1>
                         <hr class="small">
                         <span class="subheading">This is what everyone's been upto</span>
                     </div>
@@ -66,7 +72,7 @@
 
                 else { %>
                     <div class="site-heading">
-                        <h1>All Blogs</h1>
+                        <h1 class="oratorFont" style="font-size:36px;">All Blogs</h1>
                         <hr class="small">
                         <span class="subheading">Showing results for <%= search %></span>
                     </div>
@@ -88,11 +94,11 @@
                     { %>
                             <!--Every post-->
                             <div class="post-preview">
-                                <a href="http://localhost:3000/displayBlogPost/<%=post._id%>">
-                                    <h2 class="post-title">
+                                <a href="http://localhost:3000/displayBlogPost?blogpostid=<%=post._id%>">
+                                    <h2 class="post-title panel-title" style="font-size:24px;">
                                         <%= post.blogPost.postTitle %>
                                     </h2>
-                                    <h3 class="post-subtitle">
+                                    <h3 class="post-subtitle antiguaFont" style="font-size:20px;">
                                         <%= post.blogPost.postSubtitle %>
                                     </h3>
                                 </a>
@@ -103,7 +109,7 @@
                                 </script>
                                  <% var isodateString = post.blogPost.date.toISOString();
                                     var displayableDate = getDate(isodateString) %>
-                                <p class="post-meta">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= displayableDate %></p>
+                                <p class="post-meta oratorFont" style="font-size:16px;">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= displayableDate %></p>
                             </div>
                             <hr>
 
@@ -127,7 +133,7 @@
                     <!-- Blog Search Well -->
                     <div style="padding-top:25px">
                         <div class="well" style="">
-                            <h4>Blog Search</h4>
+                            <h4 class="oratorFont" style="font-size:16px;">Blog Search</h4>
                             <div class="input-group">
                                 <input type="text" class="form-control" style="height:52px" id="search">
                                 <span class="input-group-btn">
@@ -149,7 +155,7 @@
     
 
     <!-- Footer -->
-    
+    <div id = "footer"></div>
 
     <!-- jQuery -->
     <script src="/cleanblog/js/jquery.js"></script>
@@ -160,7 +166,10 @@
     <!-- Custom Theme JavaScript -->
     <script src="/cleanblog/js/clean-blog.min.js"></script>
 
-<script>
+    <script>
+    $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
     function searchPosts(){
         console.log("Searching");
 
@@ -200,6 +209,7 @@
            }
         }); //end of ajax function
     };
+  
 
  </script>
 </body>
