@@ -86,7 +86,7 @@ passport.use('local-login', new LocalStrategy({
             //if (user.local.password=='0')
               if (typeof user.local.password == 'undefined' || user.local.password=='0' )
 
-                return done(null, false, req.flash('loginMessage', 'Email registered with Facebook Login.'));
+                return done(null, false, req.flash('loginMessage', 'Email registered with Social Login.'));
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
@@ -119,7 +119,7 @@ passport.use('local-login', new LocalStrategy({
 
         if (req.body.password!=req.body.confirmPass)
            {
-         return done(null, false, req.flash('passerror', "Password do not match"));
+         return done(null, false, req.flash('signupMessage', "Oops! Passwords do not match."));
                     }
         else
         User.findOne({ 'facebook.email' :  email }, function(err, user) {
@@ -242,6 +242,7 @@ passport.use(new FacebookStrategy({
                         newUser.facebook.token = profile.token; // we will save the token that facebook provides to the user                    
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                         newUser.local.password = '0';
+                        newUser.local.socialuser= true;
                         console.log("facebook name " + newUser.facebook.name);
                         if(typeof profile.emails == 'undefined' || profile.emails.length == 0) {
                             newUser.facebook.email = "";
@@ -332,6 +333,7 @@ passport.use(new GoogleStrategy({
                     newUser.facebook.email = profile.emails[0].value; // pull the first email
                     newUser.local.joiningDate  = Date();
                     newUser.local.password='0';
+                    newUser.local.socialuser= true;
 
                     newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyAyDiSzWn36310CxR7rbmbu2A_Iu0E-5PI";
                     //"https://www.googleapis.com/plusDomains/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyATYAkqODkreE8--b2CAKxtTxr-Zer5mi0";
@@ -532,8 +534,8 @@ app.post('/forgot', function(req, res, next) {
           return res.redirect('/forgot');
         }
         if (user){
-            if (user.facebook.link!= null)
-                req.flash('error','U are registered with fb');
+            if (user.local.socialuser== true)
+                req.flash('error','You are registered with social login.');
                 return res.redirect('/forgot');
         }
         user.local.resetPasswordToken = token;
