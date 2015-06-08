@@ -9,7 +9,7 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="css/style.css" rel="stylesheet">
+    
     <link href="blog/bootstrap.css" rel="stylesheet">
     <style>
       body {
@@ -31,6 +31,11 @@
         //save_onsavecallback: "savePostData"      
       });
     </script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.1.11.2.min.js"></script>
+    <script src="js/bootstrap.min.3.3.4.js"></script>
+    <link href="css/style.css" rel="stylesheet">       
+    
     <!-- Formatting toolbar ends here -->
 
 
@@ -53,7 +58,7 @@
 
     <div class="container">
 
-      <h1>Blogging</h1>
+      <h1>Theatre blog</h1>
       <p>What would you like to share?</p>
 
 <form class="form-horizontal">
@@ -65,17 +70,16 @@
 <!-- Text input-->
 <div class="control-group">
   <label class="control-label" for="postTitle">Title </label>
-  <div class="controls">
-    <input id="postTitle" name="postTitle" type="text" placeholder="Enter a title for your post" class="input-xlarge">
-    
+  <div class="controls">  
+    <input id="postTitle" name="postTitle" type="text" placeholder="Enter a title for your post" style="height:30px;">
   </div>
 </div>
 
 <!-- Text input-->
 <div class="control-group">
   <label class="control-label" for="postSubtitle">Sub-title </label>
-  <div class="controls">
-    <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" class="input-xlarge">
+  <div class="controls" >
+    <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" class="input-xlarge" style="height:30px;">
     
   </div>
 </div>
@@ -91,36 +95,7 @@
 
 <!--Hideen field-->
 <input type="hidden" id="hiddenbody" name="question_html" />
-<!--<script>$('#hiddenbody').val(tinyMCE.get('#postbody').getContent());</script>-->
 
-<!-- Multiple Checkboxes (inline) -->
-<!--<div class="control-group">
-  <label class="control-label" for="postCategories">Choose Categories</label>
-  <div class="controls" id="postCategoriesSelector">
-    <label class="checkbox inline" for="postCategories-0">
-      <input type="checkbox" name="postCategories" id="postCategories-0" value="1">
-      1
-    </label>
-    <label class="checkbox inline" for="postCategories-1">
-      <input type="checkbox" name="postCategories" id="postCategories-1" value="2">
-      2
-    </label>
-    <label class="checkbox inline" for="postCategories-2">
-      <input type="checkbox" name="postCategories" id="postCategories-2" value="3">
-      3
-    </label>
-    <label class="checkbox inline" for="postCategories-3">
-      <input type="checkbox" name="postCategories" id="postCategories-3" value="4">
-      4
-    </label>
-    <label class="checkbox inline" for="postCategories-4">
-      <input type="checkbox" name="postCategories" id="postCategories-4" value="5">
-      5
-    </label>
-  </div>
-</div>
-
-  <ul id="myTags"></ul> -->
 
 <!-- Tags -->
   <div class="control-group">
