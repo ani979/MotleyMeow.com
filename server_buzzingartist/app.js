@@ -531,7 +531,11 @@ app.post('/forgot', function(req, res, next) {
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         }
-
+        if (user){
+            if (user.facebook.link!= null)
+                req.flash('error','U are registered with fb');
+                return res.redirect('/forgot');
+        }
         user.local.resetPasswordToken = token;
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
