@@ -188,9 +188,9 @@ exports.allBlogs = function(req, res){
 
 exports.saveCommentBlogPost = function(req, res){
 
-    console.log(req.body.comment);
-    console.log(req.body.postid);
-    console.log(req.session.user.facebook.id);
+    console.log("req.body.comment" + req.body.comment);
+    console.log("req.body.postid" + req.body.postid);
+    console.log("req.session.user.facebook.id" + req.session.user.facebook.id);
 
     BlogPost.findOne({'_id' : req.body.postid}, function(err, blogpost)
     {

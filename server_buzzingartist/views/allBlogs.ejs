@@ -31,7 +31,20 @@
     
 
 </head>
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
 
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%> 
 <body>
 
     
@@ -84,11 +97,13 @@
                                     </h3>
                                 </a>
                                 <script>
-                                    var d = <%- JSON.stringify(post.blogPost.date) %>;
-                                    var n = d.toString();
-                                    var x = n.substr(0, 25);
+                                    // var d = <%- JSON.stringify(post.blogPost.date) %>;
+                                    // var n = d.toString();
+                                    // var x = n.substr(0, 25);
                                 </script>
-                                <p class="post-meta">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= post.blogPost.date %></p>
+                                 <% var isodateString = post.blogPost.date.toISOString();
+                                    var displayableDate = getDate(isodateString) %>
+                                <p class="post-meta">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= displayableDate %></p>
                             </div>
                             <hr>
 
@@ -134,41 +149,7 @@
     
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted">Copyright &copy; Your Website 2014</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    
 
     <!-- jQuery -->
     <script src="/cleanblog/js/jquery.js"></script>

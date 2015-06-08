@@ -30,7 +30,21 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-</head
+</head>
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>  
 
 <body>
 
@@ -61,12 +75,9 @@
                 <hr>
 
                 <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on <%= post.blogPost.date %></p>
-
-                <hr>
-
-                <!-- Preview Image -->
-                <!--<img class="img-responsive" src="http://placehold.it/900x300" alt="">-->
+                <% var isodateString = post.blogPost.date.toISOString();
+                var displayableDate = getDate(isodateString) %>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on <%= displayableDate %></p>
 
                 <hr>
 
@@ -76,13 +87,6 @@
                   var myVar = <%- JSON.stringify(post.blogPost.postBody) %>;
                   document.getElementById("demo").innerHTML = myVar;
                 </script>
-
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
-
                 <hr>
 
                 <!-- Blog Comments -->
@@ -90,7 +94,7 @@
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
-                    <form role="form">
+                    
                         <div class="form-group">
                             <textarea class="form-control" rows="3" id="comment"></textarea>
                         </div>
@@ -98,7 +102,7 @@
                             <input class="form-control" id="postid" value="<%= post._id %>" type="hidden"></input>
                         </div>
                         <button type="submit" class="btn btn-primary" onclick="saveComment()">Submit</button>
-                    </form>
+                   
                 </div>
 
                 <hr>
@@ -112,9 +116,11 @@
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading"><%= comment.commentorName %>
-                            <small><%= comment.date %></small>
+                          <% var isodateString = comment.date.toISOString();
+                             var commentDate = getDate(isodateString) %>
+                            <small><%= commentDate %></small>
                         </h4>
-                        <%= comment.comment %> <br>Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        <%= comment.comment %> 
                     </div>
                 </div>
                 <br>
@@ -136,16 +142,12 @@
 <script>
 
   function saveComment(){
-
           console.log("This is executing");
 
           var data = {
             comment: $("#comment").val(),
             postid: $("#postid").val()
           };
-
-          //console.log(checkBoxes);
-          console.log(data);
 
           $.ajax({ 
            url: "/saveCommentBlogPost",
@@ -159,6 +161,7 @@
               
               if(data.completed == "OK") {
                 console.log("OK");
+                $("#comment").val("");
                 location.reload();
                 //generateNotificationLayout('success', 'topCenter', 'Post published');
               } else {
