@@ -1,0 +1,19 @@
+var mongoose = require('mongoose');
+
+var forumSchema = mongoose.Schema({
+
+    thread:
+    {
+        authorid        : String, //author's facebook unique_ID
+        authorName      : String, //author's fb name
+        authorPic       : String,
+        topic           : {type: String, default:'Not mentioned'},
+        body            : {type: String, default:'Not mentioned'},
+        date            : {type: Date, default: Date.now},
+        category        : String,
+        replies         : [{commentorid:String, commentorName:String, commentorPic:String, comment:String, date:Date}]
+    }
+
+});
+
+module.exports = mongoose.model('thread', forumSchema);
