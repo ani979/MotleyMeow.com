@@ -1,81 +1,98 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/dropdowns-enhancement.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/dropdowns-enhancement.js"></script>
-        <script src="js/jquery.searcher.min.js"></script>
-
-        <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
-        <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-        <link href="css/style.css" rel="stylesheet">       
-        <link href="css/tab.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="css/searcher_style.css">
-
-  </head>
   
+<head>
+   
+ <meta charset="utf-8">
+ 
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title></title>
+      
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/dropdowns-enhancement.js"></script>
+  <script src="js/jquery.searcher.min.js"></script>
+  
+  <link href="css/style.css" rel="stylesheet">       
+  <link href="css/tab.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/searcher_style.css">
+
+ 
+ </head>
+ 
+  
+ 
 <body>
 
- <% if(typeof user != 'undefined' && user!=null) { %>
+
+
+<% if(typeof user != 'undefined' && user!=null) { %>
  <div id = "headerloggedin"> </div>
  <% } else { %>
  <div id = "headerloggedout">
   <%}%> 
 
+
 <div class = "main-container">
-    <!--<div class="col-md-12" style = "text-align: center;">
-    <h3 class = "thtrexplore">
-      EXPLORE. CONNECT. CONTRIBUTE.
-     </h3>
-  </div>-->
+ 
+  
   <div class="col-md-12" style = "text-align: center;" id = "searchartists">
-    <h3>
-      ARTISTS AROUND YOU
-    </h3>
-    
-    </br></br></br>
-    <div class = "col-md-8 col-md-offset-2">
+   
+     <h3>
+        ARTISTS AROUND YOU
+      </h3>
+      
+
+      </br></br></br>
       <label style="font-size:20px">Search for: <input id="cardsearchinput" type="text" style="font-size:15px"/></label>
-      <div class="btn-group" style="text-align:right;">
-       <a class="btn btn-success " href="/contactArtists" role="button">Contact artists</a>
-      </div>
-    </div>  
-    </br>
-    </br>
-    <text id="No_result_found" style="float:center;text-align:center;font-size:20px;display:none;">No results found</text>
-    <div id="carddata">
-      <% users.forEach(function(user){ %>
-         <div class="card" style="width:390px;">
-            <div class="container">
-                <div class="col-sm-1" style="float:left;text-align:left;padding:5px;">
-                  <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:150px;">
-                </div>
-                </br></br></br>
-                <div class="col-sm-10" style="float:right;text-align:left;font-size:20px"><%= user.facebook.name %></div>
-              </br>
-                <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
-                  <div class="col-sm-10" style="float:right;text-align:left">Not Set</div>
+      </br>
+      </br>
+      </br>
+      </br>
+      <text id="No_result_found" style="float:center;text-align:center;font-size:20px;display:none;">No results found</text>
+      <div id="carddata">
+       <% users.forEach(function(user){ %>
+           
+        <div class="container card" style="width:390px;border:2px solid grey;border-radius:15px;padding:20px;">
+          <div class="col-sm-12 col-md-6" >
+            <% if(typeof user.local.picture == 'undefined' || user.local.picture == "") { %>
+              <i class="fa fa-user" style="font-size:150px;"></i>
+            <% } else { %> 
+              <img src=<%= user.local.picture %> class="img-circle" style="height:150px;">
+            <% } %>  
+          </div>
+          
+          <div class="col-sm-12 col-md-6" style="font-size:18px;">
+            <b><%= user.facebook.name %></b>
+
+            <% if(typeof user.local.city == 'undefined' || user.local.city == "" || user.local.city=="None") { %>
+              <p>City Not Set</p>
+            <% } else { %>
+              <p>From <%= user.local.city %></p>
+            <% } %>
+          
+   
+            
+            <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
+                  
                 <% } else { %>
-                  <div class="col-sm-10" style="float:right;text-align:left"><%= user.local.city %></div>
+              <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><%=user.local.role%></div>
+             
                 <% } %>
-                </br></br></br>
-                <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
-                  <div class="col-sm-10" style="float:right;text-align:left">Not updated yet</div>
-                <% } else { %>
-                  <div class="col-sm-10" style="float:right;text-align:left"><%= user.local.role %></div>
-                <% } %>
-            </div>
-          </div>              
-      <% }); %>
+             
+            
+          </div>
+                  
+        </div>
+      <% }); %>            
+        
     </div>
   </div>
 </div>
