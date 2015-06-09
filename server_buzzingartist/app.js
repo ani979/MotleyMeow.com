@@ -39,18 +39,13 @@ var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     FacebookStrategy = require('passport-facebook');
 
-//var mailer   = require("mailer")            //required for setting mail server
-  //, mailerUsername = "motleymeow@gmail.com"
-  //, mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
-
 var mandrill = require('mandrill-api/mandrill');
 var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
 
 //var expressSession = require('express-session');
 
 var dbConfig = require('./db');
-// var mongoClient = require('mongodb').MongoClient;
-// Connect to DB
+
 mongoose.connect(dbConfig.url);
 
 passport.serializeUser(function(user, done) {
@@ -193,25 +188,7 @@ passport.use(new FacebookStrategy({
                                 return done(err);
                             }
                             else {
-                                /*mailer.send(
-                                {   host:           "smtp.mandrillapp.com"
-                                  , port:           587                         //any port like port 25 can be used here 
-                                  , to:             newUser.facebook.email
-                                  , from:           "noreply@motleymeow.com"
-                                  , subject:        "Welcome to MotleyMeow!"
-                                  , body:           "Hello from MotleyMeow"
-                                  , authentication: "login"
-                                  , username:       mailerUsername
-                                  , password:       mailerPassword
-                                  }, function(err, result){
-                                    if(err){
-                                      console.log(err);
-                                    }
-                                    else {
-                                      console.log("Mail sent");
-                                    }
-                                  }
-                                );*/
+
                                 var params = {
                                     "template_name": "MotleyMeow Welcome Email",
                                     "template_content": [
@@ -567,11 +544,11 @@ d.on('error', function(err) {
 // console.log("Express serverrrr listening on port 8080");
 
 function sendTheMail(params) {
-// Send the email!
+    // Send the email!
 
-m.messages.sendTemplate(params, function(res) {
-    console.log(res);
-}, function(err) {
-    console.log(err);
-});
+    m.messages.sendTemplate(params, function(res) {
+        console.log(res);
+    }, function(err) {
+        console.log(err);
+    });
 }
