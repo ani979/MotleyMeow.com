@@ -169,8 +169,7 @@ exports.editBlogPostData = function(req, res){
 
 exports.allBlogs = function(req, res){
 
-    BlogPost.find(function(err, allblogposts)
-    {
+    BlogPost.find({'blogPost.approved':true}, function(err, allblogposts) {
         //console.log(blogposts);
         //console.log(count);
         if(err)
