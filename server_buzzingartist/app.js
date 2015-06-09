@@ -167,78 +167,43 @@ passport.use(new FacebookStrategy({
 },
     function(req,accessToken, refreshToken, profile, done) {
 
-             // asynchronous
-            process.nextTick(function() {
+          User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
+                if (err)
+                    return done(err);
 
-                // find the user in the database based on their facebook id
-                User.findOne({ 'facebook.email' : profile.email }, function(err, user) {
-
-                    // if there is an error, stop everything and return that
-                    // ie an error connecting to the database
-                    console.log("found");
-                    console.log("here errrrrr: " + err);
-                    if (err) {
-                        req.flash('info', "There is an error connecting to the database")
-                        res.redirect('/error');
-                        return done(err);
-                     }   
-                    // if the user is found, then log them in
-                    if (user) {
-
-                     console.log("found user");
-                        hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
+                if (user) {
+                     hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
                         req.session.hashValue = hash;
-                        if(typeof user.local.joiningDate == 'undefined' || user.local.joiningDate == "") {
-                            User.update({'facebook.id' : user.facebook.id},
-                                                 { $set: {"local.joiningDate": new Date()}},
-                                                            function (err, user) {
-                                                                if(err) {
-                                                                    console.log("Something went wrong in saving date");
-                                                                    req.flash('info', "Something went wrong in saving joining date")
-                                                                    res.redirect('/error');
-                                                                }
-                            });                        
-                        }
-                        if (!user.facebook.link) {
-                            console.log("not found fb link");
-                            FB.api(
-                                    '/me?access_token=' + accessToken + '&appsecret_proof=' + req.session.hashValue,
-                                    function (response) {
-                                        console.log("response "  + response);
-                                      if (response && !response.error) {
-                                        console.log(" response.link " + response.link);
-                                        /* handle the result */
-                                        //user.facebook.link = response.link;
-                                        User.update({'facebook.id' : user.facebook.id},
-                                                 { $set: {"facebook.link": response.link}},
-                                                            function (err, user) {
-                                                                if(err) {
-                                                                    console.log("Something went wrong in saving facebook link");
-                                                                    req.flash('info', "Something went wrong in saving facebook link")
-                                                                    res.redirect('/error');
-                                                                }
-                                        });                        
-                                      } else {
-                                        console.log("error in saving FB link " + response.error.message);
-                                        req.flash('info', "Error in saving FB link")
-                                        res.redirect('/error');
-                                      }
-                                    }
-                            );                      
-                        }           
+                    user.facebook.id= profile.id;
+                    user.facebook.token=profile.token;
+                    user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+                    user.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
+                       
+                    user.local.socialuser= true;
+                  user.facebook.link  = "https://www.facebook.com/" + profile.id;
+                    //    console.log("email id " + newUser.facebook.email);
                         req.session.fbAccessToken = accessToken;
-                        
-                        console.log("hash is " + hash);
-                        return done(null, user); // user found, return that user
-                    } else {
-                        console.log("i am here");
-                        // if there is no user found with that facebook id, create them
-                        var newUser            = new User();
-                        hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
-                        req.session.hashValue = hash;
+                    // if a user is found, log them in
+                     user.save(function(err) {
+                            if (err) {
+                                req.flash('info', "Error while saving the user in the database")
+                                res.redirect('/error');
+                                return done(err);
+                            }
 
-                        // set all of the facebook information in our user model
-                        newUser.facebook.id    = profile.id; // set the users facebook id                   
+                            // if successful, return the new user
+                            return done(null, user);
+                        });
+                 }
+
+                     else {
+                    // if the user isnt in our database, create a new user
+                    var newUser          = new User();
+
+                     hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
+                        req.session.hashValue = hash;
+                    // set all of the relevant information
+                    newUser.facebook.id    = profile.id; // set the users facebook id                   
                         newUser.facebook.token = profile.token; // we will save the token that facebook provides to the user                    
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                         newUser.local.password = '0';
@@ -294,8 +259,8 @@ passport.use(new FacebookStrategy({
                     }
 
                 });
-            });
-
+         
+            
     }
 ));
 
@@ -320,6 +285,7 @@ passport.use(new GoogleStrategy({
 
                 if (user) {
 
+                    
                     // if a user is found, log them in
                     return done(null, user);
                 } else {
