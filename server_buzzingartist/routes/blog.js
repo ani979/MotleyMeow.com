@@ -228,8 +228,9 @@ exports.saveCommentBlogPost = function(req, res){
 exports.searchBlogPosts = function(req, res){
 
     console.log(req.body);
+    console.log("req.body.option = " + req.body.option);
 
-    if(req.body.option==null)
+    if(req.body.option==null || req.body.option == "")
     {
         console.log("all")
         if(req.body.search)
@@ -269,8 +270,8 @@ exports.searchallblogposts = function(req, res){
         {'blogPost.postBody' : new RegExp(search, 'i')},
         {'blogPost.postTitle' : new RegExp(search, 'i')},
         {'blogPost.postSubtitle' : new RegExp(search, 'i')},
-        {'blogPost.tags': search}]}, function(err, allblogposts)
-    {
+        {'blogPost.tags': search}],
+        'blogPost.approved':true}, function(err, allblogposts) {
         //console.log(blogposts);
         //console.log(count);
         if(err)
