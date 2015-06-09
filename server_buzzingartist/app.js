@@ -19,6 +19,8 @@ var argv = require('optimist').argv;
 var crypto = require('crypto');
 var fsExtra = require('fs')
 
+
+
 exports.fsExtra = fsExtra;
 
 var cookieParser = require('cookie-parser');
@@ -36,6 +38,13 @@ var flash = require('connect-flash');
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     FacebookStrategy = require('passport-facebook');
+
+//var mailer   = require("mailer")            //required for setting mail server
+  //, mailerUsername = "motleymeow@gmail.com"
+  //, mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+
+var mandrill = require('mandrill-api/mandrill');
+var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
 
 //var expressSession = require('express-session');
 
@@ -183,9 +192,49 @@ passport.use(new FacebookStrategy({
                                 res.redirect('/error');
                                 return done(err);
                             }
+                            else {
+                                /*mailer.send(
+                                {   host:           "smtp.mandrillapp.com"
+                                  , port:           587                         //any port like port 25 can be used here 
+                                  , to:             newUser.facebook.email
+                                  , from:           "noreply@motleymeow.com"
+                                  , subject:        "Welcome to MotleyMeow!"
+                                  , body:           "Hello from MotleyMeow"
+                                  , authentication: "login"
+                                  , username:       mailerUsername
+                                  , password:       mailerPassword
+                                  }, function(err, result){
+                                    if(err){
+                                      console.log(err);
+                                    }
+                                    else {
+                                      console.log("Mail sent");
+                                    }
+                                  }
+                                );*/
+                                var params = {
+                                    "template_name": "MotleyMeow Welcome Email",
+                                    "template_content": [
+                                        {
+                                            "name": "example name",
+                                            "content": "example content"
+                                        }
+                                    ],
 
-                            // if successful, return the new user
-                            return done(null, newUser);
+                                    "message": {
+                                        "from_email":"noreply@motleymeow.com",
+                                        "from_name":"Motley Meow",
+                                        "to":[{"email":newUser.facebook.email}],
+                                        "subject": "Welcome to MotleyMeow!",
+                                        "text": "text in the message"
+                                    }
+                                };
+
+                                sendTheMail(params);
+
+                                // if successful, return the new user
+                                return done(null, newUser);
+                            }
                         });
                     }
 
@@ -225,7 +274,7 @@ app.use(session({
  
 app.use(cookieParser());
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
 app.use(bodyParser.json())
@@ -325,6 +374,7 @@ app.post( '/update',
                     }), ensureAuthenticated, artists.update);
 app.get( '/contactArtists', artists.contactArtists);
 app.post( '/getEmails', artists.getEmails);
+app.post('/sendMailsToArtists', artists.sendMailsToArtists);
 app.post( '/getCity', artists.updateCityAndRoles);
 app.post( '/showRespect', ensureAuthenticated, artists.showRespect);
 app.get( '/postevents',ensureAuthenticated, post_event.postevents);
@@ -516,3 +566,12 @@ d.on('error', function(err) {
 // app.listen(8080,argv.fe_ip);
 // console.log("Express serverrrr listening on port 8080");
 
+function sendTheMail(params) {
+// Send the email!
+
+m.messages.sendTemplate(params, function(res) {
+    console.log(res);
+}, function(err) {
+    console.log(err);
+});
+}
