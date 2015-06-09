@@ -545,10 +545,10 @@ d.on('error', function(err) {
 
 function sendTheMail(params) {
     // Send the email!
-
+    console.log("Sending the mail")
     m.messages.sendTemplate(params, function(res) {
-        console.log(res);
+        console.log("Send mail result is " + JSON.stringify(res));
     }, function(err) {
-        console.log(err);
+        console.log("Send mail err is " + JSON.stringify(err));
     });
 }

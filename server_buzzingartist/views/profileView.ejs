@@ -74,10 +74,12 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-3" style="padding:30px;">
-
-        <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:150px;">
-
-       
+        <% if(typeof user.local.picture == 'undefined' || user.local.picture == "") { %>
+          <i class="fa fa-user" style="font-size:150px;"></i>
+        <% } else { %> 
+          <img src=<%= user.local.picture %> class="img-circle" style="max-height:150px;">
+        <% } %>  
+        
       </div>
 
       <div class="col-md-9">
