@@ -27,6 +27,8 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var User = require('./models/user.js');
 var app = express();
+var domain = require('domain');
+
 // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
 var flash = require('connect-flash');
@@ -212,6 +214,7 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+d = domain.create();
 //app.use(logger());
 app.use(session({
  store: new MongoStore({mongooseConnection: mongoose.connection,ttl: 2 * 24 * 60 * 60,autoRemove: 'native'}),
@@ -234,6 +237,7 @@ app.use(flash());
 
 //app.use(app.router);
 app.use(express.static(__dirname + '/views'));
+
 
 
 
@@ -496,10 +500,18 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/')
 }
 
-http.createServer(app).listen(app.get('port'), function() {
-    console.log("Express server listening on port " + app.get('port'));
+d.run(function() {
+    http.createServer(app).listen(app.get('port'), function() {
+        console.log("Express server listening on port " + app.get('port'));
+    });
 });
 
+
+
+
+d.on('error', function(err) {
+  console.error(err);
+});
 // console.log("argv.fe_ippp: "+argv.fe_ip);
 // app.listen(8080,argv.fe_ip);
 // console.log("Express serverrrr listening on port 8080");
