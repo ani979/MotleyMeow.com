@@ -6,6 +6,7 @@ var Event = require('../models/event.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var config        = require('../oauth.js')
 var async        = require('async')
+var BlogPost = require('../models/blogPost'); 
 
 
 /*FB.options({
@@ -269,6 +270,7 @@ exports.landing_home = function(req, res) {
     var allLastUpdtdUsers = new Array();
     var recentJoinedUsers = {};
     var eventsInDB = {};
+    var allBlogPosts = {};
     async.parallel([
             function(callback){
                 var postsForArtist = {};
@@ -460,14 +462,39 @@ exports.landing_home = function(req, res) {
                     console.log("DONE with 5555")
                     callback(null, "DONE5")
                 }); 
+            },
+            function(callback){
+                console.log("i am here6666")
+                BlogPost.aggregate([{ $match: {'blogPost.approved':true} },{ $sort : { 'blogPost.date' : -1 } }, {$limit:5}], function(err, allblogposts) {
+                    //console.log(blogposts);
+                    //console.log(count);
+                    if(err) {
+                        console.log("errror in fetching all blog posts");
+                        allBlogPosts = {};
+                        
+                    }
+                    else {
+                        console.log("All blog posts fetched");
+                        allBlogPosts = allblogposts;
+                        
+                        
+                    } 
+                    callback(null, "DONE6")
+                });
+               
             }
+
 
         ],
         // optional callback
         function(err, results){
             console.log("Finally")
+            //allDBPosts= allDBPosts.concat(allBlogPosts);
+            //console.log("All Blogs posts " + JSON.stringify(allDBPosts));
+            //allDBPosts.sort(function(a,b) { return new Date(a.result.date).getTime() - new Date(b.result.date).getTime(); });
             res.render("Landing", {user: req.session.user, events: eventsInDB, users:recentJoinedUsers, allPosts: allDBPosts, 
-                appId:config.facebook.clientID, dropdowns:dropdowns, recentPostsForArtist:postsArray,notificationCount:recentPostsArray.length, lastProfileUpdtd:allLastUpdtdUsers})
+                appId:config.facebook.clientID, dropdowns:dropdowns, recentPostsForArtist:postsArray,notificationCount:recentPostsArray.length, lastProfileUpdtd:allLastUpdtdUsers,
+                allBlogs:allBlogPosts})
             // the results array will equal ['one','two'] even though
             // the second function had a shorter timeout.
         }

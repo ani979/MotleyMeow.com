@@ -1295,3 +1295,7 @@ div.tooltip p {
   position: relative;
   overflow: hidden;
 }
+
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #290303;
+}    

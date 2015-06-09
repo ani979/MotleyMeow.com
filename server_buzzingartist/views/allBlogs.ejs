@@ -90,11 +90,10 @@
                 
                 <% allposts.forEach(function(post) { %>
 
-                    <% if(post.blogPost.approved == true)
-                    { %>
+
                             <!--Every post-->
                             <div class="post-preview">
-                                <a href="http://localhost:3000/displayBlogPost?blogpostid=<%=post._id%>">
+                                <a href="/displayBlogPost?blogpostid=<%=post._id%>">
                                     <h2 class="post-title panel-title" style="font-size:24px;">
                                         <%= post.blogPost.postTitle %>
                                     </h2>
@@ -113,7 +112,6 @@
                             </div>
                             <hr>
 
-                    <% } %> <!--if-block close-->
                 <% }); %> 
                 
                 
