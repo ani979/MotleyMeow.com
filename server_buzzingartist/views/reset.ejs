@@ -1,52 +1,100 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head lang="en">
+<title>MOTLEYMEOW. Hear the artists meow.</title> 
+
+<meta name="description" content="Hear the artists meow." />	    
+	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+	<meta property="og:title" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+<link href="css1/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Consent Sign Up Form,Login Forms,Sign up Forms,Registration Forms,News latter Forms,Elements"./>
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+
+<script type="text/javascript">
+window.onload = function () {
+    document.getElementById("password1").onchange = validatePassword;
+    document.getElementById("password2").onchange = validatePassword;
+}
+function validatePassword(){
+var pass2=document.getElementById("password2").value;
+var pass1=document.getElementById("password1").value;
+if(pass1!=pass2)
+    document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+else
+    document.getElementById("password2").setCustomValidity('');  
+//empty string means no validation error
+}
+</script>
+<!--webfonts-->
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
 </head>
 <body>
-                        <form class="form-signin"  method="post">
-                            
-                  
-                                <div style="margin-top:3px; "><font style="margin-top:3px; line-height:4;">Reset password</font></div>
-                                <div ><p><font style="font-size:20px;"> Create new password </font></p></div>
-                     <% if (message.length > 0) { %>
+<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+
+
+<!--/start-login-one-->	
+		<h1>Reset Password</h1>
+		<h6> Create your new password.</h6>
+		<div class="login">
+
+			<form  method="post">
+				<% if (message.length > 0) { %>
         <div class="alert alert-danger" style="font-size:20px;"><%= message %></div>
     <% } %>
-<% if (message.length == 0) { %>
-        <div class="alert alert-danger" style="font-size:20px;"><br></div>
-    <% } %>
+				<ul>
+					
+					
+					<li >
+						<a href="#" class=" icon key"></a><input type="password" id="password1" name="password" placeholder="New Password" pattern=".{6,}"   required title="minimum 6 characters" required></li>
+					<li >
+						<a href="#" class=" icon key"></a><input type="password" id="password2" name="confirmPass" placeholder="Confirm Password" required>
+					</li>
+					<div class="clear"></div>
+			
+						
+					<div class="submit" style="margin-top:30px;">
+							<input type="submit" value="RESET PASSWORD" >
+							
+			       </div>
+			       		
+			      	</ul>
+			</form>
+			
+		</div>
 
-    
-
-    <!-- show any messages that come back with authentication -->
-   <div class="col-md-8 with-hover-text">
-    <!-- LOGIN FORM -->
-       
-      
-        
-        <div style="font-size:23px;">
-          <input class="form-control emailTxt centerAlign" id="password" name="password" placeholder="new password" type="password" value=""  required>
-      </div>    
-          <div style="font-size:23px;">
-          <input class="form-control emailTxt centerAlign" id="cpassword" name="confirm" placeholder="confirm password" type="password" value=""  required>
-      </div>  
-<div>
-      <div style="font-size:23px;">
-         <button  type="submit" class="btn  btn-lg EmailBtn centerAlign" id="login" >
-         Submit
-
-         </a>
-      </div>
-   </div>
-   
-        
-    </form>
+   <div id = "footer" style="margin-top:-3%"></div>
+   <!-- footer ends-->
 
 
 
-    <p style="font-size:14px; margin-left:55%;">Go to <a href="/">home</a></p>
-</div>   
-                    
-</div>
- 
+</body>
+<script>
+	$(document).ready(function(e) {
+		<% if (typeof hashValue != 'undefined' && hashValue != "") { %>
+			document.location.hash = "<%=hashValue%>";
+	
+		<% } %>
+
+	});
+	
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("/header");
+		$("#headerloggedout").load("headerloggedout.ejs");
+	</script>
+
 </html>
