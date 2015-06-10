@@ -87,108 +87,58 @@
     
     
     <!-- === MAIN Background === -->
-    <div class="slide story" id="slide-1" data-slide="1" style = "max-height:100%; padding-top:0px;">
-        <div class="container">
-            <div id="home-row-1" class="row clearfix" style="padding-top:0px;padding-left:0px;">
-                <div class="col-12">
-                    <h1 class="font-semibold" style="padding-top:0px;"><img src ="./images/MotleyMeow-logo02.gif"></h1>
-                </div><!-- /col-12 -->
-                                    <h5 class="tlt" id ="codeVisualizer" style="font-style:italic;font-size:32px;margin:0px;color:rgba(227, 220, 255, 0.92);padding-top:20px;padding-bottom:20px;"><span style="visibility:hidden;">ABC</span></h5>
-                <div class="col-4" style="float:left;">
-                    <h4 class="font-light" id="artistsCount">1</h4>
-                    <span class="font-light" style="font-size:28px;">Artists</span>
-                </div><!-- /col-4-->
-                <div class="col-4" style="float:left;">
-                    <h4 class="font-light" id="postsCount">1</h4>
-                    <span class="font-light" style="font-size:28px;">Posts</span>
-                </div><!-- /col-4-->
-                <div class="col-4" style="float:left;">
-                    <h4 class="font-light" id="eventCount">1</h4>
-                    <span class="font-light" style="font-size:28px;">Events</span>
-                </div><!-- /col-4-->
-                <!-- <div class="col-12" style="float:center;"> -->
+<div class="slide story" id="slide-1" data-slide="1" style = "min-height:100%; padding-top:0px;">
+  <div class="container">
 
-                <!-- </div>  -->
-            </div><!-- /row -->
+    <div id="home-row-2" class="row clearfix" style= "float:center;padding-top:100px;">
 
 
+        <div class="col-12" class="row clearfix" style="float:center;height:90%;padding-top:0px;">
+            <div>
 
-            <div id="home-row-2" class="row clearfix" style= "float:center;padding-top:0px;">
+         
+                <!-- show any messages that come back with authentication -->
+
+                    
+                     
+                <form class="form-signin" action="/forgot" method="post">
+                    
+        
+                        <div style="margin-top:3px; "><font style="margin-top:3px; line-height:4;">Forgot password?</font></div>
+                        <div ><p><font style="font-size:20px;"> Enter your email here. We will send you a link. </font></p></div>
+  
+        <% console.log("message.length = " + message.length) 
+        if (message.length > 0) { %>
+            <div class="alert alert-danger" style="font-size:20px;"><%= message %></div>
+        <% } %>
+        <% if (message.length == 0) { %>
+            <div class="alert alert-danger" style="font-size:20px;"><br></div>
+        <% } %>
 
 
-                <div class="col-12" class="row clearfix" style="float:center;height:90%;padding-top:0px;">
-                    <div>
-
-                 
-                        <!-- show any messages that come back with authentication -->
-   
-                            
-                             
-                        <form class="form-signin" action="/forgot" method="post">
-                            
+        <!-- show any messages that come back with authentication -->
+        <div class="col-md-8 with-hover-text">
+            <div style="font-size:23px;">
                 
-                                <div style="margin-top:3px; "><font style="margin-top:3px; line-height:4;">Forgot password?</font></div>
-                                <div ><p><font style="font-size:20px;"> Enter your email here. We will send you a link. </font></p></div>
-                       
-                      
-                   
-
-
-
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger" style="font-size:20px;"><%= message %></div>
-    <% } %>
-<% if (message.length == 0) { %>
-        <div class="alert alert-danger" style="font-size:20px;"><br></div>
-    <% } %>
-
-
-    <!-- show any messages that come back with authentication -->
-   <div class="col-md-8 with-hover-text">
-    <!-- LOGIN FORM -->
-       
-        
+              <input autofocus class="form-control emailTxt centerAlign" id="username" name="email" placeholder="email" type="email" value=""  required>        
+            </div>   
+        <div>
         <div style="font-size:23px;">
-            
-        <input autofocus class="form-control emailTxt centerAlign" id="username" name="email" placeholder="email" type="email" value=""  required>        
-     </div>   
-<div>
-      <div style="font-size:23px;">
-         <button  type="submit" class="btn  btn-lg EmailBtn centerAlign" id="login" style="background-color: #383838;">
-         Submit
+           <button  type="submit" class="btn  btn-lg EmailBtn centerAlign" id="login" style="background-color: #383838;">
+           Submit
 
-         </a>
-      </div>
+           </a>
+        </div>
       <p style="font-size:12px;"> Please check your mail after clicking on submit</p>
-   </div>
-   
-        
-    </form>
-
-
-
-    <p style="font-size:14px; margin-left:55%;">Go to <a href="/">home</a></p>
-</div>   
+    </div>
+      <p style="font-size:14px; margin-left:55%;">Go to <a href="/">home</a></p>
+  </div>   
                     
 </div>
-                            <div style="margin-top:23px; line-height: 7px; font-size:18px;">      
-                                Just a click above 
-                                <span class="clearfix"></span>  
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                
-            </div><!-- /row -->
-            <div>&nbsp;</div>
-            <div id="contact-row-1" class="row">
-                <div class="col-12 with-hover-text" style="font-size: 20px;"><a href="/aboutus"><i class="icon icon-lightbulb" style="text-decoration:none;"></i></a></p>ABOUT US</div>
-            </div><!-- /row -->
-                
-
-        </div><!-- /container -->
-    </div><!-- /slide1 -->
-    
+                            
+                        
+</div><!-- /row -->
+           
 
 
     
@@ -205,62 +155,13 @@
     <script src="js/jquery.textillate.js"></script>
     <script src="js/jquery.fittext.js"></script>
     <script src="js/jquery.lettering.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-61218032-1', 'auto');
-      ga('send', 'pageview');
-
-
-
-    </script>
+    
     <script type="text/javascript">
 
     // var demo, code, data, stars;
 
     // create instance
-    window.onload = function() {
-        var aCount = 0;
-        var pCount = 0;
-        var eCount=  0;
-         <% if(typeof aCount != 'undefined' && aCount !=0) { console.log("aCount is" + aCount);%>
-            aCount = <%=aCount%>;
-         <%}%>
-         <% if(typeof pCount != 'undefined' && pCount !=0) { console.log("pCount is" + pCount);%>
-            pCount = <%=pCount%>;
-         <%}%>
-         <% if(typeof eCount != 'undefined' && eCount !=0) { console.log("eCount is" + eCount);%>
-            eCount = <%=eCount%>;
-         <%}%>
-
-        // setup countUp object 
-        if(aCount != 0) {
-            artistsCount = new countUp('artistsCount', 0, aCount);
-            artistsCount.start(methodToCallOnComplete);
-        }
-        
-        
-        if(pCount != 0) {
-            postsCount = new countUp('postsCount', 0, pCount);
-            postsCount.start();
-        }    
-
-        if(eCount != 0) {
-            eventCount = new countUp('eventCount', 0, eCount);
-            eventCount.start();
-        }    
-    }
-
-
-    function methodToCallOnComplete() {
-        $('.tlt').textillate({ in: { effect: 'flipInY'}});
-        $('.tlt').find('.texts li:first').text("The cat is out of the bag!");
-        $('.tlt').textillate('start');
-
-    }
+    
 
 
 

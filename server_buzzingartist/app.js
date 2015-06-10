@@ -1,8 +1,4 @@
 
-
-
-
-
 var express       = require('express'),
     FB            = require('fb'),
     http          = require('http'),
@@ -54,6 +50,14 @@ var passport = require('passport'),
      TwitterStrategy  = require('passport-twitter').Strategy;
 var mandrill = require('mandrill-api/mandrill');
 var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
+
+var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
+var transport = nodemailer.createTransport(mandrillTransport({
+  auth: {
+    apiKey: '_r3bNHCw5JzpjPLfVRu24g'
+  }
+}));
 
 //var expressSession = require('express-session');
 
@@ -138,14 +142,14 @@ passport.use('local-login', new LocalStrategy({
                         newUser.facebook.email    = email;
                         newUser.local.password = newUser.generateHash(password);
                         newUser.local.joiningDate  = new Date().toISOString();
-                        newUser.facebook.id      = Math.floor(Math.random()*1000000001);
-        //    newUser.user.name   = ''
-        //    newUser.user.address    = ''
+                        newUser.facebook.id      = email + Math.floor(Math.random()*1000000001);
+
                         newUser.save(function(err) {
                             if (err)
                                 throw err;
                             return done(null, newUser);
-                        });            }
+                        });            
+            }
 
         });    
 
@@ -167,121 +171,91 @@ passport.use(new FacebookStrategy({
          
 },
     function(req,accessToken, refreshToken, profile, done) {
+        User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
+            if (err)
+                return done(err);
 
-          User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
-                if (err)
-                    return done(err);
+            if (user) {
+                hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
+                req.session.hashValue = hash;
+                if(typeof user.local.joiningDate == 'undefined' || user.local.joiningDate == "") {
+                    User.update({'facebook.id' : user.facebook.id},
+                                         { $set: {"local.joiningDate": new Date()}},
+                                                    function (err, user) {
+                                                        if(err) {
+                                                            console.log("Something went wrong in saving date");
+                                                            req.flash('info', "Something went wrong in saving joining date")
+                                                            res.redirect('/error');
+                                                        }
+                    });                        
+                }
+                if(typeof user.local.picture == 'undefined' || user.local.picture == "") {
+                    User.update({'facebook.id' : user.facebook.id},
+                                         { $set: {"local.picture": "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue}},
+                                                    function (err, user) {
+                                                        if(err) {
+                                                            console.log("Something went wrong in saving picture");
+                                                            req.flash('info', "Something went wrong in saving picture")
+                                                            res.redirect('/error');
+                                                        }
+                    });                        
+                }
+                if(typeof user.facebook.link == 'undefined' || user.facebook.link == "") {
+                    User.update({'facebook.id' : user.facebook.id},
+                                         { $set: {"facebook.link": "https://www.facebook.com/" + profile.id}},
+                                                    function (err, user) {
+                                                        if(err) {
+                                                            console.log("Something went wrong in saving link");
+                                                            req.flash('info', "Something went wrong in saving link")
+                                                            res.redirect('/error');
+                                                        }
+                    });                        
+                }
+                req.session.fbAccessToken = accessToken;
+                console.log("hash is " + hash);
+                return done(null, user); // user found, return that user
+             } else {
+                // if the user isnt in our database, create a new user
+                var newUser          = new User();
 
-                if (user) {
-                     hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
-                        req.session.hashValue = hash;
-                    user.facebook.id= profile.id;
-                    user.facebook.token=profile.token;
-                    user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                    user.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
-                       
-                    user.local.socialuser= 'facebook';
-                  user.facebook.link  = "https://www.facebook.com/" + profile.id;
-                    //    console.log("email id " + newUser.facebook.email);
-                        req.session.fbAccessToken = accessToken;
-                    // if a user is found, log them in
-                     user.save(function(err) {
-                            if (err) {
-                                req.flash('info', "Error while saving the user in the database")
-                                res.redirect('/error');
-                                return done(err);
-                            }
-
-                            // if successful, return the new user
-                            return done(null, user);
-                        });
-                 }
-
-                     else {
-                    // if the user isnt in our database, create a new user
-                    var newUser          = new User();
-
-                     hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
-                        req.session.hashValue = hash;
-                    // set all of the relevant information
-                    newUser.facebook.id    = profile.id; // set the users facebook id                   
-                        newUser.facebook.token = profile.token; // we will save the token that facebook provides to the user                    
-                        newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                        newUser.local.password = '0';
-                        newUser.local.socialuser= 'facebook';
-                        console.log("facebook name " + newUser.facebook.name);
-                        if(typeof profile.emails == 'undefined' || profile.emails.length == 0) {
-                            newUser.facebook.email = "";
-                        } else {
-                            newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first    
-                        }
-                        newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
-                        newUser.local.joiningDate    = new Date(); 
-                        // FB.api(
-                        //             '/me?access_token=' + accessToken + '&appsecret_proof=' + req.session.hashValue,
-                        //             function (response) {
-                        //                 console.log("response "  + response);
-                        //               if (response && !response.error) {
-                        //                 console.log(" response.link " + response.link);
-                        //                 /* handle the result */
-                        //                 //user.facebook.link = response.link;
-                        //                 User.update({'facebook.email' : newUser.facebook.email},
-                        //                          { $set: {"facebook.link": response.link}},
-                        //                                     function (err, user) {
-                        //                                         if(err) {
-                        //                                             console.log("Something went wrong in saving facebook link");
-                        //                                             req.flash('info', "Something went wrong in saving facebook link")
-                        //                                             res.redirect('/error');
-                        //                                         }
-                        //                 });                        
-                        //               } else {
-                        //                 console.log("error in saving FB link " + response.error.message);
-                        //                 req.flash('info', "Error in saving FB link")
-                        //                 res.redirect('/error');
-                        //               }
-                        //             }
-                        // );    
-                        newUser.facebook.link  = "https://www.facebook.com/" + profile.id;
-                    //    console.log("email id " + newUser.facebook.email);
-                        req.session.fbAccessToken = accessToken;
+                hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
+                req.session.hashValue = hash;
+                // set all of the relevant information
+                newUser.facebook.id    = profile.id; // set the users facebook id     
+                newUser.facebook.token = profile.token; // we will save the token that facebook provides to the user                    
+                newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+                newUser.local.password = '0';
+                console.log("facebook name " + newUser.facebook.name);
+                if(typeof profile.emails == 'undefined' || profile.emails.length == 0) {
+                    newUser.facebook.email = "";
+                } else {
+                    newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first    
+                }
+                newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
+                newUser.local.joiningDate    = new Date(); 
+                newUser.facebook.link  = "https://www.facebook.com/" + profile.id;
+                //    console.log("email id " + newUser.facebook.email);
+                req.session.fbAccessToken = accessToken;
 
 
-                        // save our user to the database
-                        newUser.save(function(err) {
-                            if (err) {
-                                req.flash('info', "Error while saving the user in the database")
-                                res.redirect('/error');
-                                return done(err);
-                            }
-                            else {
-
-                                var params = {
-                                    "template_name": "MotleyMeow Welcome Email",
-                                    "template_content": [
-                                        {
-                                            "name": "example name",
-                                            "content": "example content"
-                                        }
-                                    ],
-
-                                    "message": {
-                                        "from_email":"noreply@motleymeow.com",
-                                        "from_name":"Motley Meow",
-                                        "to":[{"email":newUser.facebook.email}],
-                                        "subject": "Welcome to MotleyMeow!",
-                                        "text": "text in the message"
-                                    }
-                                };
-
-                                sendTheMail(params);
-
-                                // if successful, return the new user
-                                return done(null, newUser);
-                            }
-                        });
+                // save our user to the database
+                newUser.save(function(err) {
+                    if (err) {
+                        req.flash('info', "Error while saving the user in the database")
+                        res.redirect('/error');
+                        return done(err);
                     }
+                    else {
 
+                        sendTheMail(newUser.facebook.email);
+
+                        // if successful, return the new user
+                        return done(null, newUser);
+                    }
                 });
+             }
+
+        });
          
             
     }
@@ -301,45 +275,37 @@ passport.use(new GoogleStrategy({
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
 
-            // try to find the user based on their google id
+            
             User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
-                if (err)
+                if (err) {
                     return done(err);
+                }
+                if (user) {
+                    if(typeof user.google.id == 'undefined' || user.google.id="" || user.google.id = null) {
+                        user.google.id = profile.id;
+                        user.google.link = "https://plus.google.com" + profile.id;
 
-                    if (user) {
-
-                        if(user.local.socialuser=='facebook'){
-                        return done(null, user);    
-                        }
-                        else
-                        {    
-                        user.facebook.id    = profile.id;
-                        user.facebook.token = token;
-                        user.facebook.name  = profile.displayName;
-                        user.facebook.email = profile.emails[0].value; 
-                        user.local.socialuser= 'google';
-
-                
-
-                    return done(null, user);
+                        user.save(function(err) {
+                            if (err)
+                                throw err;
+                            return done(null, user);
+                        });
                     }
+                 
                 } else {
                     // if the user isnt in our database, create a new user
                     var newUser          = new User();
 
                     // set all of the relevant information
+                    newUser.google.id    = profile.id;
                     newUser.facebook.id    = profile.id;
-                    newUser.facebook.token = token;
+                    newUser.google.token = token;
                     newUser.facebook.name  = profile.displayName;
                     newUser.facebook.email = profile.emails[0].value; // pull the first email
-                    newUser.local.joiningDate  = Date();
+                    newUser.local.joiningDate  = new Date();
                     newUser.local.password='0';
-                    newUser.local.socialuser= 'google';
-
                     newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyAyDiSzWn36310CxR7rbmbu2A_Iu0E-5PI";
-                    //"https://www.googleapis.com/plusDomains/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyATYAkqODkreE8--b2CAKxtTxr-Zer5mi0";
-                                        // save the user
-                                      //  https://www.googleapis.com/plus/v1/activities/z12gtjhq3qn2xxl2o224exwiqruvtda0i?fields=url,object(content,attachments/url)&key=YOUR-API-KEY
+                    newUser.google.link = "https://plus.google.com" + profile.id;
                     newUser.save(function(err) {
                         if (err)
                             throw err;
@@ -409,10 +375,7 @@ var isAuthenticated = function (req, res, next) {
 }
 
 // routes
-app.get( '/',  function(req, res) {
-     res.render('index.ejs', { message: req.flash('loginMessage') });
-
-     });
+app.get( '/',  home.index);
 
 app.get('/auth/facebook',
     passport.authenticate('facebook', { scope: [ 'email' ] }),
@@ -440,22 +403,22 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
      res.redirect('/home');
             });
 
-     app.get('/auth/twitter', passport.authenticate('twitter'));
+    //  app.get('/auth/twitter', passport.authenticate('twitter'));
 
-    // handle the callback after twitter has authenticated the user
-    app.get('/auth/twitter/callback',
-           passport.authenticate('twitter', { failureRedirect: '/' }),
-    function(req, res) {
-     console.log("setting here");
-     console.log("session " + JSON.stringify(req.session));
-     req.session.user = req.user;
-     res.redirect('/home');
-            });
+    // // handle the callback after twitter has authenticated the user
+    // app.get('/auth/twitter/callback',
+    //        passport.authenticate('twitter', { failureRedirect: '/' }),
+    // function(req, res) {
+    //  console.log("setting here");
+    //  console.log("session " + JSON.stringify(req.session));
+    //  req.session.user = req.user;
+    //  res.redirect('/home');
+    //         });
 
 
 
   app.post('/landing', 
-        passport.authenticate('local-login', { failureRedirect: '/' }),
+    passport.authenticate('local-login', { failureRedirect: '/' }),
     function(req, res) {
      console.log("setting here");
      console.log("session " + JSON.stringify(req.session));
@@ -537,45 +500,51 @@ app.post('/forgot', function(req, res, next) {
           return res.redirect('/forgot');
         }
         if (user){
-            if (user.local.socialuser== 'facebook' || user.local.socialuser== 'google')
+            if (user.facebook.link != "" || user.google.link != "") {
                 req.flash('error','You are registered with social login.');
                 return res.redirect('/forgot');
+             }   
         }
         user.local.resetPasswordToken = token;
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
+        console.log("ForgotPassword : Save Token")
         user.save(function(err) {
           done(err, token, user);
         });
       });
     },
     function(token, user, done) {
-      var smtpTransport = nodemailer.createTransport('SMTP', {
-        
-        
-       service: 'gmail',
-        auth: {
-          user: 'sarora2k11@gmail.com',
-          pass: '9897355445678'
-        }
-      });
-      var mailOptions = {
-        to: user.facebook.email,
-        from: 'Password Reset',
-        subject: 'this contains a link',
-        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-      };
-      smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('info', 'An e-mail has been sent to ' + user.facebook.email + ' with further instructions.');
-        done(err, 'done');
-      });
+        console.log("ForgotPassword : Send mail")
+        var mailOptions = {
+            to: user.facebook.email,
+            from: 'noreply@motleymeow.com',
+            subject: 'this contains a link',
+            text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+              'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+              'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+              'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+        };
+        transport.sendMail(mailOptions, function(err, info) {
+            if(err) {
+                req.flash('error', 'Some problem sending email to ' + user.facebook.email + '. Please try later or login with any of your social accounts');
+                done(err, 'done');
+            } else {
+                console.log("ForgotPassword : mail sent");
+                req.flash('error', 'An e-mail has been sent to ' + user.facebook.email + ' with further instructions.');
+                console.log("Flash message sent")
+                done(null, 'done');
+             }   
+        });
     }
-  ], function(err) {
-    if (err) return next(err);
-    res.redirect('/forgot');
+  ], function(err, result) {
+        if (err) {
+            console.log("Error occurred in forgot email " + err)
+            return next(err);
+            res.redirect('/forgot');
+        } else {
+            console.log("Mail sent");
+            return res.redirect('/forgot');
+        }   
   });
 });
 app.get('/reset/:token', function(req, res) {
@@ -885,7 +854,24 @@ d.on('error', function(err) {
 // app.listen(8080,argv.fe_ip);
 // console.log("Express serverrrr listening on port 8080");
 
-function sendTheMail(params) {
+function sendTheMail(email) {
+    var params = {
+                "template_name": "MotleyMeow Welcome Email",
+                "template_content": [
+                    {
+                        "name": "example name",
+                        "content": "example content"
+                    }
+                ],
+
+                "message": {
+                    "from_email":"noreply@motleymeow.com",
+                    "from_name":"Motley Meow",
+                    "to":[{"email":email}],
+                    "subject": "Welcome to MotleyMeow!",
+                    "text": "text in the message"
+                }
+            };
     // Send the email!
     console.log("Sending the mail")
     m.messages.sendTemplate(params, function(res) {

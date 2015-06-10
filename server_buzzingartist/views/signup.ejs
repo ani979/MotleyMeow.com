@@ -50,39 +50,39 @@ else
 <!--/start-login-one-->	
 		<h1>Sign Up Form</h1>
 		<h6> Fill the form to join the online theatre community.</h6>
-		<div class="login">
+		<div class = "container">
+			<div class="login">
 
-			<form id="signupp" action="/signup" method="post">
-				<% if (message.length > 0) { %>
-        <div class="alert alert-danger" style="font-size:20px;"><%= message %></div>
-    <% } %>
-				<ul>
-					<li>
-						<a href="#" class=" icon user"></a><input type="text" class="text" name="username"  placeholder="Your Name"  required >
-					</li>
-					<li>
-						<a href="#" class=" icon mail"></a><input type="email" class="email" name="email" placeholder="Your Email"  required >
-					</li>
-					<div class="dumy">
-					<li class="psw">
-						<a href="#" class=" icon key"></a><input type="password" id="password1" name="password" placeholder="Password" pattern=".{6,}"   required title="minimum 6 characters" required></li>
-					<li class="psw two">
-						<a href="#" class=" icon key"></a><input type="password" id="password2" name="confirmPass" placeholder="Confirm Password" required>
-					</li>
-					<div class="clear"></div>
-				</div>
-						
-					<div class="submit" style="margin-top:30px;">
-							<input type="submit" value="CREATE MY ACCOUNT" >
-							
-			       </div>
-			       		
-			      	</ul>
-			</form>
-			
-		</div>
+				<form id="signupp" action="/signup" method="post">
+					<% if (message.length > 0) { %>
+	        		<div class="alert alert-danger" style="font-size:20px;"><%= message %></div>
+	    			<% } %>
+					<ul>
+						<li>
+							<a href="#" class=" icon user"></a><input type="text" class="text" name="username"  placeholder="Your Name"  required >
+						</li>
+						<li>
+							<a href="#" class=" icon mail"></a><input type="email" class="email" name="email" placeholder="Your Email"  required >
+						</li>
+						<div class="dumy">
+						<li class="psw">
+							<a href="#" class=" icon key"></a><input type="password" id="password1" name="password" placeholder="Password" pattern=".{6,}"   required title="minimum 6 characters" required></li>
+						<li class="psw two">
+							<a href="#" class=" icon key"></a><input type="password" id="password2" name="confirmPass" placeholder="Confirm Password" required>
+						</li>
+						<div class="clear"></div>
+						<div class="submit" style="margin-top:30px;">
+								<input type="submit" value="CREATE MY ACCOUNT" >
+								
+				       	</div>
+				       		
+				     </ul>
+				</form>
+				
+		   </div>
+		</div>   
 
-   <div id = "footer" style="margin-top:-3%"></div>
+  <!--  <div id = "footer"></div> -->
    <!-- footer ends-->
 
 
