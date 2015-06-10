@@ -499,11 +499,12 @@ app.post('/forgot', function(req, res, next) {
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         }
-
-        if (user.facebook.link != "" || user.google.link != "") {
+        if (user){
+            if (user.facebook.link != "" || user.google.link != "") {
                 req.flash('error','You are registered with social login.');
                 return res.redirect('/forgot');
              }   
+        }
         user.local.resetPasswordToken = token;
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
         console.log("ForgotPassword : Save Token")
