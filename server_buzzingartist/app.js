@@ -499,12 +499,12 @@ app.post('/forgot', function(req, res, next) {
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         }
-        if (user){
-            if (user.facebook.link || user.google.link) {
-                req.flash('error','You are registered with social login.');
-                return res.redirect('/forgot');
-             }   
-        }
+        // if (user){
+        //     if (user.facebook.link || user.google.link) {
+        //         req.flash('error','You are registered with social login.');
+        //         return res.redirect('/forgot');
+        //      }   
+        // }
         user.local.resetPasswordToken = token;
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
         console.log("ForgotPassword : Save Token")
@@ -521,7 +521,7 @@ app.post('/forgot', function(req, res, next) {
             subject: 'this contains a link',
             text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
               'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-              'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+              'http://' + req.headers.host + '/reset?token=' + token + '\n\n' +
               'If you did not request this, please ignore this email and your password will remain unchanged.\n'
         };
         transport.sendMail(mailOptions, function(err, info) {
@@ -547,10 +547,10 @@ app.post('/forgot', function(req, res, next) {
         }   
   });
 });
-app.get('/reset/:token', function(req, res) {
+app.get('/reset', function(req, res) {
 
     
-  User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
+  User.findOne({ 'local.resetPasswordToken': req.query.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
        
     if (!user) {
       req.flash('error', 'Password reset token is invalid or has expired.');
@@ -565,10 +565,10 @@ app.get('/reset/:token', function(req, res) {
 
   });
 });
-app.post('/reset/:token', function(req, res) {
+app.post('/reset', function(req, res) {
   async.waterfall([
     function(done) {
-     User.findOne({ 'local.resetPasswordToken': req.params.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
+     User.findOne({ 'local.resetPasswordToken': req.query.token, 'local.resetPasswordExpires': { $gt: Date.now() } }, function(err, user) {
   
      if (!user) {
           req.flash('error', 'Password reset token is invalid or has expired.');
@@ -587,13 +587,7 @@ app.post('/reset/:token', function(req, res) {
       });
     },
     function(user, done) {
-      var smtpTransport = nodemailer.createTransport('SMTP', {
-        service: 'gmail',
-        auth: {
-          user: 'sarora2k11@gmail.com',
-          pass: '9897355445678'
-        }
-      });
+
       var mailOptions = {
         to: user.facebook.email,
         from: 'passwordreset',
@@ -601,12 +595,17 @@ app.post('/reset/:token', function(req, res) {
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
-      smtpTransport.sendMail(mailOptions, function(err) {
+      transport.sendMail(mailOptions, function(err, info) {
         req.flash('success', 'Success! Your password has been changed.');
-        done(err);
+        if(err) {
+            done(err, 'done');
+        } else {
+            done(null, 'done');
+        }
       });
     }
-  ], function(err) {
+  ], function(err, result) {
+
     res.redirect('/');
   });
 });
