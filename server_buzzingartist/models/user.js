@@ -7,8 +7,6 @@ var bcrypt   = require('bcrypt-nodejs');
 var userSchema = mongoose.Schema({
 
     local            : { 
-
-        
         password     : String,
         picture      : String,
         city         : {type: String,default:'None'},
@@ -22,8 +20,7 @@ var userSchema = mongoose.Schema({
         lastProfileUpdateDate : Date,
         notificationCount : String,
         resetPasswordToken: String,
-        resetPasswordExpires: Date,
-        socialuser : String
+        resetPasswordExpires: Date
     },
     facebook         : {
         id           : String,
@@ -32,6 +29,11 @@ var userSchema = mongoose.Schema({
         name         : String,
         link         : String
     },
+    google         : {
+        id           : String,
+        token        : String,
+        link         : String
+    },  
     portfolio        : {
         myself      : String,
         myPhotos     : [{}],
