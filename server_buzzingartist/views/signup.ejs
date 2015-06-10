@@ -19,6 +19,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Consent Sign Up Form,Login Forms,Sign up Forms,Registration Forms,News latter Forms,Elements"./>
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+
+<script type="text/javascript">
+window.onload = function () {
+    document.getElementById("password1").onchange = validatePassword;
+    document.getElementById("password2").onchange = validatePassword;
+}
+function validatePassword(){
+var pass2=document.getElementById("password2").value;
+var pass1=document.getElementById("password1").value;
+if(pass1!=pass2)
+    document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+else
+    document.getElementById("password2").setCustomValidity('');  
+//empty string means no validation error
+}
 </script>
 <!--webfonts-->
 	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -50,9 +65,9 @@
 					</li>
 					<div class="dumy">
 					<li class="psw">
-						<a href="#" class=" icon key"></a><input type="password" name="password" placeholder="Password" pattern=".{6,}"   required title="minimum 6 characters" required></li>
+						<a href="#" class=" icon key"></a><input type="password" id="password1" name="password" placeholder="Password" pattern=".{6,}"   required title="minimum 6 characters" required></li>
 					<li class="psw two">
-						<a href="#" class=" icon key"></a><input type="password" name="confirmPass" placeholder="Confirm Password" required>
+						<a href="#" class=" icon key"></a><input type="password" id="password2" name="confirmPass" placeholder="Confirm Password" required>
 					</li>
 					<div class="clear"></div>
 				</div>

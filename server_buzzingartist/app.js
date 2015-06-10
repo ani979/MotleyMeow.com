@@ -117,11 +117,6 @@ passport.use('local-login', new LocalStrategy({
         // we are checking to see if the user trying to login already exists
      
 
-        if (req.body.password!=req.body.confirmPass)
-           {
-         return done(null, false, req.flash('signupMessage', "Oops! Passwords do not match."));
-                    }
-        else
         User.findOne({ 'facebook.email' :  email }, function(err, user) {
             // if there are any errors, return the error
             if (err)
@@ -179,7 +174,7 @@ passport.use(new FacebookStrategy({
                     user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                     user.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
                        
-                    user.local.socialuser= true;
+                    user.local.socialuser= 'facebook';
                   user.facebook.link  = "https://www.facebook.com/" + profile.id;
                     //    console.log("email id " + newUser.facebook.email);
                         req.session.fbAccessToken = accessToken;
@@ -207,7 +202,7 @@ passport.use(new FacebookStrategy({
                         newUser.facebook.token = profile.token; // we will save the token that facebook provides to the user                    
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                         newUser.local.password = '0';
-                        newUser.local.socialuser= true;
+                        newUser.local.socialuser= 'facebook';
                         console.log("facebook name " + newUser.facebook.name);
                         if(typeof profile.emails == 'undefined' || profile.emails.length == 0) {
                             newUser.facebook.email = "";
@@ -283,11 +278,23 @@ passport.use(new GoogleStrategy({
                 if (err)
                     return done(err);
 
-                if (user) {
+                    if (user) {
 
-                    
-                    // if a user is found, log them in
+                        if(user.local.socialuser=='facebook'){
+                        return done(null, user);    
+                        }
+                        else
+                        {    
+                        user.facebook.id    = profile.id;
+                        user.facebook.token = token;
+                        user.facebook.name  = profile.displayName;
+                        user.facebook.email = profile.emails[0].value; 
+                        user.local.socialuser= 'google';
+
+                
+
                     return done(null, user);
+                    }
                 } else {
                     // if the user isnt in our database, create a new user
                     var newUser          = new User();
@@ -299,7 +306,7 @@ passport.use(new GoogleStrategy({
                     newUser.facebook.email = profile.emails[0].value; // pull the first email
                     newUser.local.joiningDate  = Date();
                     newUser.local.password='0';
-                    newUser.local.socialuser= true;
+                    newUser.local.socialuser= 'google';
 
                     newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyAyDiSzWn36310CxR7rbmbu2A_Iu0E-5PI";
                     //"https://www.googleapis.com/plusDomains/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyATYAkqODkreE8--b2CAKxtTxr-Zer5mi0";
@@ -500,7 +507,7 @@ app.post('/forgot', function(req, res, next) {
           return res.redirect('/forgot');
         }
         if (user){
-            if (user.local.socialuser== true)
+            if (user.local.socialuser== 'facebook' || user.local.socialuser== 'google')
                 req.flash('error','You are registered with social login.');
                 return res.redirect('/forgot');
         }

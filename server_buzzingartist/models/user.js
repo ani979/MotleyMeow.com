@@ -23,7 +23,7 @@ var userSchema = mongoose.Schema({
         notificationCount : String,
         resetPasswordToken: String,
         resetPasswordExpires: Date,
-        socialuser : Boolean
+        socialuser : String
     },
     facebook         : {
         id           : String,
