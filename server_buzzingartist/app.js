@@ -40,6 +40,7 @@ var app = express();
 var validator = require('validator');
  
  //=> true 
+ 
 
 var flash = require('connect-flash');
 // Configuring Passport
@@ -506,11 +507,12 @@ app.post('/forgot', function(req, res, next) {
           req.flash('error', 'No account with that email address exists.');
           return res.redirect('/forgot');
         }
-        if (user){
-            if (user.local.socialuser== 'facebook' || user.local.socialuser== 'google')
-                req.flash('error','You are registered with social login.');
+       if (user.local.socialuser== 'facebook' || user.local.socialuser== 'google')
+              {
+
+               req.flash('error','You are registered with social login.');
                 return res.redirect('/forgot');
-        }
+                }
         user.local.resetPasswordToken = token;
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
@@ -518,6 +520,7 @@ app.post('/forgot', function(req, res, next) {
           done(err, token, user);
         });
       });
+
     },
     function(token, user, done) {
       var smtpTransport = nodemailer.createTransport('SMTP', {
