@@ -500,7 +500,7 @@ app.post('/forgot', function(req, res, next) {
           return res.redirect('/forgot');
         }
         if (user){
-            if (user.facebook.link != "" || user.google.link != "") {
+            if (user.facebook.link || user.google.link) {
                 req.flash('error','You are registered with social login.');
                 return res.redirect('/forgot');
              }   
