@@ -23,6 +23,8 @@ var argv = require('optimist').argv;
 var crypto = require('crypto');
 var fsExtra = require('fs')
 
+
+
 exports.fsExtra = fsExtra;
 var path = require('path');
 var favicon = require('static-favicon');
@@ -34,6 +36,8 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var User = require('./models/user.js');
 var app = express();
+var domain = require('domain');
+
 // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
  var async = require('async');
@@ -48,11 +52,13 @@ var passport = require('passport'),
     FacebookStrategy = require('passport-facebook');
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
      TwitterStrategy  = require('passport-twitter').Strategy;
+var mandrill = require('mandrill-api/mandrill');
+var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
+
 //var expressSession = require('express-session');
 
 var dbConfig = require('./db');
-// var mongoClient = require('mongodb').MongoClient;
-// Connect to DB
+
 mongoose.connect(dbConfig.url);
 
 passport.serializeUser(function(user, done) {
@@ -247,9 +253,31 @@ passport.use(new FacebookStrategy({
                                 res.redirect('/error');
                                 return done(err);
                             }
+                            else {
 
-                            // if successful, return the new user
-                            return done(null, newUser);
+                                var params = {
+                                    "template_name": "MotleyMeow Welcome Email",
+                                    "template_content": [
+                                        {
+                                            "name": "example name",
+                                            "content": "example content"
+                                        }
+                                    ],
+
+                                    "message": {
+                                        "from_email":"noreply@motleymeow.com",
+                                        "from_name":"Motley Meow",
+                                        "to":[{"email":newUser.facebook.email}],
+                                        "subject": "Welcome to MotleyMeow!",
+                                        "text": "text in the message"
+                                    }
+                                };
+
+                                sendTheMail(params);
+
+                                // if successful, return the new user
+                                return done(null, newUser);
+                            }
                         });
                     }
 
@@ -341,6 +369,7 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+d = domain.create();
 //app.use(logger());
 app.use(session({
  store: new MongoStore({mongooseConnection: mongoose.connection,ttl: 2 * 24 * 60 * 60,autoRemove: 'native'}),
@@ -351,7 +380,7 @@ app.use(session({
  
 app.use(cookieParser());
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
 app.use(bodyParser.json())
@@ -363,6 +392,7 @@ app.use(flash());
 
 //app.use(app.router);
 app.use(express.static(__dirname + '/views'));
+
 
 
 
@@ -663,6 +693,7 @@ app.post( '/update',
                     }), ensureAuthenticated, artists.update);
 app.get( '/contactArtists', artists.contactArtists);
 app.post( '/getEmails', artists.getEmails);
+app.post('/sendMailsToArtists', artists.sendMailsToArtists);
 app.post( '/getCity', artists.updateCityAndRoles);
 app.post( '/showRespect', ensureAuthenticated, artists.showRespect);
 app.get( '/postevents',ensureAuthenticated, post_event.postevents);
@@ -838,11 +869,28 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/')
 }
 
-http.createServer(app).listen(app.get('port'), function() {
-    console.log("Express server listening on port " + app.get('port'));
+d.run(function() {
+    http.createServer(app).listen(app.get('port'), function() {
+        console.log("Express server listening on port " + app.get('port'));
+    });
 });
 
+
+
+
+d.on('error', function(err) {
+  console.error(err);
+});
 // console.log("argv.fe_ippp: "+argv.fe_ip);
 // app.listen(8080,argv.fe_ip);
 // console.log("Express serverrrr listening on port 8080");
 
+function sendTheMail(params) {
+    // Send the email!
+    console.log("Sending the mail")
+    m.messages.sendTemplate(params, function(res) {
+        console.log("Send mail result is " + JSON.stringify(res));
+    }, function(err) {
+        console.log("Send mail err is " + JSON.stringify(err));
+    });
+}
