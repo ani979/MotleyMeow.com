@@ -580,17 +580,17 @@ app.post('/reset', function(req, res) {
         user.local.resetPasswordExpires = undefined;
 
          user.save(function(err) {
-          req.logIn(user, function(err) {
+          
             done(err, user);
           });
-        });
+        
       });
     },
     function(user, done) {
 
       var mailOptions = {
         to: user.facebook.email,
-        from: 'passwordreset',
+        from: 'noreply@motleymeow.com',
         subject: 'Your password has been changed',
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
