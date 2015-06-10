@@ -270,27 +270,25 @@ passport.use(new GoogleStrategy({
 
     },
     function(token, refreshToken, profile, done) {
-
+        console.log(" In the callback: Google");
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
-
-            
+            console.log(" In the callback: Google - 2");
             User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
                 if (err) {
                     return done(err);
                 }
                 if (user) {
-                    if(typeof user.google.id == 'undefined' || user.google.id="" || user.google.id = null) {
+                    if(typeof user.google.id == 'undefined' || user.google.id == "" || user.google.id == null) {
                         user.google.id = profile.id;
                         user.google.link = "https://plus.google.com" + profile.id;
 
                         user.save(function(err) {
-                            if (err)
-                                throw err;
-                            return done(null, user);
+                            if (err) throw err;
                         });
-                    }
+                    } 
+                    return done(null, user);
                  
                 } else {
                     // if the user isnt in our database, create a new user
@@ -391,7 +389,10 @@ app.get('/auth/facebook/callback',
      res.redirect('/home');
 });
 
-app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }),
+    function(req, res){
+
+    });
 
     // the callback after google has authenticated the user
     app.get('/auth/google/callback',
