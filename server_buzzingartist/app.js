@@ -522,25 +522,48 @@ app.post('/forgot', function(req, res, next) {
     function(token, user, done) {
         console.log("ForgotPassword : Send mail")
         var mailOptions = {
-            to: user.facebook.email,
-            from: 'noreply@motleymeow.com',
-            subject: 'this contains a link',
-            text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-              'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-              'http://' + req.headers.host + '/reset?token=' + token + '\n\n' +
-              'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+            // to: req.body.email,
+            // from: 'noreply@motleymeow.com',
+            // subject: 'this contains a link',
+            // text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+            //   'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+            //   'http://' + req.headers.host + '/reset?token=' + token + '\n\n' +
+            //   'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+
+              "message": {
+                    "from_email":"noreply@motleymeow.com",
+                    "from_name":"Motley Meow",
+                    "to":[{"email":req.body.email}],
+                    "subject": "This contains a link",
+                    "text": 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+               'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+               'http://' + req.headers.host + '/reset?token=' + token + '\n\n' +
+               'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                }
         };
-        transport.sendMail(mailOptions, function(err, info) {
-            if(err) {
-                req.flash('error', 'Some problem sending email to ' + user.facebook.email + '. Please try later or login with any of your social accounts');
-                done(err, 'done');
-            } else {
-                console.log("ForgotPassword : mail sent");
-                req.flash('error', 'An e-mail has been sent to ' + user.facebook.email + ' with further instructions.');
-                console.log("Flash message sent")
+
+
+        // transport.sendMail(mailOptions, function(err, info) {
+        //m.messages.send(mailOptions, function(res) {
+            // if(err) {
+            //     req.flash('error', 'Some problem sending email to ' + user.facebook.email + '. Please try later or login with any of your social accounts');
+            //     done(err, 'done');
+            // } else {
+            //     console.log("ForgotPassword : mail sent");
+            //     req.flash('error', 'An e-mail has been sent to ' + user.facebook.email + ' with further instructions.');
+            //     console.log("Flash message sent")
+            //     done(null, 'done');
+            //  } 
+            m.messages.send(mailOptions, function(res) {
+                console.log("Send mail result is " + JSON.stringify(res));
+                req.flash('error', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
                 done(null, 'done');
-             }   
-        });
+            }, function(err) {
+                console.log("Send mail err is " + JSON.stringify(err));
+                req.flash('error', 'Some problem sending email to ' + req.body.email + '. Please try later or login with any of your social accounts');
+                done(err, 'done');
+            });  
+        //});
     }
   ], function(err, result) {
         if (err) {
@@ -595,20 +618,37 @@ app.post('/reset', function(req, res) {
     function(user, done) {
 
       var mailOptions = {
-        to: user.facebook.email,
-        from: 'noreply@motleymeow.com',
-        subject: 'Your password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+        // to: user.facebook.email,
+        // from: 'noreply@motleymeow.com',
+        // subject: 'Your password has been changed',
+        // text: 'Hello,\n\n' +
+        //   'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+        "message": {
+                    "from_email":"noreply@motleymeow.com",
+                    "from_name":"Motley Meow",
+                    "to":[{"email":user.facebook.email}],
+                    "subject": 'Your password has been changed',
+                    "text": 'Hello,\n\n' +
+                            'This is a confirmation that the password for your account ' + user.facebook.email + ' has just been changed.\n'
+                }
       };
-      transport.sendMail(mailOptions, function(err, info) {
-        req.flash('success', 'Success! Your password has been changed.');
-        if(err) {
-            done(err, 'done');
-        } else {
+      // transport.sendMail(mailOptions, function(err, info) {
+      //   req.flash('success', 'Success! Your password has been changed.');
+      //   if(err) {
+      //       done(err, 'done');
+      //   } else {
+      //       done(null, 'done');
+      //   }
+      // });
+        m.messages.send(mailOptions, function(res) {
+            console.log("Send mail result is " + JSON.stringify(res));
+            req.flash('loginMessage', 'Success! Your password has been changed.');
             done(null, 'done');
-        }
-      });
+        }, function(err) {
+            console.log("Send mail err is " + JSON.stringify(err));
+            req.flash('loginMessage', 'Some problem changing password ');
+            done(err, 'done');
+        });  
     }
   ], function(err, result) {
     res.redirect('/');
