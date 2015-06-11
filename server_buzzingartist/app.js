@@ -846,6 +846,9 @@ d.run(function() {
     http.createServer(app).listen(app.get('port'), function() {
         console.log("Express server listening on port " + app.get('port'));
     });
+    // console.log("argv.fe_ippp: "+argv.fe_ip);
+// app.listen(8080,argv.fe_ip);
+// console.log("Express serverrrr listening on port 8080");
 });
 
 
@@ -854,9 +857,7 @@ d.run(function() {
 d.on('error', function(err) {
   console.error(err);
 });
-// console.log("argv.fe_ippp: "+argv.fe_ip);
-// app.listen(8080,argv.fe_ip);
-// console.log("Express serverrrr listening on port 8080");
+
 
 function sendTheMail(email) {
     var params = {

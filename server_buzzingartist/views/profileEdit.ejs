@@ -417,7 +417,7 @@
                                       <div class="control-group col-md-12" id = "mySocialPresence">
                                           <div class="control-group">
                                             <%if(typeof user.portfolio.mySocialPresence == 'undefined' || user.portfolio.mySocialPresence.length == 0) {%>
-                                              <%if(typeof user.google.link =='undefined' || user.google.link == "") { %>
+                                              <%if(typeof user.google == 'undefined' || typeof user.google.link =='undefined' || user.google.link == "") { %>
                                                 <label class="col-sm-3 control-label  controlLabelText" for="socialG">Google+</label>
                                                 <div class="col-sm-9">
                                                     <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"> 
@@ -437,7 +437,7 @@
                                                for(var i =0; i < user.portfolio.mySocialPresence.length; i ++) {%>
                                                   
                                                      <% if(user.portfolio.mySocialPresence[i].name == "socialG") {
-                                                        if(typeof user.google.link =='undefined' || user.google.link == "") { %>
+                                                        if(typeof user.google == 'undefined' || typeof user.google.link =='undefined' || user.google.link == "") { %>
                                                         <label class="col-sm-3 control-label controlLabelText" for="socialG">Google+</label>
                                                         <div class="col-sm-9">
                                                             <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"
