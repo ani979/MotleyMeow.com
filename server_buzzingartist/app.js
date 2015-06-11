@@ -32,7 +32,7 @@ var MongoStore = require('connect-mongo')(session);
 var User = require('./models/user.js');
 var app = express();
 var domain = require('domain');
-
+var Space = require('./models/space.js');
 // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
  var async = require('async');
@@ -453,6 +453,24 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
              console.log("setting here");
              console.log("session " + JSON.stringify(req.session));
              req.session=null;
+             res.redirect('/');
+        });    // app.post('/signup', do all our passport stuff here);
+
+app.get('/AddSpace', function(req, res) {
+
+        // render the page and pass in any flash data if it exists
+        res.render('AddSpace.ejs', { message: req.flash('error') });
+    });
+  app.post('/AddSpace', 
+        function(req, res) {
+             console.log("hey");
+             var newSpace = new Space();
+             newSpace.space.name = req.body.nameofspace;
+            newSpace.save(function(err) {
+                            if (err)
+                                throw err;
+                            return done(null, newSpace);
+                        });         
              res.redirect('/');
         });    // app.post('/signup', do all our passport stuff here);
 
