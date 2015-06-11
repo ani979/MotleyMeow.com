@@ -19,6 +19,21 @@
 		
 </head>
 
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>  
+
 <body>
 	<% if(typeof user != 'undefined' && user!=null) { %>
 	<div id = "headerloggedin"> </div>
@@ -107,8 +122,15 @@
  		   	  					<% threads.forEach(function(thread) { %>
  		   	  						<div class="thread" id="divallthreads">
  		   	  							<div>
- 		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></br>
- 		   	  									<small>Started by <%=thread.thread.authorName%></small></h4>
+ 		   	  								<div class="pull-left" style="padding-right:20px" href="#">
+					                        	<img class="img-circle" style="max-height:50px;padding-bottom:0px;" src="<%=thread.thread.authorPic%>" alt="">
+					                    	</div>
+
+ 		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></h4>
+ 		   	  								<!-- Date/Time -->
+							                <% var isodateString = thread.thread.date.toISOString();
+							                var displayableDate = getDate(isodateString) %>
+ 		   	  								<h5><small>Started by <b><%=thread.thread.authorName%></b> on <b><%=displayableDate%></b></small></h5>
  		   	  							</div>
  		   	  							</br>
  		   	  						</div>	

@@ -15,24 +15,7 @@ exports.viewCategory = function(req, res){
 
 	var category = req.query.category;
 	var categoryName = "";
-
-	switch(category){
-		case "rehearsal-space":
-			categoryName = "REHEARSAL SPACE";
-			break;
-		case "props":
-			categoryName = "PROPS";
-			break;
-		case "announcements":
-			categoryName = "ANNOUNCEMENTS";
-			break;
-		case "events":
-			categoryName = "EVENTS";
-			break;
-		case "posts":
-			categoryName = "POSTS";
-			break;
-	}
+	categoryName = convertCategoryToName(category);
 
 	forum.find({'thread.category' : category}, function(err, threads){
 
@@ -114,23 +97,7 @@ exports.viewThread = function(req, res){
 			var category = doc.thread.category;
 			var categoryName = "";
 
-			switch(category){
-				case "rehearsal-space":
-					categoryName = "REHEARSAL SPACE";
-					break;
-				case "props":
-					categoryName = "PROPS";
-					break;
-				case "announcements":
-					categoryName = "ANNOUNCEMENTS";
-					break;
-				case "events":
-					categoryName = "EVENTS";
-					break;
-				case "posts":
-					categoryName = "POSTS";
-					break;
-			}
+			categoryName = convertCategoryToName(category);
 
 			res.render("viewThread", {user: req.session.user, thread: doc, categoryName:categoryName, category:category})
 		}
@@ -172,3 +139,29 @@ exports.createReply = function(req, res){
 		}
 	});
 };
+
+//helper functions
+
+function convertCategoryToName(category){
+
+	var categoryName="";
+	switch(category){
+		case "rehearsal-space":
+			categoryName = "REHEARSAL SPACE";
+			break;
+		case "props":
+			categoryName = "PROPS";
+			break;
+		case "announcements":
+			categoryName = "ANNOUNCEMENTS";
+			break;
+		case "events":
+			categoryName = "EVENTS";
+			break;
+		case "posts":
+			categoryName = "POSTS";
+			break;
+	}
+
+	return categoryName;
+}
