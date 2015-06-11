@@ -146,6 +146,7 @@ passport.use('local-login', new LocalStrategy({
                         newUser.save(function(err) {
                             if (err)
                                 throw err;
+                            sendTheMail(newUser.facebook.email);
                             return done(null, newUser);
                         });            
             }
@@ -304,8 +305,10 @@ passport.use(new GoogleStrategy({
                     newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyAyDiSzWn36310CxR7rbmbu2A_Iu0E-5PI";
                     newUser.google.link = "https://plus.google.com" + profile.id;
                     newUser.save(function(err) {
-                        if (err)
-                            throw err;
+                    if (err)
+                        throw err;
+
+                        sendTheMail(newUser.facebook.email);
                         return done(null, newUser);
                     });
                 }
@@ -400,7 +403,7 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
      console.log("setting here");
      console.log("session " + JSON.stringify(req.session));
      req.session.user = req.user;
-     res.redirect('/home');
+     res.redirect('/');
             });
 
     //  app.get('/auth/twitter', passport.authenticate('twitter'));
@@ -438,20 +441,20 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
     });
 
     // process the signup form
-     app.post('/signup', passport.authenticate('local-signup',{ failureRedirect: '/signup' }),
-    function(req, res) {
-     console.log("setting here");
-     console.log("session " + JSON.stringify(req.session));
-     req.session.user = req.user;
-     res.redirect('/home');
-            });    // app.post('/signup', do all our passport stuff here);
+    app.post('/signup', passport.authenticate('local-signup',{ failureRedirect: '/signup' }),
+        function(req, res) {
+             console.log("setting here");
+             console.log("session " + JSON.stringify(req.session));
+             req.session=null;
+             res.redirect('/');
+        });    // app.post('/signup', do all our passport stuff here);
 
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/landing', isLoggedIn, function(req, res) {
+    app.get('/landing', isAuthenticated, function(req, res) {
         res.render('/home', {
             user : req.user // get the user out of session and pass to template
         });
@@ -466,16 +469,6 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
     });
 
 
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the landing page
-    res.redirect('/');
-}
- 
 app.get('/forgot', function(req, res) {
   res.render('forgot', {
     user: req.user,
