@@ -10,6 +10,7 @@ var express       = require('express'),
     post_request  = require('./routes/post_request'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
+    forum = require('./routes/forum'),
     multer  = require('multer'),
     argv = require('optimist').argv,
     im = require('imagemagick');
@@ -527,6 +528,14 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/')
 }
 
+/*Functions for Forum*/
+app.get('/forum', ensureAuthenticated, forum.viewForum);
+app.get('/viewCategory', ensureAuthenticated, forum.viewCategory);
+app.post('/createNewThread', ensureAuthenticated, forum.createNewThread);
+app.get('/viewThread', ensureAuthenticated, forum.viewThread);
+app.post('/createReply', ensureAuthenticated, forum.createReply);
+
+
 d.run(function() {
     http.createServer(app).listen(app.get('port'), function() {
         console.log("Express server listening on port " + app.get('port'));
@@ -541,7 +550,7 @@ d.on('error', function(err) {
 });
 // console.log("argv.fe_ippp: "+argv.fe_ip);
 // app.listen(8080,argv.fe_ip);
-// console.log("Express serverrrr listening on port 8080");
+    // console.log("Express serverrrr listening on port 8080");
 
 function sendTheMail(params) {
     // Send the email!

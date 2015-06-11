@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	
+	<title>Forum</title> 
+	<meta name="description" content="Be a part of the buzz." />	    
+	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+	<meta property="og:title" content="MotleyMeow">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">  
+    <link href="css/viewforumcategories.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+	
+		
+</head>
+
+<body>
+	<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+	
+
+
+
+
+
+
+
+<div class="main-container">
+	
+    <div class="container">
+    	<div class="row">
+    		<div class="col-md-12">
+
+    			<div class="links">
+    				<h4><a href="/forum">Forum</a> / <%=categoryName%></h4>
+    			</div>
+    			<div class="new-thread-row">
+    	  			<a href="#newThreadModal" role="button" data-toggle="modal" type="button" class="btn btn-lg btn-primary">NEW THREAD</a>
+    	  		</div>
+
+    	  		<div id="newThreadModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="newThreadLabel" aria-hidden="true">
+      
+			        <div class="modal-dialog">
+			        <div class="modal-content">
+			        <div class="modal-header">
+			            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			            <h4 class="modal-title">New Thread Form</h4>
+			        </div>
+			        <div class="modal-body" id="modalbody">
+			            <!--<form class="form-horizontal" name="commentform" method="post" action = "/sendMailsToArtists">-->
+			            <form class="form-horizontal" name="threadform" id="threadform">
+			                <div class="form-group">
+			                    <label class="control-label col-md-4" for="title">Thread topic</label>
+			                    <div class="col-md-8">
+			                      <input type="text" class="form-control" id="title" name="title" placeholder="What do you want to talk about?"/>
+			                    </div>
+			                </div>
+			          
+			                <div class="form-group">
+			                    <label class="control-label col-md-4" for="body">Thread Body</label>
+			                    <div class="col-md-8">
+			                        <textarea class="form-control" id="body" name="body" placeholder="Compose post" style="min-height:300px;"></textarea>
+			                    </div>
+			                </div>
+
+			                <div class="form-group">
+		                  	  <input type="hidden" name="category" id="category" value="<%= category %>"/>
+		                	</div>
+
+			                <div class="info-label">
+				                <label class"col md-4" for="categ">Category: <%= categoryName %></label>
+							</div>
+							</br>
+			                <div class="form-group">
+			                    <div class="col-md-6">
+			                        <button type="button" value="Submit" class="btn btn-custom pull-right" id="send_btn" onclick="createThread()">Submit</button>
+			                    </div>
+			                </div>
+
+			            </form>
+			        </div><!-- End of Modal body -->
+			        </div><!-- End of Modal content -->
+			        </div><!-- End of Modal dialog -->
+
+    			</div><!-- End of Modal --> 
+
+    	  		<hr>
+    	  		<div class="all-threads">
+    	  			<h4><small><%= categoryName %></small></h3>
+
+    	  				<% if(threads.length==0) 
+    	  					{ %>
+    	  						<div>
+    	  							<p> Sorry, nothing to show here. Use the button above to add a new thread.</p>
+    	  						</div>
+
+ 		   	  				<% }
+ 		   	  			else {%>
+ 		   	  					<% threads.forEach(function(thread) { %>
+ 		   	  						<div class="thread" id="divallthreads">
+ 		   	  							<div>
+ 		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></br>
+ 		   	  									<small>Started by <%=thread.thread.authorName%></small></h4>
+ 		   	  							</div>
+ 		   	  							</br>
+ 		   	  						</div>	
+ 		   	  					<% }); %>
+ 		   	  				<% }
+ 		   	  			%>
+    	  		</div>
+    	  	</div>
+    	  </div>
+	</div>
+                
+</div><!-- main-container End -->
+       
+<div id = "footer"></div>
+ <!-- footer ends-->
+
+</body>
+
+	<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+	
+	<!-- fancybox init -->
+	<script>
+
+
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("/header");
+		$("#headerloggedout").load("headerloggedout.ejs");
+	
+
+		function createThread(){
+	          console.log("This is executing");
+
+	          var data = {
+	            title: $("#title").val(),
+	            body: $("#body").val(),
+	            category: $("#category").val()
+	          };
+
+	          $.ajax({ 
+	           url: "/createNewThread",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               closeModal();
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                   location.reload();
+                   generateNotificationLayout('success', 'topCenter', 'Thread created');
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with your thread. Check fields again');
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
+
+
+	function closeModal()  //function to close modal 
+	   {
+	      $("#newThreadModal").modal('hide');
+	   }
+
+	function generateNotificationLayout(type, layout, text) {
+       var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+                    
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click","button"],
+        buttons: [
+            {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+              $noty.close();
+                }
+             }
+            
+          ]
+      });
+    }   
+	</script>
+</html>

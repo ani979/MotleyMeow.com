@@ -8,7 +8,7 @@ var forumSchema = mongoose.Schema({
         authorName      : String, //author's fb name
         authorPic       : String,
         topic           : {type: String, default:'Not mentioned'},
-        body            : {type: String, default:'Not mentioned'},
+        tbody            : {type: String, default:'Not mentioned'},
         date            : {type: Date, default: Date.now},
         category        : String,
         replies         : [{commentorid:String, commentorName:String, commentorPic:String, comment:String, date:Date}]
@@ -16,4 +16,4 @@ var forumSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('thread', forumSchema);
+module.exports = mongoose.model('forum', forumSchema);

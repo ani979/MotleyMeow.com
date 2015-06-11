@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	
+	<title>Forum</title> 
+	<meta name="description" content="Be a part of the buzz." />	    
+	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+	<meta property="og:title" content="MotleyMeow">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">  
+    <link href="css/forumhome.css" rel="stylesheet">
+	
+		
+</head>
+
+<body>
+	<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+	
+
+
+
+
+
+
+
+<div class="main-container">
+	
+    <div class="container">
+    	<div class="row">
+    		<div class="col-md-8">
+    			<div class="categories">
+	    			<h4>CATEGORIES</h3>
+
+	    			<div class="category-button">
+	    				<h3>
+	    					<a href="/viewCategory?category=props">Props</a><br/>
+	    					<small>Check here for posts related to this category</small>
+	    				</h3>
+	    			</div>
+	    			<div class="category-button">
+	    				<h3>
+	    					<a href="/viewCategory?category=rehearsal-space">Rehearsal Space</a><br/>
+	    					<small>Check here for posts related to this category</small>
+	    				</h3>
+	    			</div>
+	    			<div class="category-button">
+	    				<h3>
+	    					<a href="/viewCategory?category=announcements">Announcements</a><br/>
+	    					<small>Check here for posts related to this category</small>
+	    				</h3>
+	    			</div>
+	    			<div class="category-button">
+	    				<h3>
+	    					<a href="/viewCategory?category=events">Events</a><br/>
+	    					<small>Check here for posts related to this category</small>
+	    				</h3>
+	    			</div>
+	    			<div class="category-button">
+	    				<h3>
+	    					<a href="/viewCategory?category=posts">Posts</a><br/>
+	    					<small>Check here for posts related to this category</small>
+	    				</h3>
+	    			</div>
+	    		</div>
+    		</div>
+
+        	<div class="col-md-4">
+        		<h1>Sidebar</h1>
+        	</div>
+	        
+	    </div>
+	</div>
+                
+</div><!-- main-container End -->
+       
+<div id = "footer"></div>
+ <!-- footer ends-->
+
+
+</body>
+
+	
+	<!-- fancybox init -->
+	<script>
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("/header");
+		$("#headerloggedout").load("headerloggedout.ejs");
+	</script>
+
+</html>
