@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<title>MOTLEYMEOW. Hear the artists meow.</title> 
+
+<meta name="description" content="Hear the artists meow." />	    
+	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+	<meta property="og:title" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+<link href="css1/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Consent Sign Up Form,Login Forms,Sign up Forms,Registration Forms,News latter Forms,Elements"./>
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+
+<!--webfonts-->
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+</head>
+<body>
+<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+
+
+<!--/start-login-one-->	
+		<h1>Add Space</h1>
+		<h6> Fill the form to add any performance/rehearsal space.</h6>
+		<div class = "container">
+			<div class="login">
+
+				<form id="signupp" action="/AddSpace" method="post">
+					<% if (message.length > 0) { %>
+	        		<div class="alert alert-danger" style="font-size:20px;"><%= message %></div>
+	    			<% } %>
+					<ul>
+						<li>
+							<a href="#" class=" icon user"></a><input type="text" class="text" id="typeofspace" name="typeofspace"  placeholder="Type of Space"  required >
+						</li>
+						<li>
+							<a href="#" class=" icon mail"></a><input type="text" class="text" id="nameofspace" name="nameofspace" placeholder="Name of Space"  required >
+						</li>
+						<div class="dumy">
+						<li class="psw">
+							<a href="#" class=" icon key"></a><input type="text" id="city" name="city" placeholder="City" required></li>
+						<li class="psw two">
+							<a href="#" class=" icon key"></a><input type="number" id="capacity" name="capacity" placeholder="Sitting Capacity" required>
+						</li>
+						<div class="clear"></div>
+						<div class="submit" style="margin-top:30px;">
+								<input type="submit" value="SUBMIT SPACE" >
+								
+				       	</div>
+				       		
+				     </ul>
+				</form>
+				
+		   </div>
+		</div>   
+
+  <!--  <div id = "footer"></div> -->
+   <!-- footer ends-->
+
+
+
+</body>
+<script>
+	$(document).ready(function(e) {
+		<% if (typeof hashValue != 'undefined' && hashValue != "") { %>
+			document.location.hash = "<%=hashValue%>";
+	
+		<% } %>
+
+	});
+	
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("/header");
+		$("#headerloggedout").load("headerloggedout.ejs");
+	</script>
+
+</html>
