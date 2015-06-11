@@ -505,6 +505,12 @@ app.post('/forgot', function(req, res, next) {
         //         return res.redirect('/forgot');
         //      }   
         // }
+        if (user){
+            if (typeof user.local.password == 'undefined' || user.local.password=='0' ) {
+                req.flash('error','You are registered with social login.');
+                return res.redirect('/forgot');
+            }
+         }   
         user.local.resetPasswordToken = token;
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
         console.log("ForgotPassword : Save Token")
