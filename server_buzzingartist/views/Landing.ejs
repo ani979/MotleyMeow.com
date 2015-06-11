@@ -180,7 +180,15 @@
  
         <div class="col-md-3">
           <li class="dropdown pull-right" style="list-style-type: none;">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+
+            
+              <% if(typeof user.local.picture == 'undefined' || user.local.picture == "") { %>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" style="font-size:30px;color:#CEC6C6;"></i><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                <% } else { %>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                <% } %>
+                
+            
             <ul class="dropdown-menu">
               <li><a href="/profile?fbId=<%=user.facebook.id%>" class="antiguaFontSmall">Profile</a></li>
               <li><a href="/logout" class = "antiguaFontSmall">Logout</a></li>
@@ -332,6 +340,94 @@
         </nav>
 
 
+        
+          <% console.log("allposts.length" + allPosts.length) %>
+          <% if(allPosts.length > 0 ) { %>
+          <div class="panel-group notification-panel">
+          <% var details="";
+           for(var i=0; i < allPosts.length; i++) { 
+              %>
+              <% if (typeof allPosts[i].post.postDetail !='undefined') {
+                              details = allPosts[i].post.postDetail
+              } else  {
+                details=""; 
+              }  %>
+              <div class = "row">
+                <% var userPicture, username, fbLink 
+                var oneDay = 24*60*60*1000;
+                var diffDays = Math.round(Math.abs((new Date().getTime() - allPosts[i].post.date.getTime())/(oneDay))); 
+                var diffDaysinStr;
+                if (diffDays == 0)  {
+                  diffDaysinStr = "today" 
+                } else if(diffDays == 1) {
+                  diffDaysinStr = "yesterday"
+                } else { 
+                  diffDaysinStr = diffDays + " days ago"
+                 }%>
+                <% if (typeof allPosts[i].post.user !='undefined' && allPosts[i].post.user.length > 0) {
+                    userPicture = allPosts[i].post.user[0].local.picture
+                    username = allPosts[i].post.user[0].facebook.name
+                    fbLink = '/profile?fbId=' + allPosts[i].post.user[0].facebook.id
+                } else {
+                    userPicture = ""
+                    username = ""
+                    fbLink = '/profile?fbId='+ allPosts[i].post.userid
+                } %>      
+               
+                <div class='span1'>
+                  <div class="post-userphoto">
+                    <% if(typeof allPosts[i].post.user == 'undefined' || allPosts[i].post.user.length == 0) { %>
+                      <a href="/profile?fbId=<%=allPosts[i].post.userid%>" title="View profile">
+                        <img  src="/images/siteLogo.jpg" style="height:30px; width:48px;" class="member-photo"> 
+                      </a>
+                    <% } else { %>
+                      <a href="/profile?fbId=<%=allPosts[i].post.user[0].facebook.id%>" title="View profile">
+                      <img  src="<%=allPosts[i].post.user[0].local.picture%>" style="height:48px; width:48px;" class="member-photo">
+                    </a>
+                    <% } %>
+                  </div> 
+                </div>   
+               
+                <div class='span9 antiguaFont'>
+                  <div class='post-text'>
+                    <div class="post-title">
+                          <a href="/viewpost?postid=<%=allPosts[i]._id%>" title="<%=details%>" rel="bookmark"><h4><%=allPosts[i].post.postTitle%></h4></a>  
+                          <% if(allPosts[i].post.city != "") { %> 
+                            <span class='user' style="font-size:11px;">in <%=allPosts[i].post.city%></span>
+                          <% } else { %>
+                            <span class='user' style="font-size:11px;">all over India</span>  
+                          <% } %>  
+                    </div>
+
+                      <text class = "post-detail-text"><%=details%></text><a href="/viewpost?postid=<%=allPosts[i]._id%>" title="click to read the complete post">  more details</a>   
+                  </div>
+                  <div class='post-menu'>
+                    <div>
+                      <span class='date timeago' title='time'><%=diffDaysinStr%></span> by
+                      <% if(username != "") { %>
+                        <span class='user'><a href="<%=fbLink%>" title='view users profile'><%=username%></a></span>
+                      <% } else { %>  
+                        <span class='user'><a href="<%=fbLink%>" title='view users profile'>a member</a></span>
+                      <% } %>  
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+          <% } %>
+          <% } else  { %>
+          <div class="panel-group notification-panel" style="height:100px;">
+                <div class='span9 oratorFont'>
+                  <div class='post-text'>
+                    <div class="post-title">
+                            <span class='user' style="font-size:20px;">NO NEW POSTS IN THE LAST 10 DAYS</span>  
+                            
+                    </div>
+                  </div>
+                </div>    
+          <% } %>
+          
+        </div>
         <div class="panel-footer oratorFont" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
                     <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/viewallposts" style="color: #ECDEDE;">Older News ›</a></li></ul>
         </div>

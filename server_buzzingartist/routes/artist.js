@@ -12,19 +12,19 @@ var app = require('../app.js');
 'use strict';
 var nodemailer = require('nodemailer');
 var mandrillTransport = require('nodemailer-mandrill-transport');
-var transport = nodemailer.createTransport(mandrillTransport({
-  auth: {
-    apiKey: '_r3bNHCw5JzpjPLfVRu24g'
-  }
-}));
+// var transport = nodemailer.createTransport(mandrillTransport({
+//   auth: {
+//     apiKey: '_r3bNHCw5JzpjPLfVRu24g'
+//   }
+// }));
 
-/*var smtpTransport = nodemailer.createTransport("SMTP",{
+var transport = nodemailer.createTransport("SMTP",{
     service: "Mandrill",
     auth: {
         user: "motleymeow@gmail.com",
         pass: "_r3bNHCw5JzpjPLfVRu24g"
     }
-});*/
+});
 
 exports.artist = function (req, res) {
 	 var allUsers;
@@ -305,7 +305,7 @@ exports.sendMailsToArtists = function (req, res){
         to:             toArtists,
         subject:        "MotleyMeow: "+ name + " wants to contact you!",
         from:           email,
-        body:           emailText
+        text:           emailText
       }, 
 
       function(err, info) {

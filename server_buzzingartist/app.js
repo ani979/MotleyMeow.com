@@ -50,13 +50,20 @@ var passport = require('passport'),
 var mandrill = require('mandrill-api/mandrill');
 var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
 
-var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer_old');
 var mandrillTransport = require('nodemailer-mandrill-transport');
-var transport = nodemailer.createTransport(mandrillTransport({
-  auth: {
-    apiKey: '_r3bNHCw5JzpjPLfVRu24g'
-  }
-}));
+// var transport = nodemailer.createTransport(mandrillTransport({
+//   auth: {
+//     apiKey: '_r3bNHCw5JzpjPLfVRu24g'
+//   }
+// }));
+var transport = nodemailer.createTransport("SMTP",{
+    service: "Mandrill",
+    auth: {
+        user: "motleymeow@gmail.com",
+        pass: "_r3bNHCw5JzpjPLfVRu24g"
+    }
+});
 
 //var expressSession = require('express-session');
 
@@ -98,7 +105,7 @@ passport.use('local-login', new LocalStrategy({
                 return done(null, false, req.flash('loginMessage', 'Email registered with Social Login.'));
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                return done(null, false, req.flash('loginMessage', 'Oops! Wrong email or password.')); // create the loginMessage and save it to session as flashdata
 
             // all is well, return su
         
@@ -126,7 +133,7 @@ passport.use('local-login', new LocalStrategy({
         // we are checking to see if the user trying to login already exists
      
 
-        User.findOne({ 'facebook.email' :  email }, function(err, user) {
+        User.findOne({ 'facebook.email' : email }, function(err, user) {
             // if there are any errors, return the error
             if (err)
                 return done(err);
@@ -141,7 +148,7 @@ passport.use('local-login', new LocalStrategy({
                         newUser.facebook.email    = email;
                         newUser.local.password = newUser.generateHash(password);
                         newUser.local.joiningDate  = new Date().toISOString();
-                        newUser.facebook.id      = email + Math.floor(Math.random()*1000000001);
+                        newUser.facebook.id      = email.substring(0,3) + Math.floor(Math.random()*1000000001);
 
                         newUser.save(function(err) {
                             if (err)
@@ -171,7 +178,7 @@ passport.use(new FacebookStrategy({
          
 },
     function(req,accessToken, refreshToken, profile, done) {
-        User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
+        User.findOne({ $or: [ { 'facebook.email' : profile.emails[0].value }, { 'facebook.id' : profile.id } ] }, function(err, user) {
             if (err)
                 return done(err);
 
@@ -275,7 +282,7 @@ passport.use(new GoogleStrategy({
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
             console.log(" In the callback: Google - 2");
-            User.findOne({ 'facebook.email' : profile.emails[0].value }, function(err, user) {
+            User.findOne({ $or: [ { 'facebook.email' : profile.emails[0].value }, { 'facebook.id' : profile.id } ] }, function(err, user) {
                 if (err) {
                     return done(err);
                 }
@@ -302,8 +309,8 @@ passport.use(new GoogleStrategy({
                     newUser.facebook.email = profile.emails[0].value; // pull the first email
                     newUser.local.joiningDate  = new Date();
                     newUser.local.password='0';
-                    newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyAyDiSzWn36310CxR7rbmbu2A_Iu0E-5PI";
-                    newUser.google.link = "https://plus.google.com" + profile.id;
+                    //newUser.local.picture ="https://www.googleapis.com/plus/v1/people/"+profile.id+"?fields=image&key="+"AIzaSyAyDiSzWn36310CxR7rbmbu2A_Iu0E-5PI";
+                    newUser.google.link = "https://plus.google.com/" + profile.id;
                     newUser.save(function(err) {
                     if (err)
                         throw err;
@@ -598,7 +605,6 @@ app.post('/reset', function(req, res) {
       });
     }
   ], function(err, result) {
-
     res.redirect('/');
   });
 });
