@@ -7,10 +7,10 @@ var mongoose = require('mongoose');
 var spaceSchema = mongoose.Schema({
 
     space             :{
-        type : String, 
-        name : String,
-        city : String,
-        capacity : Number
+        space_type : String, 
+        space_name : String,
+        space_city : String,
+        space_capacity : Number
     }
 
 });
