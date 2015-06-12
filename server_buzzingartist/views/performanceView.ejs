@@ -68,17 +68,19 @@
         <% } %>  
         
       </div>
-      console.log('djnd');
+
       <div class="col-md-9">
           <h1 class="oratorFont" style="color:rgb(239, 239, 239);"><%= space.space.spaceName %></h1>
           <div>&nbsp;</div>
-          
+
 
           <div class = "col-md-12" style="padding-left:0px;">
 
             <div class="panel panel-body col-md-6  oratorFont" style="background-color:rgba(5, 5, 5, 0.76);padding-top:0px;padding-bottom:5px;float:left;">
               <ul style="list-style: none;padding:10px;">
                 <li class="text-left" style="color:rgb(239, 239, 239);"><span>CAPACITY: </span> <%= space.space.space_capacity %></li>
+                <%if (typeof user.respect != "undefined" && typeof user.respect.userId != 'undefined' && user.respect.userId.length != 0) { %>
+                <li class="text-left" style="color:rgb(239, 239, 239);"><span>TYPE: </span> <%= space.space.space_capacity %></li>
                 <%if (typeof user.respect != "undefined" && typeof user.respect.userId != 'undefined' && user.respect.userId.length != 0) { %>
                   <li class="text-left" style="color:rgb(239, 239, 239);"><span>#RESPECT: </span><text id="numRespect"><%=user.respect.userId.length%></text></li>
                 <% } else { %>  
@@ -138,7 +140,7 @@
         <div class="col-sm-3">
             <!--left col-->
             <ul class="list-group" >
-                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">CONTRIBUTION: </span><br/>
+                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">NO OF SHOWS HANDLED: </span><br/>
                           <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
                               <p style="color:red;" class="antiguaFont"><b>Will be updating soon</b></p>
                             <% } else { %>  
@@ -154,7 +156,7 @@
                   <% } %>
 
                 </li>
-                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">LANGUAGES: </span><br/>
+                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">ADDRESS: </span><br/>
                           <% if(typeof user.local.lang == 'undefined' || user.local.lang.length == 0) { %>
                               <p style="color:red" class="antiguaFont"><b>To be updated</b></p>
                             <% } else { %>  
@@ -197,7 +199,7 @@
             <div id="aboutMe" class="panel panel-default panelColors">
                 
                 <div class="panel-body"> 
-                  <h3 style="margin-top:0px;" class="oratorFont">ABOUT ME</h3>
+                  <h3 style="margin-top:0px;" class="oratorFont">ABOUT SPACE/h3>
                   <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myself == 'undefined' || user.portfolio.myself == "") { %>
                     <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">Hold on! I am getting waxed at Madame Tussauds. My hands not free as yet to write!!</span>
                   <%} else {%>
@@ -208,7 +210,7 @@
             </div>
             <div id ="myPrevExps" class="panel panel-default target panelColors">
                 <div class="panel-body">
-                  <h3 style="margin-top:0px;" class="oratorFont">MY PREVIOUS EXPERIENCES</h3>
+                  <h3 style="margin-top:0px;" class="oratorFont">PREVIOUS SHOWS</h3>
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPlays == 'undefined' || user.portfolio.myPlays.length ==0 ) { %>
                       
                         <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">The list is big. Its getting posted one by one!</span> 
@@ -239,7 +241,7 @@
             <div id="myPics" class="panel panel-default target panelColors">
                 
                   <div class="panel-body">
-                    <h3 style="margin-top:0px;" class="oratorFont">MY PICTURES</h3>
+                    <h3 style="margin-top:0px;" class="oratorFont">PICTURES OF SPACE</h3>
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
                       
                         <p class="form-control-static" ><span class="fieldNote antiguaFont" style="color:inherit">My portfolio shoot negatives are getting cleaned. Will be up soon!!</span>
@@ -284,7 +286,7 @@
              </div>
              <div id="myVids" class="panel panel-default target panelColors">
                   <div class="panel-body">
-                    <h3 style="margin-top:0px;" class="oratorFont">MY VIDEOS</h3>
+                    <h3 style="margin-top:0px;" class="oratorFont">VIDEOS TAKEN HERE</h3>
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myVideos == 'undefined' || user.portfolio.myVideos.length ==0 ) { %>
                       
                          <p class="form-control-static" ><span class="fieldNote antiguaFont" style="color:inherit">Rolling the reel in progress. Will be shared soon!!</span>
@@ -312,7 +314,7 @@
            
            <div id="myResume" class="panel panel-default target panelColors">
                   <div class="panel-body">
-                    <h3 style="margin-top:0px;" class="oratorFont">MY RESUME</h3>
+                    <h3 style="margin-top:0px;" class="oratorFont">CONTACT DETAILS</h3>
                     <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myResume == 'undefined' || user.portfolio.myResume == "" ) { %>
                       
                         <p class="form-control-static" ><span class="fieldNote antiguaFont" style="color:inherit;" >My book is about to be published. Hang on!</span> 
