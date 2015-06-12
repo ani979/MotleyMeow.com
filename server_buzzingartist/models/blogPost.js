@@ -13,7 +13,7 @@ var blogPostSchema = mongoose.Schema({
         date            : {type: Date, default: Date.now},
         categories      : [{}],
         tags            : [{}],
-        comments        : [{commentorid:String, commentorName:String, commentorPic:String, commcomment:String, date:Date}],
+        comments        : [{commentorid:String, commentorName:String, commentorPic:String, comment:String, date:Date}],
         approved        : {type: Boolean, default: false}
     }
 

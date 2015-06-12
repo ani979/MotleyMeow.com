@@ -208,7 +208,7 @@ exports.saveCommentBlogPost = function(req, res){
             var d = new Date();
             console.log(d);
             arr.push({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
-                comment:req.body.comment, date:d});
+                commentorPic: req.session.user.local.picture, comment:req.body.comment, date:d});
             blogpost.blogPost.comments = arr;
             //newblogpost.blogPost.date = new Date();
             //console.log(newblogpost.blogPost.date); 
