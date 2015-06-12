@@ -3,15 +3,53 @@ var mongoose      = require('mongoose');
 var app = require('../app.js');
 
 exports.viewForum = function(req, res){
-	res.render("forum", {user: req.session.user});
+	
 	console.log("User is " + req.session.user.facebook.email);
+
+	mongoose.connection.db.createCollection('forums', function(err, collection){});
+
+	forum.find({}).stream() //updating field recentCommentDate for all documents //check if this executes before next part
+	  .on('data', function(e){
+	    		var l = e.thread.replies.length;
+	    		if(l>0)
+				{
+					e.thread.recentCommentDate = e.thread.replies[l-1].date;
+					e.save(function(err, eupdate){
+						if(eupdate)
+						{
+							console.log("Saved");
+						}
+					});
+				}
+	  })
+	  .on('error', function(err){
+	    console.log("error");
+	  })
+	  .on('end', function(){
+	    console.log("done");
+	  });
+
+
+	forum.find().sort({'thread.recentCommentDate': -1 }).limit(5).exec(function(err, threads){
+		if(err)
+		{
+			console.log("Error in retrieving threads");
+		}
+		else
+		{
+			//console.log(threads);
+
+			res.render("forum", {user: req.session.user, threads:threads});
+		}
+	});
+
 }
 
 exports.viewCategory = function(req, res){
 	console.log(req.query.category);
 	//res.render("Hello World")
 
-	mongoose.connection.db.createCollection('forums', function(err, collection){});
+	//mongoose.connection.db.createCollection('forums', function(err, collection){});
 
 	var category = req.query.category;
 	var categoryName = "";
