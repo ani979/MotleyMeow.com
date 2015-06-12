@@ -98,6 +98,25 @@ exports.profile = function (req, res) {
     //     res.redirect('/');
     // }
 };
+exports.performance = function (req, res) {
+    var accessToken = req.session.access_token;
+    var fbid = "";
+    console.log("accesstoken111: "+ accessToken);
+   // if(!accessToken) {
+        console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
+        //if(req.isAuthenticated()) {
+            console.log("req.fbId " + req.query.fbId);
+            if(typeof req.query.fbId == 'undefined') {
+                fbid = req.session.user.facebook.id;
+            } else {
+                fbid = req.query.fbId;
+            }
+            User.findOne({ 'facebook.id' : fbid}, function(error, db) {
+            
+                res.render('performanceView', { user: db, space: db, dropdowns:dropdowns, sessionSpace: req.session.space, sessionUser: req.session.user, appId:config.facebook.clientID});
+            });
+
+}
 
 exports.profileEdit = function (req, res) {
     var accessToken = req.session.access_token;

@@ -467,16 +467,16 @@ app.get('/AddSpace', function(req, res) {
              console.log(req.body.nameofspace);
              
              var newSpace = new Space();
-            newSpace.space.space_name = req.body.nameofspace;
-            newSpace.space.space_type = req.body.typeofspace;
-            newSpace.space.space_capacity = req.body.capacity;
-            newSpace.space.space_city =  req.body.city;
+            newSpace.space.spaceName = req.body.nameofspace;
+            newSpace.space.spaceType = req.body.typeofspace;
+            newSpace.space.spaceCapacity = req.body.capacity;
+            newSpace.space.spaceCity =  req.body.city;
             newSpace.save(function(err) {
                             if (err)
                                 throw err;
                             return done(null, newSpace);
                         });         
-             res.redirect('/');
+             res.redirect('/performance');
         });    
         // app.post('/signup', do all our passport stuff here);
 
@@ -683,6 +683,7 @@ app.get( '/home',  ensureAuthenticated, home.landing_home);
 app.post( '/saveNotificationClickDate', home.saveNotificationClickDate);
 app.get( '/getNotification', home.getNotification);
 app.get( '/profile', home.profile);
+app.get( '/performance', home.performance);
 app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
 var mwMulter1 = multer({ dest: './views/uploads' });
