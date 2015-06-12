@@ -512,7 +512,7 @@
           <% console.log("allBlogs.length" + allBlogs.length) %>
           <% if(allBlogs.length > 0 ) { %>
           <div class="panel-group notification-panel">
-          <% var details=""; var blogLink = "";
+          <% var details=""; var blogLink = ""; var authorName=""; authorpic="";
            for(var i=0; i < allBlogs.length; i++) { 
               %>
               <% if (typeof allBlogs[i].blogPost.postBody !='undefined') {
@@ -531,24 +531,32 @@
                   diffDaysinStr = "yesterday"
                 } else { 
                   diffDaysinStr = diffDays + " days ago"
-                 }%>
-                <% if (typeof allBlogs[i].blogPost.authorName !='undefined') {
-                    
-                    username = allBlogs[i].blogPost.authorName
-                    
-                } else {
-                    username = ""
-                    
-                } %>      
+                 }
+
+                authorpic = allBlogs[i].blogPost.authorPic
+                authorName = allBlogs[i].blogPost.authorName
+
+                %>
                
-                             
+                <div class='span1'>
+                  <div class="post-userphoto">
+                      <a href="/profile?fbId=<%=allBlogs[i].blogPost.authorid%>" title="View profile">
+                      <%if(typeof authorpic == 'undefined' || authorpic == "") { %>
+                        <img  src="/images/siteLogo.jpg" style="height:48px; width:48px;" class="member-photo"> 
+                      <% } else { %>  
+                        <img  src="<%=authorpic%>" style="height:48px; width:48px;" class="member-photo">
+                      <% } %>  
+                      </a>
+                    
+                  </div> 
+                </div>             
                 <div class='span9 antiguaFont'>
                   <div class='post-text'>
                     <div class="post-title">
-                          <a href="/displayBlogPost?blogpostid=<%=allBlogs[i]._id%>" title="<%=details%>" rel="bookmark"><h4><%=allBlogs[i].blogPost.postTitle%></h4></a>  
+                          <a href="/displayBlogPost?blogpostid=<%=allBlogs[i]._id%>" title="click to read the complete blog" rel="bookmark"><h4><%=allBlogs[i].blogPost.postTitle%></h4></a>  
                     </div>
 
-                      <text class = "post-detail-text"><%=details%></text><a href="/displayBlogPost?blogpostid=<%=allBlogs[i]._id%>" title="click to read the complete post">  more details</a>   
+                      
                   </div>
                   <div class='post-menu'>
                     <div>

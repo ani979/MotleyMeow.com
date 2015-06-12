@@ -19,6 +19,8 @@ exports.saveNewBlogPostData = function(req, res){
 	//newblogpost.blogPost.categories = req.body.categories;
 	newblogpost.blogPost.authorid = req.session.user.facebook.id; 
     newblogpost.blogPost.authorName = req.session.user.facebook.name;
+    console.log("picture is " + req.session.user.local.picture);
+    newblogpost.blogPost.authorPic = req.session.user.local.picture;
     console.log(" req.body.postTags " + req.body.postTags);
     newblogpost.blogPost.tags = req.body.postTags;
 	//newblogpost.blogPost.date = new Date();
