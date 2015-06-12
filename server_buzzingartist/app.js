@@ -883,7 +883,6 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/')
 }
 
-<<<<<<< HEAD
 app.get('/newBlogPost', ensureAuthenticated, blog.newBlogPost);
 app.post('/saveNewBlogPostData', ensureAuthenticated, blog.saveNewBlogPostData);
 app.get('/myBlogPosts', ensureAuthenticated, blog.myBlogPosts);
@@ -897,20 +896,19 @@ app.post('/searchBlogPosts', ensureAuthenticated, blog.searchBlogPosts);
 app.get('/searchallblogposts', ensureAuthenticated, blog.searchallblogposts);
 app.get('/searchmyblogposts', ensureAuthenticated, blog.searchmyblogposts);
 
-http.createServer(app).listen(app.get('port'), function() {
-    console.log("Express server listening on port " + app.get('port'));
-});
+// http.createServer(app).listen(app.get('port'), function() {
+//     console.log("Express server listening on port " + app.get('port'));
+// });
 
 // console.log("argv.fe_ippp: "+argv.fe_ip);
-=======
+
 d.run(function() {
     http.createServer(app).listen(app.get('port'), function() {
         console.log("Express server listening on port " + app.get('port'));
     });
     // console.log("argv.fe_ippp: "+argv.fe_ip);
->>>>>>> origin/master
-// app.listen(8080,argv.fe_ip);
-// console.log("Express serverrrr listening on port 8080");
+    // app.listen(8080,argv.fe_ip);
+    // console.log("Express serverrrr listening on port 8080");
 });
 
 

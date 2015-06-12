@@ -11,7 +11,7 @@
     <meta property="og:title" content="View the blog <%=post.blogPost.postTitle%>">
     <meta property="og:type" content="website" />
     <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
-
+    <meta property="og:description" content="Read about this article from <%= post.blogPost.authorName %>"/>
     <title>Blog Post</title>
 
     <!-- Bootstrap Core CSS -->
@@ -52,6 +52,14 @@
 %>  
 
 <body>
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1381852852123169&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <% if(typeof user != 'undefined' && user!=null) { %>
   <div id = "headerloggedin"> </div>
 <% } else { %>
@@ -103,6 +111,8 @@
                   var myVar = <%- JSON.stringify(post.blogPost.postBody) %>;
                   document.getElementById("demo").innerHTML = myVar;
                 </script>
+                <div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                <div class="fb-comments" data-href="www.motleymeow.com/viewpost?postid=<%=post._id%>" data-layout="standard" data-numposts="5" data-colorscheme="light"></div>   
                 <hr>
 
                 <!-- Blog Comments -->
@@ -127,8 +137,12 @@
                 <% comments.forEach(function(comment) { %> <!--loop for every comment -->
                 <!-- Comment -->
                 <div class="media">
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="/images/commentuser.png" alt="">
+                    <a class="pull-left" href="/profile?fbId=<%=comment.commentorid%>">
+                      <% if(typeof comment.commentorPic == 'undefined' || comment.commentorPic == "") { %>
+                        <i class="fa fa-user" style="font-size:40px;color:rgba(59, 0, 0, 0.76)"></i>
+                      <% } else { %> 
+                        <img src=<%=comment.commentorPic %> class="img-circle" style="max-height:40px;">
+                      <% } %>
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading"><%= comment.commentorName %>
@@ -201,6 +215,7 @@ $("#headerloggedout").load("headerloggedout.ejs");
         }); //end of ajax function 
   } //end of savePostData function
 </script>
+
 
 </body>
 
