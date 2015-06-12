@@ -1,0 +1,20 @@
+1) Print out of props list
+2) copy script in USB
+3) copy Poster in USB
+4) Take camera
+
+1) Dupatta
+2) Shirt, pant
+3) camera
+
+var cursor = db.users.find();
+while ( cursor.hasNext() ) {
+  var user = cursor.next();
+  if(typeof user.local.role !='undefined' && user.local.role.length == 1) {
+        var roleArr = new String(user.local.role).split(",");
+        print("roleArr length is " + roleArr.length);
+        if(roleArr.length > 1) {
+           db.users.update({ "facebook.id": user.facebook.id},{ $set: {"local.role": roleArr }});
+        }
+   } 
+}

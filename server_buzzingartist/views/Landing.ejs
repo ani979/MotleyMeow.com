@@ -180,7 +180,15 @@
  
         <div class="col-md-3">
           <li class="dropdown pull-right" style="list-style-type: none;">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+
+            
+              <% if(typeof user.local.picture == 'undefined' || user.local.picture == "") { %>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" style="font-size:30px;color:#CEC6C6;"></i><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                <% } else { %>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                <% } %>
+                
+            
             <ul class="dropdown-menu">
               <li><a href="/profile?fbId=<%=user.facebook.id%>" class="antiguaFontSmall">Profile</a></li>
               <li><a href="/logout" class = "antiguaFontSmall">Logout</a></li>
@@ -759,7 +767,7 @@
               <% var cities = dropdowns.alldropdowns.cities;
                   for(var i = 0; i < cities.length; i ++) {   %> 
                         <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
-              <!-- <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select> -->
+            <!--  <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>--> 
               <% } %>
             </select></div>
             <div id="myRole" class="form-group">

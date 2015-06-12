@@ -2,8 +2,29 @@ var User = require('../models/user.js');
 var Post = require('../models/posts.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var deletedArtists = require('../models/deletedArtists.js');
+
 var app = require('../app.js');
 
+//var mailer   = require("mailer")            //required for setting mail server
+  //, mailerUsername = "motleymeow@gmail.com"
+  //, mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+
+'use strict';
+var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
+// var transport = nodemailer.createTransport(mandrillTransport({
+//   auth: {
+//     apiKey: '_r3bNHCw5JzpjPLfVRu24g'
+//   }
+// }));
+
+var transport = nodemailer.createTransport("SMTP",{
+    service: "Mandrill",
+    auth: {
+        user: "motleymeow@gmail.com",
+        pass: "_r3bNHCw5JzpjPLfVRu24g"
+    }
+});
 
 exports.artist = function (req, res) {
 	 var allUsers;
@@ -235,9 +256,11 @@ exports.getEmails = function (req, res) {
                                             { $or: [ {"local.lang": { $in: selectedLang } }, {"local.lang": null}, {"local.lang": {$size: 0} } ] },
                                             {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
                           function(err, emails) {
-              
+      //console.log(emails);        
       res.send({selectedEmails: emails});
-
+      
+  //console.log(emails);
+  //return emails;
   });
 
   //   User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
@@ -250,8 +273,6 @@ exports.getEmails = function (req, res) {
 
   // });
    
-
-
 };
 
 exports.getRecentArtists = function (req, res) {
@@ -263,6 +284,68 @@ exports.getRecentArtists = function (req, res) {
 
 exports.contactArtists = function (req, res) {
     res.render('emailArtists', { user: req.session.user, dropdowns:dropdowns});
+};
+
+exports.sendMailsToArtists = function (req, res){
+
+  console.log(req.body);
+  //res.send();
+  
+  //console.log(req.body.bcc_Emails);
+  //console.log(typeof bccEmails);
+  //console.log("hello");
+  var name = req.body.first_name,
+      email = req.body.email,
+      emailText = req.body.comments,
+      bccEmails = req.body.bcc_Emails,
+      toArtists = req.body.toArtists + ",motleymeow@gmail.com";
+
+      transport.sendMail({
+        //host: "smtp.mandrillapp.com",
+        to:             toArtists,
+        subject:        "MotleyMeow: "+ name + " wants to contact you!",
+        from:           email,
+        text:           emailText
+      }, 
+
+      function(err, info) {
+        if (err) {
+          console.log(err);
+          res.send({completed:"NOK"});
+        } else {
+          console.log("Mail sent!" + JSON.stringify(info));
+          res.send({completed:"OK"});
+        }
+      });
+  //var obj = {name:name, email:email, emailText:emailText, bccEmails};
+
+  /*mailer.send(
+  { host:           "smtp.mandrillapp.com"
+  , port:           587
+  , to:             "motleymeow@gmail.com"
+  , bcc:            bccEmails
+  , from:           email
+  , subject:        "MotleyMeow: "+ name + " wants to contact you!"
+  , body:           emailText
+  , authentication: "login"
+  , username:       mailerUsername
+  , password:       mailerPassword
+  }, function(err, result){
+    if(err){
+      console.log(err);
+      res.send({completed:"NOK"});
+    }
+    else {
+      console.log("Mail sent!" + result);
+      res.send({completed:"OK"});
+    }
+  }
+  );*/
+
+  //res.send();
+  
+
+
 };
 
 exports.updateCityAndRoles = function (req, res) {

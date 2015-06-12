@@ -42,17 +42,17 @@ exports.index = function(req, res) {
         } else {
             User.count(function(err, uCnt) {
                if(err) {
-                res.render('index');    
+                res.render('index', {message: req.flash('loginMessage')});    
                }
                Posts.count(function(err, pCnt) {
                 if(err) {
-                    res.render('index', {aCount:uCnt});    
+                    res.render('index', {aCount:uCnt, message: req.flash('loginMessage')});    
                 }
                 Event.count(function(err, eCnt) {
                     if(err) {
-                        res.render('index', {aCount:uCnt, pCount:pCnt});    
+                        res.render('index', {aCount:uCnt, pCount:pCnt, message: req.flash('loginMessage')});    
                     } 
-                    res.render('index', {aCount:uCnt, pCount:pCnt, eCount:eCnt});    
+                    res.render('index', {aCount:uCnt, pCount:pCnt, eCount:eCnt, message: req.flash('loginMessage')});    
                     
                 });    
                }); 
