@@ -884,7 +884,7 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/')
 }
 
-<<<<<<< HEAD
+
 /*Functions for Forum*/
 app.get('/forum', ensureAuthenticated, forum.viewForum);
 app.get('/viewCategory', ensureAuthenticated, forum.viewCategory);
@@ -892,10 +892,10 @@ app.post('/createNewThread', ensureAuthenticated, forum.createNewThread);
 app.get('/viewThread', ensureAuthenticated, forum.viewThread);
 app.post('/createReply', ensureAuthenticated, forum.createReply);
 
-=======
 app.get('/newBlogPost', ensureAuthenticated, blog.newBlogPost);
 app.post('/saveNewBlogPostData', ensureAuthenticated, blog.saveNewBlogPostData);
 app.get('/myBlogPosts', ensureAuthenticated, blog.myBlogPosts);
+app.get('/displayComments', ensureAuthenticated, blog.displayComments);
 //app.post('/displayFullBlogPost', blog.displayFullBlogPost);
 app.get('/displayBlogPost', blog.displayBlogPost);
 app.get('/allBlogs', ensureAuthenticated, blog.allBlogs);
@@ -911,7 +911,7 @@ app.get('/searchmyblogposts', ensureAuthenticated, blog.searchmyblogposts);
 // });
 
 // console.log("argv.fe_ippp: "+argv.fe_ip);
->>>>>>> origin/master
+
 
 d.run(function() {
     http.createServer(app).listen(app.get('port'), function() {
@@ -928,12 +928,11 @@ d.run(function() {
 d.on('error', function(err) {
   console.error(err);
 });
-<<<<<<< HEAD
+
 // console.log("argv.fe_ippp: "+argv.fe_ip);
 // app.listen(8080,argv.fe_ip);
     // console.log("Express serverrrr listening on port 8080");
-=======
->>>>>>> origin/master
+
 
 
 function sendTheMail(email) {

@@ -1,0 +1,22 @@
+      <% comments.forEach(function(comment) { %> <!--loop for every comment -->
+      <!-- Comment -->
+      <div class="media">
+          <a class="pull-left" href="/profile?fbId=<%=comment.commentorid%>">
+            <% if(typeof comment.commentorPic == 'undefined' || comment.commentorPic == "") { %>
+              <i class="fa fa-user" style="font-size:40px;color:rgba(59, 0, 0, 0.76)"></i>
+            <% } else { %> 
+              <img src=<%=comment.commentorPic %> class="img-circle" style="max-height:40px;">
+            <% } %>
+          </a>
+          <div class="media-body">
+              <h4 class="media-heading"><%= comment.commentorName %>
+                <% var isodateString = comment.date.toISOString();
+                   var commentDate = getDate(isodateString) %>
+                  <small><%= commentDate %></small>
+              </h4>
+              <%= comment.comment %> 
+          </div>
+      </div>
+      <br>
+      <% }); %> <!--comment loop ends-->
+              

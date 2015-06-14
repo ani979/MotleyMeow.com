@@ -107,7 +107,34 @@ exports.displayBlogPost = function(req, res){
             }
         else
             {
+
                 res.render('displayBlogPost', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
+            }
+    });
+};
+
+exports.displayComments = function(req, res){
+    console.log(req.query.blogpostid);
+
+    BlogPost.distinct("blogPost.comments", {'_id' : req.query.blogpostid}, function(err, comments)
+    {
+        if(err)
+            {
+                console.log("Error in fetching post comments");
+            }
+        else
+            {
+
+                    comments = comments.sort(function(a, b){
+                    var keyA = new Date(a.date),
+                    keyB = new Date(b.date);
+                    // Compare the 2 dates
+                    if(keyA < keyB) return 1;
+                    if(keyA > keyB) return -1;
+                    return 0;
+                    });
+
+                res.render('commentsOnBlog.ejs', {comments: comments});
             }
     });
 };
@@ -207,7 +234,7 @@ exports.saveCommentBlogPost = function(req, res){
             var arr = blogpost.blogPost.comments;
             var d = new Date();
             console.log(d);
-            arr.push({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
+            arr.unshift({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
                 commentorPic: req.session.user.local.picture, comment:req.body.comment, date:d});
             blogpost.blogPost.comments = arr;
             //newblogpost.blogPost.date = new Date();
@@ -219,6 +246,7 @@ exports.saveCommentBlogPost = function(req, res){
                                     res.send({completed: "NOK"});  
                                 } else {
                                     console.log("Saved");
+                                    //res.render("commentsOnBlog.ejs", {comments:post.blogPost.comments});
                                     res.send({completed: "OK"});
                                 }
                     });

@@ -135,36 +135,8 @@
 
                 <hr>
 
-                <!-- Posted Comments -->
-                <% comments = comments.sort(function(a, b){
-                    var keyA = new Date(a.date),
-                    keyB = new Date(b.date);
-                    // Compare the 2 dates
-                    if(keyA < keyB) return 1;
-                    if(keyA > keyB) return -1;
-                    return 0;
-                });%>
-                <% comments.forEach(function(comment) { %> <!--loop for every comment -->
-                <!-- Comment -->
-                <div class="media">
-                    <a class="pull-left" href="/profile?fbId=<%=comment.commentorid%>">
-                      <% if(typeof comment.commentorPic == 'undefined' || comment.commentorPic == "") { %>
-                        <i class="fa fa-user" style="font-size:40px;color:rgba(59, 0, 0, 0.76)"></i>
-                      <% } else { %> 
-                        <img src=<%=comment.commentorPic %> class="img-circle" style="max-height:40px;">
-                      <% } %>
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading"><%= comment.commentorName %>
-                          <% var isodateString = comment.date.toISOString();
-                             var commentDate = getDate(isodateString) %>
-                            <small><%= commentDate %></small>
-                        </h4>
-                        <%= comment.comment %> 
-                    </div>
-                </div>
-                <br>
-                <% }); %> <!--comment loop ends-->
+                <div  id="ForComments"></div>
+                
 
             </div>
 
@@ -186,10 +158,14 @@
 
     
 <script>
+$(document).ready(function(e) {
+  $('#ForComments').load("displayComments?blogpostid=" + $("#postid").val());
+});  
 $("#footer").load("footer.ejs"); 
 $("#headerloggedin").load("/header");
 $("#headerloggedout").load("headerloggedout.ejs");
   function saveComment(){
+          
           console.log("This is executing");
 
           var data = {
@@ -210,7 +186,7 @@ $("#headerloggedout").load("headerloggedout.ejs");
               if(data.completed == "OK") {
                 console.log("OK");
                 $("#comment").val("");
-                location.reload();
+                $("#ForComments").load("displayComments?blogpostid=" + $("#postid").val());
                 //generateNotificationLayout('success', 'topCenter', 'Post published');
               } else {
                 console.log("NOK");
