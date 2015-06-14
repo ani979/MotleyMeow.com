@@ -61,86 +61,51 @@
 
 		    		<div class="threadBody">
 		    			<div class="pull-left" style="padding-right:20px">
-                        	<img class="img-circle" style="max-height:50px;padding-bottom:0px;" src="<%=thread.thread.authorPic%>" alt="">
+                        	  <% if(typeof thread.thread.authorPic == 'undefined' || thread.thread.authorPic == "") { %>
+				                <i class="fa fa-user" style="font-size:50px;color:rgba(59, 0, 0, 0.76)"></i>
+				              <% } else { %> 
+				                <img src=<%=thread.thread.authorPic %> class="img-circle" style="max-height:50px;">
+				              <% } %>
                     	</div>
+
                     	<!-- Date/Time -->
 		                <% var isodateString = thread.thread.date.toISOString();
 		                var displayableDate = getDate(isodateString) %>
-		    			<p><small><b><%=thread.thread.authorName%></b> posted on <%=displayableDate%> </small></p>
+		    			<p><small><b><a href="/profile?fbId=<%=thread.thread.authorid%>"><%= thread.thread.authorName%></a></b> posted on <%=displayableDate%> </small></p>
 		    			<p><%= thread.thread.tbody %></p>
 		    		</div>
 
 		    		<hr>
 
-		    		<div class="addreply">
-		    			<a href="#newReplyModal" role="button" data-toggle="modal" type="button" class="btn btn-lg btn-primary">ADD A REPLY</a>
-		    		</div>
+		    		<div class="well">
+	                    <h4>Leave a Response:</h4>
+	                    
+	                       <div class="form-group">
+		                    <div class="col-md-12">
+		                        <textarea class="form-control" id="rbody" name="rbody" placeholder="Compose reply" style="min-height:25px;"></textarea>
+		                    </div>
+				           </div>
 
-		    		<div id="newReplyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="newReplyLabel" aria-hidden="true">
-      
-				        <div class="modal-dialog">
-				        <div class="modal-content">
-				        <div class="modal-header">
-				            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				            <h4 class="modal-title">Post a Reply</h4>
-				        </div>
-				        <div class="modal-body" id="modalbody">
-				            <!--<form class="form-horizontal" name="commentform" method="post" action = "/sendMailsToArtists">-->
-				            <form class="form-horizontal" name="replyform" id="replyform">
-				          
-				                <div class="form-group">
-				                    <label class="control-label col-md-4" for="body">Reply Body</label>
-				                    <div class="col-md-8">
-				                        <textarea class="form-control" id="rbody" name="rbody" placeholder="Compose reply" style="min-height:300px;"></textarea>
-				                    </div>
-				                </div>
+			                <div class="form-group">
+		                  	 	 <input type="hidden" name="threadid" id="threadid" value="<%= thread._id %>"/>
+		                	</div>
+		                	<div>&nbsp;</div>
+	                        <!-- <div class="form-group">
+				                    <div class="col-md-6"> -->
+				            <button type="button" value="Submit" class="btn btn-primary" id="send_btn" onclick="createReply()">Your response</button>
+				                    <!-- </div>
+				            </div> -->
 
-				                <div class="form-group">
-			                  	 	 <input type="hidden" name="threadid" id="threadid" value="<%= thread._id %>"/>
-			                	</div>
+				            
+                   
+                	</div>
 
-								</br>
-				                <div class="form-group">
-				                    <div class="col-md-6">
-				                        <button type="button" value="Submit" class="btn btn-custom pull-right" id="send_btn" onclick="createReply()">Submit Reply</button>
-				                    </div>
-				                </div>
-
-				            </form>
-				        </div><!-- End of Modal body -->
-				        </div><!-- End of Modal content -->
-				        </div><!-- End of Modal dialog -->
-
-	    			</div><!-- End of Modal --> 
+		    		 
 		    		<hr>
 
-		    		<div class="replies">
+		    		<div class="replies" id="forumReplies">
 		    			<h4><small>REPLIES</small></h4>
-		    			<% if(thread.thread.replies.length==0) 
-    	  					{ %>
-    	  						<div>
-    	  							<p> Sorry, no replies yet. Use the button above to add a new reply.</p>
-    	  						</div>
-
- 		   	  				<% }
- 		   	  			else {%>
- 		   	  					<% thread.thread.replies.forEach(function(reply) { %>
- 		   	  						<div class="reply" id="divallreplies">
- 		   	  							<div>
- 		   	  								<div class="pull-left" style="padding-right:20px">
-					                        	<img class="img-circle" style="max-height:50px;padding-bottom:0px;" src="<%=reply.commentorPic%>" alt="">
-					                    	</div>
-					                    	<!--Date/Time-->
-					                    	<% var xisodateString = reply.date.toISOString();
-		               						 var xdisplayableDate = getDate(xisodateString) %>	
- 		   	  								<p><small><b><%=reply.commentorName%></b> replied on <%=xdisplayableDate%></small></p>
- 		   	  								<p><%= reply.comment %></p>
- 		   	  							</div>
- 		   	  							</br>
- 		   	  						</div>	
- 		   	  					<% }); %>
- 		   	  				<% }
- 		   	  			%>
+		    			
 		    		</div>
 	    		</div>
 	    	</div>
@@ -154,6 +119,9 @@
 	<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
 
 <script>
+$(document).ready(function(e) {
+  $('#forumReplies').load("displayForumReplies?forumid=" + $("#threadid").val());
+});
 		$("#footer").load("footer.ejs"); 
 		$("#headerloggedin").load("/header");
 		$("#headerloggedout").load("headerloggedout.ejs");
@@ -179,15 +147,16 @@
 	              
 	              if(data.completed == "OK") {
 	               console.log("OK");
-	               closeModal();
+	               $("#forumReplies").load("displayForumReplies?forumid=" + $("#threadid").val());
+	               //closeModal();
 	               //document.getElementById(divallthreads).innerHTML = "";               
-                   location.reload();
-                   generateNotificationLayout('success', 'topCenter', 'Reply added');
+                   //location.reload();
+                   //generateNotificationLayout('success', 'topCenter', 'Reply added');
 	 
 	                //generateNotificationLayout('success', 'topCenter', 'Post published');
 	              } else {
 	                console.log("NOK");
-	                generateNotificationLayout('error', 'topCenter', 'Some problem with your reply. Check fields again');
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your reply. Check fields again');
 	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
 	              }
 	           }, 

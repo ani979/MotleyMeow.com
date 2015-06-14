@@ -1,0 +1,30 @@
+
+		    			<% if(replies.length==0) 
+    	  					{ %>
+    	  						<div>
+    	  							<p> Sorry, no replies yet. Use the button above to add a new reply.</p>
+    	  						</div>
+
+ 		   	  				<% }
+ 		   	  			else {%>
+ 		   	  					<% replies.forEach(function(reply) { %>
+ 		   	  						<div class="reply" id="divallreplies">
+ 		   	  							<div>
+ 		   	  								
+					                    	<!--Date/Time-->
+					                    	<% var xisodateString = reply.date.toISOString();
+		               						 var xdisplayableDate = getDate(xisodateString) %>	
+ 		   	  								<p><a class="pull-left" href="/profile?fbId=<%=reply.commentorid%>">
+									            <% if(typeof reply.commentorPic == 'undefined' || reply.commentorPic == "") { %>
+									              <i class="fa fa-user" style="font-size:40px;color:rgba(59, 0, 0, 0.76)"></i>
+									            <% } else { %> 
+									              <img src=<%=reply.commentorPic%> class="img-circle" style="max-height:40px;">
+									            <% } %>
+									         </a>&nbsp;&nbsp;<small><b><%=reply.commentorName%></b> replied on <%=xdisplayableDate%></small></p>
+ 		   	  								<p>&nbsp;&nbsp;<%= reply.comment %></p>
+ 		   	  							</div>
+ 		   	  							</br>
+ 		   	  						</div>	
+ 		   	  					<% }); %>
+ 		   	  				<% }
+ 		   	  			%>

@@ -891,6 +891,7 @@ app.get('/viewCategory', ensureAuthenticated, forum.viewCategory);
 app.post('/createNewThread', ensureAuthenticated, forum.createNewThread);
 app.get('/viewThread', ensureAuthenticated, forum.viewThread);
 app.post('/createReply', ensureAuthenticated, forum.createReply);
+app.get('/displayForumReplies', ensureAuthenticated, forum.displayForumReplies);
 
 app.get('/newBlogPost', ensureAuthenticated, blog.newBlogPost);
 app.post('/saveNewBlogPostData', ensureAuthenticated, blog.saveNewBlogPostData);

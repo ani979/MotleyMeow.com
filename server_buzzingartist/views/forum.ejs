@@ -129,13 +129,21 @@
 
  		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></h4>
  		   	  								<!-- Date/Time -->
-							                <% var isodateString = thread.thread.date.toISOString();
-							                var displayableDate = getDate(isodateString) 
-							                var isocommentString = thread.thread.recentCommentDate.toISOString();
-							                var commentDisplayableDate = getDate(isocommentString);
+							                <% var displayableDate = "" 
+							                	var commentDisplayableDate = ""
+							                   
+							                	isodateString = thread.thread.date.toISOString();
+							                	displayableDate = getDate(isodateString) 
+							                	if(thread.thread.recentCommentDate) { 
+								                	var isocommentString = thread.thread.recentCommentDate.toISOString();
+								                	var commentDisplayableDate = getDate(isocommentString);
+							                	} 
 							                %>
  		   	  								<h5><small>Started by <b><%=thread.thread.authorName%></b> on <b><%=displayableDate%></b></small></br>
- 		   	  									<small>Activity last seen on <b><%=commentDisplayableDate%></b></small>
+ 		   	  									<%if(commentDisplayableDate) {
+ 		   	  										%><small>Activity last seen on <b><%=commentDisplayableDate%></b>
+ 		   	  										</small>
+ 		   	  									<% } %>	
  		   	  								</h5>
  		   	  							</div>
  		   	  							</br>

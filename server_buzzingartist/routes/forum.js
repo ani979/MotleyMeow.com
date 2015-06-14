@@ -55,7 +55,7 @@ exports.viewCategory = function(req, res){
 	var categoryName = "";
 	categoryName = convertCategoryToName(category);
 
-	forum.find({'thread.category' : category}, function(err, threads){
+	forum.find({'thread.category' : category}).sort({'thread.date': -1 }).exec(function(err, threads){
 
 		if(err)
 		{
@@ -159,7 +159,7 @@ exports.createReply = function(req, res){
 			var arr = doc.thread.replies;
             var d = new Date();
             //console.log(d);
-            arr.push({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
+            arr.unshift({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
             	commentorPic:req.session.user.local.picture, comment:rbody, date:d});
             doc.thread.replies = arr;
             //newblogpost.blogPost.date = new Date();
@@ -203,3 +203,29 @@ function convertCategoryToName(category){
 
 	return categoryName;
 }
+
+exports.displayForumReplies = function(req, res){
+    console.log(req.query.forumid);
+
+    forum.distinct("thread.replies", {'_id' : req.query.forumid}, function(err, comments)
+    {
+        if(err)
+            {
+                console.log("Error in fetching post comments");
+            }
+        else
+            {
+
+                    comments = comments.sort(function(a, b){
+                    var keyA = new Date(a.date),
+                    keyB = new Date(b.date);
+                    // Compare the 2 dates
+                    if(keyA < keyB) return 1;
+                    if(keyA > keyB) return -1;
+                    return 0;
+                    });
+
+                res.render('commentsOnForum.ejs', {replies: comments});
+            }
+    });
+};
