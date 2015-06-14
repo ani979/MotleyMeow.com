@@ -19,7 +19,64 @@
 	
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,600,300,200&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 	
+
+ 
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    
+
+      <!--[if lt IE 9]-->
+      <script src="static/js/html5shiv.min.js" type="text/javascript"></script>
+      <script src="static/js/respond.min.js" type="text/javascript"></script>
+      <!--[endif]-->
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans" />
+      
+      
+
+
+      <link rel="icon"  type = "image/png" href="static/images/favicon32.png" sizes="32x32"/>
+      <link rel="icon"  type = "image/png" href="static/images/favicon48.png" sizes="48x48"/>
+      <link rel="icon"  type = "image/png" href="static/images/favicon64.png" sizes="64x64"/>
+      <link rel="apple-touch-icon"  type = "image/png" href="images/icons/apple-touch-icon.html" />
+
+      <link rel="shortcut icon"  type = "image/png" href="static/images/favicon32.png" />
+
+   
+   <style type="text/css">
+ .hrInline {
+      display: inline-block;
+      border: 0;
+      margin: 0%;
+      width: 33.2%;
+      height: 1px;
+      margin-bottom: 2px;
+      background: #D8D8D8;
+  }
+  .hrtext {
+      display: inline-block;
+      margin: 0;
+      text-align: center;
+      width: 7%;
+      font-size: 14px;
+  }
+  .EmailBtn {
+  margin-bottom: 2%;
+  margin-top: 2%;
+  border: 1px solid #02A6D8;
+  width: 70%;
+  height: 40px;
+  font-family: 'Open Sans';
+  font-size: 17px;
+  color: #02A6D8;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+  line-height: 17px;
+}
+</style>
+
+  
 	
 	
 		
@@ -53,24 +110,87 @@
 				<!-- </div>	 -->
 			</div><!-- /row -->
 
+
+
 			<div id="home-row-2" class="row clearfix" style= "float:center;padding-top:0px;">
+
 
 				<div class="col-12" class="row clearfix" style="float:center;height:100%;padding-top:0px;">
 			  		<div>
-			     		<form class="form-signin" action="" method="post">
-				        	<h3 class="heading-desc">
-				        		Login to join the online theatre community</h3>
-				        	<div class="social-box">
-				            	<div class="row mg-btm">
-				               		<div class="col-md-8 with-hover-text">
-				                  		<a id="FBlogin" class="btn btn-primary btn-block" href="/auth/facebook">
-				                    	<i class="icon-facebook"></i> &nbsp;&nbsp; Login with Facebook
-				                    </a>
-				              		</div>
-				            	</div>
-				            
-				 			</div>
-	            			<div class = "main">      
+
+                 
+			  			<!-- show any messages that come back with authentication -->
+   
+			     			
+				        	 
+			     		<form class="form-signin" action="/landing" method="post">
+			     			
+                
+				        		<div style="margin-top:3px; line-height: 57px;"><font style="margin-top:3px;">Login to join the online theatre community</font></div>
+				        		<div >
+                       
+                       <div class="social-box" style="margin-left:1%; margin-top:-5%;">
+                      <div class="row mg-btm">
+                          <div class="col-md-8 with-hover-text">
+                              <a id="FBlogin" class="btn btn-primary btn-block" href="/auth/facebook" style="margin-top:1%;">
+                              <i class="icon-facebook"></i> &nbsp;&nbsp;Facebook
+                            </a>
+                                  <a href="/auth/google" class="btn btn-primary1 btn-block"> <i class="icon-google-plus"></i>&nbsp;&nbsp;Google</a>
+                                 
+                          </div>
+                      </div>
+                    
+              </div>
+          
+        
+
+        
+
+  
+              <div style="margin-top: -50px;"></div>
+              <div class="hrContainer centerAlign" >
+				      <hr class="hrInline" align="left" >
+				      <span class="hrtext" >or </span> 
+				      <hr class="hrInline" align="right" >
+				      <div style="clear:both;"></div>
+  			 </div>
+			
+
+<% if (message.length > 0) { %>
+        <div class="alert alert-danger" style="font-size:16px;"><%= message %></div>
+    <% } %>
+
+    
+
+    <!-- show any messages that come back with authentication -->
+   <div class="col-md-8 with-hover-text">
+    <!-- LOGIN FORM -->
+        <div style="font-size:23px">
+            
+        <input autofocus class="form-control emailTxt centerAlign" id="username" name="email" placeholder="email" type="email" value="" required>        
+      	</div>
+        <div style="font-size:23px">
+          <input class="form-control emailTxt centerAlign" id="password" name="password" placeholder="password" type="password" value="" required>
+      </div>
+<div>
+      <div >
+         <button  type="submit" class="btn  btn-lg EmailBtn centerAlign" id="login" style="background-color: #383838;">
+         
+         Login with Email
+         </a>
+      </div>
+   </div>
+   
+        
+    </form>
+
+
+
+    <p style="font-size:14px;">Need an account? <a href="/signup">Signup</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="/forgot">Forgot Password?</a></p>
+</div>   
+					
+</div>
+	            			<div style="margin-top:23px; line-height: 7px;">      
 		                		Just a click above 
 		                		<span class="clearfix"></span>  
             				</div>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta property="og:title" content="View the blog <%=post.blogPost.postTitle%>">
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <meta property="og:description" content="Read about this article from <%= post.blogPost.authorName %>"/>
+    <title>Blog Post</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/blog-post.css" rel="stylesheet">
+
+	<!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet"> 
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>  
+
+<body>
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1381852852123169&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<% if(typeof user != 'undefined' && user!=null) { %>
+  <div id = "headerloggedin"> </div>
+<% } else { %>
+  <div id = "headerloggedout"></div>
+<%}%> 
+    <!-- Page Content -->
+    <div class="main-container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class = "col-md-2 col-md-offset-1" style="padding-top:20px;">
+              <% if(typeof post.blogPost.authorPic == 'undefined' || post.blogPost.authorPic == "") { %>
+                <i class="fa fa-user" style="font-size:150px;color:rgba(59, 0, 0, 0.76)"></i>
+              <% } else { %> 
+                <img src=<%=post.blogPost.authorPic %> class="img-circle" style="max-height:150px;">
+              <% } %>
+            </div>  
+            <div class="col-md-6">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1><%= post.blogPost.postTitle %></h1>
+
+                <!-- Author -->
+                <p class="lead">
+                    by <a href="/profile?fbId=<%=post.blogPost.authorid%>"><%= post.blogPost.authorName %></a>
+                </p>
+
+                <% if(post.blogPost.authorid == user.facebook.id)
+                  { %>
+                      <a href="/editBlogPost?blogpostid=<%=post._id%>" class="btn btn-xs btn-danger">Edit Post</a>
+
+                  <% } %> <!--if- close-->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <% var isodateString = post.blogPost.date.toISOString();
+                var displayableDate = getDate(isodateString) %>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on <%= displayableDate %></p>
+
+                <hr>
+
+                <!-- Post Content -->
+                <p class="lead" id="demo"></p>
+                <script>
+                  var myVar = <%- JSON.stringify(post.blogPost.postBody) %>;
+                  document.getElementById("demo").innerHTML = myVar;
+                </script>
+                <%if(post.blogPost.approved) { %>
+                <div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                <%}%>
+                
+                <hr>
+
+                <!-- Blog Comments -->
+
+                <!-- Comments Form -->
+                <div class="well">
+                    <h4>Leave a Comment:</h4>
+                    
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" id="comment"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="postid" value="<%= post._id %>" type="hidden"></input>
+                        </div>
+                        <button type="submit" class="btn btn-primary" onclick="saveComment()">Submit</button>
+                   
+                </div>
+
+                <hr>
+
+                <!-- Posted Comments -->
+                <% comments = comments.sort(function(a, b){
+                    var keyA = new Date(a.date),
+                    keyB = new Date(b.date);
+                    // Compare the 2 dates
+                    if(keyA < keyB) return 1;
+                    if(keyA > keyB) return -1;
+                    return 0;
+                });%>
+                <% comments.forEach(function(comment) { %> <!--loop for every comment -->
+                <!-- Comment -->
+                <div class="media">
+                    <a class="pull-left" href="/profile?fbId=<%=comment.commentorid%>">
+                      <% if(typeof comment.commentorPic == 'undefined' || comment.commentorPic == "") { %>
+                        <i class="fa fa-user" style="font-size:40px;color:rgba(59, 0, 0, 0.76)"></i>
+                      <% } else { %> 
+                        <img src=<%=comment.commentorPic %> class="img-circle" style="max-height:40px;">
+                      <% } %>
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading"><%= comment.commentorName %>
+                          <% var isodateString = comment.date.toISOString();
+                             var commentDate = getDate(isodateString) %>
+                            <small><%= commentDate %></small>
+                        </h4>
+                        <%= comment.comment %> 
+                    </div>
+                </div>
+                <br>
+                <% }); %> <!--comment loop ends-->
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+
+    </div>
+    <!-- /.container -->
+<div id = "footer"></div>
+    <!-- jQuery -->
+    <script src="/cleanblog/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/cleanblog/js/bootstrap.min.js"></script>
+
+    
+<script>
+$("#footer").load("footer.ejs"); 
+$("#headerloggedin").load("/header");
+$("#headerloggedout").load("headerloggedout.ejs");
+  function saveComment(){
+          console.log("This is executing");
+
+          var data = {
+            comment: $("#comment").val(),
+            postid: $("#postid").val()
+          };
+
+          $.ajax({ 
+           url: "/saveCommentBlogPost",
+           type: "POST",
+           cache: false, 
+           async: true,
+           data: data,
+
+           success: function(data){
+              console.log('Success!');
+              
+              if(data.completed == "OK") {
+                console.log("OK");
+                $("#comment").val("");
+                location.reload();
+                //generateNotificationLayout('success', 'topCenter', 'Post published');
+              } else {
+                console.log("NOK");
+                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+              }
+           }, 
+
+           error: function(jqXHR, textStatus, err){
+               console.log('text status '+textStatus+', err '+err);
+               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+           }
+        }); //end of ajax function 
+  } //end of savePostData function
+</script>
+
+
+</body>
+
+</html>
