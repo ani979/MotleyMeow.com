@@ -10,6 +10,7 @@ var express       = require('express'),
     post_request  = require('./routes/post_request'),
     post_event  = require('./routes/post_event'),
     artists  = require('./routes/artist'),
+    productionhouses  = require('./routes/productionhouse'),
     multer  = require('multer'),
     argv = require('optimist').argv,
     im = require('imagemagick');
@@ -26,6 +27,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var User = require('./models/user.js');
+var ProductionHouse = require('./models/productionhouse.js');
 var app = express();
 // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
@@ -274,6 +276,8 @@ app.get( '/home',  ensureAuthenticated, home.landing_home);
 app.post( '/saveNotificationClickDate', home.saveNotificationClickDate);
 app.get( '/getNotification', home.getNotification);
 app.get( '/profile', home.profile);
+app.get('/profileProductionHouse',ensureAuthenticated, home.profileProductionHouse);
+app.get( '/productionhouseEdit', home.productionhouseEdit);
 app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
 var mwMulter1 = multer({ dest: './views/uploads' });
@@ -295,6 +299,8 @@ app.post('/deleteArtist', artists.deleteArtist);
 app.get( '/getRecentPosts', ensureAuthenticated, post_request.getRecentPosts);
 app.get( '/getRecentArtists', ensureAuthenticated,  artists.getRecentArtists);
 // var mwMulter3 = multer({ dest: './views/profile' });
+app.post( '/updateProductionHouse',productionhouses.update);
+
 app.post( '/update',
                     multer({ 
                     dest: './views/portfolio/', 

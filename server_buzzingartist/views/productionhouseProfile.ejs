@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>PRODUCTION HOUSE</title>
+      
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+   
+     <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+ 
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/jquery.js"></script>
+       <script src="js/bootstrap.min.js"></script>
+ 
+       <script src="js/dropdowns-enhancement.js"></script>
+  
+      <script src="js/jquery.searcher.min.js"></script>
+
+       <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+  <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+   <link href="css/style.css" rel="stylesheet">       
+     <link href="css/tab.css" rel="stylesheet">
+     <link rel="stylesheet" href="css/font-awesome.min.css">
+  
+</head>
+  
+<body>
+
+
+ <div id = "headerloggedin"> </div>
+ 
+
+ <div id = "headerloggedout"/>
+ 
+
+
+<div class = "main-container">
+ 
+  
+<div class = "container" >
+
+   <div class="row">
+  
+   <div class="col-sm-2" style="padding:12px;margin-top:15px">
+
+        <% if(typeof productionhouse.local == 'undefined' || typeof productionhouse.local.picture == 'undefined' || productionhouse.local.picture.length ==0 ) { %>
+     <img src="<%= productionhouse.local.picture %>" class="img-rounded" alt="Cinque Terre" style="max-height:170px;" > 
+     <% } else { %>
+  <img src="./images/default.jpg" class="img-rounded" alt="Cinque Terre" style="max-height:170px;"> <% } %>
+
+
+ </div>
+
+    
+
+    <div class="col-sm-10" >
+
+
+   <div class="row">
+ <div class="col-sm-12" >
+
+ <h1 class="oratorFont" style="color:rgb(239, 239, 239);">
+    <% if(typeof productionhouse.local.myname == 'undefined' || productionhouse.local.myname == 0) { %>
+                              <p style="color:white;font-size:30px;padding-left:50px;" class="antiguaFont"><b>PRODUCTION &nbsp HOUSE</b></p>
+                            <% } else { %>  
+                              <p id="role" class="antiguaFont"><b><%= productionhouse.local.myname %></b></p>
+                            <% } %>
+
+          </h1>
+   </br>       
+</div>
+</br>
+
+ <div class="col-sm-12" >
+ <% if(typeof productionhouse.local.establishedIn == 'undefined' || productionhouse.local.establishedIn == 0) { %>
+                              <b style="color:white;font-size:20px;padding-left:50px;">Established In :</b></br>
+                              <p style="color:black;font-size:18px;padding-left:50px;"> Trying to recall..</p>
+                            <% } else { %>  
+                            <b style="color:white;font-size:20px;padding-left:50px;">Established In :</b></br>
+                           <p style="color:black;font-size:18px;padding-left:50px;"> <%= productionhouse.local.establishedIn %></p>
+                            <% } %>
+
+
+</div></br></br>
+ </br>
+  <div class="col-sm-12" >
+<b style="color:white;font-size:20px;padding-left:50px;" > About us : </b>
+
+                  <% if(typeof productionhouse.portfolio.myself == 'undefined' || typeof productionhouse.portfolio.myself == 'undefined' || productionhouse.portfolio.myself == "") { %>
+                    <p class="form-control-static antiguaFont" style="color:black;font-size:18px;padding-left:50px;" >You will know me soon!</p>
+                  <%} else {%>
+                    <p class="form-control-static antiguaFont" data-linkify="this"><%=productionhouse.portfolio.myself%>
+                  <% } %>
+
+                </div>
+
+
+
+ </p>
+
+  </div>
+
+
+
+
+ </div>
+
+
+     </div>
+ 
+  </div>
+
+
+<p> &nbsp </p>
+   <div class="row"  style="padding-left:20px;">
+  
+
+
+<div class="col-sm-3" style="padding-top:10px">
+            <!--left col-->
+            <ul class="list-group" >
+                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">CONTACT NUMBER: </span><br/>
+                          <% if(typeof productionhouse.local.contact == 'undefined' || productionhouse.local.contact == 0) { %>
+                              <p style="color:red;" class="antiguaFont"><b>Will be updating soon</b></p>
+                            <% } else { %>  
+                              <p style="word-wrap: break-word;" id="role" class="antiguaFont"><b><%= productionhouse.local.contact %></b></p>
+                            <% } %>
+                 
+                </li>
+                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">CITY:</span><br/> 
+                  <% if(typeof productionhouse.local.city == 'undefined' || productionhouse.local.city == "") { %>
+                  <p style="color:red" class="antiguaFont"><b>I need to set it</b></p>
+                  <% } else { %>  
+                  <p class="antiguaFont"><b><%= productionhouse.local.city %></b></p>
+                  <% } %>
+
+                </li>
+                  <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">OWNER's NAME:</span><br/> 
+                  <% if(typeof productionhouse.local.ownername == 'undefined' || productionhouse.local.ownername == "") { %>
+                  <p style="color:red" class="antiguaFont"><b>I need to set it</b></p>
+                  <% } else { %>  
+                  <p class="antiguaFont"><b><%= productionhouse.local.ownername %></b></p>
+                  <% } %>
+                 
+                </li>
+          </ul>
+         
+          
+        </div>
+
+
+   <div class="col-sm-9">
+<div class="row">
+<div class = "col-md-12 col-sm-12 col-xs-12 oratorFont">
+          <b><a href = "#myjourney" style="padding-right:20px;color:rgba(232, 231, 231, 0.95); text-decoration:none;">MY JOURNEY</a> 
+          <a href = "#myhours" style="padding-right:20px;color:rgba(232, 231, 231, 0.95); text-decoration:none">MY HOURS OF OPERATION</a> 
+          <a href = "#mypics" style="padding-right:20px;color:rgba(232, 231, 231, 0.95); text-decoration:none">MY PICTURES</a> 
+          <a href = "#myadd" style="padding-right:20px;color:rgba(232, 231, 231, 0.95); text-decoration:none">MY ADDRESS</a>
+          <a href = "#myplays" style="padding-right:20px;color:rgba(232, 231, 231, 0.95); text-decoration:none">MY PLAYS</a>
+ 
+                  
+                    <a href="/productionhouseEdit" title="Edit profile" data-toggle="tooltip" style= "text-decoration:none;"><i class="profilePageicon glyphicon glyphicon-edit" style="color:rgba(249, 243, 243, 0.95);"></i></a>
+                    <label class="profilePageiconRow  oratorFont" style="display: inline-block;">EDIT</label>
+                   </b>
+        </div>
+
+</div>
+
+<div id="myjourney" class="panel panel-default panelColors">
+                
+                <div class="panel-body"> 
+                  <h3 style="margin-top:0px;" class="oratorFont">MY JOURNEY</h3>
+                  <% if(typeof productionhouse.portfolio.journey == 'undefined' || productionhouse.portfolio.journey == "") { %>
+                    <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">It is a long story..</span>
+                  <%} else {%>
+                    <p class="form-control-static antiguaFont" data-linkify="this"><%= productionhouse.portfolio.journey%>
+                  <% } %>
+
+                </div>
+            </div>
+
+<div id="myhours" class="panel panel-default panelColors">
+                
+                <div class="panel-body"> 
+                  <h3 style="margin-top:0px;" class="oratorFont">MY HOURS OF OPERATION</h3>
+                  <% if(typeof productionhouse.portfolio.myHoursOfOperation == 'undefined' || productionhouse.portfolio.myHoursOfOperation == "") { %>
+                    <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">Will write it when we have a day off!</span>
+                  <%} else {%>
+                    <p class="form-control-static antiguaFont" data-linkify="this"><%= productionhouse.portfolio.myHoursOfOperation%>
+                  <% } %>
+
+                </div>
+            </div>
+ <div id="mypics" class="panel panel-default target panelColors">
+                
+                  <div class="panel-body">
+                    <h3 style="margin-top:0px;" class="oratorFont">MY PICTURES</h3>
+                    <% if(typeof productionhouse.portfolio == 'undefined' || typeof productionhouse.portfolio.myPhotos == 'undefined' || productionhouse.portfolio.myPhotos.length ==0 ) { %>
+                      
+                        <p class="form-control-static" ><span class="fieldNote antiguaFont" style="color:inherit">My portfolio shoot negatives are getting cleaned. Will be up soon!!</span>
+                      
+                    <% } else { 
+
+                        console.log(" productionhouse.portfolio.myPhotos.length " + productionhouse.portfolio.myPhotos.length) %>
+                        
+                          <div id="links" class="row">
+                          <% for(var i = 0; i < productionhouse.portfolio.myPhotos.length; i ++ ) { %> 
+ 
+                               
+                                <a href="/portfolio/<%=productionhouse.facebook.id%>/pictures/<%=productionhouse.portfolio.myPhotos[i]%>" title="Portfolio image" data-gallery>
+                                    <div class="img" style="background-image:url('/portfolio/<%=productionhouse.facebook.id%>/pictures/<%=productionhouse.portfolio.myPhotos[i]%>');background-position: -5px 1px;"></div>
+                              
+                                </a>
+
+                          <% } %>
+                          </div>
+                    <% } %>
+                      
+                    
+                    
+                </div> </div>
+                <div id="myadd" class="panel panel-default panelColors">
+                
+                <div class="panel-body"> 
+                  <h3 style="margin-top:0px;" class="oratorFont">MY ADDRESS</h3>
+                  <% if(typeof productionhouse.portfolio.myAddress == 'undefined' || productionhouse.portfolio.myAddress == "") { %>
+                    <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">Will write it soon..</span>
+                  <%} else {%>
+                    <p class="form-control-static antiguaFont" data-linkify="this"><%= productionhouse.portfolio.myAddress%>
+                  <% } %>
+
+                </div></div>
+<div id ="myplays" class="panel panel-default target panelColors">
+                <div class="panel-body">
+                  <h3 style="margin-top:0px;" class="oratorFont">MY PLAYS</h3>
+                    <% if(typeof productionhouse.portfolio == 'undefined' || typeof productionhouse.portfolio.myPlays == 'undefined' || productionhouse.portfolio.myPlays.length ==0 ) { %>
+                      
+                        <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">The list is big. Its getting posted one by one!</span> 
+                      
+                    <% } else { %>
+                        <ul> 
+                        <% for(var i = 0; i < productionhouse.portfolio.myPlays.length; i ++ ) { %> 
+
+                                <% if(typeof productionhouse.portfolio.myPlays[i].playName != 'undefined' && productionhouse.portfolio.myPlays[i].playName !="") { %>
+                                  
+                                  <%=productionhouse.portfolio.myPlays[i].playProdYear%>&nbsp; <a href="<%=productionhouse.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;" class="antiguaFont">"<%=productionhouse.portfolio.myPlays[i].playName%>"</a>&nbsp;<%=productionhouse.portfolio.myPlays[i].playContrib%>&nbsp;&nbsp;<b><%=productionhouse.portfolio.myPlays[i].playGroup%></b>
+                                  
+                                <% } %>  
+                                  <div>&nbsp;</div>
+                                  
+                        <% } %>
+                      </ul>
+                    <%} %>
+                    
+                    <!-- <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe><iframe src="http://www.youtube.com/embed/W7qWa52k-nE"
+                            width="560" height="315" frameborder="0" allowfullscreen></iframe>  
+                  </div>   -->
+                </div>
+
+             </div>
+
+
+            </div> 
+             </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+   <div id = "footer" class ="oratorFont">
+         <div class="container col-md-12 pull-right" >
+            <div class="bottom-footer">
+                  <ul class="footer-nav" style="font-size:16px;text-align:right">
+                    <li><a href="/aboutus">About Us |</a></li>
+                    <li><a href="/faq">FAQs |</a></li>
+                    <li><a href="/supportUs">Support US |</a></li>
+                    <li><a href="/credits">Thank You |</a></li>
+                    <li><a href="/terms">Terms Of Use |</a></li>
+                    <li><a href="/terms">Contact Us</a></li>
+                  </ul>
+            </div>
+        
+            
+
+
+            <div class="row cp-copyright" style="text-align:right;">
+                <div class="col-sm-12 col-xs-12">
+                    <small>&copy; 2015 <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. | <a href="/privacy">Privacy Policy</a></small>
+                </div>
+            </div>
+          </div> 
+        </div>
+
+</div>
+
+
+
+ <script src="js/linkified-min.js"></script>
+    <script src="js/lightbox.min.js"></script>
+    <script src="js/jquery.blueimp-gallery.min.js"></script>
+    <script src="js/bootstrap-image-gallery.min.js"></script>
+
+<script>
+    $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    
+
+   
+</script>    
+
+
+ 
+</body>
+
+
+
+
+
+
+</html>

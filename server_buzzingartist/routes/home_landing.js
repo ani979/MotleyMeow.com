@@ -6,7 +6,7 @@ var Event = require('../models/event.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var config        = require('../oauth.js')
 var async        = require('async')
-
+var ProductionHouse = require('../models/productionhouse');
 
 /*FB.options({
     appId:          config.facebook.appId,
@@ -21,6 +21,7 @@ var profile = {
     email:'',
     gender:'',
 };
+
 
 exports.index = function(req, res) {
 
@@ -99,6 +100,60 @@ exports.profile = function (req, res) {
     // }
 };
 
+exports.profileProductionHouse = function (req, res) {
+   var accessToken = req.session.access_token;
+    var fbid = "";
+    
+   
+        console.log("isAuthenticatedddddddd22PH: "+ req.isAuthenticated());
+        
+            
+            if(typeof req.query.fbId == 'undefined') {
+                fbid = req.session.user.facebook.id;
+            } else {
+                fbid = req.query.fbId;
+            }
+
+
+ ProductionHouse.findOne({ 'facebook.id' : fbid }, function(err, user) {
+               
+               if (err) {
+                        req.flash('info', "There is an error connecting to the database")
+                        res.redirect('/error');
+                    return 1;
+                     }   
+                    
+                    
+                    if (!user) {
+console.log("A");
+                        var newPH  = new ProductionHouse();
+                        newPH.facebook.id    = fbid; 
+                       
+                         newPH.save(function(err) {
+                            
+                            if (err) {
+                                req.flash('info', "Error while saving the user in the database")
+                                res.redirect('/error');
+                            return 1;
+                            }
+                        });
+
+
+                            }
+                    return 1;
+                        });
+
+
+
+
+
+console.log("B");
+
+            ProductionHouse.findOne({ 'facebook.id' : fbid}, function(error, db) {
+                res.render('productionhouseProfile', { productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
+            });    
+     
+};
 exports.profileEdit = function (req, res) {
     var accessToken = req.session.access_token;
     console.log("accesstoken111: "+ accessToken);
@@ -116,6 +171,25 @@ exports.profileEdit = function (req, res) {
         res.redirect('/');
     }
 };
+
+exports.productionhouseEdit = function (req, res) {
+    var accessToken = req.session.access_token;
+    console.log("accesstokenk11: "+ accessToken);
+    if(!accessToken) {
+        console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
+        if(req.isAuthenticated()) {
+
+            res.render('productionhouseEdit', {  productionhouse: req.session.user, dropdowns:dropdowns});
+        } else {
+                res.redirect('/');
+            
+        }
+    } else {
+        // res.render('home');
+        res.redirect('/');
+    }
+};
+
 
 exports.saveNotificationClickDate = function(req, res) {
     console.log("saveNotificationClickDateeeeeeeeee: "+req.body.notificationCount);
