@@ -128,9 +128,10 @@ exports.viewThread = function(req, res){
 		{
 			console.log("Error in retrieving thread");
 		}
-		else
+		else if(doc != null)
 
 		{
+			
 			console.log(doc);
 			var category = doc.thread.category;
 			var categoryName = "";
@@ -138,6 +139,7 @@ exports.viewThread = function(req, res){
 			categoryName = convertCategoryToName(category);
 
 			res.render("viewThread", {user: req.session.user, thread: doc, categoryName:categoryName, category:category})
+				
 		}
 	});
 }
@@ -229,3 +231,36 @@ exports.displayForumReplies = function(req, res){
             }
     });
 };
+
+exports.editOldThread = function(req, res) {
+	console.log("Going to edit a thread req.body " + req.body);
+	forum.findOne({'_id' : req.body.threadid}, function(err, thread){
+		thread.thread.topic = req.body.title;
+		thread.thread.tbody = req.body.body;
+		thread.save(function(err, thread) {
+           if (err) {
+                console.log("Error in saving" + err);
+                res.send({completed: "NOK"});  
+            } else {
+                console.log("Saved");
+                console.log(thread);
+                //req.session.blogId = newblogpost._id;
+//                            res.send({completed: "OK", redirect: "/myBlogPosts"});
+                res.send({completed: "OK"});
+            }
+        });    
+	});	
+}
+
+exports.deleteForumThread = function(req, res) {
+	console.log("Going to delete a thread req.body " + req.body);
+	forum.remove({ '_id' : req.body.threadid }, function(error, db) {
+      if (error) {
+          console.log('info', "Error while removing the forum post")
+          res.send({completed: "NOK"});
+      } else {
+            console.log("Forum post delete");
+            res.send({completed: "OK", redirect: "/forum"});
+       }
+  });  
+}
