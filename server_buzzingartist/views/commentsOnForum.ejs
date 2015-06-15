@@ -13,7 +13,7 @@
  		   	  								
 					                    	<!--Date/Time-->
 					                    	<% var xisodateString = reply.date.toISOString();
-		               						 var xdisplayableDate = getDate(xisodateString) %>	
+		               						 var xdisplayableDate = getDate(xisodateString) + " " + reply.date.toLocaleTimeString()%>	
  		   	  								<p><a class="pull-left" href="/profile?fbId=<%=reply.commentorid%>">
 									            <% if(typeof reply.commentorPic == 'undefined' || reply.commentorPic == "") { %>
 									              <i class="fa fa-user" style="font-size:40px;color:rgba(59, 0, 0, 0.76)"></i>

@@ -39,6 +39,14 @@
 %>  
 
 <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1381852852123169&version=v2.0";
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 	<% if(typeof user != 'undefined' && user!=null) { %>
 	<div id = "headerloggedin"> </div>
 	<% } else { %>
@@ -70,7 +78,7 @@
 
                     	<!-- Date/Time -->
 		                <% var isodateString = thread.thread.date.toISOString();
-		                var displayableDate = getDate(isodateString) %>
+		                var displayableDate = getDate(isodateString) + " "  + thread.thread.date.toLocaleTimeString() + " hrs"%>
 		    			<p><small><b><a href="/profile?fbId=<%=thread.thread.authorid%>"><%= thread.thread.authorName%></a></b> posted on <%=displayableDate%> </small></p>
 		    			<p><%= thread.thread.tbody %></p>
 		    		</div>
@@ -100,7 +108,7 @@
                    
                 	</div>
 
-		    		 
+		    		<div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 		    		<hr>
 
 		    		<div class="replies" id="forumReplies">
