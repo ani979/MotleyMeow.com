@@ -22,11 +22,12 @@
 
 	<!-- jQuery -->
     <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    
-    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet"> 
+     <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -92,7 +93,8 @@
 
                 <% if(post.blogPost.authorid == user.facebook.id)
                   { %>
-                      <a href="/editBlogPost?blogpostid=<%=post._id%>" class="btn btn-xs btn-danger">Edit Post</a>
+                      <a href="/editBlogPost?blogpostid=<%=post._id%>" class="btn btn-xs btn-info">Edit Post</a>
+                      <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Post</button>
 
                   <% } %> <!--if- close-->
 
@@ -149,13 +151,34 @@
 
     </div>
     <!-- /.container -->
+  
 <div id = "footer"></div>
+<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+    <form action="" method="post" id="deleteForm">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                   <h4 class="modal-title">DELETE ME</h4>
+              </div>
+              
+              <div class="modal-body">
+                  Are you sure you want to delete this blog post?
+              </div>
+              
+              <div class="modal-footer">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default" onclick="submitForDelete()">OK</button></span>
+              </div>
+          </div>
+      </div>
+    </form>
+  </div>
     <!-- jQuery -->
 <script src="/cleanblog/js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/cleanblog/js/bootstrap.min.js"></script>
-
+<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
     
 <script>
 
@@ -165,6 +188,44 @@ $(document).ready(function(e) {
 $("#footer").load("footer.ejs"); 
 $("#headerloggedin").load("/header");
 $("#headerloggedout").load("headerloggedout.ejs");
+function generateNotificationLayout(type, layout, text) {
+         var n = noty({ layout: layout,
+          type: type,
+          text: text, // can be html or string
+          dismissQueue: true, // If you want to use queue feature set this true
+          template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+          animation: {
+              open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+              close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+              easing: 'swing',
+              speed: 500 // opening & closing animation speed
+          },
+          timeout: false, // delay for closing event. Set false for sticky notifications
+          force: false, // adds notification to the beginning of queue when set to true
+          modal: false,
+          maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+          killer: false, // for close all notifications before show
+           // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+          callback: {
+              onShow: function() {
+              },
+              afterShow: function() {},
+              onClose: function() {
+                      
+              },
+              afterClose: function() {},
+              onCloseClick: function() {}
+          },
+          closeWith: ["click","button"],
+          buttons: [
+              {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+                $noty.close();
+                  }
+               }
+              
+            ]
+        });
+      }   
   function saveComment(){
           
           console.log("This is executing");
@@ -201,6 +262,44 @@ $("#headerloggedout").load("headerloggedout.ejs");
            }
         }); //end of ajax function 
   } //end of savePostData function
+
+  function submitForDelete() {
+    var data = {
+          postid: $("#postid").val()
+    };
+
+    $.ajax({ 
+     url: "/deleteBlogPost",
+     type: "POST",
+     cache: false, 
+     async: true,
+     data: data,
+
+     success: function(data){
+        console.log('Success!');
+        
+        
+        if(data.completed == "OK") {
+         console.log("OK");
+         //document.getElementById(divallthreads).innerHTML = "";               
+           window.location.href = data.redirect;
+           
+
+          //generateNotificationLayout('success', 'topCenter', 'Post published');
+        } else {
+          console.log("NOK");
+          
+          generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+        }
+     }, 
+
+     error: function(jqXHR, textStatus, err){
+         console.log('text status '+textStatus+', err '+err);
+         //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+     }
+    }); //end of ajax function 
+
+  } 
 </script>
 
 

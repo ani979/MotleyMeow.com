@@ -898,6 +898,7 @@ app.post('/deleteForumThread', ensureAuthenticated, forum.deleteForumThread);
 app.get('/newBlogPost', ensureAuthenticated, blog.newBlogPost);
 app.post('/saveNewBlogPostData', ensureAuthenticated, blog.saveNewBlogPostData);
 app.get('/myBlogPosts', ensureAuthenticated, blog.myBlogPosts);
+app.post('/deleteBlogPost', ensureAuthenticated, blog.deleteBlogPost);
 app.get('/displayComments', ensureAuthenticated, blog.displayComments);
 //app.post('/displayFullBlogPost', blog.displayFullBlogPost);
 app.get('/displayBlogPost', blog.displayBlogPost);

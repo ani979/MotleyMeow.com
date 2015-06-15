@@ -350,3 +350,16 @@ exports.searchmyblogposts = function(req, res){
         } 
     });
 }
+
+exports.deleteBlogPost = function(req, res) {
+    console.log("Going to delete a blog req.body " + req.body);
+    BlogPost.remove({ '_id' : req.body.postid }, function(error, db) {
+      if (error) {
+          console.log('info', "Error while removing the blog")
+          res.send({completed: "NOK"});
+      } else {
+            console.log("Forum post delete");
+            res.send({completed: "OK", redirect: "/myBlogPosts"});
+       }
+  });  
+}

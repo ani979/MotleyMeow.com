@@ -6,13 +6,17 @@
 	
 	<title>Forum</title> 
 	<meta name="description" content="Be a part of the buzz." />	    
-	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
-	<meta property="og:title" content="MotleyMeow">
+	<meta name="keywords" content="forum, motleymeow">
+    <meta property="og:title" content="View the forum thread <%=thread.thread.topic%>">
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <meta property="og:description" content="Read about this thread from <%= thread.thread.authorName %>"/>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <link href="css/tab.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet"> 
+     <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
     <script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 	<script type="application/x-javascript">
       tinymce.init({
@@ -175,7 +179,7 @@ fjs.parentNode.insertBefore(js, fjs);
 	<div id = "footer"></div>
 
 	<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
-    <form action="/deleteArtist" method="post" id="deleteForm">
+    <form action="" method="post" id="deleteForm">
       <div class="modal-dialog">
           <div class="modal-content">
               <div class="modal-header" style = "background-color: #528FCC;">

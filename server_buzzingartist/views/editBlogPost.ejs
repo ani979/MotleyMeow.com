@@ -50,7 +50,7 @@
       <h1>Blogging</h1>
       <p>Go ahead and make those changes!</p>
 
-<form class="form-horizontal">
+<form class="form-horizontal" id="editBlog">
 <fieldset>
 
 <!-- Form Name -->
@@ -127,7 +127,7 @@
 <div class="control-group">
   <label class="control-label" for="buttonPublish">Final things</label>
   <div class="controls">
-    <button id="buttonPublish" name="buttonPublish" class="btn btn-success" type="button" value="submit" onclick="savePostData()">Publish Post</button>
+    <button id="buttonPublish" name="buttonPublish" class="btn btn-success" type="submit" value="submit">Publish Post</button>
     <button id="buttonCancel" name="buttonCancel" class="btn btn-danger" type="button" onclick="cancelPost()">Cancel Post</button>
   </div>
 </div>
@@ -152,7 +152,7 @@
     <!-- The JQUERY UI is very much needed for tag and just after jquery UI.js we need to add tag it.js -->
     <script src="/js/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="/js/tag-it.min.js" type="text/javascript" charset="utf-8"></script>
-
+<script src="js/jquery-validate.js"></script>
     
 <script>
   $("#footer").load("footer.ejs"); 
@@ -161,6 +161,17 @@
 
   $(document).ready(function() {
         $("#tagsForPost").tagit();
+
+         $('#editBlog').validate({
+          rules: {
+            postTitle: {
+                required: true
+            }
+          },
+          submitHandler: function(form) {
+            savePostData();
+          }  
+        });
     });
 
   function savePostData(){
