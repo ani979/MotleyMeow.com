@@ -13,6 +13,14 @@
     <script src="js/bootstrap.min.js"></script>
     <link href="css/tab.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet"> 
+    <script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+	<script type="application/x-javascript">
+      tinymce.init({
+        selector:'#body',
+        plugins: "link"
+        //save_onsavecallback: "savePostData"      
+      });
+    </script>	
 
     <style>
 	    .links {
@@ -62,31 +70,70 @@ fjs.parentNode.insertBefore(js, fjs);
 	    			<div class="links">
     					<h4><a href="/forum">Forum</a> / <a href="/viewCategory?category=<%=category%>"><%=categoryName%></a> / </h4>
     				</div>
+    				<div id = "ForumPost">
+		    			<div class="title">
+			    			<h3><%= thread.thread.topic %></h3>
+			    		</div>
 
-	    			<div class="title">
-		    			<h3><%= thread.thread.topic %></h3>
-		    		</div>
+			    		<div class="threadBody">
+			    			<div class="pull-left" style="padding-right:20px">
+	                        	  <% if(typeof thread.thread.authorPic == 'undefined' || thread.thread.authorPic == "") { %>
+					                <i class="fa fa-user" style="font-size:50px;color:rgba(59, 0, 0, 0.76)"></i>
+					              <% } else { %> 
+					                <img src=<%=thread.thread.authorPic %> class="img-circle" style="max-height:50px;">
+					              <% } %>
+	                    	</div>
 
-		    		<div class="threadBody">
-		    			<div class="pull-left" style="padding-right:20px">
-                        	  <% if(typeof thread.thread.authorPic == 'undefined' || thread.thread.authorPic == "") { %>
-				                <i class="fa fa-user" style="font-size:50px;color:rgba(59, 0, 0, 0.76)"></i>
-				              <% } else { %> 
-				                <img src=<%=thread.thread.authorPic %> class="img-circle" style="max-height:50px;">
-				              <% } %>
-                    	</div>
+	                    	<!-- Date/Time -->
+			                <% var isodateString = thread.thread.date.toISOString();
+			                var displayableDate = getDate(isodateString) + " "  + thread.thread.date.toLocaleTimeString() + " hrs"%>
+			    			<p><small><b><a href="/profile?fbId=<%=thread.thread.authorid%>"><%= thread.thread.authorName%></a></b> posted on <%=displayableDate%> </small></p>
+			    			<p id="forumPost"></p>
+			    			<script>
+			                  var myVar = <%- JSON.stringify(thread.thread.tbody) %>;
+			                  document.getElementById("forumPost").innerHTML = myVar;
+			                </script>
+			    		</div>
+			    		<% if(user.facebook.id == thread.thread.authorid) { %>
+		    				<button id ="deletePost" type="button" class="btn-info" onclick="editThread()">EDIT</button>&nbsp;&nbsp;<button id ="deletePost" type="button" class="btn-danger" data-toggle="modal" data-target="#deleteModal">DELETE</button>
+		    			<% } %>	
+			    	</div>	
 
-                    	<!-- Date/Time -->
-		                <% var isodateString = thread.thread.date.toISOString();
-		                var displayableDate = getDate(isodateString) + " "  + thread.thread.date.toLocaleTimeString() + " hrs"%>
-		    			<p><small><b><a href="/profile?fbId=<%=thread.thread.authorid%>"><%= thread.thread.authorName%></a></b> posted on <%=displayableDate%> </small></p>
-		    			<p id="forumPost"></p>
-		    			<script>
-		                  var myVar = <%- JSON.stringify(thread.thread.tbody) %>;
-		                  document.getElementById("forumPost").innerHTML = myVar;
-		                </script>
-		    		</div>
+		    		
+		    		<div id="newThreadModal" style="display:none;">
+      
+			        
+				        <div class="control-group">
+				            <!--<form class="form-horizontal" name="commentform" method="post" action = "/sendMailsToArtists">-->
+				            <form class="form-horizontal" name="threadform" id="threadform">
+				                <div class="form-group">
+				                    <label class="control-label col-md-2" for="title">Thread topic</label>
+				                    <div class="col-md-8">
+				                      <input type="text" class="form-control" id="title" name="title" placeholder="What do you want to talk about?" value="<%=thread.thread.topic%>"/>
+				                    </div>
+				                </div>
+				          
+				                <div class="form-group">
+				                    <label class="control-label col-md-2" for="body">Thread Body</label>
+				                    <div class="col-md-8">
+				                        <textarea class="form-control" id="body" name="body" placeholder="Compose post"><%=thread.thread.tbody%></textarea>
+				                    </div>
+				                </div>
 
+				                <div class="control-group">
+								  <input id="forumid" value="<%= thread._id %>" type="hidden"></input>
+								</div>
+
+				                <div class="col-md-6 col-md-offset-2">
+			                        <button type="button" value="Submit" class="btn btn-primary" id="edit_btn" onclick="saveThread()" style="text-align:center;">Save</button>
+			                        <button type="button" value="Submit" class="btn btn-danger" id="del_btn" data-toggle="modal" data-target="#deleteModal" style="text-align:center;">Delete</button>
+			                     </div>   
+				               
+
+				            </form>
+				        </div><!-- End of Modal body -->
+			        </div><!-- End of Modal content -->
+			        <br/>
 		    		<hr>
 
 		    		<div class="well">
@@ -126,6 +173,27 @@ fjs.parentNode.insertBefore(js, fjs);
 
 
 	<div id = "footer"></div>
+
+	<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+    <form action="/deleteArtist" method="post" id="deleteForm">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                   <h4 class="modal-title">DELETE ME</h4>
+              </div>
+              
+              <div class="modal-body">
+                  Are you sure you want to delete the forum post?
+              </div>
+              
+              <div class="modal-footer">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default" onclick="submitForDelete()">OK</button></span>
+              </div>
+          </div>
+      </div>
+    </form>
+  </div>  
 </body>
 
 	<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
@@ -160,6 +228,7 @@ $(document).ready(function(e) {
 	              if(data.completed == "OK") {
 	               console.log("OK");
 	               $("#forumReplies").load("displayForumReplies?forumid=" + $("#threadid").val());
+	               $("#rbody").val("");
 	               //closeModal();
 	               //document.getElementById(divallthreads).innerHTML = "";               
                    //location.reload();
@@ -180,10 +249,7 @@ $(document).ready(function(e) {
 	        }); //end of ajax function 
 	  	} //end of savePostData function
 
-	  	function closeModal()  //function to close modal 
-	    {
-	       $("#newReplyModal").modal('hide');
-	    }
+	  	
 
 	    function generateNotificationLayout(type, layout, text) {
 	       var n = noty({ layout: layout,
@@ -223,6 +289,91 @@ $(document).ready(function(e) {
 	          ]
 	      });
 	    }   
+
+	    function editThread()  //function to close modal 
+	    {
+	       $('#ForumPost').hide();
+	       $("#newThreadModal").show();
+	    }
+
+	    function saveThread(){
+	          tinyMCE.triggerSave();
+	          var data = {
+	            title: $("#title").val(),
+	            body: $("#body").val(),
+	            threadid: $("#threadid").val()
+	          };
+
+	          $.ajax({ 
+	           url: "/editOldThread",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                   location.reload();
+                   
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
+
+	  	function submitForDelete() {
+	  		var data = {
+	            
+	            threadid: $("#threadid").val()
+	          };
+
+	          $.ajax({ 
+	           url: "/deleteForumThread",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                   window.location.href = data.redirect;
+                   
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+
+	  	}	
 	</script>
 
 </html>
