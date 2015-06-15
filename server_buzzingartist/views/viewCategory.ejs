@@ -15,8 +15,14 @@
     <link href="css/style.css" rel="stylesheet">  
     <link href="css/viewforumcategories.css" rel="stylesheet">
     <link rel="stylesheet" href="css/font-awesome.min.css">
-	
-		
+	<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+	<script type="application/x-javascript">
+      tinymce.init({
+        selector:'#body',
+        plugins: "link"
+        //save_onsavecallback: "savePostData"      
+      });
+    </script>	
 </head>
 
 <% getDate = function(x) {
@@ -153,7 +159,7 @@
 
 		function createThread(){
 	          console.log("This is executing");
-
+	          tinyMCE.triggerSave();
 	          var data = {
 	            title: $("#title").val(),
 	            body: $("#body").val(),

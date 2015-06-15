@@ -62,8 +62,8 @@ exports.myBlogPosts = function(req, res){
     }
 
 	var userblogposts;
-    BlogPost.find({'blogPost.authorid' : user.facebook.id}, function(err, blogposts)
-    {
+    BlogPost.find({'blogPost.authorid' : user.facebook.id}).sort({'blogPost.date': -1 }).exec(function(err, blogposts) {
+   
         //console.log(blogposts);
         //console.log(count);
         if(err)

@@ -80,7 +80,11 @@ fjs.parentNode.insertBefore(js, fjs);
 		                <% var isodateString = thread.thread.date.toISOString();
 		                var displayableDate = getDate(isodateString) + " "  + thread.thread.date.toLocaleTimeString() + " hrs"%>
 		    			<p><small><b><a href="/profile?fbId=<%=thread.thread.authorid%>"><%= thread.thread.authorName%></a></b> posted on <%=displayableDate%> </small></p>
-		    			<p><%= thread.thread.tbody %></p>
+		    			<p id="forumPost"></p>
+		    			<script>
+		                  var myVar = <%- JSON.stringify(thread.thread.tbody) %>;
+		                  document.getElementById("forumPost").innerHTML = myVar;
+		                </script>
 		    		</div>
 
 		    		<hr>
