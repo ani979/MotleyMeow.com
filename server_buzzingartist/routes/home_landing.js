@@ -7,6 +7,8 @@ var dropdowns = require('../views/js/theatreContrib.js');
 var config        = require('../oauth.js')
 var async        = require('async')
 var BlogPost = require('../models/blogPost'); 
+var Forum = require('../models/forum'); 
+
 
 
 /*FB.options({
@@ -239,7 +241,7 @@ exports.landing_home = function(req, res) {
     var otherEvents=null;
     var foundUser = req.session.user
     var then = new Date();
-
+    var now = new Date();
 
     then.setDate(then.getDate() - 10);
     var selectedCity = new Array();
@@ -268,6 +270,7 @@ exports.landing_home = function(req, res) {
     var postsArray = new Array();
     var recentPostsArray = new Array();
     var allLastUpdtdUsers = new Array();
+    var allForumThreads = {};
     var recentJoinedUsers = {};
     var eventsInDB = {};
     var allBlogPosts = {};
@@ -409,7 +412,7 @@ exports.landing_home = function(req, res) {
                 //         callback(null, "DONE3")
                 //     });
                 // } else {
-                    Posts.aggregate([{ $match: { 'post.date': { $gte: (then) } } } , { $sort : { 'post.date' : -1 } } ],
+                    Posts.aggregate([{ $match: { 'post.date': { $gte: (then) } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
                         function(err, allpostsinDB) {
                         if (err || typeof allpostsinDB == 'undefined') {
                             console.log("Error while getting all posts");
@@ -482,6 +485,26 @@ exports.landing_home = function(req, res) {
                     callback(null, "DONE6")
                 });
                
+            },
+            function(callback){
+                console.log("i am here777")
+                Forum.aggregate([{ $match: { 'thread.date': { $lte: (now) } } } , { $sort : { 'thread.date' : -1 } }, {$limit:5} ], function(err, threads) {
+                    //console.log(blogposts);
+                    //console.log(count);
+                    if(err) {
+                        console.log("errror in fetching all forum threads");
+                        allForumThreads = {};
+                        
+                    }
+                    else {
+                        console.log("All forum posts fetched " + threads.length);
+                        allForumThreads = threads;
+                        
+                        
+                    } 
+                    callback(null, "DONE7")
+                });
+               
             }
 
 
@@ -494,7 +517,7 @@ exports.landing_home = function(req, res) {
             //allDBPosts.sort(function(a,b) { return new Date(a.result.date).getTime() - new Date(b.result.date).getTime(); });
             res.render("Landing", {user: req.session.user, events: eventsInDB, users:recentJoinedUsers, allPosts: allDBPosts, 
                 appId:config.facebook.clientID, dropdowns:dropdowns, recentPostsForArtist:postsArray,notificationCount:recentPostsArray.length, lastProfileUpdtd:allLastUpdtdUsers,
-                allBlogs:allBlogPosts})
+                allBlogs:allBlogPosts, allThreads:allForumThreads})
             // the results array will equal ['one','two'] even though
             // the second function had a shorter timeout.
         }
