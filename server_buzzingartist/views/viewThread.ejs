@@ -99,7 +99,12 @@ fjs.parentNode.insertBefore(js, fjs);
 			                </script>
 			    		</div>
 			    		<% if(user.facebook.id == thread.thread.authorid) { %>
-		    				<button id ="deletePost" type="button" class="btn-info" onclick="editThread()">EDIT</button>&nbsp;&nbsp;<button id ="deletePost" type="button" class="btn-danger" data-toggle="modal" data-target="#deleteModal">DELETE</button>
+		    				<button id ="deletePost" type="button" class="btn-info" onclick="editThread()">EDIT</button>&nbsp;&nbsp;<button id ="deletePost" type="button" class="btn-danger" data-toggle="modal" data-target="#deleteModal">DELETE</button>&nbsp;&nbsp;
+		    				<% if(thread.thread.closed) { %>
+		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('open')">OPEN</button><span class="question">?</span>
+		    				<% } else { %>
+		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('close')">CLOSE</button><span class="question">?</span>
+		    				<% } %>
 		    			<% } %>	
 			    	</div>	
 
@@ -125,7 +130,7 @@ fjs.parentNode.insertBefore(js, fjs);
 				                </div>
 
 				                <div class="control-group">
-								  <input id="forumid" value="<%= thread._id %>" type="hidden"></input>
+								  <input id="threadid" value="<%= thread._id %>" type="hidden"></input>
 								</div>
 
 				                <div class="col-md-6 col-md-offset-2">
@@ -139,29 +144,28 @@ fjs.parentNode.insertBefore(js, fjs);
 			        </div><!-- End of Modal content -->
 			        <br/>
 		    		<hr>
+		    		<% if(!thread.thread.closed) {%>
+			    		<div class="well">
+		                    <h4>Leave a Response:</h4>
+		                    
+		                       <div class="form-group">
+			                    <div class="col-md-12">
+			                        <textarea class="form-control" id="rbody" name="rbody" placeholder="Compose reply" style="min-height:25px;"></textarea>
+			                    </div>
+					           </div>
 
-		    		<div class="well">
-	                    <h4>Leave a Response:</h4>
-	                    
-	                       <div class="form-group">
-		                    <div class="col-md-12">
-		                        <textarea class="form-control" id="rbody" name="rbody" placeholder="Compose reply" style="min-height:25px;"></textarea>
-		                    </div>
-				           </div>
+				                
+			                	<div>&nbsp;</div>
+		                        <!-- <div class="form-group">
+					                    <div class="col-md-6"> -->
+					            <button type="button" value="Submit" class="btn btn-primary" id="send_btn" onclick="createReply()">Your response</button>
+					                    <!-- </div>
+					            </div> -->
 
-			                <div class="form-group">
-		                  	 	 <input type="hidden" name="threadid" id="threadid" value="<%= thread._id %>"/>
-		                	</div>
-		                	<div>&nbsp;</div>
-	                        <!-- <div class="form-group">
-				                    <div class="col-md-6"> -->
-				            <button type="button" value="Submit" class="btn btn-primary" id="send_btn" onclick="createReply()">Your response</button>
-				                    <!-- </div>
-				            </div> -->
-
-				            
-                   
-                	</div>
+					            
+	                   
+	                	</div>
+	                <% } %>	
 
 		    		<div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 		    		<hr>
@@ -205,6 +209,16 @@ fjs.parentNode.insertBefore(js, fjs);
 <script>
 $(document).ready(function(e) {
   $('#forumReplies').load("displayForumReplies?forumid=" + $("#threadid").val());
+
+  $(".question").hover(function () {
+        //alert("hello")
+        $(this).append('<div class=tooltip><p>Change the state. Closed means it wont be available for commenting.</p></div>');
+        },
+        function () {
+          $("div.tooltip").remove();
+          
+        }
+      );
 });
 		$("#footer").load("footer.ejs"); 
 		$("#headerloggedin").load("/header");
@@ -389,6 +403,44 @@ $(document).ready(function(e) {
 	        }); //end of ajax function 
 
 	  	}	
+
+	  	function changeStateOfThread(stateVar) {
+	  		var data = {
+	            threadid: $("#threadid").val(),
+	            state: stateVar
+	          };
+	          $.ajax({ 
+	           url: "/openOrCloseForumThread",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                  	location.reload();
+                   
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+
+	  	}
 
 	  	
 	</script>

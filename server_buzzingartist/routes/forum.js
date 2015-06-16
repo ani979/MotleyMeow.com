@@ -325,3 +325,31 @@ exports.deleteForumThreadComment = function(req, res) {
        }
   });
 }    
+exports.openOrCloseForumThread = function(req, res) {
+	console.log("Going to open or close forum req.body " + req.body.state + " thread id " + req.body.threadid);
+	forum.findOne({'_id' : req.body.threadid}, function(err, thread){
+		if(req.body.state == "open") {
+			thread.thread.closed = false;
+			thread.save(function(err, thread) {
+	           if (err) {
+	                console.log("Error in saving for closed" + err);
+	                res.send({completed: "NOK"});  
+	            } else {
+	                console.log("Saved");
+	                res.send({completed: "OK"});
+	            }
+	        });    
+	    } else {
+	    	thread.thread.closed = true;
+			thread.save(function(err, thread) {
+	           if (err) {
+	                console.log("Error in saving for closed" + err);
+	                res.send({completed: "NOK"});  
+	            } else {
+	                console.log("Saved");
+	                res.send({completed: "OK"});
+	            }
+	        });
+	    }    
+	});	
+}

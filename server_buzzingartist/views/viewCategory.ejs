@@ -119,8 +119,13 @@
  		   	  					<% threads.forEach(function(thread) { %>
  		   	  						<div class="thread" id="divallthreads">
  		   	  							<div>
+
  		   	  								<div class="pull-left" style="padding-right:20px" href="#">
-					                        	<img class="img-circle" style="max-height:50px;padding-bottom:0px;" src="<%=thread.thread.authorPic%>" alt="">
+					                        	<% if(typeof thread.thread.authorPic == 'undefined' || thread.thread.authorPic == "") { %>
+									              <i class="fa fa-user" style="font-size:50px;color:rgba(59, 0, 0, 0.76)"></i>
+									            <% } else { %> 
+									              <img src=<%=thread.thread.authorPic%> class="img-circle" style="max-height:50px;">
+									            <% } %>
 					                    	</div>
 
  		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></h4>

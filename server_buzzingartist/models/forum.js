@@ -12,7 +12,8 @@ var forumSchema = mongoose.Schema({
         date            : {type: Date, default: Date.now},
         category        : String,
         replies         : [{commentorid:String, commentorName:String, commentorPic:String, comment:String, date:Date}],
-        recentCommentDate: Date
+        recentCommentDate: Date,
+        closed          : {type:Boolean, default:false}
     }
 
 });
