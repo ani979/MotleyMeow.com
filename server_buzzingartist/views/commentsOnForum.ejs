@@ -8,23 +8,165 @@
  		   	  				<% }
  		   	  			else {%>
  		   	  					<% replies.forEach(function(reply) { %>
- 		   	  						<div class="reply" id="divallreplies">
- 		   	  							<div>
- 		   	  								
-					                    	<!--Date/Time-->
-					                    	<% var xisodateString = reply.date.toISOString();
+ 		   	  						<div class="reply col-md-12" id="allreplies">
+ 		   	  							
+
+				                    	<!--Date/Time-->
+				                    	<div pull-left>
+					                    	<% var xisodateString = reply.date.toISOString();var stringforId = xisodateString.substr(xisodateString.length - 4);
 		               						 var xdisplayableDate = getDate(xisodateString) + " " + reply.date.toLocaleTimeString()%>	
- 		   	  								<p><a class="pull-left" href="/profile?fbId=<%=reply.commentorid%>">
+			   	  								<p><a class="pull-left" href="/profile?fbId=<%=reply.commentorid%>">
 									            <% if(typeof reply.commentorPic == 'undefined' || reply.commentorPic == "") { %>
 									              <i class="fa fa-user" style="font-size:40px;color:rgba(59, 0, 0, 0.76)"></i>
 									            <% } else { %> 
 									              <img src=<%=reply.commentorPic%> class="img-circle" style="max-height:40px;">
 									            <% } %>
+								             <input type="hidden" name="commentorid<%=stringforId%>" id="commentorid<%=stringforId%>" value="<%= reply.commentorid %>"/>
+								     		<input type="hidden" name="commentDate<%=stringforId%>" id="commentDate<%=stringforId%>" value="<%= xisodateString %>"/>
+									     </div> 
+									    
+								        <div id="reply<%=reply.commentorid%><%=stringforId%>" class = "col-md-10 pull-left" style="text-align:left;">    
 									         </a>&nbsp;&nbsp;<small><b><%=reply.commentorName%></b> replied on <%=xdisplayableDate%></small></p>
- 		   	  								<p>&nbsp;&nbsp;<%= reply.comment %></p>
+			   	  								<p>&nbsp;&nbsp;<%= reply.comment %></p>
+			   	  								<% if(user.facebook.id == reply.commentorid) { %>
+							    				<small><a href="javascript:void(0)" onclick="editCommentThread('<%=reply.commentorid%><%=stringforId%>')">EDIT</a></small>&nbsp;&nbsp;<small>
+							    				<a href="javascript:void(0)" id ="deleteComment" data-toggle="modal" data-target="#deleteCommentModal" data-id="<%=stringforId%>">DELETE</a></small>
+							    			<% } %>	
+	   	  								</div>
+ 		   	  							<div id="editReply<%=reply.commentorid%><%=stringforId%>" style="display:none;">
+ 		   	  								
+					                    	<!--Date/Time-->
+					                    	<div class="form-group">
+							                    <div class="col-md-4">
+							                        <textarea class="form-control" id="rbody<%=stringforId%>" name="rbody<%=stringforId%>" placeholder="Compose reply" style="min-height:15px;"><%= reply.comment %></textarea>
+							                        <small><a href="javascript:void(0)" onclick="submitForEditComment('<%=stringforId%>')">SAVE</a></small>
+							                    </div>
+									         </div>
+							                	
  		   	  							</div>
- 		   	  							</br>
  		   	  						</div>	
  		   	  					<% }); %>
  		   	  				<% }
  		   	  			%>
+ 		   	  			
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>
+<div class="modal fade" id="deleteCommentModal" role="dialog" aria-labelledby="deleteCommentModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+    <form action="" method="post" id="deleteForm">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                   <h4 class="modal-title">DELETE YOUR RESPONSE</h4>
+              </div>
+              
+              <div class="modal-body">
+                  Are you sure you want to delete this reply?
+              </div>
+              <input type="hidden" name="commentId" id="commentId" value=""/>
+              <div class="modal-footer">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default" onclick="submitForDeleteComment()">OK</button></span>
+              </div>
+          </div>
+      </div>
+    </form>
+  </div> 
+
+  <script>
+  $(document).on("click", "#deleteComment", function () {
+     var commentId = $(this).data('id');
+     $("#commentId").val( commentId );
+	});
+  function submitForDeleteComment() {
+  		$('#deleteCommentModal').modal('toggle');
+	  		var data = {
+	            threadid: $("#threadid").val(),
+	            commentorid: $('#commentorid'+$('#commentId').val()).val(),
+	            commentDate: $('#commentDate'+$('#commentId').val()).val()
+	          };
+
+	          $.ajax({ 
+	           url: "/deleteForumThreadComment",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               //document.getElementById(divallthreads).innerHTML = "";        
+                   //$("#forumReplies").load("displayForumReplies?forumid=" + $("#threadid").val());
+				   $('#forumReplies').fadeOut(800, function(){
+				   			$("#forumReplies").load("displayForumReplies?forumid=" + $("#threadid").val());
+                            $('#forumReplies').fadeIn().delay(2000);
+
+                        });
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+
+	  	}
+
+function submitForEditComment(comId) {
+	  		var data = {
+	            threadid: $("#threadid").val(),
+	            commentorid: $('#commentorid'+comId).val(),
+	            commentDate: $('#commentDate'+comId).val(),
+	            comment:$('#rbody'+comId).val()
+	          };
+
+	          $.ajax({ 
+	           url: "/editForumThreadComment",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               //document.getElementById(divallthreads).innerHTML = "";        
+                   $("#forumReplies").load("displayForumReplies?forumid=" + $("#threadid").val());
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+
+	  	}	  		
+
+</script>	  	 

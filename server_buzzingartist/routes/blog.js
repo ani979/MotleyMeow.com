@@ -134,7 +134,7 @@ exports.displayComments = function(req, res){
                     return 0;
                     });
 
-                res.render('commentsOnBlog.ejs', {comments: comments});
+                res.render('commentsOnBlog.ejs', {comments: comments, user:req.session.user});
             }
     });
 };
@@ -234,7 +234,7 @@ exports.saveCommentBlogPost = function(req, res){
             var arr = blogpost.blogPost.comments;
             var d = new Date();
             console.log(d);
-            arr.unshift({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
+            arr.push({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
                 commentorPic: req.session.user.local.picture, comment:req.body.comment, date:d});
             blogpost.blogPost.comments = arr;
             //newblogpost.blogPost.date = new Date();
@@ -363,3 +363,64 @@ exports.deleteBlogPost = function(req, res) {
        }
   });  
 }
+
+exports.deleteBlogComment = function(req, res) {
+    console.log("Going to delete a comment of blog " + req.body.commentDate);
+
+    BlogPost.findOne({ '_id' : req.body.threadid }, function(error, db) {
+      if (error) {
+          console.log('info', "Error while fetching the forum thread")
+          res.send({completed: "NOK"});
+      } else {
+            
+            for(index = 0; index < db.blogPost.comments.length ; index++) {
+                var result = db.blogPost.comments[index];
+                console.log("NOT FOUND " + result.commentorid)
+              if(result.commentorid == req.body.commentorid && result.date.getTime() == new Date(req.body.commentDate).getTime()) {
+                console.log("FOUND " + result.commentorid)
+                  //Remove from array
+                  db.blogPost.comments.splice(index, 1);
+                  db.save(function(err, eupdate){
+                        if(eupdate)
+                        {
+                            console.log("Saved");
+                        }
+                    });
+                  break;
+              }    
+           }
+            res.send({completed: "OK"});
+       }
+  }); 
+}   
+
+  exports.editBlogComment = function(req, res) {
+    console.log("Going to edit a comment of Blog " + req.body.commentDate);
+
+    BlogPost.findOne({ '_id' : req.body.threadid }, function(error, db) {
+      if (error) {
+          console.log('info', "Error while fetching the forum thread")
+          res.send({completed: "NOK"});
+      } else {
+            console.log("Forum post delete " + JSON.stringify(db.blogPost.comments) + "lenght is " + db.blogPost.comments.length);
+            //findAndRemove(db.replies, 'commentorid', req.body.commentorid, 'date', req.body.date);
+            for(index = 0; index < db.blogPost.comments.length ; index++) {
+                var result = db.blogPost.comments[index];
+                console.log("NOT FOUND " + result.commentorid)
+              if(result.commentorid == req.body.commentorid && result.date.getTime() == new Date(req.body.commentDate).getTime()) {
+                console.log("FOUND " + result.commentorid)
+                  //Remove from array
+                  db.blogPost.comments[index].comment = req.body.comment;
+                  db.save(function(err, eupdate){
+                        if(eupdate)
+                        {
+                            console.log("Saved");
+                        }
+                    });
+                  break;
+              }    
+           }
+            res.send({completed: "OK"});
+       }
+  });
+}    

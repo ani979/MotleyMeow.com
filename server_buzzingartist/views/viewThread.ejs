@@ -300,6 +300,17 @@ $(document).ready(function(e) {
 	       $("#newThreadModal").show();
 	    }
 
+	    function editCommentThread(id)  //function to close modal 
+	    {
+	    	//alert(id)
+	       	var repliesid = '#reply'+id
+	       	//alert(repliesid)
+	       	var editReplyId = "#editReply" +id
+	       	//alert(editReplyId)
+	       $(repliesid).hide();
+	       $(editReplyId).show();
+	    }
+
 	    function saveThread(){
 	          tinyMCE.triggerSave();
 	          var data = {
@@ -378,6 +389,8 @@ $(document).ready(function(e) {
 	        }); //end of ajax function 
 
 	  	}	
+
+	  	
 	</script>
 
 </html>

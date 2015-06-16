@@ -886,14 +886,17 @@ function ensureAuthenticated(req, res, next) {
 
 
 /*Functions for Forum*/
-app.get('/forum', ensureAuthenticated, forum.viewForum);
+app.get('/forum', forum.viewForum);
 app.get('/viewCategory', ensureAuthenticated, forum.viewCategory);
 app.post('/createNewThread', ensureAuthenticated, forum.createNewThread);
-app.get('/viewThread', ensureAuthenticated, forum.viewThread);
+app.get('/viewThread', forum.viewThread);
 app.post('/createReply', ensureAuthenticated, forum.createReply);
 app.get('/displayForumReplies', ensureAuthenticated, forum.displayForumReplies);
 app.post('/editOldThread', ensureAuthenticated, forum.editOldThread);
 app.post('/deleteForumThread', ensureAuthenticated, forum.deleteForumThread);
+app.post('/deleteForumThreadComment', ensureAuthenticated, forum.deleteForumThreadComment)
+app.post('/editForumThreadComment', ensureAuthenticated, forum.editForumThreadComment)
+
 
 app.get('/newBlogPost', ensureAuthenticated, blog.newBlogPost);
 app.post('/saveNewBlogPostData', ensureAuthenticated, blog.saveNewBlogPostData);
@@ -909,6 +912,8 @@ app.post('/editBlogPostData', ensureAuthenticated, blog.editBlogPostData);
 app.post('/searchBlogPosts', ensureAuthenticated, blog.searchBlogPosts);
 app.get('/searchallblogposts', ensureAuthenticated, blog.searchallblogposts);
 app.get('/searchmyblogposts', ensureAuthenticated, blog.searchmyblogposts);
+app.post('/deleteBlogComment', ensureAuthenticated, blog.deleteBlogComment)
+app.post('/editBlogComment', ensureAuthenticated, blog.editBlogComment)
 
 // http.createServer(app).listen(app.get('port'), function() {
 //     console.log("Express server listening on port " + app.get('port'));

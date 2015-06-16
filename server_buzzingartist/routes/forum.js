@@ -161,7 +161,7 @@ exports.createReply = function(req, res){
 			var arr = doc.thread.replies;
             var d = new Date();
             //console.log(d);
-            arr.unshift({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
+            arr.push({commentorid:req.session.user.facebook.id, commentorName:req.session.user.facebook.name, 
             	commentorPic:req.session.user.local.picture, comment:rbody, date:d});
             doc.thread.replies = arr;
             //newblogpost.blogPost.date = new Date();
@@ -227,7 +227,7 @@ exports.displayForumReplies = function(req, res){
                     return 0;
                     });
 
-                res.render('commentsOnForum.ejs', {replies: comments});
+                res.render('commentsOnForum.ejs', {replies: comments, user:req.session.user});
             }
     });
 };
@@ -264,3 +264,64 @@ exports.deleteForumThread = function(req, res) {
        }
   });  
 }
+
+exports.deleteForumThreadComment = function(req, res) {
+	console.log("Going to delete a comment of thread " + req.body.commentDate);
+
+	forum.findOne({ '_id' : req.body.threadid }, function(error, db) {
+      if (error) {
+          console.log('info', "Error while fetching the forum thread")
+          res.send({completed: "NOK"});
+      } else {
+            
+            for(index = 0; index < db.thread.replies.length ; index++) {
+            	var result = db.thread.replies[index];
+            	console.log("NOT FOUND " + result.commentorid)
+		      if(result.commentorid == req.body.commentorid && result.date.getTime() == new Date(req.body.commentDate).getTime()) {
+		      	console.log("FOUND " + result.commentorid)
+		          //Remove from array
+		          db.thread.replies.splice(index, 1);
+		          db.save(function(err, eupdate){
+						if(eupdate)
+						{
+							console.log("Saved");
+						}
+					});
+		          break;
+		      }    
+		   }
+            res.send({completed: "OK"});
+       }
+  }); 
+}	
+
+  exports.editForumThreadComment = function(req, res) {
+	console.log("Going to edit a comment of thread " + req.body.commentDate);
+
+	forum.findOne({ '_id' : req.body.threadid }, function(error, db) {
+      if (error) {
+          console.log('info', "Error while fetching the forum thread")
+          res.send({completed: "NOK"});
+      } else {
+            console.log("Forum post delete " + JSON.stringify(db.thread.replies) + "lenght is " + db.thread.replies.length);
+            //findAndRemove(db.replies, 'commentorid', req.body.commentorid, 'date', req.body.date);
+            for(index = 0; index < db.thread.replies.length ; index++) {
+            	var result = db.thread.replies[index];
+            	console.log("NOT FOUND " + result.commentorid)
+		      if(result.commentorid == req.body.commentorid && result.date.getTime() == new Date(req.body.commentDate).getTime()) {
+		      	console.log("FOUND " + result.commentorid)
+		          //Remove from array
+		          db.thread.replies[index].comment = req.body.comment;
+		          db.save(function(err, eupdate){
+						if(eupdate)
+						{
+							console.log("Saved");
+						}
+					});
+		          break;
+		      }    
+		   }
+            res.send({completed: "OK"});
+       }
+  });
+}    

@@ -52,7 +52,7 @@
 
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('/cleanblog/img/home-curtain.jpg')">
+    <header class="intro-header" style="background-image: url('/cleanblog/img/home-curtain.jpg');height:50%;">
       <div class="container">
             <% if(typeof user != 'undefined' && user!=null) { %>
       <div id = "headerloggedin"> </div>
@@ -174,7 +174,6 @@
         var data = {
             search: $("#search").val(),
             option: null
-            
           };
 
           //console.log(checkBoxes);
@@ -196,7 +195,6 @@
                 //generateNotificationLayout('success', 'topCenter', 'Post published');
               } else {
                 console.log("NOK");
-
                 //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
               }
            }, 

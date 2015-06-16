@@ -177,7 +177,7 @@
 <script src="/cleanblog/js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="/cleanblog/js/bootstrap.min.js"></script>
+
 <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
     
 <script>
@@ -300,6 +300,18 @@ function generateNotificationLayout(type, layout, text) {
     }); //end of ajax function 
 
   } 
+
+
+  function editBlogComment(id)  //function to close modal 
+      {
+        //alert(id)
+          var repliesid = '#comment'+id
+          //alert(repliesid)
+          var editReplyId = "#editComment" +id
+          //alert(editReplyId)
+         $(repliesid).hide();
+         $(editReplyId).show();
+      }
 </script>
 
 
