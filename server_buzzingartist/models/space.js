@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var spaceSchema = mongoose.Schema({
 
     space             :{
+        spaceId : String,
         spaceType : String, 
         spaceName : String,
         spaceCity : String,
@@ -20,8 +21,10 @@ var spaceSchema = mongoose.Schema({
         myFlickrPics     :  [{}],
         myResume     : String,
         mySocialPresence : [{}]
+    },
+    numid : {
+        numid : String
     }
-
 });
 
 // var postSchema = mongoose.Schema({

@@ -457,16 +457,15 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
         });    // app.post('/signup', do all our passport stuff here);
 
 app.get('/AddSpace', function(req, res) {
-
+        
         // render the page and pass in any flash data if it exists
         res.render('AddSpace.ejs', { message: req.flash('error') });
     });
+var sess;
   app.post('/AddSpace', 
         function(req, res) {
-             console.log("hey");
-             console.log(req.body.nameofspace);
-             
-             var newSpace = new Space();
+            var newSpace = new Space();
+            newSpace.space.spaceId = Math.floor(Math.random()*1000001);
             newSpace.space.spaceName = req.body.nameofspace;
             newSpace.space.spaceType = req.body.typeofspace;
             newSpace.space.spaceCapacity = req.body.capacity;
@@ -474,9 +473,15 @@ app.get('/AddSpace', function(req, res) {
             newSpace.save(function(err) {
                             if (err)
                                 throw err;
-                            return done(null, newSpace);
-                        });         
-             res.redirect('/performance');
+                            });     
+
+             console.log(newSpace);  
+ 
+             sess= req.session;
+             sess.id = newSpace.space.spaceId;
+                 console.log(sess.id);  
+         
+                res.redirect('/performance' , { sess : req.sess}) ;
         });    
         // app.post('/signup', do all our passport stuff here);
 

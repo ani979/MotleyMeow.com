@@ -6,24 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Keywords" content="Theatre, Artists, Motleymeow, Sponsor, Events, Bengaluru, Mumbai, Delhi, Chennai, Kolkata, Drama, Naatak,
-    <%=user.facebook.name%>" />
-    <meta property="og:title" content="View the artist: <%=user.facebook.name%>">
+    <%=space.space.spaceName%>" />
+    <meta property="og:title" content="View the space: <%=space.space.spaceName%>">
     <meta property="og:type" content="website" />
-    <% if(typeof user.portfolio != 'undefined' && typeof user.portfolio.myPhotos != 'undefined' && user.portfolio.myPhotos.length !=0) { %>
+    <% if(typeof space.portfolio != 'undefined' && typeof space.portfolio.myPhotos != 'undefined' && space.portfolio.myPhotos.length !=0) { %>
       <% 
-      var i = Math.floor((Math.random() * user.portfolio.myPhotos.length)) %>
-      <meta property="og:image" content="http://www.motleymeow.com/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>"/>
-    <% } else if(typeof user != 'undefined' && typeof user.local !='undefined' && typeof user.local.picture != 'undefined' && user.local.picture != "") { %>
-      <meta property="og:image" content="<%=user.local.picture%>"/>
-    <% } else { %>  
-      <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
-    <% } %>
-    <% if(typeof user != 'undefined' && typeof user.portfolio!='undefined' && typeof user.portfolio.myself != 'undefined') { %>
-      <meta property="og:description" content="<%=user.portfolio.myself%>"/>
-    <% } else { %>  
-      <meta property="og:description" content="Read about an artist from <%=user.local.city%>"/>
+      var i = Math.floor((Math.random() * space.portfolio.myPhotos.length)) %>
+      <meta property="og:image" content="http://www.motleymeow.com/portfolio/<%=user.facebook.id%>/pictures/<%=space.portfolio.myPhotos[i]%>"/>
+   
+    <meta property="og:description" content="Read about an artist from <%=space.space.spaceCity%>"/>
     <% } %>  
-    <meta property="og:title" content="View the artist: <%=user.facebook.name%>">
+    <meta property="og:title" content="View the artist: <%=space.space.spaceName%>">
     <title>MOTLEYMEOW. Hear the artists meow.</title> 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery.js"></script>
@@ -35,23 +28,31 @@
     <link rel="stylesheet" href="css/blueimp-gallery.min.css">
     <link rel="stylesheet" href="css/bootstrap-image-gallery.min.css">
   </head>
-                                                                                                                                                                                                                              
+
 
 <body>
   <div id="fb-root"></div>
   <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script>
-        FB.init({
-          appId:<%=appId%>,
-          cookie:true,
-          status:true,
-          xfbml:true
-        });
+       
 
    
     </script>
      
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
 
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>    
  <% if(typeof sessionUser != 'undefined' && sessionUser!=null) { %>
  <div id = "headerloggedin"> </div>
  <% } else { %>
@@ -61,45 +62,34 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-3" style="padding:30px;">
-        <% if(typeof user.local.picture == 'undefined' || user.local.picture == "") { %>
           <i class="fa fa-user" style="font-size:150px;"></i>
-        <% } else { %> 
-          <img src=<%= user.local.picture %> class="img-circle" style="max-height:150px;">
-        <% } %>  
         
       </div>
 
       <div class="col-md-9">
-          <h1 class="oratorFont" style="color:rgb(239, 239, 239);"><%= space.space.spaceName %></h1>
+          <% var isodateString = new Date().toISOString();
+                var displayableDate = getDate(isodateString) %>
+          <h1 class="oratorFont" style="color:rgb(239, 239, 239);"><%=space.space.spaceName%></h1>
           <div>&nbsp;</div>
-
 
           <div class = "col-md-12" style="padding-left:0px;">
 
             <div class="panel panel-body col-md-6  oratorFont" style="background-color:rgba(5, 5, 5, 0.76);padding-top:0px;padding-bottom:5px;float:left;">
               <ul style="list-style: none;padding:10px;">
-                <li class="text-left" style="color:rgb(239, 239, 239);"><span>CAPACITY: </span> <%= space.space.space_capacity %></li>
-                <%if (typeof user.respect != "undefined" && typeof user.respect.userId != 'undefined' && user.respect.userId.length != 0) { %>
-                <li class="text-left" style="color:rgb(239, 239, 239);"><span>TYPE: </span> <%= space.space.space_capacity %></li>
-                <%if (typeof user.respect != "undefined" && typeof user.respect.userId != 'undefined' && user.respect.userId.length != 0) { %>
-                  <li class="text-left" style="color:rgb(239, 239, 239);"><span>#RESPECT: </span><text id="numRespect"><%=user.respect.userId.length%></text></li>
-                <% } else { %>  
+                <li class="text-left" style="color:rgb(239, 239, 239);"><span>MEMBER SINCE: </span> <%=displayableDate%></li>
                   <li class="text-left" style="color:rgb(239, 239, 239);"><span>#RESPECT:</span><text id="numRespect">NOT RECEIVED YET</text></li>
-                <% } %>  
                 <!-- <li class="text-left" style="color:rgb(239, 239, 239);"><span><strong class="">MEMBER SINCE</strong></span> <%=displayableDate%></li> -->
-               </ul>  
+               </ul> 
             </div> 
             <div class = "col-md-6" style="float:right;text-align:right">
               <br/>
               <ul>
                 <li style="display: inline-block;padding-right:20px;">
-                  <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
-                    <% console.log("same user as logged in so can edit"); %>
                     <div style="text-align:center;">
                     <a href="/profileEdit" title="Edit profile" data-toggle="tooltip" style= "text-decoration:none;"><i class="profilePageicon glyphicon glyphicon-edit" style="color:rgba(249, 243, 243, 0.95);"></i></a><br/>
                     <label class="profilePageiconRow  oratorFont" style="display: inline-block;">EDIT</label>
                     </div>
-                  <% } %>  
+                   
                 </li>
                 <% if (typeof sessionUser != 'undefined' && sessionUser!= null) { %>
                  <li style="display: inline-block;padding-right:20px;">
@@ -140,51 +130,47 @@
         <div class="col-sm-3">
             <!--left col-->
             <ul class="list-group" >
-                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">NO OF SHOWS HANDLED: </span><br/>
-                          <% if(typeof user.local.role == 'undefined' || user.local.role.length == 0) { %>
+                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">CONTRIBUTION: </span><br/>
+                          <% if(typeof space.space.spaceType == 'undefined' || space.space.spaceType== 0) { %>
                               <p style="color:red;" class="antiguaFont"><b>Will be updating soon</b></p>
                             <% } else { %>  
-                              <p style="word-wrap: break-word;" id="role" class="antiguaFont"><b><%= user.local.role %></b></p>
+                              <p style="word-wrap: break-word;" id="role" class="antiguaFont"><b><%= space.space.spaceType %></b></p>
                             <% } %>
                  
                 </li>
                 <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">CITY:</span><br/> 
-                  <% if(typeof user.local.city == 'undefined' || user.local.city == "") { %>
+                  <% if(typeof space.space.spaceCity== 'undefined' || space.space.spaceCity == "") { %>
                   <p style="color:red" class="antiguaFont"><b>I need to set it</b></p>
                   <% } else { %>  
-                  <p class="antiguaFont"><b><%= user.local.city %></b></p>
+                  <p class="antiguaFont"><b><%= space.space.spaceCity %></b></p>
                   <% } %>
 
                 </li>
-                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">ADDRESS: </span><br/>
-                          <% if(typeof user.local.lang == 'undefined' || user.local.lang.length == 0) { %>
+                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">LANGUAGES: </span><br/>
                               <p style="color:red" class="antiguaFont"><b>To be updated</b></p>
-                            <% } else { %>  
-                              <b><p style="word-wrap: break-word;" id="lang" class="antiguaFont"><%= user.local.lang %></p></b>
-                            <% } %>
-                 
+                          
                 </li>
           </ul>
          
             <div class="panel panel-default panelColors  oratorFont">
                 <div class="panel-body">
                   <h3 style="margin-top:0px;font-size:16px;"><b>SOCIAL PRESENCE</b></h3>
-                  <% if(user.facebook.link) { %>
+                  <% if(space.space.fbLink) { %>
                     <div class = "col-md-6" style="margin-bottom:20px;">
-                    <a href = "<%= user.facebook.link %>" target="_blank"><i class = "fa fa-facebook" style="font-size:20px;color:white;"></i></a>
+                    <a href = "<%= space.space.fbLink %>" target="_blank"><i class = "fa fa-facebook" style="font-size:20px;color:white;"></i></a>
                   </div>
                   <% } %>
-                  <% if(user.google.link) { %>
+                  <% if(space.space.glink) { %>
                     <div class = "col-md-6" style="margin-bottom:20px;">
-                    <a href = "<%= user.google.link %>" target="_blank"><i class = "fa fa-google-plus" style="font-size:20px;color:white;"></i></a>
+                    <a href = "<%= space.space.gLink %>" target="_blank"><i class = "fa fa-google-plus" style="font-size:20px;color:white;"></i></a>
                   </div>
                   <% } %>
-                  <% if(typeof user.portfolio.mySocialPresence != "undefined" && user.portfolio.mySocialPresence.length != 0) { %>
-                    <% for (var i = 0; i < user.portfolio.mySocialPresence.length; i++) { 
-                        if(typeof user.portfolio.mySocialPresence[i].URL != 'undefined' &&   user.portfolio.mySocialPresence[i].URL != "") { %>
+                  <% if(typeof space.portfolio.mySocialPresence != "undefined" && space.portfolio.mySocialPresence.length != 0) { %>
+                    <% for (var i = 0; i < space.portfolio.mySocialPresence.length; i++) { 
+                        if(typeof space.portfolio.mySocialPresence[i].URL != 'undefined' &&   space.portfolio.mySocialPresence[i].URL != "") { %>
 
                           <div class = "col-md-6" style="margin-bottom:20px;">
-                          <a href = "<%= user.portfolio.mySocialPresence[i].URL %>" target="_blank"><i class = "<%=user.portfolio.mySocialPresence[i].icon%>" style="font-size:20px;color:white;  "></i></a>
+                          <a href = "<%= space.portfolio.mySocialPresence[i].URL %>" target="_blank"><i class = "<%=space.portfolio.mySocialPresence[i].icon%>" style="font-size:20px;color:white;  "></i></a>
                           </div>
                         <% } %>  
                     <% } %>
@@ -199,29 +185,29 @@
             <div id="aboutMe" class="panel panel-default panelColors">
                 
                 <div class="panel-body"> 
-                  <h3 style="margin-top:0px;" class="oratorFont">ABOUT SPACE/h3>
-                  <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myself == 'undefined' || user.portfolio.myself == "") { %>
+                  <h3 style="margin-top:0px;" class="oratorFont">ABOUT ME</h3>
+                  <% if(typeof space.portfolio == 'undefined' || typeof space.portfolio.myself == 'undefined' || space.portfolio.myself == "") { %>
                     <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">Hold on! I am getting waxed at Madame Tussauds. My hands not free as yet to write!!</span>
                   <%} else {%>
-                    <p class="form-control-static antiguaFont" data-linkify="this"><%=user.portfolio.myself%>
+                    <p class="form-control-static antiguaFont" data-linkify="this"><%=space.portfolio.myself%>
                   <% } %>
 
                 </div>
             </div>
             <div id ="myPrevExps" class="panel panel-default target panelColors">
                 <div class="panel-body">
-                  <h3 style="margin-top:0px;" class="oratorFont">PREVIOUS SHOWS</h3>
-                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPlays == 'undefined' || user.portfolio.myPlays.length ==0 ) { %>
+                  <h3 style="margin-top:0px;" class="oratorFont">MY PREVIOUS EXPERIENCES</h3>
+                    <% if(typeof space.portfolio == 'undefined' || typeof space.portfolio.myPlays == 'undefined' || space.portfolio.myPlays.length ==0 ) { %>
                       
                         <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">The list is big. Its getting posted one by one!</span> 
                       
                     <% } else { %>
                         <ul> 
-                        <% for(var i = 0; i < user.portfolio.myPlays.length; i ++ ) { %> 
+                        <% for(var i = 0; i < space.portfolio.myPlays.length; i ++ ) { %> 
 
-                                <% if(typeof user.portfolio.myPlays[i].playName != 'undefined' && user.portfolio.myPlays[i].playName !="") { %>
+                                <% if(typeof space.portfolio.myPlays[i].playName != 'undefined' && space.portfolio.myPlays[i].playName !="") { %>
                                   
-                                  <%=user.portfolio.myPlays[i].playProdYear%>&nbsp; <a href="<%=user.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;" class="antiguaFont">"<%=user.portfolio.myPlays[i].playName%>"</a>&nbsp;<%=user.portfolio.myPlays[i].playContrib%>&nbsp;&nbsp;<b><%=user.portfolio.myPlays[i].playGroup%></b>
+                                  <%=space.portfolio.myPlays[i].playProdYear%>&nbsp; <a href="<%=space.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;" class="antiguaFont">"<%=space.portfolio.myPlays[i].playName%>"</a>&nbsp;<%=space.portfolio.myPlays[i].playContrib%>&nbsp;&nbsp;<b><%=space.portfolio.myPlays[i].playGroup%></b>
                                   
                                 <% } %>  
                                   <div>&nbsp;</div>
@@ -241,40 +227,39 @@
             <div id="myPics" class="panel panel-default target panelColors">
                 
                   <div class="panel-body">
-                    <h3 style="margin-top:0px;" class="oratorFont">PICTURES OF SPACE</h3>
-                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myPhotos == 'undefined' || user.portfolio.myPhotos.length ==0 ) { %>
+                    <h3 style="margin-top:0px;" class="oratorFont">MY PICTURES</h3>
+                    <% if(typeof space.portfolio == 'undefined' || typeof space.portfolio.myPhotos == 'undefined' || space.portfolio.myPhotos.length ==0 ) { %>
                       
                         <p class="form-control-static" ><span class="fieldNote antiguaFont" style="color:inherit">My portfolio shoot negatives are getting cleaned. Will be up soon!!</span>
                       
                     <% } else { 
 
-                        console.log(" user.portfolio.myPhotos.length " + user.portfolio.myPhotos.length) %>
+                        console.log(" space.portfolio.myPhotos.length " + space.portfolio.myPhotos.length) %>
                         
                           <div id="links" class="row">
-                          <% for(var i = 0; i < user.portfolio.myPhotos.length; i ++ ) { %> 
+                          <% for(var i = 0; i < space.portfolio.myPhotos.length; i ++ ) { %> 
 <!--                               <div class = "thumbnail">
-                                  <a href = "/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" data-lightbox="image" data-title="Portfolio images">
-                                    <img alt="No image" src="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" style="min-width:200px;max-width:270px;max-height:270px;min-height:200px;">
+                                  <a href = "/portfolio/<%=space.facebook.id%>/pictures/<%=space.portfolio.myPhotos[i]%>" data-lightbox="image" data-title="Portfolio images">
+                                    <img alt="No image" src="/portfolio/<%=space.facebook.id%>/pictures/<%=space.portfolio.myPhotos[i]%>" style="min-width:200px;max-width:270px;max-height:270px;min-height:200px;">
                                   </a>  
                                </div>   --> 
                                
-                                <a href="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" title="Portfolio image" data-gallery>
-                                    <div class="img" style="background-image:url('/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>');background-position: -5px 1px;"></div>
+                                <a href="/portfolio/<%=space.facebook.id%>/pictures/<%=space.portfolio.myPhotos[i]%>" title="Portfolio image" data-gallery>
                                     <!-- <img alt="No image" src="/portfolio/<%=user.facebook.id%>/pictures/<%=user.portfolio.myPhotos[i]%>" style="min-width:200px;max-width:270px;max-height:270px;min-height:200px;"> -->
                                 </a>
 
                           <% } %>
                           </div>
                     <% } %>
-                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myFlickrPics == 'undefined' || user.portfolio.myFlickrPics.length ==0 ) { %>
+                    <% if(typeof space.portfolio == 'undefined' || typeof space.portfolio.myFlickrPics == 'undefined' || space.portfolio.myFlickrPics.length ==0 ) { %>
                       
                     <% } else {   %>
                       <div class="row">
                         <h4 style="padding-left:20px;" class="oratorFont">Embedded from Flickr</h4>
-                      <% for(var i = 0; i < user.portfolio.myFlickrPics.length; i ++ ) { %> 
+                      <% for(var i = 0; i < space.portfolio.myFlickrPics.length; i ++ ) { %> 
                         
-                                <a href = "<%=user.portfolio.myFlickrPics[i].flickrURL%>" target="_blank">
-                                  <iframe src="<%=user.portfolio.myFlickrPics[i].flickrURL%>" width="270" height="200" frameborder=0 allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+                                <a href = "<%=space.portfolio.myFlickrPics[i].flickrURL%>" target="_blank">
+                                  <iframe src="<%=space.portfolio.myFlickrPics[i].flickrURL%>" width="270" height="200" frameborder=0 allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
                                 </a>  
                        <%} %> 
                      </div>
@@ -286,16 +271,16 @@
              </div>
              <div id="myVids" class="panel panel-default target panelColors">
                   <div class="panel-body">
-                    <h3 style="margin-top:0px;" class="oratorFont">VIDEOS TAKEN HERE</h3>
-                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myVideos == 'undefined' || user.portfolio.myVideos.length ==0 ) { %>
+                    <h3 style="margin-top:0px;" class="oratorFont">MY VIDEOS</h3>
+                    <% if(typeof space.portfolio == 'undefined' || typeof space.portfolio.myVideos == 'undefined' || space.portfolio.myVideos.length ==0 ) { %>
                       
                          <p class="form-control-static" ><span class="fieldNote antiguaFont" style="color:inherit">Rolling the reel in progress. Will be shared soon!!</span>
                       
                     <% } else { 
-                        for(var i = 0; i < user.portfolio.myVideos.length; i ++ ) { %> 
+                        for(var i = 0; i < space.portfolio.myVideos.length; i ++ ) { %> 
                           
-                                <iframe src="<%=user.portfolio.myVideos[i].videoURL%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
-                                <p class="antiguaFont"> <%=user.portfolio.myVideos[i].videoText%>
+                                <iframe src="<%=space.portfolio.myVideos[i].videoURL%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
+                                <p class="antiguaFont"> <%=space.portfolio.myVideos[i].videoText%>
                                 <div>&nbsp;</div>
                                 <div>&nbsp;</div>
                         <% } %>
@@ -314,13 +299,13 @@
            
            <div id="myResume" class="panel panel-default target panelColors">
                   <div class="panel-body">
-                    <h3 style="margin-top:0px;" class="oratorFont">CONTACT DETAILS</h3>
-                    <% if(typeof user.portfolio == 'undefined' || typeof user.portfolio.myResume == 'undefined' || user.portfolio.myResume == "" ) { %>
+                    <h3 style="margin-top:0px;" class="oratorFont">MY RESUME</h3>
+                    <% if(typeof space.portfolio == 'undefined' || typeof space.portfolio.myResume == 'undefined' || space.portfolio.myResume == "" ) { %>
                       
                         <p class="form-control-static" ><span class="fieldNote antiguaFont" style="color:inherit;" >My book is about to be published. Hang on!</span> 
                       
                     <% } else { %>
-                        <a href= "/portfolio/<%=user.facebook.id%>/resume/<%=user.portfolio.myResume%>" class="antiguaFont">View it here</a>
+                        <a href= "/portfolio/<%=space.facebook.id%>/resume/<%=space.portfolio.myResume%>" class="antiguaFont">View it here</a>
                         
                         <div>&nbsp;</div>
                 
@@ -394,7 +379,6 @@
           $.ajax({
             url: "/showRespect",
             type: "POST",
-            data: {curUserId: "<%=user.facebook.id%>"},
             complete: function() {
             },
             success: function(data) {
@@ -417,14 +401,6 @@
           });
     }
 
-    function shareMe() {
-          // window.open('https://www.facebook.com/dialog/share?app_id=1402977930010661&display=popup&href=http://localhost:3000&redirect_uri=http://www.motleymeow.com', 'width=800, height=400')
-          FB.ui({
-            method: 'share',
-            // href: 'http://23.251.153.191:8080/profile?fbId=<%=user.facebook.id%>',
-            href: window.location.protocol + "//" + window.location.host +'/profile?fbId=<%=user.facebook.id%>',
-          }, function(response){});
-}
 
     $(document).ready(function(){
       var roleArr = $('#role').text().split(",");
@@ -440,18 +416,7 @@
       for(var i = 0; i < langArr.length; i++) {
         langText = langText + langArr[i] + "<br/>";
       }
-      $('#lang').html(langText);
-      <% if (typeof user != 'undefined' && typeof user.respect != 'undefined' && typeof user.respect.userId.length != 'undefined' || 
-            user.respect.userId.length != 0) { %>
-            <% for(var i = 0; i < user.respect.userId.length; i++) { %>
-              <%if(typeof sessionUser != 'undefined') {%>
-                if(<%=user.respect.userId[i].fromUserId%> == <%=sessionUser.facebook.id%>) {
-                    $('#respectButton').text("#IRESPECTYOU")
-                }
-              <%} %>  
-          <%}%>   
-      <%}%>    
-    });  
+      
 </script>    
 
   </body>

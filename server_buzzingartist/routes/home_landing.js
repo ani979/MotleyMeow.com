@@ -6,6 +6,7 @@ var Event = require('../models/event.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var config        = require('../oauth.js')
 var async        = require('async')
+var Space = require('../models/space.js');
 
 
 /*FB.options({
@@ -99,23 +100,13 @@ exports.profile = function (req, res) {
     // }
 };
 exports.performance = function (req, res) {
-    var accessToken = req.session.access_token;
-    var fbid = "";
-    console.log("accesstoken111: "+ accessToken);
-   // if(!accessToken) {
-        console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
-        //if(req.isAuthenticated()) {
-            console.log("req.fbId " + req.query.fbId);
-            if(typeof req.query.fbId == 'undefined') {
-                fbid = req.session.user.facebook.id;
-            } else {
-                fbid = req.query.fbId;
-            }
-            User.findOne({ 'facebook.id' : fbid}, function(error, db) {
+  console.log(sess.id);  
+ 
+      Space.findOne({ 'space.spaceId' : 908217 }, function(error, db) {
             
-                res.render('performanceView', { user: db, space: db, dropdowns:dropdowns, sessionSpace: req.session.space, sessionUser: req.session.user, appId:config.facebook.clientID});
+                res.render('performanceView', {  space: db, dropdowns:dropdowns, sessionSpace: req.session.space });
             });
-
+           
 }
 
 exports.profileEdit = function (req, res) {
