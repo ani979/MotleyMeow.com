@@ -12,7 +12,7 @@ var express       = require('express'),
     multer  = require('multer'),
     argv = require('optimist').argv,
     im = require('imagemagick');
-
+var dropdowns = require('./views/js/theatreContrib.js');
 var moment = require('moment');
 var argv = require('optimist').argv;
 var crypto = require('crypto');
@@ -461,7 +461,7 @@ app.get('/AddSpace', function(req, res) {
         // render the page and pass in any flash data if it exists
         res.render('AddSpace.ejs', { message: req.flash('error') });
     });
-var sess;
+
   app.post('/AddSpace', 
         function(req, res) {
             var newSpace = new Space();
@@ -476,13 +476,15 @@ var sess;
                             });     
 
              console.log(newSpace);  
- 
-             sess= req.session;
-             sess.id = newSpace.space.spaceId;
-                 console.log(sess.id);  
-         
-                res.redirect('/performance' , { sess : req.sess}) ;
-        });    
+             console.log(req.body.name);
+        
+                
+              Space.findOne({ 'space.spaceId' : req.body.name }, function(error, db) {
+            
+                res.render('performanceView', {  space: db, dropdowns:dropdowns, sessionSpace: req.session.space });
+            });
+              });    
+  
         // app.post('/signup', do all our passport stuff here);
 
     // =====================================
@@ -688,7 +690,7 @@ app.get( '/home',  ensureAuthenticated, home.landing_home);
 app.post( '/saveNotificationClickDate', home.saveNotificationClickDate);
 app.get( '/getNotification', home.getNotification);
 app.get( '/profile', home.profile);
-app.get( '/performance', home.performance);
+
 app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
 var mwMulter1 = multer({ dest: './views/uploads' });

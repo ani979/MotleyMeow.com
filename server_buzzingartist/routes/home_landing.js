@@ -99,15 +99,7 @@ exports.profile = function (req, res) {
     //     res.redirect('/');
     // }
 };
-exports.performance = function (req, res) {
-  console.log(sess.id);  
- 
-      Space.findOne({ 'space.spaceId' : 908217 }, function(error, db) {
-            
-                res.render('performanceView', {  space: db, dropdowns:dropdowns, sessionSpace: req.session.space });
-            });
-           
-}
+
 
 exports.profileEdit = function (req, res) {
     var accessToken = req.session.access_token;
