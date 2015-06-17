@@ -112,6 +112,8 @@ exports.createNewThread = function(req, res){
 	newThread.thread.topic = req.body.title;
 	newThread.thread.tbody = req.body.body;
 	newThread.thread.category = req.body.category;
+	newThread.thread.subscribedEmailids = new Array();
+	newThread.thread.subscribedEmailids.push(req.session.user.facebook.email)
 
 	/*var doc = {
 
@@ -542,4 +544,69 @@ exports.openOrCloseForumThread = function(req, res) {
 	        });
 	    }    
 	});	
+}
+
+
+exports.subscribemeForThread = function(req, res) {
+	console.log("Going to subscribe " );
+	 		
+	forum.findOne({ '_id' : req.body.threadid }, function(error, db) {
+      if (error) {
+          console.log('info', "Error while retrieiving forum thread")
+          res.send({completed: "NOK"});
+      } else {
+      	  if(typeof db.thread.subscribedEmailids != "undefined" && db.thread.subscribedEmailids != null &&
+      	  	db.thread.subscribedEmailids.length > 0) {
+      	  	db.thread.subscribedEmailids.push(req.session.user.facebook.email);
+      	  } else {
+      	  	db.thread.subscribedEmailids = new Array();
+			db.thread.subscribedEmailids.push(req.session.user.facebook.email);
+      	  }
+      	  db.save(function(err, save) {
+				if(err) {
+					console.log('info', "Error while saving new subscriber to a thread whose id is" + req.body.threadid)
+					res.send({completed: "NOK"});
+				} else {
+					res.send({completed: "OK"});
+				}
+		  });
+       }
+    });   
+}
+
+exports.unsubscribemeForThread = function(req, res) {
+	console.log("Going to unsubscribe " );
+	 		
+	forum.findOne({ '_id' : req.body.threadid }, function(error, db) {
+      if (error) {
+          console.log('info', "Error while retrieiving forum thread")
+          res.send({completed: "NOK"});
+      } else {
+      	  if(typeof db.thread.subscribedEmailids == "undefined" || db.thread.subscribedEmailids == null ||
+      	  	db.thread.subscribedEmailids.length == 0) {
+      	  	console.log('info', "Error while retrieiving forum thread")
+          	res.send({completed: "NOK"});
+      	  } else {
+      	  	for(var index = 0; index < db.thread.subscribedEmailids.length; index++) {
+	      	  	var result = db.thread.subscribedEmailids[index];
+            	if(result == req.session.user.facebook.email) {
+			      	console.log("FOUND " + result)
+			          db.thread.subscribedEmailids.splice(index, 1);
+			          break;
+			     }  
+			}       
+
+	        db.save(function(err, save) {
+					if(err) {
+						console.log('info', "Error while saving new subscriber list")
+						res.send({completed: "NOK"});
+					} else {
+						console.log(req.session.user.facebook.email + " is unsubscribed to " + req.body.threadid);
+						res.send({completed: "OK"});
+					}
+
+		    });
+		  }  
+      }
+    });   
 }

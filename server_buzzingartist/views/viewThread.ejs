@@ -103,10 +103,13 @@ fjs.parentNode.insertBefore(js, fjs);
 		    				<% if(thread.thread.closed) { %>
 		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('open')">OPEN</button><span class="question">?</span>
 		    				<% } else { %>
-		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('close')">CLOSE</button><span class="question">?</span>
+		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('close')" title = "Change the state. Closed means it wont be available for commenting.">CLOSE</button>
 		    				<% } %>
 		    			<% } %>	
-			    	</div>	
+		    			&nbsp;&nbsp;<button type = "button" class="btn-danger" id="unsubscribe" onclick="addOrRemoveMeToSubscribe('<%=thread._id%>','unsubscribe')" style="display:none;">Unsubscribe Me</button> 
+	    						
+		    			<button type = "button" id="subscribe" class="btn-warning" onclick="addOrRemoveMeToSubscribe('<%=thread._id%>','subscribe')" style="display:none;" title="If you subscribe you will receive mails on every response posted in this topic">Subscribe Me</button>
+				    	</div>	
 
 		    		
 		    		<div id="newThreadModal" style="display:none;">
@@ -219,6 +222,19 @@ $(document).ready(function(e) {
           
         }
       );
+
+
+	<%  
+	if(typeof thread.thread.subscribedEmailids != "undefined" && thread.thread.subscribedEmailids.length > 0 && 
+						thread.thread.subscribedEmailids.indexOf(user.facebook.email) != -1 ) { %>
+		$('#subscribe').hide();
+		$('#unsubscribe').show();
+	<% } else { %>
+		$('#subscribe').show();
+		$('#unsubscribe').hide();
+	<% } %>	
+
+		
 });
 		$("#footer").load("footer.ejs"); 
 		$("#headerloggedin").load("/header");
@@ -441,6 +457,54 @@ $(document).ready(function(e) {
 	        }); //end of ajax function 
 
 	  	}
+
+	  	function addOrRemoveMeToSubscribe(threadid, action){
+			  var urlAction;
+	          var data = {
+	            threadid: threadid
+	          };
+	          if(action == "subscribe") {
+	          	urlAction = "/subscribemeForThread" 
+	          }	else {
+	          	urlAction = "/unsubscribemeForThread" 
+	          }
+	          $.ajax({ 
+	           url: urlAction,
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	                       
+                   //location.reload();
+                   generateNotificationLayout('success', 'topCenter', 'You are successfully ' + action + 'd ' + 'to this thread');
+                   if(action == "subscribe") {
+                   		$('#subscribe').hide();
+                   		$('#unsubscribe').show();
+
+               	   } else {
+               	   		$('#unsubscribe').hide();
+               	   		$('#subscribe').show();
+               	   }	 
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with subscribing. Please try again and report this in an email if it continues');
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
 
 	  	
 	</script>

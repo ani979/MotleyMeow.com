@@ -15,6 +15,8 @@
     <link href="css/style.css" rel="stylesheet">  
     <link href="css/viewforumcategories.css" rel="stylesheet">
     <link rel="stylesheet" href="css/font-awesome.min.css">
+         <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
 	<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 	<script type="application/x-javascript">
       tinymce.init({
@@ -202,7 +204,7 @@
 	               closeModal();
 	               //document.getElementById(divallthreads).innerHTML = "";               
                    location.reload();
-                   generateNotificationLayout('success', 'topCenter', 'Thread created');
+                   //generateNotificationLayout('success', 'topCenter', 'Thread created');
 	 
 	                //generateNotificationLayout('success', 'topCenter', 'Post published');
 	              } else {
@@ -300,7 +302,7 @@
 	                //generateNotificationLayout('success', 'topCenter', 'Post published');
 	              } else {
 	                console.log("NOK");
-	                generateNotificationLayout('error', 'topCenter', 'Some problem with subscribing. Please try again and report this in an email');
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with subscribing. Please try again and report this in an email if it continues');
 	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
 	              }
 	           }, 

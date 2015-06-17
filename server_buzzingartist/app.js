@@ -899,6 +899,8 @@ app.post('/editForumThreadComment', ensureAuthenticated, forum.editForumThreadCo
 app.post('/openOrCloseForumThread', ensureAuthenticated, forum.openOrCloseForumThread)
 app.post('/subscribeme', ensureAuthenticated, forum.subscribeme)
 app.post('/unsubscribeme', ensureAuthenticated, forum.unsubscribeme)
+app.post('/subscribemeForThread', ensureAuthenticated, forum.subscribemeForThread)
+app.post('/unsubscribemeForThread', ensureAuthenticated, forum.unsubscribemeForThread)
 
 
 app.get('/newBlogPost', ensureAuthenticated, blog.newBlogPost);
