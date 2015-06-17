@@ -479,9 +479,9 @@ app.get('/AddSpace', function(req, res) {
              console.log(req.body.nameofspace);
         
                 
-              Space.findOne({ 'space.spaceId' : req.body.nameofspace }, function(error, db) {
+              Space.findOne({ 'space.spaceName' : req.body.nameofspace }, function(error, db) {
             
-                res.render('performanceView', {  space: db, dropdowns:dropdowns, sessionSpace: req.session.space });
+                res.render('performanceView', {  space: db, dropdowns:dropdowns });
             });
               });    
   
