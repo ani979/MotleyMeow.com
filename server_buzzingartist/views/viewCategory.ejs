@@ -62,6 +62,10 @@
 
     			<div class="links">
     				<h4><a href="/forum">Forum</a> / <%=categoryName%></h4>
+                    <small><a type = "button" class="btn btn-danger pull-right" id="unsubscribe<%=category%>" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','unsubscribe')" style="display:none;">Unsubscribe Me</a></small> 
+	    						
+	    			<small><a type = "button" id="subscribe<%=category%>" class="btn btn-warning pull-right" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','subscribe')" style="display:none;" title="If you subscribe you will receive mails on every topic posted in this category">Subscribe Me</a></small>
+                
     			</div>
     			<!-- <div class="new-thread-row">
     	  			<a href="#newThreadModal" role="button" data-toggle="modal" type="button" class="btn btn-lg btn-primary">NEW THREAD</a>
@@ -99,10 +103,11 @@
 
 			            </form>
 			        </div><!-- End of Modal body -->
-			        </div><!-- End of Modal content -->
-			        </div><!-- End of Modal dialog -->
+			    </div><!-- End of Modal content -->
 
-    			</div><!-- End of Modal --> 
+			</div><!-- End of Modal dialog -->
+
+    	</div><!-- End of Modal --> 
 
     	  		<hr>
     	  		<div class="all-threads">
@@ -156,11 +161,21 @@
 	<!-- fancybox init -->
 	<script>
 
-
 		$("#footer").load("footer.ejs"); 
 		$("#headerloggedin").load("/header");
 		$("#headerloggedout").load("headerloggedout.ejs");
-	
+		$(document).ready(function(){
+			<%  console.log(user.local.subscribedCategories.indexOf(category) + user.local.subscribedCategories.indexOf(category))
+			if(typeof user.local.subscribedCategories != "undefined" && user.local.subscribedCategories.length > 0 && 
+	    						user.local.subscribedCategories.indexOf(category) != -1 ) { %>
+				$('#subscribe'+'<%=category%>').hide();
+				$('#unsubscribe'+'<%=category%>').show();
+			<% } else { %>
+				$('#subscribe'+'<%=category%>').show();
+				$('#unsubscribe'+'<%=category%>').hide();
+			<% } %>	
+
+		});
 
 		function createThread(){
 	          console.log("This is executing");
@@ -248,5 +263,57 @@
           ]
       });
     }   
+
+    function addOrRemoveMeToSubscribe(cat, action){
+			  var urlAction;
+	          var data = {
+	            category: cat
+	          };
+	          if(action == "subscribe") {
+	          	urlAction = "/subscribeme" 
+	          }	else {
+	          	urlAction = "/unsubscribeme" 
+	          }
+	          $.ajax({ 
+	           url: urlAction,
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	                       
+                   //location.reload();
+                   generateNotificationLayout('success', 'topCenter', 'You are successfully ' + action + 'd ' + 'to ' + cat);
+                   if(action == "subscribe") {
+                   		$('#subscribe'+cat).hide();
+                   		$('#unsubscribe'+cat).show();
+
+               	   } else {
+               	   		$('#unsubscribe'+cat).hide();
+               	   		$('#subscribe'+cat).show();
+               	   }	 
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with subscribing. Please try again and report this in an email');
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
+
+
+
+	
 	</script>
 </html>

@@ -20,7 +20,8 @@ var userSchema = mongoose.Schema({
         lastProfileUpdateDate : Date,
         notificationCount : String,
         resetPasswordToken: String,
-        resetPasswordExpires: Date
+        resetPasswordExpires: Date,
+        subscribedCategories:[{}]
     },
     facebook         : {
         id           : String,

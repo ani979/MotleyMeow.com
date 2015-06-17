@@ -52,7 +52,7 @@
 	
     <div class="container">
     	<div class="row">
-    		<div class="col-md-8">
+    		<div class="col-md-4">
     			<div class="categories">
 	    			<h4>CATEGORIES</h4>
 
@@ -62,7 +62,12 @@
 	                	</div>
 	    				<h3>
 	    					<a href="/viewCategory?category=props">Props</a><br/>
+	    					 
 	    					<small>Check here for posts related to this category</small>
+
+
+	    					
+	    					
 	    				</h3>
 	    			</div>
 	    			<hr>
@@ -108,11 +113,11 @@
 	    		</div>
     		</div>
 
-        	<div class="col-md-4">
-        		<div class="categories">
-	        		<h4>RECENT ACTIVITY ON THREADS</h4>
-	        				</br>
-							<% if(threads.length==0) 
+    		<div class="col-md-4">
+    			<div class="categories">
+    				<h4>RECENT FORUM POSTS</h4>
+    				</br>
+							<% if(allThreads.length==0) 
     	  					{ %>
     	  						<div>
     	  							<p> Sorry, nothing to show here. </p>
@@ -120,7 +125,52 @@
 
  		   	  				<% }
  		   	  				else {%>
- 		   	  					<% threads.forEach(function(thread) { %>
+ 		   	  					<% allThreads.forEach(function(thread) { %>
+ 		   	  						<div class="thread" id="divallthreads">
+ 		   	  							<div>
+ 		   	  								<div class="pull-left" style="padding-right:20px">
+					                          <% if(typeof thread.thread.authorPic == 'undefined' || thread.thread.authorPic == "") { %>
+								                <i class="fa fa-user" style="font-size:60px;color:rgba(59, 0, 0, 0.76)"></i>
+								              <% } else { %> 
+								                <img src=<%=thread.thread.authorPic %> class="img-circle" style="max-height:50px;">
+								              <% } %>
+					                    	</div>
+
+ 		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></h4>
+ 		   	  								<!-- Date/Time -->
+							                <% var displayableDate = "" 
+							                	var commentDisplayableDate = ""
+							                   
+							                	isodateString = thread.thread.date.toISOString();
+							                	displayableDate = getDate(isodateString) 
+							                %>
+ 		   	  								<h5><small>Started by <b><%=thread.thread.authorName%></b> on <b><%=displayableDate%></b></small></br>
+ 		   	  									<%if(commentDisplayableDate) {
+ 		   	  										%><small>Activity last seen on <b><%=commentDisplayableDate%></b>
+ 		   	  										</small>
+ 		   	  									<% } %>	
+ 		   	  								</h5>
+ 		   	  							</div>
+ 		   	  							</br>
+ 		   	  						</div>	
+ 		   	  					<% }); %>
+ 		   	  				<% }
+ 		   	  				%>
+    			</div>	
+    		</div>	
+        	<div class="col-md-4">
+        		<div class="categories">
+	        		<h4>RECENT ACTIVITY ON THREADS</h4>
+	        				</br>
+							<% if(recentCommentThreads.length==0) 
+    	  					{ %>
+    	  						<div>
+    	  							<p> Sorry, nothing to show here. </p>
+    	  						</div>
+
+ 		   	  				<% }
+ 		   	  				else {%>
+ 		   	  					<% recentCommentThreads.forEach(function(thread) { %>
  		   	  						<div class="thread" id="divallthreads">
  		   	  							<div>
  		   	  								<div class="pull-left" style="padding-right:20px">
@@ -168,12 +218,15 @@
 
 </body>
 
-	
+	<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
 	<!-- fancybox init -->
 	<script>
 		$("#footer").load("footer.ejs"); 
 		$("#headerloggedin").load("/header");
 		$("#headerloggedout").load("headerloggedout.ejs");
+
+
+		
 	</script>
 
 </html>
