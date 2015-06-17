@@ -470,19 +470,17 @@ app.get('/AddSpace', function(req, res) {
             newSpace.space.spaceType = req.body.typeofspace;
             newSpace.space.spaceCapacity = req.body.capacity;
             newSpace.space.spaceCity =  req.body.city;
-            newSpace.save(function(err) {
-                            if (err)
-                                throw err;
-                            });     
+            newSpace.save(function (err, db) {
+                   if (err) {
+                        console.log("ERRRORRRR");
+                        // res.json(err) ;
+                        res.redirect('/error');
+                        return done(err);
+                    }
 
-             console.log(newSpace);  
-             console.log(req.body.nameofspace);
-        
-                
-              Space.findOne({ 'space.spaceName' : req.body.nameofspace }, function(error, db) {
-            
-                res.render('performanceView', {  space: db, dropdowns:dropdowns });
-            });
+                   //res.redirect('/performanceView');
+                   res.render('performanceView', {space: db, dropdowns:dropdowns});
+               });
               });    
   
         // app.post('/signup', do all our passport stuff here);
