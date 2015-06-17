@@ -700,7 +700,7 @@ body.modal-open .supreme-container{
   font-weight: bold;
   margin-bottom: 4px;
   text-decoration: none;
-  color: #ECDEDE;
+  color: #666;
 }  
 
 .post-menu {
@@ -725,12 +725,11 @@ body.modal-open .supreme-container{
 }
 
 div span.user a, .add-post a, .details .del {
-  color: #F8F8F8;
+  color: #07C;
   text-decoration: none;
   cursor: pointer;
   padding: 0px 2px 0px 2px;
 }  
-
 
 
 .artists-events-panel {

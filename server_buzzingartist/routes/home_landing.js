@@ -515,9 +515,28 @@ exports.landing_home = function(req, res) {
             //allDBPosts= allDBPosts.concat(allBlogPosts);
             //console.log("All Blogs posts " + JSON.stringify(allDBPosts));
             //allDBPosts.sort(function(a,b) { return new Date(a.result.date).getTime() - new Date(b.result.date).getTime(); });
+            var mainArray = new Array();
+            mainArray = mainArray.concat(allDBPosts)
+            mainArray = mainArray.concat(allBlogPosts)
+            mainArray = mainArray.concat(allForumThreads);
+            mainArray = mainArray.sort(function(a, b){
+                    var keyA, keyB;
+                    if(typeof a.post != 'undefined') { keyA = new Date(a.post.date)}
+                    if(typeof a.blogPost != 'undefined') { keyA = new Date(a.blogPost.date)}
+                    if(typeof a.thread != 'undefined') { keyA = new Date(a.thread.date)}
+
+                    if(typeof b.post != 'undefined') { keyB = new Date(b.post.date)}
+                    if(typeof b.blogPost != 'undefined') { keyB = new Date(b.blogPost.date)}
+                    if(typeof b.thread != 'undefined') { keyB = new Date(b.thread.date)}
+
+                    // Compare the 2 dates
+                    if(keyA < keyB) return 1;
+                    if(keyA > keyB) return -1;
+                    return 0;
+                    });
             res.render("Landing", {user: req.session.user, events: eventsInDB, users:recentJoinedUsers, allPosts: allDBPosts, 
                 appId:config.facebook.clientID, dropdowns:dropdowns, recentPostsForArtist:postsArray,notificationCount:recentPostsArray.length, lastProfileUpdtd:allLastUpdtdUsers,
-                allBlogs:allBlogPosts, allThreads:allForumThreads})
+                allBlogs:allBlogPosts, allThreads:allForumThreads, allContents:mainArray})
             // the results array will equal ['one','two'] even though
             // the second function had a shorter timeout.
         }
