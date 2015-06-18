@@ -62,8 +62,9 @@ exports.viewForum = function(req, res){
 				else
 				{
 					//console.log(threads);
-					callback(null, "DONE1")
 					recentlyCommentedthreads = threads;
+					callback(null, "DONE1")
+					
 				}
 			});
 		},
@@ -304,8 +305,8 @@ function convertCategoryToName(category){
 		case "props":
 			categoryName = "PROPS";
 			break;
-		case "production":
-			categoryName = "PRODUCTION HELP";
+		case "general":
+			categoryName = "GENERAL";
 			break;
 		case "events":
 			categoryName = "EVENTS";

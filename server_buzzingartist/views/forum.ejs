@@ -83,7 +83,7 @@
 	                    	<img style="max-height:50px;padding-bottom:0px;" src="images/announce.png" alt="">
 	                	</div>
 	    				<h3>
-	    					<a href="/viewCategory?category=production">Production help</a><br/>
+	    					<a href="/viewCategory?category=production">General</a><br/>
 	    					<small>Check here for posts related to this category</small>
 	    				</h3>
 	    			</div>
@@ -186,14 +186,13 @@
 								                	var commentDisplayableDate = getDate(isocommentString);
 							                	} 
 							                %>
- 		   	  								<h5><small>Started by <b><%=thread.thread.authorName%></b> on <b><%=displayableDate%></b></small></br>
+ 		   	  								<h5><small>Started by <b><%=thread.thread.authorName%></b> on <b><%=displayableDate%></b></small><br/>
  		   	  									<%if(commentDisplayableDate) {
- 		   	  										%><small>Activity last seen on <b><%=commentDisplayableDate%></b>
- 		   	  										</small>
+ 		   	  										%><small>Activity last seen on <b><%=commentDisplayableDate%></b></small>
  		   	  									<% } %>	
  		   	  								</h5>
  		   	  							</div>
- 		   	  							</br>
+ 		   	  							<br/>
  		   	  						</div>	
  		   	  					<% }); %>
  		   	  				<% }

@@ -2,7 +2,8 @@ var User = require('../models/user.js');
 var Post = require('../models/posts.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var deletedArtists = require('../models/deletedArtists.js');
-
+var mandrill = require('mandrill-api/mandrill');
+var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
 var app = require('../app.js');
 
 //var mailer   = require("mailer")            //required for setting mail server
@@ -299,24 +300,47 @@ exports.sendMailsToArtists = function (req, res){
       emailText = req.body.comments,
       bccEmails = req.body.bcc_Emails,
       toArtists = req.body.toArtists + ",motleymeow@gmail.com";
+      var artistsArray = toArtists.split(",");
+      var toArray = new Array();
+      for(var index = 0; index < artistsArray.length; index++) {
+          toArray.push({"email":artistsArray[index]});    
+      }
 
-      transport.sendMail({
-        //host: "smtp.mandrillapp.com",
-        to:             toArtists,
-        subject:        "MotleyMeow: "+ name + " wants to contact you!",
-        from:           email,
-        text:           emailText
-      }, 
+      var mailOptions = {
+                "message": {
+                            "from_email":email,
+                            "from_name":req.body.first_name,
+                            "to":toArray,
+                            "subject": "MotleyMeow: "+ name + " wants to contact you!",
+                            "auto_html":true,
+                            "text": emailText
+                          }
+                };
 
-      function(err, info) {
-        if (err) {
-          console.log(err);
-          res.send({completed:"NOK"});
-        } else {
-          console.log("Mail sent!" + JSON.stringify(info));
-          res.send({completed:"OK"});
-        }
+       m.messages.send(mailOptions, function(result) {
+                    console.log("Send mail result is " + JSON.stringify(result));
+                    res.send({completed: "OK"});
+                }, function(err) {
+                    console.log("Send mail err is " + JSON.stringify(err));
+                    res.send({completed: "NOK"});
       });
+      // transport.sendMail({
+      //   //host: "smtp.mandrillapp.com",
+      //   to:             toArtists,
+      //   subject:        "MotleyMeow: "+ name + " wants to contact you!",
+      //   from:           email,
+      //   text:           emailText
+      // }, 
+
+      // function(err, info) {
+      //   if (err) {
+      //     console.log(err);
+      //     res.send({completed:"NOK"});
+      //   } else {
+      //     console.log("Mail sent!" + JSON.stringify(info));
+      //     res.send({completed:"OK"});
+      //   }
+      // });
   //var obj = {name:name, email:email, emailText:emailText, bccEmails};
 
   /*mailer.send(
