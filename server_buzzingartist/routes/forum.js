@@ -4,6 +4,22 @@ var mongoose      = require('mongoose');
 var app = require('../app.js');
 var async        = require('async')
 var User = require('../models/user.js');
+var nodemailer = require('nodemailer');
+var mandrill = require('mandrill-api/mandrill');
+var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
+// var transport = nodemailer.createTransport(mandrillTransport({
+//   auth: {
+//     apiKey: '_r3bNHCw5JzpjPLfVRu24g'
+//   }
+// }));
+
+var transport = nodemailer.createTransport("SMTP",{
+    service: "Mandrill",
+    auth: {
+        user: "motleymeow@gmail.com",
+        pass: "_r3bNHCw5JzpjPLfVRu24g"
+    }
+});
 
 exports.viewForum = function(req, res){
 	
@@ -126,30 +142,63 @@ exports.createNewThread = function(req, res){
 	};*/
 
 	newThread.save(function(err, thread) {
-                       if (err) {
-                            console.log("Error in saving" + err);
-                            res.send({completed: "NOK"});  
-                        } else {
-                            console.log("Saved");
-                            console.log(thread);
-                            //req.session.blogId = newblogpost._id;
-//                            res.send({completed: "OK", redirect: "/myBlogPosts"});
-                            res.send({completed: "OK"});
-                        }
+           if (err) {
+                console.log("Error in saving" + err);
+                res.send({completed: "NOK"});  
+            } else {
+                console.log("Saved");
+                console.log(thread.thread.subscribedEmailids.toString());
+                var subscribedCategoryEmailIds = new Array();
+                var allEmailIds; 
+                forumSubs.findOne({ 'subscribers.category' : req.body.category }, function(error, db) {
+		      		if (error) {
+			          console.log('info', "Error while retrieiving subscriber list")
+				    } else {
+				    	
+				      	if(typeof db != 'undefined' && db != null && db.subscribers.emailids.length !=0) {
+				      		console.log(" DB.subscribers " + db.subscribers.emailids.length)
+				      	  	subscribedCategoryEmailIds = db.subscribers.emailids;     
+						}
+						console.log(" subscribedCategoryEmailIds for this category " + req.body.category + " " + subscribedCategoryEmailIds)
+						var toArray = new Array();
+						toArray.push({"email":req.session.user.facebook.email});
+						for(var index = 0; index < subscribedCategoryEmailIds.length; index++) {
+							if(db.subscribers.emailids[index] != req.session.user.facebook.email) {
+								toArray.push({"email":db.subscribers.emailids[index]});
+							}
+							
+						}
+		                console.log(" to Array " + JSON.stringify(toArray))
+		                var mailOptions = {
+				        "message": {
+				                    "from_email":"noreply@motleymeow.com",
+				                    "from_name":"Motley Meow",
+				                    "to":toArray,
+				                    "subject": 'A new forum post',
+				                    "auto_html":true,
+				                    "html": 'Hello,\n\n' +
+				                            "A new thread " + "<b>" + thread.thread.topic + "</b>" + " is posted under the category" + 
+				                            " '<b>" +  req.body.category + "</b>' at " + 'http://' + req.headers.host + '/viewThread?id=' + thread._id + 
+				                            ". If you have posted this thread, you will get responses to your thread in email" + '<br/>' + " With Kind Regards," + '<br/>' + "MotleyMeow team"
+				                }
+				      	};
+
+		                
+
+					   m.messages.send(mailOptions, function(result) {
+				            console.log("Send mail result is " + JSON.stringify(result));
+				            res.send({completed: "OK"});
+				        }, function(err) {
+				            console.log("Send mail err is " + JSON.stringify(err));
+				            res.send({completed: "NOK"});
+				        });
+				  	}
+				});  	  
+
+            }
     });
 
-/*	c.insert(doc, {w:1}, function(err, result) {
-		if (err) {
-                            console.log("Error in saving" + err);
-                            res.send({completed: "NOK"});  
-                        } else {
-                            console.log("Saved");
-                            console.log(result);
-                            //req.session.blogId = newblogpost._id;
-//                            res.send({completed: "OK", redirect: "/myBlogPosts"});
-                            res.send({completed: "OK"});
-                        }
-	});*/
+
 };
 
 exports.viewThread = function(req, res){
@@ -207,8 +256,37 @@ exports.createReply = function(req, res){
                                     res.send({completed: "NOK"});  
                                 } else {
                                     console.log("Saved");
-                                    res.send({completed: "OK"});
                                 }
+                                var toArray = new Array();
+                                if(typeof post.thread.subscribedEmailids != 'undefined' && post.thread.subscribedEmailids != null) {
+									for(var index = 0; index < post.thread.subscribedEmailids.length; index++) {
+											toArray.push({"email":post.thread.subscribedEmailids[index]});
+									}
+								}	
+
+			                	//send out email to the thread subscribers
+			                	console.log("toArray is " + JSON.stringify(toArray))
+				                var mailOptions = {
+							        "message": {
+						                    "from_email":"noreply@motleymeow.com",
+						                    "from_name":"Motley Meow",
+						                    "to":toArray,
+						                    "subject": 'Your forum post' + " '"  + post.thread.topic + "'",
+						                    "html": 'Hello,<br/>' +
+						                            "Someone commented on your thread " + "'<b>"+ post.thread.topic + "'</b>. Have a look at it here " + 'http://' + req.headers.host + '/viewThread?id=' + post._id + '<br/>' 
+						                            + " With Kind Regards," + '<br/>' + "MotleyMeow team"
+						                }
+						      	};
+
+				                
+
+							    m.messages.send(mailOptions, function(result) {
+						            console.log("Send mail result is " + JSON.stringify(result));
+						            res.send({completed: "OK"});
+						        }, function(err) {
+						            console.log("Send mail err is " + JSON.stringify(err));
+						            res.send({completed: "NOK"});
+						        });	
                     });
 		}
 	});
@@ -226,14 +304,14 @@ function convertCategoryToName(category){
 		case "props":
 			categoryName = "PROPS";
 			break;
-		case "announcements":
-			categoryName = "ANNOUNCEMENTS";
+		case "production":
+			categoryName = "PRODUCTION HELP";
 			break;
 		case "events":
 			categoryName = "EVENTS";
 			break;
-		case "posts":
-			categoryName = "POSTS";
+		case "knowledge":
+			categoryName = "KNOWLEDGE SHARING";
 			break;
 	}
 
