@@ -299,8 +299,8 @@ function convertCategoryToName(category){
 
 	var categoryName="";
 	switch(category){
-		case "rehearsal-space":
-			categoryName = "REHEARSAL SPACE";
+		case "space":
+			categoryName = "SPACES";
 			break;
 		case "props":
 			categoryName = "PROPS";

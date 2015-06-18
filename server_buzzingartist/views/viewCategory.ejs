@@ -62,11 +62,14 @@
     	<div class="row">
     		<div class="col-md-12">
 
-    			<div class="links">
+    			
     				<h4><a href="/forum">Forum</a> / <%=categoryName%></h4>
+    				<div style="text-align:right;">
                     <small><a type = "button" class="btn btn-danger pull-right" id="unsubscribe<%=category%>" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','unsubscribe')" style="display:none;">Unsubscribe Me</a></small> 
 	    						
-	    			<small><a type = "button" id="subscribe<%=category%>" class="btn btn-warning pull-right" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','subscribe')" style="display:none;" title="If you subscribe you will receive mails on every topic posted in this category">Subscribe Me</a></small>
+	    			<small><a type = "button" id="subscribe<%=category%>" class="btn btn-warning pull-right" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','subscribe')" style="display:none;" title="If you subscribe you will receive mails on every topic posted in this category">Subscribe to this forum</a></small>
+	    			
+	    		
                 
     			</div>
     			<!-- <div class="new-thread-row">
