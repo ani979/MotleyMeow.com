@@ -371,7 +371,7 @@ app.use(express.static(__dirname + '/views'));
 
 var isAuthenticated = function (req, res, next) {
     // if user is authenticated in the session, call the next() to call the next request handler 
-    // Passport adds this method to request object. A middleware is allowed to add properties to
+    // Passport s this method to request object. A middleware is allowed to add properties to
     // request and response objects
     console.log("req.session.access_token inside isAuthenticated: "+req.session.access_token);
     console.log("req.session.access_token inside isAuthenticateddddd: "+req.isAuthenticated);
@@ -459,9 +459,9 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
 app.get('/AddSpace', function(req, res) {
         
         // render the page and pass in any flash data if it exists
-        res.render('AddSpace.ejs', { message: req.flash('error') });
+        res.render('AddSpace.ejs', { message: req.flash('error'), dropdowns:dropdowns });
     });
-
+var sess = require('express-session');
   app.post('/AddSpace', 
         function(req, res) {
             var newSpace = new Space();
@@ -470,6 +470,10 @@ app.get('/AddSpace', function(req, res) {
             newSpace.space.spaceType = req.body.typeofspace;
             newSpace.space.spaceCapacity = req.body.capacity;
             newSpace.space.spaceCity =  req.body.city;
+            newSpace.space.spaceLocation =  req.body.location;
+            newSpace.space.spaceCharge =  req.body.charge;
+            newSpace.portfolio.myResume.nameofperson =  req.body.contactperson;
+            newSpace.portfolio.myResume.mobile=  req.body.contactno;
             newSpace.save(function (err, db) {
                    if (err) {
                         console.log("ERRRORRRR");
@@ -478,11 +482,20 @@ app.get('/AddSpace', function(req, res) {
                         return done(err);
                     }
 
+                    sess.space=newSpace;
+                    console.log(sess.space);
+                   
                    //res.redirect('/performanceView');
-                   res.render('performanceView', {space: db, dropdowns:dropdowns});
+                   res.render('performanceView', {space: db, dropdowns:dropdowns, space:newSpace});
                });
               });    
-  
+  app.get('/performanceEdit', function(req, res,db) {
+        
+        
+        // render the page and pass in any flash data if it exists
+        res.render('performanceEdit.ejs', { space:db,  dropdowns:dropdowns, space: req.sess.space});
+    
+    });
         // app.post('/signup', do all our passport stuff here);
 
     // =====================================

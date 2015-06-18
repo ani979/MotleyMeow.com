@@ -22,7 +22,17 @@
 
 <!--webfonts-->
 	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,100italic,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
-<!--//webfonts-->
+<!--//webfonts--><script type="text/javascript">
+window.onload = function () {
+    document.getElementById("city").onchange = validateCity;
+    
+}
+function validateCity(){
+var pass2=document.getElementById("city").value;
+   
+              
+}
+	</script>
 </head>
 <body>
 <% if(typeof user != 'undefined' && user!=null) { %>
@@ -44,17 +54,46 @@
 	    			<% } %>
 					<ul>
 						<li>
-							<a href="#" class=" icon user"></a><input type="text" class="text" id="typeofspace" name="typeofspace"  placeholder="Type of Space"  required >
+							<a href="#" class=" icon user"></a><select type="text" class="text" id="typeofspace" name="typeofspace"  placeholder="Type of Space"  required tabindex=1>
+							 <option value="Performance Space">Performance Space</option>
+ 							 <option value="Rehearsal space">Rehearsal space</option>
+ 							</select>
 						</li>
 						<li>
-							<a href="#" class=" icon mail"></a><input type="text" class="text" id="nameofspace" name="nameofspace" placeholder="Name of Space"  required >
+							<a href="#" class=" icon mail"></a><input type="text" class="text" id="nameofspace" name="nameofspace" placeholder="Name of Space"  required tabindex=2>
 						</li>
 						<div class="dumy">
 						<li class="psw">
-							<a href="#" class=" icon key"></a><input type="text" id="city" name="city" placeholder="City" required></li>
-						<li class="psw two">
-							<a href="#" class=" icon key"></a><input type="number" id="capacity" name="capacity" placeholder="Sitting Capacity" required>
+							<a href="#" class=" icon key"></a><select type="text" id="city" name="city" placeholder="City" required tabindex=3>
+							<% var cities = dropdowns.alldropdowns.cities;
+                  for(var i = 0; i < cities.length; i ++) {   %> 
+                        <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
+            <!--  <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>--> 
+              <% } %>
+          				</select>
 						</li>
+						<li class="psw two">
+							<a href="#" class=" icon key"></a><select type="text" id="location" name="location" placeholder="location" required tabindex=4>
+								<% var Bangluruloc = dropdowns.alldropdowns.Bangluruloc;
+                  for(var i = 0; i < Bangluruloc.length; i ++) {   %> 
+                        <option value = "<%=Bangluruloc[i].location%>"><%=Bangluruloc[i].text%></option>
+            <!--  <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>--> 
+              <% } %>		 
+							 </select>
+						</li>
+						<li class="psw">
+							<a href="#" class=" icon key"></a><input type="number" id="charge" name="charge" placeholder="Charge per day"  tabindex=5></li>
+						<li class="psw two">
+							<a href="#" class=" icon key"></a><input type="number" id="capacity" name="capacity" placeholder="Sitting Capacity" required tabindex=6>
+						</li>
+            <li>
+              <a href="#" class=" icon mail"></a><input type="text" class="text" id="contactperson" name="contactperson" placeholder="Name of contact Person"  required tabindex=7>
+            </li>
+             <li>
+              <a href="#" class=" icon mail"></a><input type="number" class="text" id="contactno" name="contactno" placeholder="Contact No"  required tabindex=8>
+            </li>
+
+
 						<div class="clear"></div>
 						<div class="submit" style="margin-top:30px;">
 								<input type="submit" value="SUBMIT SPACE" >
@@ -66,7 +105,70 @@
 				
 		   </div>
 		</div>   
+		<script type="text/javascript">
 
+           
+          $(document).ready(function(){
+            var dialog = new BootstrapDialog({
+            message: function(dialogRef){
+                var $message = $('<div></div>');
+                var $button = $('#donebtn');
+                var $closeButton = $('#closebtn');
+                
+                $button.on('click', {dialogRef: dialogRef}, function(event){
+                  
+                  var citiesss = $('#signupp').val();
+                  if(citiesss == "None Of the above") citiesss = "";
+                  event.data.dialogRef.close();
+                  $.ajax({
+                        url: "/getCity",
+                        type: "POST",
+                        data: {role: roles,city: citiesss},
+                        // data: {$("#myCityForm").serialize(), role: roles},
+                        success: function (data) {
+                            location.reload();
+                        },
+                        error: function (data) {
+                          console.log("some error " + data);
+                        }
+                        
+                  });
+
+                });
+
+                $closeButton.on('click', {dialogRef: dialogRef}, function(event){
+                    $.ajax({
+                        url: "/getCity",
+                        type: "POST",
+                        data: {city: ""},
+                        // data: {$("#myCityForm").serialize(), role: roles},
+                        success: function (data) {
+                            console.log("City and role saved ");
+                        },
+                        error: function (data) {
+                            console.log("some error " + data);
+                        }
+                        
+                    });
+                    event.data.dialogRef.close();
+                });
+                // $message.append($selectedCity).append($button);
+                $message.append($('#myCity'));
+        
+                return $message;
+              },
+              closable: false
+          });
+          dialog.realize();
+          dialog.setTitle("Just very quickly add these basic info about yourself. You can change it in your profile section anytime");
+          dialog.getModalHeader().show();
+          dialog.getModalHeader().css('padding', '10px');
+          dialog.getModalBody().css('background-color', '#1E485D');
+          dialog.getModalBody().css('color', '#fff');
+          dialog.open();
+        });
+          
+        </script> 
   <!--  <div id = "footer"></div> -->
    <!-- footer ends-->
 

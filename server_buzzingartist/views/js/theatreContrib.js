@@ -30,5 +30,14 @@ module.exports = { alldropdowns: {
                             { role: "Music", text:"Music Composer"},{ role: "Costume", text:"Costume Designer"}, { role: "MakeUp", text:"Make-up artist"},
                             { role: "SetDesign", text:"Set Designer"},{ role: "StageManager", text:"Production Manager"}, 
                             { role: "Backstage", text:"Backstage Support"}, { role: "Trainer", text:"Trainer"}, { role: "Audience", text:"Love to watch plays"}]
-    			}
+    			
+                  ,  Bangluruloc: [{ location: "Bengaluru1", text: "Bengaluru1"}, { location: "Bengaluru2", text: "Bengaluru1"}],
+                    Bhopalloc: [{ location: "Bhopal1", text: "Bhopal1"}, { location: "Bhopal2", text: "Bhopal2"}],
+                    Chennailoc: [{ location: "Bengaluru1", text: "Bengaluru1"}, { location: "Bengaluru2", text: "Bengaluru1"}],
+                    Kolkataloc: [{ location: "Bengaluru1", text: "Bengaluru1"}, { location: "Bengaluru2", text: "Bengaluru1"}],
+                    Mumbailoc: [{ location: "Bengaluru1", text: "Bengaluru1"}, { location: "Bengaluru2", text: "Bengaluru1"}],
+                    Puneloc: [{ location: "Bengaluru1", text: "Bengaluru1"}, { location: "Bengaluru2", text: "Bengaluru1"}],
+                    Bangluruloc: [{ location: "Bengaluru1", text: "Bengaluru1"}, { location: "Bengaluru2", text: "Bengaluru1"}],
+                    Delhiloc: [{ location: "Bengaluru1", text: "Bengaluru1"}, { location: "Bengaluru2", text: "Bengaluru1"}],
+                }
 }

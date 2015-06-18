@@ -11,7 +11,11 @@ var spaceSchema = mongoose.Schema({
         spaceType : String, 
         spaceName : String,
         spaceCity : String,
-        spaceCapacity : Number
+        spaceCapacity : Number,
+        prevShows : Number,
+        spaceLocation : String,
+        spaceCharge :  Number,
+        spaceEmail : String
     },
     portfolio        : {
         myself      : String,
@@ -19,7 +23,10 @@ var spaceSchema = mongoose.Schema({
         myVideos     : [{}],
         myPlays     :  [{}],
         myFlickrPics     :  [{}],
-        myResume     : String,
+        myResume     : {
+            nameofperson : String,
+            mobile : Number
+        },
         mySocialPresence : [{}]
     },
     numid : {
