@@ -65,9 +65,11 @@
     			
     				<h4><a href="/forum">Forum</a> / <%=categoryName%></h4>
     				<div style="text-align:right;">
+    				<% if(typeof user != "undefined") {%>	
                     <small><a type = "button" class="btn btn-danger pull-right" id="unsubscribe<%=category%>" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','unsubscribe')" style="display:none;">Unsubscribe Me</a></small> 
 	    						
 	    			<small><a type = "button" id="subscribe<%=category%>" class="btn btn-warning pull-right" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','subscribe')" style="display:none;" title="If you subscribe you will receive mails on every topic posted in this category">Subscribe to this forum</a></small>
+	    			<% } %>
 	    			
 	    		
                 
@@ -75,7 +77,7 @@
     			<!-- <div class="new-thread-row">
     	  			<a href="#newThreadModal" role="button" data-toggle="modal" type="button" class="btn btn-lg btn-primary">NEW THREAD</a>
     	  		</div> -->
-
+    	  		<% if(typeof user != "undefined") {%>	
     	  		<div id="newThreadModal">
       
 			        
@@ -109,6 +111,7 @@
 			            </form>
 			        </div><!-- End of Modal body -->
 			    </div><!-- End of Modal content -->
+			  <% } %>  
 
 			</div><!-- End of Modal dialog -->
 
@@ -170,8 +173,8 @@
 		$("#headerloggedin").load("/header");
 		$("#headerloggedout").load("headerloggedout.ejs");
 		$(document).ready(function(){
-			<%  console.log(user.local.subscribedCategories.indexOf(category) + user.local.subscribedCategories.indexOf(category))
-			if(typeof user.local.subscribedCategories != "undefined" && user.local.subscribedCategories.length > 0 && 
+			<%  
+			if(typeof user != "undefined" && user.local.subscribedCategories != "undefined" && user.local.subscribedCategories.length > 0 && 
 	    						user.local.subscribedCategories.indexOf(category) != -1 ) { %>
 				$('#subscribe'+'<%=category%>').hide();
 				$('#unsubscribe'+'<%=category%>').show();

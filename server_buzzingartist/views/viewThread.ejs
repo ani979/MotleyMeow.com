@@ -98,18 +98,19 @@ fjs.parentNode.insertBefore(js, fjs);
 			                  document.getElementById("forumPost").innerHTML = myVar;
 			                </script>
 			    		</div>
-			    		<% if(user.facebook.id == thread.thread.authorid) { %>
+			    		<% if(typeof user!= 'undefined' && user.facebook.id == thread.thread.authorid) { %>
 		    				<button id ="deletePost" type="button" class="btn-info" onclick="editThread()">EDIT</button>&nbsp;&nbsp;<button id ="deletePost" type="button" class="btn-danger" data-toggle="modal" data-target="#deleteModal">DELETE</button>&nbsp;&nbsp;
 		    				<% if(thread.thread.closed) { %>
 		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('open')">OPEN</button><span class="question">?</span>
 		    				<% } else { %>
 		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('close')" title = "Change the state. Closed means it wont be available for commenting.">CLOSE</button>
 		    				<% } %>
-		    			<% } %>	
+		    			<% } else if (typeof user!= 'undefined') {%>	
 		    			&nbsp;&nbsp;<button type = "button" class="btn-danger" id="unsubscribe" onclick="addOrRemoveMeToSubscribe('<%=thread._id%>','unsubscribe')" style="display:none;">Unsubscribe Me</button> 
 	    						
 		    			<button type = "button" id="subscribe" class="btn-warning" onclick="addOrRemoveMeToSubscribe('<%=thread._id%>','subscribe')" style="display:none;" title="If you subscribe you will receive mails on every response posted in this topic">Subscribe Me</button>
 				    	</div>	
+				    	<% } %>
 
 		    		
 		    		<div id="newThreadModal" style="display:none;">
@@ -147,7 +148,7 @@ fjs.parentNode.insertBefore(js, fjs);
 			        </div><!-- End of Modal content -->
 			        <br/>
 		    		<hr>
-		    		<% if(!thread.thread.closed) {%>
+		    		<% if(!thread.thread.closed && typeof user!= 'undefined') {%>
 			    		<div class="well">
 		                    <h4>Leave a Response:</h4>
 		                    
@@ -172,18 +173,19 @@ fjs.parentNode.insertBefore(js, fjs);
 
 		    		<div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 		    		<hr>
-
+		    		<% if (typeof user!= 'undefined') { %>
 		    		<div class="replies" id="forumReplies">
-		    			<h4><small>REPLIES</small></h4>
+		    			<h4>REPLIES</h4>
 		    			
 		    		</div>
+		    		<% } %>
 	    		</div>
 	    	</div>
 	    </div>
 	</div>
 
 
-	<div id = "footer"></div>
+</div>	
 
 	<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
     <form action="" method="post" id="deleteForm">
@@ -204,7 +206,8 @@ fjs.parentNode.insertBefore(js, fjs);
           </div>
       </div>
     </form>
-  </div>  
+  </div> 
+  <div id = "footer"></div> 
 </body>
 
 	<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
@@ -225,7 +228,7 @@ $(document).ready(function(e) {
 
 
 	<%  
-	if(typeof thread.thread.subscribedEmailids != "undefined" && thread.thread.subscribedEmailids.length > 0 && 
+	if(typeof user!= 'undefined' && typeof thread.thread.subscribedEmailids != "undefined" && thread.thread.subscribedEmailids.length > 0 && 
 						thread.thread.subscribedEmailids.indexOf(user.facebook.email) != -1 ) { %>
 		$('#subscribe').hide();
 		$('#unsubscribe').show();
