@@ -5,6 +5,7 @@ var deletedArtists = require('../models/deletedArtists.js');
 var mandrill = require('mandrill-api/mandrill');
 var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
 var app = require('../app.js');
+var fsEtxra = require('fs-extra')
 
 //var mailer   = require("mailer")            //required for setting mail server
   //, mailerUsername = "motleymeow@gmail.com"
@@ -73,7 +74,7 @@ exports.update = function (req, res) {
           app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
       });
     }  else {
-      console.log("The directory for " +  req.session.user.facebook.id + " does exist");
+      console.log("The directory for " +  req.session.user.facebook.id + " does not exist");
     }
   }
 
@@ -472,4 +473,39 @@ exports.showRespect = function(req,res) {
          }   
         }
     });
+}
+
+exports.saveProfilePic = function(req,res) {
+    console.log("req.body.imageName " + req.body.imageName);
+    var dir = "./views/portfolio/" + req.session.user.facebook.id + "/profilePicture";
+    app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/profilePicture/').forEach(function(fileName) {
+          console.log("Removing profile file " + fileName);
+          app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/profilePicture/' + fileName);
+    });
+    fsEtxra.ensureDir(dir, function (err) {
+      if(err)
+      console.log(err) // => null 
+      console.log("Directory created");
+      // dir has now been created, including the directory it is to be placed in 
+    })
+    fsEtxra.move('./views/tempUploads/' + req.body.imageName, './views/portfolio/'+req.session.user.facebook.id+"/profilePicture/" + req.body.imageName, function (err) {
+
+      if (err) return console.error(err)
+        console.log("success!")
+        app.fsExtra.readdirSync('./views/tempUploads/').forEach(function(fileName) {
+          console.log("Removing old profile file " + fileName);
+          app.fsExtra.unlinkSync('./views/tempUploads/' + fileName);
+        });
+        User.findOne({ 'facebook.id' : req.session.user.facebook.id }, function(error, db) {
+            db.local.picture = '/portfolio/'+req.session.user.facebook.id+"/profilePicture/" + req.body.imageName;
+            db.save(function (err, user) {
+               if (err) {
+                    console.log("ERRRORRRR");
+                    res.send({completed:"NOK", image: ""})
+                }
+                req.session.user = user;
+               res.send({completed:"OK", image: db.local.picture})
+           });
+        });  
+    })
 }

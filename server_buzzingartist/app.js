@@ -678,6 +678,7 @@ app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequ
 
 
 app.get( '/artists', artists.artist);
+app.post('/saveProfilePic', ensureAuthenticated, artists.saveProfilePic);
 app.post('/deleteArtist', artists.deleteArtist);
 app.get( '/getRecentPosts', ensureAuthenticated, post_request.getRecentPosts);
 app.get( '/getRecentArtists', ensureAuthenticated,  artists.getRecentArtists);

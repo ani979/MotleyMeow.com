@@ -301,9 +301,12 @@
                      
                       <div class="col-md-12" style="padding-left:25px;padding-right:25px;">
                             <a href = "/profile?fbId=<%=lastProfileUpdtd[i].facebook.id%>" target="_blank" style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;text-decoration: none;">
+                              <% if(typeof lastProfileUpdtd[i].local.picture == 'undefined' || lastProfileUpdtd[i].local.picture == "") { %>
+                              <img  src="/images/siteLogo.jpg" style="height:100px; width:150px;" class="member-photo"> 
+                              <% } else { %>
                               <img src="<%=lastProfileUpdtd[i].local.picture%>" border=0   style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;"/>
+                              <% } %>
                               <span style="color:#FFF;font-size:small;position:relative;width:100%;"><%=lastProfileUpdtd[i].facebook.name%></span>
-
                             </a>
 
                       </div>
