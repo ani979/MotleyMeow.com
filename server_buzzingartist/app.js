@@ -533,7 +533,7 @@ app.post('/forgot', function(req, res, next) {
             //   'If you did not request this, please ignore this email and your password will remain unchanged.\n'
 
               "message": {
-                    "from_email":"noreply@motleymeow.com",
+                    "from_email":"motleymeow@gmail.com",
                     "from_name":"Motley Meow",
                     "to":[{"email":req.body.email}],
                     "subject": "This contains a link",
