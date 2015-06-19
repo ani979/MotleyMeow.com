@@ -478,17 +478,16 @@ exports.showRespect = function(req,res) {
 exports.saveProfilePic = function(req,res) {
     console.log("req.body.imageName " + req.body.imageName);
     var dir = "./views/portfolio/" + req.session.user.facebook.id + "/profilePicture";
-    app.fsExtra.readdirSync('./views/portfolio/' + req.session.user.facebook.id + '/profilePicture/').forEach(function(fileName) {
-          console.log("Removing profile file " + fileName);
-          app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/profilePicture/' + fileName);
-    });
+    
     fsEtxra.ensureDir(dir, function (err) {
       if(err)
       console.log(err) // => null 
       console.log("Directory created");
-      // dir has now been created, including the directory it is to be placed in 
-    })
-    fsEtxra.move('./views/tempUploads/' + req.body.imageName, './views/portfolio/'+req.session.user.facebook.id+"/profilePicture/" + req.body.imageName, function (err) {
+      app.fsExtra.readdirSync(dir).forEach(function(fileName) {
+          console.log("Removing profile file " + fileName);
+          app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/profilePicture/' + fileName);
+      });
+      fsEtxra.move('./views/tempUploads/' + req.body.imageName, './views/portfolio/'+req.session.user.facebook.id+"/profilePicture/" + req.body.imageName, function (err) {
 
       if (err) return console.error(err)
         console.log("success!")
@@ -507,5 +506,9 @@ exports.saveProfilePic = function(req,res) {
                res.send({completed:"OK", image: db.local.picture})
            });
         });  
-    })
+      });
+      // dir has now been created, including the directory it is to be placed in 
+  });
+
+    
 }
