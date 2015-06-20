@@ -45,10 +45,10 @@
   
    <div class="col-sm-2" style="padding:12px;margin-top:15px">
 
-        <% if(typeof productionhouse.local == 'undefined' || typeof productionhouse.local.picture == 'undefined' || productionhouse.local.picture.length ==0 ) { %>
-     <img src="<%= productionhouse.local.picture %>" class="img-rounded" alt="Cinque Terre" style="max-height:170px;" > 
+        <% if(typeof productionhouse.local.picture == 'undefined' || productionhouse.local.picture == "None" ) { %>
+     <img src="./images/default.jpg" class="img-rounded" alt="Default image" style="max-height:170px;width:180px" > 
      <% } else { %>
-  <img src="./images/default.jpg" class="img-rounded" alt="Cinque Terre" style="max-height:170px;"> <% } %>
+  <img src="<%= productionhouse.local.picture %>" class="img-rounded" alt="Display pic" style="height:170px;width:180px"> <% } %>
 
 
  </div>
@@ -65,7 +65,7 @@
     <% if(typeof productionhouse.local.myname == 'undefined' || productionhouse.local.myname == 0) { %>
                               <p style="color:white;font-size:30px;padding-left:50px;" class="antiguaFont"><b>PRODUCTION &nbsp HOUSE</b></p>
                             <% } else { %>  
-                              <p id="role" class="antiguaFont"><b><%= productionhouse.local.myname %></b></p>
+                              <p style="color:white;font-size:30px;padding-left:50px;" id="role" class="antiguaFont"><b><%= productionhouse.local.myname %></b></p>
                             <% } %>
 
           </h1>
@@ -74,7 +74,7 @@
 </br>
 
  <div class="col-sm-12" >
- <% if(typeof productionhouse.local.establishedIn == 'undefined' || productionhouse.local.establishedIn == 0) { %>
+ <% if(typeof productionhouse.local.establishedIn == 'undefined' || productionhouse.local.establishedIn == 0 || productionhouse.local.establishedIn == ' ') { %>
                               <b style="color:white;font-size:20px;padding-left:50px;">Established In :</b></br>
                               <p style="color:black;font-size:18px;padding-left:50px;"> Trying to recall..</p>
                             <% } else { %>  
@@ -91,7 +91,7 @@
                   <% if(typeof productionhouse.portfolio.myself == 'undefined' || typeof productionhouse.portfolio.myself == 'undefined' || productionhouse.portfolio.myself == "") { %>
                     <p class="form-control-static antiguaFont" style="color:black;font-size:18px;padding-left:50px;" >You will know me soon!</p>
                   <%} else {%>
-                    <p class="form-control-static antiguaFont" data-linkify="this"><%=productionhouse.portfolio.myself%>
+                    <p class="form-control-static antiguaFont" style="color:black;font-size:18px;padding-left:50px;"><%=productionhouse.portfolio.myself%>
                   <% } %>
 
                 </div>
@@ -130,7 +130,7 @@
                  
                 </li>
                 <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">CITY:</span><br/> 
-                  <% if(typeof productionhouse.local.city == 'undefined' || productionhouse.local.city == "") { %>
+                  <% if(typeof productionhouse.local.city == 'undefined' || productionhouse.local.city == "" || productionhouse.local.city == 0) { %>
                   <p style="color:red" class="antiguaFont"><b>I need to set it</b></p>
                   <% } else { %>  
                   <p class="antiguaFont"><b><%= productionhouse.local.city %></b></p>
@@ -172,10 +172,10 @@
                 
                 <div class="panel-body"> 
                   <h3 style="margin-top:0px;" class="oratorFont">MY JOURNEY</h3>
-                  <% if(typeof productionhouse.portfolio.journey == 'undefined' || productionhouse.portfolio.journey == "") { %>
+                  <% if(typeof productionhouse.portfolio.myjourney == 'undefined' || productionhouse.portfolio.myjourney == "") { %>
                     <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">It is a long story..</span>
                   <%} else {%>
-                    <p class="form-control-static antiguaFont" data-linkify="this"><%= productionhouse.portfolio.journey%>
+                    <p class="form-control-static antiguaFont" data-linkify="this"><%= productionhouse.portfolio.myjourney%>
                   <% } %>
 
                 </div>
@@ -209,8 +209,8 @@
                           <% for(var i = 0; i < productionhouse.portfolio.myPhotos.length; i ++ ) { %> 
  
                                
-                                <a href="/portfolio/<%=productionhouse.facebook.id%>/pictures/<%=productionhouse.portfolio.myPhotos[i]%>" title="Portfolio image" data-gallery>
-                                    <div class="img" style="background-image:url('/portfolio/<%=productionhouse.facebook.id%>/pictures/<%=productionhouse.portfolio.myPhotos[i]%>');background-position: -5px 1px;"></div>
+                                <a href="/storagePH/<%=productionhouse.facebook.id%>/pictures/<%=productionhouse.portfolio.myPhotos[i]%>" title="Portfolio image" data-gallery>
+                                    <div class="img" style="background-image:url('/storagePH/<%=productionhouse.facebook.id%>/pictures/<%=productionhouse.portfolio.myPhotos[i]%>');background-position: -5px 1px;"></div>
                               
                                 </a>
 
@@ -223,7 +223,7 @@
                 </div> </div>
                 <div id="myadd" class="panel panel-default panelColors">
                 
-                <div class="panel-body"> 
+                <div class="panel-body" >
                   <h3 style="margin-top:0px;" class="oratorFont">MY ADDRESS</h3>
                   <% if(typeof productionhouse.portfolio.myAddress == 'undefined' || productionhouse.portfolio.myAddress == "") { %>
                     <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">Will write it soon..</span>
@@ -232,20 +232,21 @@
                   <% } %>
 
                 </div></div>
+
 <div id ="myplays" class="panel panel-default target panelColors">
                 <div class="panel-body">
                   <h3 style="margin-top:0px;" class="oratorFont">MY PLAYS</h3>
                     <% if(typeof productionhouse.portfolio == 'undefined' || typeof productionhouse.portfolio.myPlays == 'undefined' || productionhouse.portfolio.myPlays.length ==0 ) { %>
                       
-                        <p class="form-control-static antiguaFont" ><span class="fieldNote" style="color:inherit">The list is big. Its getting posted one by one!</span> 
+                        <p ><span class="fieldNote" style="color:inherit">The list is big. Its getting posted one by one!</span> 
                       
                     <% } else { %>
-                        <ul> 
+                        <ul style="padding-left:8px"> 
                         <% for(var i = 0; i < productionhouse.portfolio.myPlays.length; i ++ ) { %> 
 
                                 <% if(typeof productionhouse.portfolio.myPlays[i].playName != 'undefined' && productionhouse.portfolio.myPlays[i].playName !="") { %>
                                   
-                                  <%=productionhouse.portfolio.myPlays[i].playProdYear%>&nbsp; <a href="<%=productionhouse.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;" class="antiguaFont">"<%=productionhouse.portfolio.myPlays[i].playName%>"</a>&nbsp;<%=productionhouse.portfolio.myPlays[i].playContrib%>&nbsp;&nbsp;<b><%=productionhouse.portfolio.myPlays[i].playGroup%></b>
+                                  <%=productionhouse.portfolio.myPlays[i].playProdYear%> &nbsp; <a href="<%=productionhouse.portfolio.myPlays[i].playURL%>" target="_blank"  data-linkify="this" style="color:white;" class="antiguaFont">"<%=productionhouse.portfolio.myPlays[i].playName%>"</a> &nbsp;<b><%=productionhouse.portfolio.myPlays[i].playGroup%></b>
                                   
                                 <% } %>  
                                   <div>&nbsp;</div>

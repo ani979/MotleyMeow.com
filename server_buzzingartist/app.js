@@ -299,7 +299,49 @@ app.post('/deleteArtist', artists.deleteArtist);
 app.get( '/getRecentPosts', ensureAuthenticated, post_request.getRecentPosts);
 app.get( '/getRecentArtists', ensureAuthenticated,  artists.getRecentArtists);
 // var mwMulter3 = multer({ dest: './views/profile' });
-app.post( '/updateProductionHouse',productionhouses.update);
+app.post( '/updateProductionHouse',
+
+
+multer({ dest: './views/storagePH/',
+
+
+
+changeDest: function(dest, req, res) {
+                                    var newDestination = dest + req.session.user.facebook.id;
+                                    var stat = null;
+                                    try {
+                                      stat = fsExtra.statSync(newDestination);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination);
+                                    }
+
+                                    var newDestination_1 = newDestination + "/pictures"
+                                    try {
+                                      stat = fsExtra.statSync(newDestination_1);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination_1);
+                                    }
+                                    if (stat && !stat.isDirectory()) {
+                                        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+                                    }
+                                    return newDestination_1
+                                },
+
+                                 rename: function (fieldname, filename) {
+    return filename;
+  },
+onFileUploadStart: function (file,req,res) {
+  console.log(file.originalname + ' is starting ...')
+},
+onFileUploadComplete: function (file,req,res) {
+  console.log(file.fieldname + ' uploaded to  ' + file.path)
+  done=true;
+  req.session.filename = file.originalname ;
+ 
+}
+
+                    }),
+    productionhouses.update);
 
 app.post( '/update',
                     multer({ 

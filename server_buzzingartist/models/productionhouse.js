@@ -7,13 +7,14 @@ var bcrypt   = require('bcrypt-nodejs');
 var prodSchema = mongoose.Schema({
 
     local            : {
-        picture      : {type: String,default:'None'},
+      
+        picture      :  { type: String, default:'None'},
         establishedIn : {type: String,default:'None'},
-        city         : {type: String,default:'None'},
-        contact         :String,
+        city         :  { type: String,default:'None'},
+        contact         :{type: String,default:'None'},
         emailDisplay : {type:Boolean, default:true},
-        myname : String,
-        ownername : String,
+        myname : {type: String,default:'None'},
+        ownername : {type: String,default:'None'},
         lastProfileUpdateDate : Date,
         
     },
@@ -22,13 +23,14 @@ var prodSchema = mongoose.Schema({
     },
     
     portfolio        : {
-        myself      : String,
+        myself      :  {type: String,default:'None'},
         myPhotos     : [{}],
         myPlays     :  [{}],
         myAddress : String,
         myFlickrPics     :  [{}],
         myHoursOfOperation : String ,
-        myjourney : String,
+        myjourney : {type: String,default:'None'},
+        
         mySocialPresence : [{}]
     },
     respect         : {
