@@ -29,12 +29,24 @@
                           <li><a href="/allevents">Browse Events</a></li>            
                       </ul>           
                    </li>
+                   <li ><a href="/forum">Forum<span class="sr-only">(current)</span></a></li>
+                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Blog</a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a href="/allBlogs">View All Blogs</a></li>
+                          <li><a href="/newBlogPost">New Blog Post</a></li> 
+                          <li><a href="/myBlogPosts">My Blog Posts</a></li>            
+                      </ul>           
+                   </li>
                    <li><a href="/comingsoon">Coming soon <span class="sr-only">(current)</span></a></li>
                 </ul>
 
             <ul class="nav navbar-right navbar-nav">           
                   <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                    <% if(typeof user.local.picture == 'undefined' || user.local.picture == "") { %>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" style="font-size:30px;color:#CEC6C6;"></i><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                    <% } else { %>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                    <% } %>
                     <ul class="dropdown-menu">
                       <li><a href="/profile?fbId=<%=user.facebook.id%>">Profile</a></li>
                       <li><a href="/logout">Logout</a></li>

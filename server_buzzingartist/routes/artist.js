@@ -2,8 +2,31 @@ var User = require('../models/user.js');
 var Post = require('../models/posts.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var deletedArtists = require('../models/deletedArtists.js');
+var mandrill = require('mandrill-api/mandrill');
+var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
 var app = require('../app.js');
+var fsEtxra = require('fs-extra')
 
+//var mailer   = require("mailer")            //required for setting mail server
+  //, mailerUsername = "motleymeow@gmail.com"
+  //, mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+
+'use strict';
+var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
+// var transport = nodemailer.createTransport(mandrillTransport({
+//   auth: {
+//     apiKey: '_r3bNHCw5JzpjPLfVRu24g'
+//   }
+// }));
+
+var transport = nodemailer.createTransport("SMTP",{
+    service: "Mandrill",
+    auth: {
+        user: "motleymeow@gmail.com",
+        pass: "_r3bNHCw5JzpjPLfVRu24g"
+    }
+});
 
 exports.artist = function (req, res) {
 	 var allUsers;
@@ -51,7 +74,7 @@ exports.update = function (req, res) {
           app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/pictures/' + fileName);
       });
     }  else {
-      console.log("The directory for " +  req.session.user.facebook.id + " does exist");
+      console.log("The directory for " +  req.session.user.facebook.id + " does not exist");
     }
   }
 
@@ -235,9 +258,11 @@ exports.getEmails = function (req, res) {
                                             { $or: [ {"local.lang": { $in: selectedLang } }, {"local.lang": null}, {"local.lang": {$size: 0} } ] },
                                             {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
                           function(err, emails) {
-              
+      //console.log(emails);        
       res.send({selectedEmails: emails});
-
+      
+  //console.log(emails);
+  //return emails;
   });
 
   //   User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
@@ -250,8 +275,6 @@ exports.getEmails = function (req, res) {
 
   // });
    
-
-
 };
 
 exports.getRecentArtists = function (req, res) {
@@ -263,6 +286,91 @@ exports.getRecentArtists = function (req, res) {
 
 exports.contactArtists = function (req, res) {
     res.render('emailArtists', { user: req.session.user, dropdowns:dropdowns});
+};
+
+exports.sendMailsToArtists = function (req, res){
+
+  console.log(req.body);
+  //res.send();
+  
+  //console.log(req.body.bcc_Emails);
+  //console.log(typeof bccEmails);
+  //console.log("hello");
+  var name = req.body.first_name,
+      email = req.body.email,
+      emailText = req.body.comments,
+      bccEmails = req.body.bcc_Emails,
+      toArtists = req.body.toArtists + ",motleymeow@gmail.com";
+      var artistsArray = toArtists.split(",");
+      var toArray = new Array();
+      for(var index = 0; index < artistsArray.length; index++) {
+          toArray.push({"email":artistsArray[index]});    
+      }
+
+      var mailOptions = {
+                "message": {
+                            "from_email":email,
+                            "from_name":req.body.first_name,
+                            "to":toArray,
+                            "subject": "MotleyMeow: "+ name + " wants to contact you!",
+                            "auto_html":true,
+                            "text": emailText
+                          }
+                };
+
+       m.messages.send(mailOptions, function(result) {
+                    console.log("Send mail result is " + JSON.stringify(result));
+                    res.send({completed: "OK"});
+                }, function(err) {
+                    console.log("Send mail err is " + JSON.stringify(err));
+                    res.send({completed: "NOK"});
+      });
+      // transport.sendMail({
+      //   //host: "smtp.mandrillapp.com",
+      //   to:             toArtists,
+      //   subject:        "MotleyMeow: "+ name + " wants to contact you!",
+      //   from:           email,
+      //   text:           emailText
+      // }, 
+
+      // function(err, info) {
+      //   if (err) {
+      //     console.log(err);
+      //     res.send({completed:"NOK"});
+      //   } else {
+      //     console.log("Mail sent!" + JSON.stringify(info));
+      //     res.send({completed:"OK"});
+      //   }
+      // });
+  //var obj = {name:name, email:email, emailText:emailText, bccEmails};
+
+  /*mailer.send(
+  { host:           "smtp.mandrillapp.com"
+  , port:           587
+  , to:             "motleymeow@gmail.com"
+  , bcc:            bccEmails
+  , from:           email
+  , subject:        "MotleyMeow: "+ name + " wants to contact you!"
+  , body:           emailText
+  , authentication: "login"
+  , username:       mailerUsername
+  , password:       mailerPassword
+  }, function(err, result){
+    if(err){
+      console.log(err);
+      res.send({completed:"NOK"});
+    }
+    else {
+      console.log("Mail sent!" + result);
+      res.send({completed:"OK"});
+    }
+  }
+  );*/
+
+  //res.send();
+  
+
+
 };
 
 exports.updateCityAndRoles = function (req, res) {
@@ -365,4 +473,42 @@ exports.showRespect = function(req,res) {
          }   
         }
     });
+}
+
+exports.saveProfilePic = function(req,res) {
+    console.log("req.body.imageName " + req.body.imageName);
+    var dir = "./views/portfolio/" + req.session.user.facebook.id + "/profilePicture";
+    
+    fsEtxra.ensureDir(dir, function (err) {
+      if(err)
+      console.log(err) // => null 
+      console.log("Directory created");
+      app.fsExtra.readdirSync(dir).forEach(function(fileName) {
+          console.log("Removing profile file " + fileName);
+          app.fsExtra.unlinkSync('./views/portfolio/' + req.session.user.facebook.id + '/profilePicture/' + fileName);
+      });
+      fsEtxra.move('./views/tempUploads/' + req.body.imageName, './views/portfolio/'+req.session.user.facebook.id+"/profilePicture/" + req.body.imageName, function (err) {
+
+      if (err) return console.error(err)
+        console.log("success!")
+        app.fsExtra.readdirSync('./views/tempUploads/').forEach(function(fileName) {
+          console.log("Removing old profile file " + fileName);
+          app.fsExtra.unlinkSync('./views/tempUploads/' + fileName);
+        });
+        User.findOne({ 'facebook.id' : req.session.user.facebook.id }, function(error, db) {
+            db.local.picture = '/portfolio/'+req.session.user.facebook.id+"/profilePicture/" + req.body.imageName;
+            db.save(function (err, user) {
+               if (err) {
+                    console.log("ERRRORRRR");
+                    res.send({completed:"NOK", image: ""})
+                }
+                req.session.user = user;
+               res.send({completed:"OK", image: db.local.picture})
+           });
+        });  
+      });
+      // dir has now been created, including the directory it is to be placed in 
+  });
+
+    
 }

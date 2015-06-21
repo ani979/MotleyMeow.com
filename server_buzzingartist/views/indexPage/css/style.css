@@ -647,7 +647,8 @@ body {
 	cursor: pointer;
 }
 .form-signin {
-  max-width: 400px;  
+  max-width: 500px;  
+ height: 360px;
   margin: 0 auto;
   display:block;
   background-color: #383838;

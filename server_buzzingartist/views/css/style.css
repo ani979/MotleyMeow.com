@@ -228,6 +228,10 @@ right:50%;
 outline: none;
 }
 
+#emailModal .modal-dialog{
+  width:800px;
+}  
+
 @media (max-width: 767px) {
   .with-hover-text{
     margin-bottom: 2em;
@@ -734,11 +738,6 @@ div span.user a, .add-post a, .details .del {
   padding: 0px 2px 0px 2px;
 }  
 
-.notification-panel {
-  height:400px;
-  overflow-y: auto;
-  overflow-x:hidden;
-}
 
 .artists-events-panel {
   text-align: center;
@@ -1302,3 +1301,7 @@ div.tooltip p {
   position: relative;
   overflow: hidden;
 }
+
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #290303;
+}    

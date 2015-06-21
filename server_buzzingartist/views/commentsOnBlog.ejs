@@ -1,0 +1,150 @@
+      <% comments.forEach(function(comment) { %> <!--loop for every comment -->
+      <!-- Comment -->
+      <div class="media">
+          <a class="pull-left" href="/profile?fbId=<%=comment.commentorid%>">
+            <% if(typeof comment.commentorPic == 'undefined' || comment.commentorPic == "") { %>
+              <i class="fa fa-user" style="font-size:40px;color:rgba(59, 0, 0, 0.76)"></i>
+            <% } else { %> 
+              <img src=<%=comment.commentorPic %> class="img-circle" style="max-height:40px;">
+            <% } %>
+          </a>
+          <div class="media-body">
+              
+                <h4 class="media-heading"><%= comment.commentorName %>
+                  <% var isodateString = comment.date.toISOString();var stringforId = isodateString.substr(isodateString.length - 4);
+                     var commentDate = getDate(isodateString) %>
+                    <small><%= commentDate %></small>
+                </h4>
+                <div id="comment<%=comment.commentorid%><%=stringforId%>">
+                  <%= comment.comment %> 
+                  <br/>
+                  <% if(user.facebook.id == comment.commentorid) { %>
+                  <small><a href="javascript:void(0)" onclick="editBlogComment('<%=comment.commentorid%><%=stringforId%>')">EDIT</a></small>&nbsp;&nbsp;<small>
+                            <a href="javascript:void(0)" id ="deleteComment" data-toggle="modal" data-target="#deleteCommentModal" data-id="<%=stringforId%>">DELETE</a></small>
+                  <% } %>            
+                </div> 
+                <input type="hidden" name="commentorid<%=stringforId%>" id="commentorid<%=stringforId%>" value="<%= comment.commentorid %>"/>
+                <input type="hidden" name="commentDate<%=stringforId%>" id="commentDate<%=stringforId%>" value="<%= isodateString %>"/>
+              <div id="editComment<%=comment.commentorid%><%=stringforId%>" style="display:none;">
+                          
+                    <!--Date/Time-->
+                    <div class="form-group">
+                      <div class="col-md-4">
+                          <textarea class="form-control" id="rbody<%=stringforId%>" name="rbody<%=stringforId%>" placeholder="Compose comment" style="min-height:15px;"><%= comment.comment %></textarea>
+                          <small><a href="javascript:void(0)" onclick="submitForEditComment('<%=stringforId%>')">SAVE</a></small>
+                      </div>
+                    </div>
+                                
+                </div>
+          </div>
+      </div>
+      <br>
+      <% }); %> <!--comment loop ends-->
+
+
+      <div class="modal fade" id="deleteCommentModal" role="dialog" aria-labelledby="deleteCommentModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+    <form action="" method="post" id="deleteForm">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                   <h4 class="modal-title">DELETE YOUR COMMENT</h4>
+              </div>
+              
+              <div class="modal-body">
+                  Are you sure you want to delete this comment?
+              </div>
+              <input type="hidden" name="commentId" id="commentId" value=""/>
+              <div class="modal-footer">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default" onclick="submitForDeleteComment()">OK</button></span>
+              </div>
+          </div>
+      </div>
+    </form>
+  </div> 
+  
+  <script>
+  $(document).on("click", "#deleteComment", function () {
+     var commentId = $(this).data('id');
+     $("#commentId").val( commentId );
+  });
+  function submitForDeleteComment() {
+      $('#deleteCommentModal').modal('toggle');
+        var data = {
+              threadid: $("#postid").val(),
+              commentorid: $('#commentorid'+$('#commentId').val()).val(),
+              commentDate: $('#commentDate'+$('#commentId').val()).val()
+            };
+
+            $.ajax({ 
+             url: "/deleteBlogComment",
+             type: "POST",
+             cache: false, 
+             async: true,
+             data: data,
+
+             success: function(data){
+                console.log('Success!');
+                if(data.completed == "OK") {
+                 console.log("OK");
+                 //document.getElementById(divallthreads).innerHTML = "";        
+                   
+            $('#ForComments').fadeOut(800, function(){
+                $("#ForComments").load("displayComments?blogpostid=" + $("#postid").val());
+                            $('#ForComments').fadeIn().delay(2000);
+
+                        });
+                  //generateNotificationLayout('success', 'topCenter', 'Post published');
+                } else {
+                  console.log("NOK");
+                  
+                  generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+                }
+             }, 
+
+             error: function(jqXHR, textStatus, err){
+                 console.log('text status '+textStatus+', err '+err);
+                 //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+             }
+          }); //end of ajax function 
+
+      }
+
+function submitForEditComment(comId) {
+        var data = {
+              threadid: $("#postid").val(),
+              commentorid: $('#commentorid'+comId).val(),
+              commentDate: $('#commentDate'+comId).val(),
+              comment:$('#rbody'+comId).val()
+            };
+
+            $.ajax({ 
+             url: "/editBlogComment",
+             type: "POST",
+             cache: false, 
+             async: true,
+             data: data,
+
+             success: function(data){
+                console.log('Success!');
+                if(data.completed == "OK") {
+                 console.log("OK");
+                 //document.getElementById(divallthreads).innerHTML = "";        
+                   $("#ForComments").load("displayComments?blogpostid=" + $("#postid").val());
+   
+                  //generateNotificationLayout('success', 'topCenter', 'Post published');
+                } else {
+                  console.log("NOK");
+                  
+                  generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+                }
+             }, 
+
+             error: function(jqXHR, textStatus, err){
+                 console.log('text status '+textStatus+', err '+err);
+                 //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+             }
+          }); //end of ajax function 
+
+      } 
+              

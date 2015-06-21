@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	
+	<title>MM - Forum</title> 
+	<meta name="description" content="Be a part of the buzz." />	    
+	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+	<meta property="og:title" content="MotleyMeow">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">  
+    <link href="css/viewforumcategories.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+         <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+	<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+	<script type="application/x-javascript">
+      tinymce.init({
+        selector:'#body',
+        plugins: "link"
+        //save_onsavecallback: "savePostData"      
+      });
+    </script>	
+</head>
+
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>  
+
+<body>
+	<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+	
+
+
+
+
+
+
+
+<div class="main-container">
+	
+    <div class="container">
+    	<div class="row">
+    		<div class="col-md-12">
+
+    			
+    				<h4><a href="/forum">Forum</a> / <%=categoryName%></h4>
+    				<div style="text-align:right;">
+    				<% if(typeof user != "undefined") {%>	
+                    <small><a type = "button" class="btn btn-danger pull-right" id="unsubscribe<%=category%>" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','unsubscribe')" style="display:none;">Unsubscribe Me</a></small> 
+	    						
+	    			<small><a type = "button" id="subscribe<%=category%>" class="btn btn-warning pull-right" href ="javascript:void(0)" onclick="addOrRemoveMeToSubscribe('<%=category%>','subscribe')" style="display:none;" title="If you subscribe you will receive mails on every topic posted in this category">Subscribe to this forum</a></small>
+	    			<% } %>
+	    			
+	    		
+                
+    			</div>
+    			<!-- <div class="new-thread-row">
+    	  			<a href="#newThreadModal" role="button" data-toggle="modal" type="button" class="btn btn-lg btn-primary">NEW THREAD</a>
+    	  		</div> -->
+    	  		<% if(typeof user != "undefined") {%>	
+    	  		<div id="newThreadModal">
+      
+			        
+			        <div class="control-group">
+			            <!--<form class="form-horizontal" name="commentform" method="post" action = "/sendMailsToArtists">-->
+			            <form class="form-horizontal" name="threadform" id="threadform">
+			                <div class="form-group">
+			                    <label class="control-label col-md-2" for="title">Thread topic</label>
+			                    <div class="col-md-8">
+			                      <input type="text" class="form-control" id="title" name="title" placeholder="What do you want to talk about?"/>
+			                    </div>
+			                </div>
+			          
+			                <div class="form-group">
+			                    <label class="control-label col-md-2" for="body">Thread Body</label>
+			                    <div class="col-md-8">
+			                        <textarea class="form-control" id="body" name="body" placeholder="Compose post" style="min-height:50px;"></textarea>
+			                    </div>
+			                </div>
+
+			                <div class="form-group">
+		                  	  <input type="hidden" name="category" id="category" value="<%= category %>"/>
+		                	</div>
+							</br>
+			                <div class="form-group">
+			                    <div class="col-md-6">
+			                        <button type="button" value="Submit" class="btn btn-primary pull-right" id="send_btn" onclick="createThread()">Add a new thread</button>
+			                    </div>
+			                </div>
+
+			            </form>
+			        </div><!-- End of Modal body -->
+			    </div><!-- End of Modal content -->
+			  <% } %>  
+
+			</div><!-- End of Modal dialog -->
+
+    	</div><!-- End of Modal --> 
+
+    	  		<hr>
+    	  		<div class="all-threads">
+    	  			<h4><small><%= categoryName %></small></h3>
+
+    	  				<% if(threads.length==0) 
+    	  					{ %>
+    	  						<div>
+    	  							<p> Sorry, nothing to show here. Use the button above to add a new thread.</p>
+    	  						</div>
+
+ 		   	  				<% }
+ 		   	  			else {%>
+ 		   	  					<% threads.forEach(function(thread) { %>
+ 		   	  						<div class="thread" id="divallthreads">
+ 		   	  							<div>
+
+ 		   	  								<div class="pull-left" style="padding-right:20px" href="#">
+					                        	<% if(typeof thread.thread.authorPic == 'undefined' || thread.thread.authorPic == "") { %>
+									              <i class="fa fa-user" style="font-size:50px;color:rgba(59, 0, 0, 0.76)"></i>
+									            <% } else { %> 
+									              <img src=<%=thread.thread.authorPic%> class="img-circle" style="max-height:50px;">
+									            <% } %>
+					                    	</div>
+
+ 		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></h4>
+ 		   	  								<!-- Date/Time -->
+							                <% var isodateString = thread.thread.date.toISOString();
+							                var displayableDate = getDate(isodateString) %>
+ 		   	  								<h5><small>Started by <b><%=thread.thread.authorName%></b> on <b><%=displayableDate%></b></small></h5>
+ 		   	  							</div>
+ 		   	  							</br>
+ 		   	  						</div>	
+ 		   	  					<% }); %>
+ 		   	  				<% }
+ 		   	  			%>
+    	  		</div>
+    	  	</div>
+    	  </div>
+	</div>
+                
+</div><!-- main-container End -->
+       
+<div id = "footer"></div>
+ <!-- footer ends-->
+
+</body>
+
+	<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+	
+	<!-- fancybox init -->
+	<script>
+
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("/header");
+		$("#headerloggedout").load("headerloggedout.ejs");
+		$(document).ready(function(){
+			<%  
+			if(typeof user != "undefined" && user.local.subscribedCategories != "undefined" && user.local.subscribedCategories.length > 0 && 
+	    						user.local.subscribedCategories.indexOf(category) != -1 ) { %>
+				$('#subscribe'+'<%=category%>').hide();
+				$('#unsubscribe'+'<%=category%>').show();
+			<% } else { %>
+				$('#subscribe'+'<%=category%>').show();
+				$('#unsubscribe'+'<%=category%>').hide();
+			<% } %>	
+
+		});
+
+		function createThread(){
+	          console.log("This is executing");
+	          tinyMCE.triggerSave();
+	          var data = {
+	            title: $("#title").val(),
+	            body: $("#body").val(),
+	            category: $("#category").val()
+	          };
+
+	          $.ajax({ 
+	           url: "/createNewThread",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               closeModal();
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                   location.reload();
+                   //generateNotificationLayout('success', 'topCenter', 'Thread created');
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with your thread. Check fields again');
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
+
+
+	function closeModal()  //function to close modal 
+	   {
+	      $("#newThreadModal").modal('hide');
+	   }
+
+	function generateNotificationLayout(type, layout, text) {
+       var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+                    
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click","button"],
+        buttons: [
+            {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+              $noty.close();
+                }
+             }
+            
+          ]
+      });
+    }   
+
+    function addOrRemoveMeToSubscribe(cat, action){
+			  var urlAction;
+	          var data = {
+	            category: cat
+	          };
+	          if(action == "subscribe") {
+	          	urlAction = "/subscribeme" 
+	          }	else {
+	          	urlAction = "/unsubscribeme" 
+	          }
+	          $.ajax({ 
+	           url: urlAction,
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	                       
+                   //location.reload();
+                   generateNotificationLayout('success', 'topCenter', 'You are successfully ' + action + 'd ' + 'to ' + cat);
+                   if(action == "subscribe") {
+                   		$('#subscribe'+cat).hide();
+                   		$('#unsubscribe'+cat).show();
+
+               	   } else {
+               	   		$('#unsubscribe'+cat).hide();
+               	   		$('#subscribe'+cat).show();
+               	   }	 
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with subscribing. Please try again and report this in an email if it continues');
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
+
+
+
+	
+	</script>
+</html>

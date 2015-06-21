@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	
+	<title>MM Forum</title> 
+	<meta name="description" content="Be a part of the buzz." />	    
+	<meta name="keywords" content="themes, bootstrap, free, templates, bootstrap 3, freebie,">
+	<meta property="og:title" content="MotleyMeow">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">  
+    <link href="css/forumhome.css" rel="stylesheet">
+	
+		
+</head>
+
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>  
+
+
+<body>
+	<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+	
+
+
+
+
+
+
+
+<div class="main-container">
+	
+    <div class="container">
+    	<div class="row">
+    		<div class="col-md-4">
+    			<div class="categories">
+	    			<h4>CATEGORIES</h4>
+
+	    			<div class="category-button">
+	    				<div class="pull-left" style="padding-right:20px">
+	                    	<img style="max-height:50px;padding-bottom:0px;" src="images/mask.png" alt="">
+	                	</div>
+	    				<h3>
+	    					<a href="/viewCategory?category=props">Props</a><br/>
+	    					<small>Looking for a particular prop. Shout it out here.</small>
+	    					
+	    				</h3>
+	    			</div>
+	    			<hr>
+	    			<div class="category-button">
+	    				<div class="pull-left" style="padding-right:20px">
+	                    	<img style="max-height:50px;padding-bottom:0px;" src="images/rehearsal.png" alt="">
+	                	</div>
+	    				<h3>
+	    					<a href="/viewCategory?category=space">Spaces</a><br/>
+	    					<small>Need help in finding rehearsal or performances spaces in your city. Ask it here.</small>
+	    				</h3>
+	    			</div>
+	    			
+	    			<hr>
+	    			<div class="category-button">
+	    				<div class="pull-left" style="padding-right:20px">
+	                    	<img style="max-height:50px;padding-bottom:0px;" src="images/events.png" alt="">
+	                	</div>
+	    				<h3>
+	    					<a href="/viewCategory?category=events">Events</a><br/>
+	    					<small>Want to announce your event here. Share it in this forum.</small>
+	    				</h3>
+	    			</div>
+	    			<hr>
+	    			<div class="category-button">
+	    				<div class="pull-left" style="padding-right:20px">
+	                    	<img style="max-height:50px;padding-bottom:0px;" src="images/posts.png" alt="">
+	                	</div>
+	    				<h3>
+	    					<a href="/viewCategory?category=knowledge">Knowledge sharing</a><br/>
+	    					<small>Learn and make others learn too. Share your knowledge here. </small>
+	    				</h3>
+	    			</div>
+	    			<hr>
+	    			<div class="category-button">
+	    				<div class="pull-left" style="padding-right:20px">
+	                    	<img style="max-height:50px;padding-bottom:0px;" src="images/announce.png" alt="">
+	                	</div>
+	    				<h3>
+	    					<a href="/viewCategory?category=general">General</a><br/>
+	    					<small>Any general topics that you would like to discuss.</small>
+	    				</h3>
+	    			</div>
+	    		</div>
+    		</div>
+
+    		<div class="col-md-4">
+    			<div class="categories">
+    				<h4>RECENT FORUM POSTS</h4>
+    				</br>
+							<% if(allThreads.length==0) 
+    	  					{ %>
+    	  						<div>
+    	  							<p> Sorry, nothing to show here. </p>
+    	  						</div>
+
+ 		   	  				<% }
+ 		   	  				else {%>
+ 		   	  					<% allThreads.forEach(function(thread) { %>
+ 		   	  						<div class="thread" id="divallthreads">
+ 		   	  							<div>
+ 		   	  								<div class="pull-left" style="padding-right:20px">
+					                          <% if(typeof thread.thread.authorPic == 'undefined' || thread.thread.authorPic == "") { %>
+								                <i class="fa fa-user" style="font-size:60px;color:rgba(59, 0, 0, 0.76)"></i>
+								              <% } else { %> 
+								                <img src=<%=thread.thread.authorPic %> class="img-circle" style="max-height:50px;">
+								              <% } %>
+					                    	</div>
+
+ 		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></h4>
+ 		   	  								<!-- Date/Time -->
+							                <% var displayableDate = "" 
+							                	var commentDisplayableDate = ""
+							                   
+							                	isodateString = thread.thread.date.toISOString();
+							                	displayableDate = getDate(isodateString) 
+							                %>
+ 		   	  								<h5><small>Started by <b><%=thread.thread.authorName%></b> on <b><%=displayableDate%></b></small></br>
+ 		   	  									<%if(commentDisplayableDate) {
+ 		   	  										%><small>Activity last seen on <b><%=commentDisplayableDate%></b>
+ 		   	  										</small>
+ 		   	  									<% } %>	
+ 		   	  								</h5>
+ 		   	  							</div>
+ 		   	  							</br>
+ 		   	  						</div>	
+ 		   	  					<% }); %>
+ 		   	  				<% }
+ 		   	  				%>
+    			</div>	
+    		</div>	
+        	<div class="col-md-4">
+        		<div class="categories">
+	        		<h4>RECENT ACTIVITY ON THREADS</h4>
+	        				</br>
+							<% if(recentCommentThreads.length==0) 
+    	  					{ %>
+    	  						<div>
+    	  							<p> Sorry, nothing to show here. </p>
+    	  						</div>
+
+ 		   	  				<% }
+ 		   	  				else {%>
+ 		   	  					<% recentCommentThreads.forEach(function(thread) { %>
+ 		   	  						<div class="thread" id="divallthreads">
+ 		   	  							<div>
+ 		   	  								<div class="pull-left" style="padding-right:20px">
+					                        	<img class="img-circle" style="max-height:50px;padding-bottom:0px;" src="<%=thread.thread.authorPic%>" alt="">
+					                    	</div>
+
+ 		   	  								<h4><a href="/viewThread?id=<%=thread._id%>"><%=thread.thread.topic%></a></h4>
+ 		   	  								<!-- Date/Time -->
+							                <% var displayableDate = "" 
+							                	var commentDisplayableDate = ""
+							                   
+							                	isodateString = thread.thread.date.toISOString();
+							                	displayableDate = getDate(isodateString) 
+							                	if(thread.thread.recentCommentDate) { 
+								                	var isocommentString = thread.thread.recentCommentDate.toISOString();
+								                	var commentDisplayableDate = getDate(isocommentString);
+							                	} 
+							                %>
+ 		   	  								<h5><small>Started by <b><%=thread.thread.authorName%></b> on <b><%=displayableDate%></b></small><br/>
+ 		   	  									<%if(commentDisplayableDate) {
+ 		   	  										%><small>Activity last seen on <b><%=commentDisplayableDate%></b></small>
+ 		   	  									<% } %>	
+ 		   	  								</h5>
+ 		   	  							</div>
+ 		   	  							<br/>
+ 		   	  						</div>	
+ 		   	  					<% }); %>
+ 		   	  				<% }
+ 		   	  				%>
+
+
+
+	        	</div>
+        	</div>
+	        
+	    </div>
+	</div>
+                
+</div><!-- main-container End -->
+       
+<div id = "footer"></div>
+ <!-- footer ends-->
+
+
+</body>
+
+	<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+	<!-- fancybox init -->
+	<script>
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("/header");
+		$("#headerloggedout").load("headerloggedout.ejs");
+
+
+		
+	</script>
+
+</html>

@@ -1,0 +1,515 @@
+<!doctype html>
+<html>
+<head lang="en">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	
+	<title>MM - Forum</title> 
+	<meta name="description" content="Be a part of the buzz." />	    
+	<meta name="keywords" content="forum, motleymeow">
+    <meta property="og:title" content="View the forum thread <%=thread.thread.topic%>">
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <meta property="og:description" content="Read about this thread from <%= thread.thread.authorName %>"/>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/style.css" rel="stylesheet"> 
+     <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+    <script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+	<script type="application/x-javascript">
+      tinymce.init({
+        selector:'#body',
+        plugins: "link"
+        //save_onsavecallback: "savePostData"      
+      });
+    </script>	
+
+    <style>
+	    .links {
+			margin-top:20px;
+		} 
+	</style>
+		
+</head>
+
+
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>  
+
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1381852852123169&version=v2.0";
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+	<% if(typeof user != 'undefined' && user!=null) { %>
+	<div id = "headerloggedin"> </div>
+	<% } else { %>
+	<div id = "headerloggedout"></div>
+	<%}%> 
+
+	<div class="main-container">
+	
+	    <div class="container">
+	    	<div class="row">
+	    		<div class="col-md-12">
+
+	    			<div class="links">
+    					<h4><a href="/forum">Forum</a> / <a href="/viewCategory?category=<%=category%>"><%=categoryName%></a> / </h4>
+    				</div>
+    				<div id = "ForumPost">
+		    			<div class="title">
+			    			<h3><%= thread.thread.topic %></h3>
+			    		</div>
+
+			    		<div class="threadBody">
+			    			<div class="pull-left" style="padding-right:20px">
+	                        	  <% if(typeof thread.thread.authorPic == 'undefined' || thread.thread.authorPic == "") { %>
+					                <i class="fa fa-user" style="font-size:50px;color:rgba(59, 0, 0, 0.76)"></i>
+					              <% } else { %> 
+					                <img src=<%=thread.thread.authorPic %> class="img-circle" style="max-height:50px;">
+					              <% } %>
+	                    	</div>
+
+	                    	<!-- Date/Time -->
+			                <% var isodateString = thread.thread.date.toISOString();
+			                var displayableDate = getDate(isodateString) + " "  + thread.thread.date.toLocaleTimeString() + " hrs"%>
+			    			<p><small><b><a href="/profile?fbId=<%=thread.thread.authorid%>"><%= thread.thread.authorName%></a></b> posted on <%=displayableDate%> </small></p>
+			    			<p id="forumPost"></p>
+			    			<script>
+			                  var myVar = <%- JSON.stringify(thread.thread.tbody) %>;
+			                  document.getElementById("forumPost").innerHTML = myVar;
+			                </script>
+			    		</div>
+			    		<% if(typeof user!= 'undefined' && user.facebook.id == thread.thread.authorid) { %>
+		    				<button id ="deletePost" type="button" class="btn-info" onclick="editThread()">EDIT</button>&nbsp;&nbsp;<button id ="deletePost" type="button" class="btn-danger" data-toggle="modal" data-target="#deleteModal">DELETE</button>&nbsp;&nbsp;
+		    				<% if(thread.thread.closed) { %>
+		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('open')">OPEN</button><span class="question">?</span>
+		    				<% } else { %>
+		    				<button id ="stateThread" type="button" class="btn-info" onclick="changeStateOfThread('close')" title = "Change the state. Closed means it wont be available for commenting.">CLOSE</button>
+		    				<% } %>
+		    			<% } else if (typeof user!= 'undefined') {%>	
+		    			&nbsp;&nbsp;<button type = "button" class="btn-danger" id="unsubscribe" onclick="addOrRemoveMeToSubscribe('<%=thread._id%>','unsubscribe')" style="display:none;">Unsubscribe Me</button> 
+	    						
+		    			<button type = "button" id="subscribe" class="btn-warning" onclick="addOrRemoveMeToSubscribe('<%=thread._id%>','subscribe')" style="display:none;" title="If you subscribe you will receive mails on every response posted in this topic">Subscribe Me</button>
+				    	</div>	
+				    	<% } %>
+
+		    		
+		    		<div id="newThreadModal" style="display:none;">
+      
+			        
+				        <div class="control-group">
+				            <!--<form class="form-horizontal" name="commentform" method="post" action = "/sendMailsToArtists">-->
+				            <form class="form-horizontal" name="threadform" id="threadform">
+				                <div class="form-group">
+				                    <label class="control-label col-md-2" for="title">Thread topic</label>
+				                    <div class="col-md-8">
+				                      <input type="text" class="form-control" id="title" name="title" placeholder="What do you want to talk about?" value="<%=thread.thread.topic%>"/>
+				                    </div>
+				                </div>
+				          
+				                <div class="form-group">
+				                    <label class="control-label col-md-2" for="body">Thread Body</label>
+				                    <div class="col-md-8">
+				                        <textarea class="form-control" id="body" name="body" placeholder="Compose post"><%=thread.thread.tbody%></textarea>
+				                    </div>
+				                </div>
+
+				                <div class="control-group">
+								  <input id="threadid" value="<%= thread._id %>" type="hidden"></input>
+								</div>
+
+				                <div class="col-md-6 col-md-offset-2">
+			                        <button type="button" value="Submit" class="btn btn-primary" id="edit_btn" onclick="saveThread()" style="text-align:center;">Save</button>
+			                        <button type="button" value="Submit" class="btn btn-danger" id="del_btn" data-toggle="modal" data-target="#deleteModal" style="text-align:center;">Delete</button>
+			                     </div>   
+				               
+
+				            </form>
+				        </div><!-- End of Modal body -->
+			        </div><!-- End of Modal content -->
+			        <br/>
+		    		<hr>
+		    		<% if(!thread.thread.closed && typeof user!= 'undefined') {%>
+			    		<div class="well">
+		                    <h4>Leave a Response:</h4>
+		                    
+		                       <div class="form-group">
+			                    <div class="col-md-12">
+			                        <textarea class="form-control" id="rbody" name="rbody" placeholder="Compose reply" style="min-height:25px;"></textarea>
+			                    </div>
+					           </div>
+
+				                
+			                	<div>&nbsp;</div>
+		                        <!-- <div class="form-group">
+					                    <div class="col-md-6"> -->
+					            <button type="button" value="Submit" class="btn btn-primary" id="send_btn" onclick="createReply()">Your response</button>
+					                    <!-- </div>
+					            </div> -->
+
+					            
+	                   
+	                	</div>
+	                <% } %>	
+
+		    		<div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+		    		<hr>
+		    		<% if (typeof user!= 'undefined') { %>
+		    		<div class="replies" id="forumReplies">
+		    			<h4>REPLIES</h4>
+		    			
+		    		</div>
+		    		<% } %>
+	    		</div>
+	    	</div>
+	    </div>
+	</div>
+
+
+</div>	
+
+	<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+    <form action="" method="post" id="deleteForm">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                   <h4 class="modal-title">DELETE ME</h4>
+              </div>
+              
+              <div class="modal-body">
+                  Are you sure you want to delete the forum post?
+              </div>
+              
+              <div class="modal-footer">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default" onclick="submitForDelete()">OK</button></span>
+              </div>
+          </div>
+      </div>
+    </form>
+  </div> 
+  <div id = "footer"></div> 
+</body>
+
+	<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+
+<script>
+$(document).ready(function(e) {
+  $('#forumReplies').load("displayForumReplies?forumid=" + $("#threadid").val());
+
+  $(".question").hover(function () {
+        //alert("hello")
+        $(this).append('<div class=tooltip><p>Change the state. Closed means it wont be available for commenting.</p></div>');
+        },
+        function () {
+          $("div.tooltip").remove();
+          
+        }
+      );
+
+
+	<%  
+	if(typeof user!= 'undefined' && typeof thread.thread.subscribedEmailids != "undefined" && thread.thread.subscribedEmailids.length > 0 && 
+						thread.thread.subscribedEmailids.indexOf(user.facebook.email) != -1 ) { %>
+		$('#subscribe').hide();
+		$('#unsubscribe').show();
+	<% } else { %>
+		$('#subscribe').show();
+		$('#unsubscribe').hide();
+	<% } %>	
+
+		
+});
+		$("#footer").load("footer.ejs"); 
+		$("#headerloggedin").load("/header");
+		$("#headerloggedout").load("headerloggedout.ejs");
+
+		function createReply(){
+	          console.log("This is executing");
+
+	          var data = {
+	            threadid: $("#threadid").val(),
+	            rbody: $("#rbody").val()
+	          };
+
+	          $.ajax({ 
+	           url: "/createReply",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              //closeModal();
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               $("#forumReplies").load("displayForumReplies?forumid=" + $("#threadid").val());
+	               $("#rbody").val("");
+	               //closeModal();
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                   //location.reload();
+                   //generateNotificationLayout('success', 'topCenter', 'Reply added');
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your reply. Check fields again');
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
+
+	  	
+
+	    function generateNotificationLayout(type, layout, text) {
+	       var n = noty({ layout: layout,
+	        type: type,
+	        text: text, // can be html or string
+	        dismissQueue: true, // If you want to use queue feature set this true
+	        template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+	        animation: {
+	            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+	            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+	            easing: 'swing',
+	            speed: 500 // opening & closing animation speed
+	        },
+	        timeout: false, // delay for closing event. Set false for sticky notifications
+	        force: false, // adds notification to the beginning of queue when set to true
+	        modal: false,
+	        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+	        killer: false, // for close all notifications before show
+	         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+	        callback: {
+	            onShow: function() {
+	            },
+	            afterShow: function() {},
+	            onClose: function() {
+	                    
+	            },
+	            afterClose: function() {},
+	            onCloseClick: function() {}
+	        },
+	        closeWith: ["click","button"],
+	        buttons: [
+	            {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+	              $noty.close();
+	                }
+	             }
+	            
+	          ]
+	      });
+	    }   
+
+	    function editThread()  //function to close modal 
+	    {
+	       $('#ForumPost').hide();
+	       $("#newThreadModal").show();
+	    }
+
+	    function editCommentThread(id)  //function to close modal 
+	    {
+	    	//alert(id)
+	       	var repliesid = '#reply'+id
+	       	//alert(repliesid)
+	       	var editReplyId = "#editReply" +id
+	       	//alert(editReplyId)
+	       $(repliesid).hide();
+	       $(editReplyId).show();
+	    }
+
+	    function saveThread(){
+	          tinyMCE.triggerSave();
+	          var data = {
+	            title: $("#title").val(),
+	            body: $("#body").val(),
+	            threadid: $("#threadid").val()
+	          };
+
+	          $.ajax({ 
+	           url: "/editOldThread",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                   location.reload();
+                   
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
+
+	  	function submitForDelete() {
+	  		var data = {
+	            
+	            threadid: $("#threadid").val()
+	          };
+
+	          $.ajax({ 
+	           url: "/deleteForumThread",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                   window.location.href = data.redirect;
+                   
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+
+	  	}	
+
+	  	function changeStateOfThread(stateVar) {
+	  		var data = {
+	            threadid: $("#threadid").val(),
+	            state: stateVar
+	          };
+	          $.ajax({ 
+	           url: "/openOrCloseForumThread",
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              
+	              
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	               //document.getElementById(divallthreads).innerHTML = "";               
+                  	location.reload();
+                   
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+
+	  	}
+
+	  	function addOrRemoveMeToSubscribe(threadid, action){
+			  var urlAction;
+	          var data = {
+	            threadid: threadid
+	          };
+	          if(action == "subscribe") {
+	          	urlAction = "/subscribemeForThread" 
+	          }	else {
+	          	urlAction = "/unsubscribemeForThread" 
+	          }
+	          $.ajax({ 
+	           url: urlAction,
+	           type: "POST",
+	           cache: false, 
+	           async: true,
+	           data: data,
+
+	           success: function(data){
+	              console.log('Success!');
+	              if(data.completed == "OK") {
+	               console.log("OK");
+	                       
+                   //location.reload();
+                   generateNotificationLayout('success', 'topCenter', 'You are successfully ' + action + 'd ' + 'to this thread');
+                   if(action == "subscribe") {
+                   		$('#subscribe').hide();
+                   		$('#unsubscribe').show();
+
+               	   } else {
+               	   		$('#unsubscribe').hide();
+               	   		$('#subscribe').show();
+               	   }	 
+	 
+	                //generateNotificationLayout('success', 'topCenter', 'Post published');
+	              } else {
+	                console.log("NOK");
+	                generateNotificationLayout('error', 'topCenter', 'Some problem with subscribing. Please try again and report this in an email if it continues');
+	                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+	              }
+	           }, 
+
+	           error: function(jqXHR, textStatus, err){
+	               console.log('text status '+textStatus+', err '+err);
+	               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+	           }
+	        }); //end of ajax function 
+	  	} //end of savePostData function
+
+	  	
+	</script>
+
+</html>

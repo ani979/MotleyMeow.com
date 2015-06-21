@@ -180,7 +180,15 @@
  
         <div class="col-md-3">
           <li class="dropdown pull-right" style="list-style-type: none;">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+
+            
+              <% if(typeof user.local.picture == 'undefined' || user.local.picture == "") { %>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" style="font-size:30px;color:#CEC6C6;"></i><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                <% } else { %>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="userPic" alt="" src="<%=user.local.picture%>" style="max-height:30px;padding-bottom:0px;" class="img-circle"/><i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                <% } %>
+                
+            
             <ul class="dropdown-menu">
               <li><a href="/profile?fbId=<%=user.facebook.id%>" class="antiguaFontSmall">Profile</a></li>
 
@@ -211,31 +219,79 @@
     </div>
   <%}%> 
   <% var citysel = user.local.city %>
+<div class = "col-md-10 col-md-offset-1" style="clear:both;text-align:center;">
+    <nav class="navbar navbar-inverse navbar-static-top no-margin" style= "background-color: rgba(34, 34, 34, 0);border-color: rgba(8, 8, 8, 0);">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
+            
+                <ul class="nav navbar-nav" id="headerlist" style="font-size:22px; ">
+                  
+                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">ARTISTS
+                   <i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a class="oratorFont"href="/profile?fbId=<%=user.facebook.id%>">VIEW YOUR PROFILE</a></li>
+                          <li><a class="oratorFont"href="/artists">BROWSE ARTISTS</a></li> 
+                                 
+                      </ul>           
+                   </li>
+                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">POSTS<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a class = "oratorFont" href="#postModal" data-toggle="modal" data-backdrop="static">ADD A NEW POST</a></li>
+                          <li><a class="oratorFont" href="/viewallposts">BROWSE POSTS</a></li> 
+                                 
+                      </ul>           
+                   </li>
+                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">EVENTS<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a class="oratorFont"href="/postevents">ADD A NEW EVENT</a></li>
+                          <li><a class="oratorFont"href="/allEvents">BROWSE EVENTS</a></li> 
+                      </ul>           
+                   </li>
+                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">BLOGS<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a class="oratorFont" href="/newBlogPost">ADD A NEW BLOG</a></li> 
+                          <li><a class="oratorFont" href="/allBlogs">BROWSE ALL BLOGS</a></li>
+                          <li><a class="oratorFont" href="/myBlogPosts">MY BLOG POSTS</a></li>            
+                      </ul>           
+                   </li>
+                    <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">FORUM<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a class="oratorFont" href="/forum">VIEW FORUM</a></li> 
+                      </ul>           
+                   </li>
+                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">REHEARSAL SPACES<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a class="oratorFont" href="/comingsoon">COMING SOON</a></li> 
+                      </ul>           
+                   </li>
+                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">PERFORMANCE SPACES<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a class="oratorFont" href="/comingsoon">COMING SOON</a></li> 
+                      </ul>           
+                   </li>
+                   
+                </ul>
 
-
-
+            
+          </div>
+    </div>
+  </nav>
+</div>  
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
 <div class = "col-md-12" style="clear:both;">
    <div class = "col-md-2" id="slide-3">
         <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;" >    
       
                        <h3 style="color:#ECDEDE;text-align:center;" class ="oratorFont">Recently updated profiles</h3>
-          <!-- <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
-                  
-                  
-                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#5A0202;">
-                    <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;">
-                      <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
-                          <li class="active" style="color:#ECDEDE;">Upcoming events in all the cities<span class="sr-only">(current)</span></li>
-                      <% } else { %>
-                          <li class="active" style="color:#ECDEDE;">Upcoming Events in <%=citysel%><span class="sr-only">(current)</span></li>
-                       <% } %>
-                    </ul>        
-                  </div>
-          </nav> -->
+         
           <div>&nbsp;</div>
           <div class="panel-group artists-events-panel">
-            
               
+                
               <% if (typeof lastProfileUpdtd != 'undefined' && lastProfileUpdtd != null && lastProfileUpdtd.length != 0) { %>
                 <div id="arrows" style="display:none">
                   <div id="arrow-left"></div>
@@ -247,9 +303,12 @@
                      
                       <div class="col-md-12" style="padding-left:25px;padding-right:25px;">
                             <a href = "/profile?fbId=<%=lastProfileUpdtd[i].facebook.id%>" target="_blank" style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;text-decoration: none;">
+                              <% if(typeof lastProfileUpdtd[i].local.picture == 'undefined' || lastProfileUpdtd[i].local.picture == "") { %>
+                              <img  src="/images/siteLogo.jpg" style="height:100px; width:150px;" class="member-photo"> 
+                              <% } else { %>
                               <img src="<%=lastProfileUpdtd[i].local.picture%>" border=0   style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;"/>
+                              <% } %>
                               <span style="color:#FFF;font-size:small;position:relative;width:100%;"><%=lastProfileUpdtd[i].facebook.name%></span>
-
                             </a>
 
                       </div>
@@ -258,16 +317,17 @@
                   </div><!-- /row -->
               
               <% } %>  
-              
+                
           </div><!-- /slide3 -->
         <!-- <div class="panel-footer" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
                     <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/allEvents" style="color: #ECDEDE;">All Events ›</a></li></ul>
         </div> -->
       </div>
 
-    </div>
-  <div class = "col-md-8" style="padding-left:0px;padding-right:0px;">
-    <div class="col-md-11 col-md-offset-1" style="text-align:center;">
+  </div>
+  <!-- <div class = "col-md-8" style="padding-left:0px;padding-right:0px;"> -->
+
+    <!-- <div class="col-md-12" style="text-align:center;">
       <div class = "col-md-3 tree oratorFont">
       <ul>
           <li>
@@ -282,14 +342,14 @@
               </ul>
           </li>
         <ul>
-        </div> 
-        <div class = "col-md-3 tree oratorFont">
+      </div> 
+      <div class = "col-md-3 tree oratorFont">
         <ul>
           <li>
               <span class="badge badge-success"><i class="icon-minus-sign" style="font-size:18px;color: inherit;"><text class = "oratorFont"><b>&nbsp;&nbsp;POSTS</b></text></i></span>
               <ul>
                   <li>
-                    <a href="#postModal" data-toggle="modal" data-backdrop="static"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">ADD A NEW POST </text></span></a>
+                    <a href="#postModal" data-toggle="modal" data-backdrop="static"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">A NEW POST </text></span></a>
                   </li>
                   <li>
                     <a href="/viewallposts"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">BROWSE POSTS </text></span></a>
@@ -297,14 +357,14 @@
               </ul>
           </li>
         <ul>
-        </div>
-        <div class = "col-md-3 tree oratorFont">
+      </div>
+      <div class = "col-md-3 tree oratorFont">
         <ul>
           <li>
               <span class="badge badge-success"><i class="icon-minus-sign" style="font-size:18px;color: inherit;"><text class = "oratorFont"><b>&nbsp;&nbsp;EVENTS</b></text></i></span>
               <ul>
                   <li>
-                    <a href="/postevents"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">ADD A NEW EVENT </text></span></a>
+                    <a href="/postevents"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">A NEW EVENT </text></span></a>
                   </li>
                   <li>
                     <a href="/allEvents"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">BROWSE EVENTS </text></span></a>
@@ -312,18 +372,32 @@
               </ul>
           </li>
         <ul>
-        </div>  
+      </div>  
+      <div class = "col-md-3 tree oratorFont">
+        <ul>
+          <li>
+              <span class="badge badge-success"><i class="icon-minus-sign" style="font-size:18px;color: inherit;"><text class = "oratorFont"><b>&nbsp;&nbsp;BLOGS</b></text></i></span>
+              <ul>
+                  <li>
+                    <a href="/newBlogPost"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">A NEW BLOG POST </text></span></a>
+                  </li>
+                  <li>
+                    <a href="/allBlogs"><span class="badge badge-success"> <text class = "oratorFont" style="font-weight:300;">BROWSE BLOGS </text></span></a>
+                  </li>
+              </ul>
+          </li>
+        <ul>
+      </div>  
         
-    </div>
-
-    <div class = "col-md-10 col-md-offset-1" id="recentPosts">
+    </div> -->
+  <div class = "col-md-8" style="padding-top:20px;">  
       <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;background-color:#F2F2F2" >          
         <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
                 
                 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#5A0202;">
                   <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;" title="Incoming posts irespective of location, language or contribution">
-                          <li class="active oratorFont" style="color:#ECDEDE;">Recent posts of all categories<span class="sr-only" >(current)</span></li>
+                          <li class="active oratorFont" style="color:#ECDEDE;">Recent Updates<span class="sr-only" >(current)</span></li>
                   </ul>        
 
                  <!--  <ul class="nav navbar-right navbar-nav" style="font-size:15px;">          
@@ -332,164 +406,279 @@
                 </div>
               
         </nav>
-
-
-        
-          <% console.log("allposts.length" + allPosts.length) %>
-          <% if(allPosts.length > 0 ) { %>
+        <%for (var i =0; i < allContents.length; i++) { console.log("allContent length" + allContents.length);%>
           <div class="panel-group notification-panel">
-          <% var details="";
-           for(var i=0; i < allPosts.length; i++) { 
-              %>
-              <% if (typeof allPosts[i].post.postDetail !='undefined') {
-                              details = allPosts[i].post.postDetail
-              } else  {
-                details=""; 
-              }  %>
-              <div class = "row">
-                <% var userPicture, username, fbLink 
-                var oneDay = 24*60*60*1000;
-                var diffDays = Math.round(Math.abs((new Date().getTime() - allPosts[i].post.date.getTime())/(oneDay))); 
-                var diffDaysinStr;
-                if (diffDays == 0)  {
-                  diffDaysinStr = "today" 
-                } else if(diffDays == 1) {
-                  diffDaysinStr = "yesterday"
-                } else { 
-                  diffDaysinStr = diffDays + " days ago"
-                 }%>
-                <% if (typeof allPosts[i].post.user !='undefined' && allPosts[i].post.user.length > 0) {
-                    userPicture = allPosts[i].post.user[0].local.picture
-                    username = allPosts[i].post.user[0].facebook.name
-                    fbLink = '/profile?fbId=' + allPosts[i].post.user[0].facebook.id
-                } else {
-                    userPicture = ""
-                    username = ""
-                    fbLink = '/profile?fbId='+ allPosts[i].post.userid
-                } %>      
-               
-                <div class='span1'>
-                  <div class="post-userphoto">
-                    <% if(typeof allPosts[i].post.user == 'undefined' || allPosts[i].post.user.length == 0) { %>
-                      <a href="/profile?fbId=<%=allPosts[i].post.userid%>" title="View profile">
-                        <img  src="/images/siteLogo.jpg" style="height:30px; width:48px;" class="member-photo"> 
-                      </a>
-                    <% } else { %>
-                      <a href="/profile?fbId=<%=allPosts[i].post.user[0].facebook.id%>" title="View profile">
-                      <img  src="<%=allPosts[i].post.user[0].local.picture%>" style="height:48px; width:48px;" class="member-photo">
-                    </a>
-                    <% } %>
-                  </div> 
-                </div>   
-               
-                <div class='span9 antiguaFont'>
-                  <div class='post-text'>
-                    <div class="post-title">
-                          <a href="/viewpost?postid=<%=allPosts[i]._id%>" title="<%=details%>" rel="bookmark"><h4><%=allPosts[i].post.postTitle%></h4></a>  
-                          <% if(allPosts[i].post.city != "") { %> 
-                            <span class='user' style="font-size:11px;">in <%=allPosts[i].post.city%></span>
-                          <% } else { %>
-                            <span class='user' style="font-size:11px;">all over India</span>  
-                          <% } %>  
-                    </div>
-
-                      <text class = "post-detail-text"><%=details%></text><a href="/viewpost?postid=<%=allPosts[i]._id%>" title="click to read the complete post">  more details</a>   
-                  </div>
-                  <div class='post-menu'>
-                    <div>
-                      <span class='date timeago' title='time'><%=diffDaysinStr%></span> by
-                      <% if(username != "") { %>
-                        <span class='user'><a href="<%=fbLink%>" title='view users profile'><%=username%></a></span>
-                      <% } else { %>  
-                        <span class='user'><a href="<%=fbLink%>" title='view users profile'>a member</a></span>
-                      <% } %>  
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-          <% } %>
-          <% } else  { %>
-          <div class="panel-group notification-panel" style="height:100px;">
-                <div class='span9 oratorFont'>
-                  <div class='post-text'>
-                    <div class="post-title">
-                            <span class='user' style="font-size:20px;">NO NEW POSTS IN THE LAST 10 DAYS</span>  
-                            
-                    </div>
-                  </div>
-                </div>    
-          <% } %>
-          
-        </div>
-        <div class="panel-footer oratorFont" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
-                    <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/viewallposts" style="color: #ECDEDE;">Older News ›</a></li></ul>
-        </div>
-      </div>
-    </div>   
-
-  </div>
-   
-  <div class = "col-md-2" id="slide-3">
-        <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;" >    
-      
-                       <h3 style="color:#ECDEDE;text-align:center;" class ="oratorFont">Upcoming Events</h3>
-          <!-- <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
-                  
-                  
-                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#5A0202;">
-                    <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;">
-                      <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
-                          <li class="active" style="color:#ECDEDE;">Upcoming events in all the cities<span class="sr-only">(current)</span></li>
-                      <% } else { %>
-                          <li class="active" style="color:#ECDEDE;">Upcoming Events in <%=citysel%><span class="sr-only">(current)</span></li>
-                       <% } %>
-                    </ul>        
-                  </div>
-          </nav> -->
-          <div>&nbsp;</div>
-          <div class="panel-group artists-events-panel">
+           <% if(typeof allContents[i].post != "undefined") { 
+              allPosts = allContents[i] %>
             
+              <% var details=""; %>
               
-              <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
-                <div id="arrows" style="display:none">
-                  <div id="arrow-left"></div>
-                  <div id="arrow-right"></div>
-                </div>
+                <% if (typeof allPosts.post.postDetail !='undefined') {
+                                details = allPosts.post.postDetail
+                } else  {
+                  details=""; 
+                }  %>
+                <div class = "row">
+                  <% var userPicture, username, fbLink 
+                  var oneDay = 24*60*60*1000;
+                  var diffDays = Math.round(Math.abs((new Date().getTime() - allPosts.post.date.getTime())/(oneDay))); 
+                  var diffDaysinStr;
+                  if (diffDays == 0)  {
+                    diffDaysinStr = "today" 
+                  } else if(diffDays == 1) {
+                    diffDaysinStr = "yesterday"
+                  } else { 
+                    diffDaysinStr = diffDays + " days ago"
+                   }%>
+                  <% if (typeof allPosts.post.user !='undefined' && allPosts.post.user.length > 0) {
+                      userPicture = allPosts.post.user[0].local.picture
+                      username = allPosts.post.user[0].facebook.name
+                      fbLink = '/profile?fbId=' + allPosts.post.user[0].facebook.id
+                  } else {
+                      userPicture = ""
+                      username = ""
+                      fbLink = '/profile?fbId='+ allPosts.post.userid
+                  } %>      
+                 
+                    <div class='span1'>
+                      <div class="post-userphoto">
+                        <% if(typeof allPosts.post.user == 'undefined' || allPosts.post.user.length == 0) { %>
+                          <a href="/profile?fbId=<%=allPosts.post.userid%>" title="View profile">
+                            <img  src="/images/siteLogo.jpg" style="height:30px; width:48px;" class="member-photo"> 
+                          </a>
+                        <% } else { %>
+                          <a href="/profile?fbId=<%=allPosts.post.user[0].facebook.id%>" title="View profile">
+                          <img  src="<%=allPosts.post.user[0].local.picture%>" style="height:48px; width:48px;" class="member-photo">
+                        </a>
+                        
+                        <% } %>
+                      </div> 
+                    </div>   
+                 
+                    <div class='span9 antiguaFont'>
+                      <div class='post-text'>
+                        <div class="post-title">
+                          <% if(username != "") { %>
+                            <span class='user'><a href="<%=fbLink%>" title='view users profile'><%=username%></a></span>
+                          <% } else { %>  
+                            <span class='user'><a href="<%=fbLink%>" title='view users profile'>a member</a></span>
+                          <% } %> posted a request
+                              <a href="/viewpost?postid=<%=allPosts._id%>" title="<%=details%>" rel="bookmark"><h4><%=allPosts.post.postTitle%></h4></a>  
+                              <% if(allPosts.post.city != "") { %> 
+                                <span class='user' style="font-size:11px;">in <%=allPosts.post.city%></span>
+                              <% } %>  
+                        </div>
 
-                  <div class="row" style="position:relative;" class ="antiguaFontSmall" >
-                  <% for(var i = 0; i < events.length; i++) {%>
-                      <%  var d = new Date(events[i].event.date).toISOString();
-                            var displayableStartDate = getDate(d);
-                            var displayableEndDate = displayableStartDate;
-                            if(typeof events[i].event.endDate != 'undefined' && events[i].event.endDate != "" && events[i].event.endDate != null) {
-                              var endDate = new Date(events[i].event.endDate).toISOString();
-                              displayableEndDate = getDate(endDate);
-                            }  
-                      %>
-                      <div class="col-md-12" style="padding-left:25px;padding-right:25px;">
-                            <a href = "<%=events[i].event.link%>" target="_blank" style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;text-decoration: none;">
-                              <img src="<%=events[i].event.eventcover%>" border=0   style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;"/>
-                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
-                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"> from <%=displayableStartDate%></span>
-                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"> until <%=displayableEndDate%></span>
-                              <span style="color:#FFF;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
-
-                            </a>
-
+                          <text class = "post-detail-text"><%=details%></text><a href="/viewpost?postid=<%=allPosts._id%>" title="click to read the complete post">  more details</a>   
                       </div>
+                      <div class='post-menu'>
+                        <div>
+                          <span class='date timeago' title='time'><%=diffDaysinStr%></span>
+                            
+                        </div>
+                      </div>
+                    </div>
+                </div>  
+
+            <% } else if (typeof allContents[i].blogPost != "undefined") { allBlogs = allContents[i] %>
+
+              <% var details=""; var blogLink = ""; var authorName=""; authorpic=""; %>
+               
+                <% if (typeof allBlogs.blogPost.postBody !='undefined') {
+                  details = allBlogs.blogPost.postBody;
+                } else  {
+                  details=""; 
+                }  %>
+                <div class = "row">
+                  <% var userPicture, username, fbLink 
+                  var oneDay = 24*60*60*1000;
+                  var diffDays = Math.round(Math.abs((new Date().getTime() - allBlogs.blogPost.date.getTime())/(oneDay))); 
+                  var diffDaysinStr;
+                  if (diffDays == 0)  {
+                    diffDaysinStr = "today" 
+                  } else if(diffDays == 1) {
+                    diffDaysinStr = "yesterday"
+                  } else { 
+                    diffDaysinStr = diffDays + " days ago"
+                   }
+
+                  authorpic = allBlogs.blogPost.authorPic
+                  authorName = allBlogs.blogPost.authorName
+
+                  %>
+                 
+                  <div class='span1'>
+                    <div class="post-userphoto">
+                        <a href="/profile?fbId=<%=allBlogs.blogPost.authorid%>" title="View profile">
+                        <%if(typeof authorpic == 'undefined' || authorpic == "") { %>
+                          <img  src="/images/siteLogo.jpg" style="height:48px; width:48px;" class="member-photo"> 
+                        <% } else { %>  
+                          <img  src="<%=authorpic%>" style="height:48px; width:48px;" class="member-photo">
+                        <% } %>  
+                        </a>
                       
-                  <% }  %>
-                  </div><!-- /row -->
+                    </div> 
+                  </div>             
+                  <div class='span9 antiguaFont'>
+                    <div class='post-text'>
+                      <div class="post-title">
+                            <% if(username != "") { %>
+                              <span class='user'><a href="/profile?fbId=<%=allBlogs.blogPost.authorid%>" title='view users profile'><%=authorName%></a></span>
+                            <% } else { %>  
+                              <span class='user'><a href="/profile?fbId=<%=allBlogs.blogPost.authorid%>" title='view users profile'>a member</a></span>
+                            <% } %>posted a blog 
+                            <a href="/displayBlogPost?blogpostid=<%=allBlogs._id%>" title="click to read the complete blog" rel="bookmark"><h4><%=allBlogs.blogPost.postTitle%></h4></a>  
+                      </div>
+                    </div>
+                    <div class='post-menu'>
+                      <div>
+                        <span class='date timeago' title='time'><%=diffDaysinStr%></span>
+                       
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+            
+          
+
+
+
+
+            <% } else if (typeof allContents[i].thread != "undefined") { allThreads = allContents[i]%>
+             
               
-              <% } else { %>  
-              <h3 style="text-align:center;"><a href="/allevents" >Sorry, no recent events posted in <%=citysel%>, click here to search events in other locations</a></h3>   
-              <% } %>
-          </div><!-- /slide3 -->
-        <!-- <div class="panel-footer" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
-                    <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/allEvents" style="color: #ECDEDE;">All Events ›</a></li></ul>
-        </div> -->
-      </div>
+              <% var details=""; var blogLink = ""; var authorName=""; authorpic=""; %>
+               
+                  <% if (typeof allThreads.thread.topic !='undefined') {
+                    details = allThreads.thread.tbody;
+                  } else  {
+                    details=""; 
+                  }  %>
+                  <div class = "row">
+                    <% var userPicture, username, fbLink 
+                    var oneDay = 24*60*60*1000;
+                    var diffDays = Math.round(Math.abs((new Date().getTime() - allThreads.thread.date.getTime())/(oneDay))); 
+                    var diffDaysinStr;
+                    if (diffDays == 0)  {
+                      diffDaysinStr = "today" 
+                    } else if(diffDays == 1) {
+                      diffDaysinStr = "yesterday"
+                    } else { 
+                      diffDaysinStr = diffDays + " days ago"
+                     }
+
+                    authorpic = allThreads.thread.authorPic
+                    authorName = allThreads.thread.authorName
+
+                    %>
+                   
+                    <div class='span1'>
+                      <div class="post-userphoto">
+                          <a href="/profile?fbId=<%=allThreads.thread.authorid%>" title="View profile">
+                          <%if(typeof authorpic == 'undefined' || authorpic == "") { %>
+                            <img  src="/images/siteLogo.jpg" style="height:48px; width:48px;" class="member-photo"> 
+                          <% } else { %>  
+                            <img  src="<%=authorpic%>" style="height:48px; width:48px;" class="member-photo">
+                          <% } %>  
+                          </a>
+                        
+                      </div> 
+                    </div>             
+                    <div class='span9 antiguaFont'>
+                      <div class='post-text'>
+                        <div class="post-title">
+                          <% if(username != "") { %>
+                            <span class='user'><a href="/profile?fbId=<%=allThreads.thread.authorid%>" title='view users profile'><%=authorName%></a></span>
+                          <% } else { %>  
+                            <span class='user'><a href="/profile?fbId=<%=allThreads.thread.authorid%>" title='view users profile'>a member</a></span>
+                          <% } %> posted a thread in Forum
+                              <a href="/viewThread?id=<%=allThreads._id%>" title="click to view the thread" rel="bookmark"><h4><%=allThreads.thread.topic%></h4></a>  
+                        </div>
+
+                          
+                      </div>
+                      <div class='post-menu'>
+                        <div>
+                          <span class='date timeago' title='time'><%=diffDaysinStr%></span>
+                            
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+              
+
+
+            <% } %>
+
+            </div>
+          <% } %>  
+        </div>
+      </div>  
+       
+
+ 
+    <div class = "col-md-2" id="slide-3">
+          <div style="padding-left:0px;padding-right:0px;margin-bottom:0px;" >    
+        
+                         <h3 style="color:#ECDEDE;text-align:center;" class ="oratorFont">Upcoming Events</h3>
+            <!-- <nav class="navbar navbar-default" role="navigation" style="min-height:0px;">
+                    
+                    
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="background-color:#5A0202;">
+                      <ul class="nav navbar-nav" id="headerlist" style="font-size:15px;">
+                        <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
+                            <li class="active" style="color:#ECDEDE;">Upcoming events in all the cities<span class="sr-only">(current)</span></li>
+                        <% } else { %>
+                            <li class="active" style="color:#ECDEDE;">Upcoming Events in <%=citysel%><span class="sr-only">(current)</span></li>
+                         <% } %>
+                      </ul>        
+                    </div>
+            </nav> -->
+            <div>&nbsp;</div>
+            <div class="panel-group artists-events-panel">
+              
+                
+                <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
+                  <div id="arrows" style="display:none">
+                    <div id="arrow-left"></div>
+                    <div id="arrow-right"></div>
+                  </div>
+
+                    <div class="row" style="position:relative;" class ="antiguaFontSmall" >
+                    <% for(var i = 0; i < events.length; i++) {%>
+                        <%  var d = new Date(events[i].event.date).toISOString();
+                              var displayableStartDate = getDate(d);
+                              var displayableEndDate = displayableStartDate;
+                              if(typeof events[i].event.endDate != 'undefined' && events[i].event.endDate != "" && events[i].event.endDate != null) {
+                                var endDate = new Date(events[i].event.endDate).toISOString();
+                                displayableEndDate = getDate(endDate);
+                              }  
+                        %>
+                        <div class="col-md-12" style="padding-left:25px;padding-right:25px;">
+                              <a href = "<%=events[i].event.link%>" target="_blank" style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;text-decoration: none;">
+                                <img src="<%=events[i].event.eventcover%>" border=0   style="min-width:150px;max-width:150px;max-height:100px;min-height:100px;"/>
+                                <span style="color:#FFF;font-size:small;position:relative;width:100%;"><%=events[i].event.title%></span>
+                                <span style="color:#FFF;font-size:small;position:relative;width:100%;"> from <%=displayableStartDate%></span>
+                                <span style="color:#FFF;font-size:small;position:relative;width:100%;"> until <%=displayableEndDate%></span>
+                                <span style="color:#FFF;font-size:small;position:relative;width:100%;"> in <%=events[i].event.city%></span>
+
+                              </a>
+
+                        </div>
+                        
+                    <% }  %>
+                    </div><!-- /row -->
+                
+                <% } else { %>  
+                <h3 style="text-align:center;"><a href="/allevents" >Sorry, no recent events posted in <%=citysel%>, click here to search events in other locations</a></h3>   
+                <% } %>
+            </div><!-- /slide3 -->
+          <!-- <div class="panel-footer" style="background-color:#5A0202;padding-top:3px;padding-bottom:5px;">
+                      <ul style="margin-bottom:20px;font-size:15px;list-style-type: none;"><li class= "pull-right"><a href="/allEvents" style="color: #ECDEDE;">All Events ›</a></li></ul>
+          </div> -->
+    </div>
 
     </div>    
 </div>    
@@ -598,7 +787,7 @@
               <% var cities = dropdowns.alldropdowns.cities;
                   for(var i = 0; i < cities.length; i ++) {   %> 
                         <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
-              <!-- <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select> -->
+            <!--  <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>--> 
               <% } %>
             </select></div>
             <div id="myRole" class="form-group">

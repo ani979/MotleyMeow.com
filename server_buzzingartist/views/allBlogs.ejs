@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MM - All Blogs</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/cleanblog/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/cleanblog/css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'> <!--Let this be http-->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+
+</head>
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%> 
+<body>
+    
+    
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('/cleanblog/img/home-curtain.jpg');height:50%;">
+      <div class="container">
+            <% if(typeof user != 'undefined' && user!=null) { %>
+      <div id = "headerloggedin"> </div>
+            <% } else { %>
+      <div id = "headerloggedout"></div>
+    <%}%> 
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                <% if(search == null) { %>
+                    <div class="site-heading">
+                        <h1 class="oratorFont" style="font-size:36px;">All Blogs</h1>
+                        <hr class="small">
+                        <span class="subheading">This is what everyone's been upto</span>
+                    </div>
+                     <% }
+
+                else { %>
+                    <div class="site-heading">
+                        <h1 class="oratorFont" style="font-size:36px;">All Blogs</h1>
+                        <hr class="small">
+                        <span class="subheading">Showing results for <%= search %></span>
+                    </div>
+                <%} %>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-0 col-md-10 col-md-offset-0">
+                
+                <% allposts.forEach(function(post) { %>
+
+
+                            <!--Every post-->
+                            <div class="post-preview">
+                                <a href="/displayBlogPost?blogpostid=<%=post._id%>">
+                                    <h2 class="post-title panel-title" style="font-size:24px;">
+                                        <%= post.blogPost.postTitle %>
+                                    </h2>
+                                    <h3 class="post-subtitle antiguaFont" style="font-size:20px;">
+                                        <text id = "subtitle"><%= post.blogPost.postSubtitle %></text>
+                                    </h3>
+                                </a>
+                                <script>
+                                    // var d = <%- JSON.stringify(post.blogPost.date) %>;
+                                    // var n = d.toString();
+                                    // var x = n.substr(0, 25);
+                                </script>
+                                 <% var isodateString = post.blogPost.date.toISOString();
+                                    var displayableDate = getDate(isodateString) %>
+                                <p class="post-meta oratorFont" style="font-size:16px;">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= displayableDate %></p>
+                            </div>
+                            <hr>
+
+                <% }); %> 
+                
+                
+                
+                <!-- Pager -->
+                <!--<ul class="pager">
+                    <li class="next">
+                        <a href="#">Older Posts &rarr;</a>
+                    </li>
+                </ul>-->
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="row">
+                <div class="col-lg-4 col-md-2">
+
+                    <!-- Blog Search Well -->
+                    <div style="padding-top:25px">
+                        <div class="well" style="">
+                            <h4 class="oratorFont" style="font-size:16px;">Blog Search</h4>
+                            <div class="input-group">
+                                <input type="text" class="form-control" style="height:52px" id="search">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit" onclick="searchPosts()">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    
+
+    <!-- Footer -->
+    <div id = "footer"></div>
+
+    <!-- jQuery -->
+    <script src="/cleanblog/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/cleanblog/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/cleanblog/js/clean-blog.min.js"></script>
+
+    <script>
+    $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
+    function searchPosts(){
+        console.log("Searching");
+
+        var data = {
+            search: $("#search").val(),
+            option: null
+          };
+
+          //console.log(checkBoxes);
+          console.log(data);
+
+          $.ajax({ 
+           url: "/searchBlogPosts",
+           type: "POST",
+           cache: false, 
+           async: true,
+           data: data,
+
+           success: function(data){
+              console.log('Success!');
+              
+              if(data.completed == "OK") {
+                console.log("OK");
+                window.location.href = data.redirect
+                //generateNotificationLayout('success', 'topCenter', 'Post published');
+              } else {
+                console.log("NOK");
+                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+              }
+           }, 
+
+           error: function(jqXHR, textStatus, err){
+               console.log('text status '+textStatus+', err '+err);
+               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+           }
+        }); //end of ajax function
+    };
+  
+
+ </script>
+</body>
+
+</html>

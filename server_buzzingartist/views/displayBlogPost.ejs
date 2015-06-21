@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta property="og:title" content="View the blog <%=post.blogPost.postTitle%>">
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <meta property="og:description" content="Read about this article from <%= post.blogPost.authorName %>"/>
+    <title>Blog Post</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <link href="css/style.css" rel="stylesheet"> 
+     <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%>  
+
+<body>
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1381852852123169&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<% if(typeof user != 'undefined' && user!=null) { %>
+  <div id = "headerloggedin"> </div>
+<% } else { %>
+  <div id = "headerloggedout"></div>
+<%}%> 
+    <!-- Page Content -->
+    <div class="main-container">
+
+        <div class="row" syle="margin-right:0px;">
+
+            <!-- Blog Post Content Column -->
+            <div class = "col-md-2 col-md-offset-1" style="padding-top:20px;">
+              <% if(typeof post.blogPost.authorPic == 'undefined' || post.blogPost.authorPic == "") { %>
+                <i class="fa fa-user" style="font-size:150px;color:rgba(59, 0, 0, 0.76)"></i>
+              <% } else { %> 
+                <img src=<%=post.blogPost.authorPic %> class="img-circle" style="max-height:150px;">
+              <% } %>
+            </div>  
+            <div class="col-md-6">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1><%= post.blogPost.postTitle %></h1>
+
+                <!-- Author -->
+                <p class="lead">
+                    by <a href="/profile?fbId=<%=post.blogPost.authorid%>"><%= post.blogPost.authorName %></a>
+                </p>
+
+                <% if(typeof user!='undefined' && post.blogPost.authorid == user.facebook.id)
+                  { %>
+                      <a href="/editBlogPost?blogpostid=<%=post._id%>" class="btn btn-xs btn-info">Edit Post</a>
+                      <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Post</button>
+
+                  <% } %> <!--if- close-->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <% var isodateString = post.blogPost.date.toISOString();
+                var displayableDate = getDate(isodateString) %>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on <%= displayableDate %></p>
+
+                <hr>
+
+                <!-- Post Content -->
+                <p class="lead" id="demo"></p>
+                <script>
+                  var myVar = <%- JSON.stringify(post.blogPost.postBody) %>;
+                  document.getElementById("demo").innerHTML = myVar;
+                </script>
+                <%if(post.blogPost.approved) { %>
+                <div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                <%}%>
+                
+                <hr>
+
+                <!-- Blog Comments -->
+
+                <!-- Comments Form -->
+                <% if(typeof user != "undefined") {%> 
+                <div class="well">
+                    <h4>Leave a Comment:</h4>
+                    
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" id="comment"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="postid" value="<%= post._id %>" type="hidden"></input>
+                        </div>
+                        <button type="submit" class="btn btn-primary" onclick="saveComment()">Submit</button>
+                   
+                </div>
+
+                <hr>
+                <% } %>
+
+                <div  id="ForComments"></div>
+                
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+
+    </div>
+    <!-- /.container -->
+  
+<div id = "footer"></div>
+<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="deleteModal" class="open-ViewDialog" tabindex="-1" aria-hidden="true">  
+    <form action="" method="post" id="deleteForm">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header" style = "background-color: #528FCC;">
+                   <h4 class="modal-title">DELETE ME</h4>
+              </div>
+              
+              <div class="modal-body">
+                  Are you sure you want to delete this blog post?
+              </div>
+              
+              <div class="modal-footer">
+                  <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+                  <span class="pull-right"><button type="button" class="btn btn-default" onclick="submitForDelete()">OK</button></span>
+              </div>
+          </div>
+      </div>
+    </form>
+  </div>
+    <!-- jQuery -->
+
+<!-- Bootstrap Core JavaScript -->
+
+<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+    
+<script>
+
+$(document).ready(function(e) {
+  $('#ForComments').load("displayComments?blogpostid=" + $("#postid").val());
+});  
+$("#footer").load("footer.ejs"); 
+$("#headerloggedin").load("/header");
+$("#headerloggedout").load("headerloggedout.ejs");
+function generateNotificationLayout(type, layout, text) {
+         var n = noty({ layout: layout,
+          type: type,
+          text: text, // can be html or string
+          dismissQueue: true, // If you want to use queue feature set this true
+          template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+          animation: {
+              open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+              close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+              easing: 'swing',
+              speed: 500 // opening & closing animation speed
+          },
+          timeout: false, // delay for closing event. Set false for sticky notifications
+          force: false, // adds notification to the beginning of queue when set to true
+          modal: false,
+          maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+          killer: false, // for close all notifications before show
+           // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+          callback: {
+              onShow: function() {
+              },
+              afterShow: function() {},
+              onClose: function() {
+                      
+              },
+              afterClose: function() {},
+              onCloseClick: function() {}
+          },
+          closeWith: ["click","button"],
+          buttons: [
+              {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+                $noty.close();
+                  }
+               }
+              
+            ]
+        });
+      }   
+  function saveComment(){
+          
+          console.log("This is executing");
+
+          var data = {
+            comment: $("#comment").val(),
+            postid: $("#postid").val()
+          };
+
+          $.ajax({ 
+           url: "/saveCommentBlogPost",
+           type: "POST",
+           cache: false, 
+           async: true,
+           data: data,
+
+           success: function(data){
+              console.log('Success!');
+              
+              if(data.completed == "OK") {
+                console.log("OK");
+                $("#comment").val("");
+                $("#ForComments").load("displayComments?blogpostid=" + $("#postid").val());
+                //generateNotificationLayout('success', 'topCenter', 'Post published');
+              } else {
+                console.log("NOK");
+                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+              }
+           }, 
+
+           error: function(jqXHR, textStatus, err){
+               console.log('text status '+textStatus+', err '+err);
+               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+           }
+        }); //end of ajax function 
+  } //end of savePostData function
+
+  function submitForDelete() {
+    var data = {
+          postid: $("#postid").val()
+    };
+
+    $.ajax({ 
+     url: "/deleteBlogPost",
+     type: "POST",
+     cache: false, 
+     async: true,
+     data: data,
+
+     success: function(data){
+        console.log('Success!');
+        
+        
+        if(data.completed == "OK") {
+         console.log("OK");
+         //document.getElementById(divallthreads).innerHTML = "";               
+           window.location.href = data.redirect;
+           
+
+          //generateNotificationLayout('success', 'topCenter', 'Post published');
+        } else {
+          console.log("NOK");
+          
+          generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+        }
+     }, 
+
+     error: function(jqXHR, textStatus, err){
+         console.log('text status '+textStatus+', err '+err);
+         //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+     }
+    }); //end of ajax function 
+
+  } 
+
+
+  function editBlogComment(id)  //function to close modal 
+      {
+        //alert(id)
+          var repliesid = '#comment'+id
+          //alert(repliesid)
+          var editReplyId = "#editComment" +id
+          //alert(editReplyId)
+         $(repliesid).hide();
+         $(editReplyId).show();
+      }
+</script>
+
+
+</body>
+
+</html>

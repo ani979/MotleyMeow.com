@@ -87,7 +87,21 @@
             </div>
             <div class="panel-body">
               <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:180px;padding-bottom:0px;"> </div>
+                <% if(typeof user.local.picture != "undefined" && user.local.picture!= "" && user.local.picture != null) { %>
+                  <div class="col-md-3 col-lg-3 " align="center"> <img id="myProfilePic" alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:180px;padding-bottom:0px;"></br> 
+                  <a id = "editMyPic" href = "javascript:void()" onclick = "changeMyPic()" style="color:#E9DFD7;">Edit My Pic</a>
+                <% } else { %>
+                  <i class="fa fa-user" style="font-size:180px;color:rgba(59, 0, 0, 0.76)"></i>
+                  <img id="myProfilePic" alt="User Pic" src="" class="img-circle" style="max-height:180px;padding-bottom:0px;display:none;">
+                  <a id = "editMyPic" href = "javascript:void()" onclick = "changeMyPic()" style="color:#E9DFD7;">Add My Pic</a>
+                <% } %>  
+                <a id = "saveMyPic" href = "javascript:void()" onclick = "saveMyPic()" style="color:#E9DFD7;display:none;">Save</a><br/>
+                <a id = "changeMyPic" href = "javascript:void()" onclick = "changeMyPic()" style="color:#E9DFD7;display:none;">Change</a>
+                <input id = "profileImg" type="file" class = "imageUpdateField" name = "profileImg" style="display:none"/>
+                <input id = "imageName" type="hidden"/>
+                <input id = "imagePath" type="hidden"/>
+              </div>
+
 
                 <div class=" col-md-9 col-lg-9 "> 
                   <form id = "profileUpdateForm" class="form-horizontal" role="form" enctype="multipart/form-data" action="/update" method="post">
@@ -417,10 +431,12 @@
                                       <div class="control-group col-md-12" id = "mySocialPresence">
                                           <div class="control-group">
                                             <%if(typeof user.portfolio.mySocialPresence == 'undefined' || user.portfolio.mySocialPresence.length == 0) {%>
-                                              <label class="col-sm-3 control-label  controlLabelText" for="socialG">Google+</label>
-                                              <div class="col-sm-9">
-                                                  <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"> 
-                                              </div>
+                                              <%if(typeof user.google == 'undefined' || typeof user.google.link =='undefined' || user.google.link == "") { %>
+                                                <label class="col-sm-3 control-label  controlLabelText" for="socialG">Google+</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"> 
+                                                </div>
+                                              <% } %>  
                                               
                                               <label class="col-sm-3 control-label  controlLabelText" for="socialT">Twitter</label>
                                               <div class="col-sm-9">
@@ -433,13 +449,16 @@
                                               </div>   
                                             <% } else { 
                                                for(var i =0; i < user.portfolio.mySocialPresence.length; i ++) {%>
-                                                  <% if(user.portfolio.mySocialPresence[i].name == "socialG") {%>
-                                                    <label class="col-sm-3 control-label controlLabelText" for="socialG">Google+</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"
-                                                        value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
-                                                    </div>
-                                                  <% } %>  
+                                                  
+                                                     <% if(user.portfolio.mySocialPresence[i].name == "socialG") {
+                                                        if(typeof user.google == 'undefined' || typeof user.google.link =='undefined' || user.google.link == "") { %>
+                                                        <label class="col-sm-3 control-label controlLabelText" for="socialG">Google+</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"
+                                                            value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
+                                                        </div>
+                                                      <%}
+                                                      } %>  
                                                   <% if(user.portfolio.mySocialPresence[i].name == "socialT") {%>
                                                     <label class="col-sm-3 control-label controlLabelText" for="socialT">Twitter</label>
                                                     <div class="col-sm-9">
@@ -1079,6 +1098,7 @@
               // alert('Opps, something bad happened');
               return;
               }
+
               if(typeof data.path != 'undefined' && data.path.length > 0) {
                 for(var i = 0; i < data.path.length ; i++) {
                   portfolioImages.push(data.path[i].name);
@@ -1086,8 +1106,8 @@
                   // $('#mypics').append("<img id=image"+i+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
                   // $("#image"+i).attr("src","tempUploads/"+data.path[i].name);
                 $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
-                $('#div' + imageIndex).append("<td> <a href=/portfolio/"+ <%=user.facebook.id%> + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
-                $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + <%=user.facebook.id%> + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+                $('#div' + imageIndex).append("<td> <a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
+                $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
                 $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
  
 
@@ -1369,6 +1389,84 @@
       
     });  
 
+
+    function changeMyPic () {
+      // first copy to temp uploads
+      $("#profileImg").trigger('click');
+    }
+
+
+    $('input[id=profileImg]').change(function(e){
+      var data = new FormData();
+      data.append('image', $('input[id=profileImg]')[0].files[0]); 
+      // alert("Data is " + data);
+      $.ajax({
+        url: "/postPhotos",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        data: data,
+        complete: function() {
+          console.log('process complete');
+        },
+
+        success: function(data) {
+           if(data.error) {
+            console.log('Opps, something bad happened');
+            return;
+            }
+          console.log("here success");  
+          console.log("Data.path is" + data.path);
+          $("#myProfilePic").attr("src","tempUploads/"+data.path);
+          $("#myProfilePic").show();
+          $("#changeMyPic").show();
+          $("#saveMyPic").show();
+          $("#editMyPic").hide();
+          $("#imageName").val(data.path);
+       },
+
+        error: function() {
+          console.log('process error');
+        },
+      });
+     
+    });  
+
+
+    function saveMyPic (){
+      
+      var data = {
+              imageName: $('#imageName').val()
+            };// alert("Data is " + data);
+      $.ajax({
+        url: "/saveProfilePic",
+        type: "POST",
+        data: data,
+        complete: function() {
+          console.log('process complete');
+        },
+
+        success: function(data) {
+           if(data.error) {
+            console.log('Opps, something bad happened');
+            return;
+            }
+          console.log("here success");  
+          
+          $("#myProfilePic").attr("src", data.image);
+          $("#myProfilePic").show();
+          $("#changeMyPic").hide();
+          $("#saveMyPic").hide();
+          $("#editMyPic").show();
+          $("#imageName").val(data.image);
+       },
+
+        error: function() {
+          console.log('process error');
+        },
+      });
+     
+    }
     
 
     </script>
