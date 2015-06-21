@@ -192,7 +192,6 @@
             <ul class="dropdown-menu">
               <li><a href="/profile?fbId=<%=user.facebook.id%>" class="antiguaFontSmall">Profile</a></li>
 
-              <li><a href="/profileProductionHouse" class="antiguaFontSmall">My Production House</a></li>
               <li><a href="/logout" class = "antiguaFontSmall">Logout</a></li>
               
             </ul>
@@ -219,7 +218,7 @@
     </div>
   <%}%> 
   <% var citysel = user.local.city %>
-<div class = "col-md-10 col-md-offset-1" style="clear:both;text-align:center;">
+<div class = "col-md-12" style="clear:both;text-align:center;">
     <nav class="navbar navbar-inverse navbar-static-top no-margin" style= "background-color: rgba(34, 34, 34, 0);border-color: rgba(8, 8, 8, 0);">
       <div class="container-fluid">
         <div class="collapse navbar-collapse" id="bs-project2-navbar-collapse-1">
@@ -259,16 +258,19 @@
                           <li><a class="oratorFont" href="/forum">VIEW FORUM</a></li> 
                       </ul>           
                    </li>
-                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">REHEARSAL SPACES<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+
+                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">PRODUCTION HOUSES<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a class="oratorFont" href="/comingsoon">ADD YOUR PRODUCTION HOUSE</a></li>
+                          <li><a class="oratorFont" href="/profileProductionHouse">VIEW YOUR PRODUCTION HOUSE</a></li>
+                          <li><a class="oratorFont" href="/comingsoon">BROWSE HOUSES</a></li> 
+                      </ul>           
+                   </li>                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">PERFORMANCE/REHEARSAL SPACES<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
                       <ul class="dropdown-menu" role="menu">
                           <li><a class="oratorFont" href="/comingsoon">COMING SOON</a></li> 
                       </ul>           
                    </li>
-                   <li><a class="oratorFont" style="color: rgba(255, 255, 255, 0.94);" href="#" class="dropdown-toggle" data-toggle="dropdown">PERFORMANCE SPACES<i class="glyphicon glyphicon-chevron-down" style = "padding-left: 10px; color: #E9E1E1;"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                          <li><a class="oratorFont" href="/comingsoon">COMING SOON</a></li> 
-                      </ul>           
-                   </li>
+                   
                    
                 </ul>
 
