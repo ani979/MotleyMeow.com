@@ -175,11 +175,26 @@ exports.profileEdit = function (req, res) {
 exports.productionhouseEdit = function (req, res) {
     var accessToken = req.session.access_token;
     console.log("accesstokenk11: "+ accessToken);
+
+  var fbid = "";
+    
+   
+        console.log("productionhouseEdit: "+ req.isAuthenticated());
+        
+            
+            if(typeof req.query.fbId == 'undefined') {
+                fbid = req.session.user.facebook.id;
+            } else {
+                fbid = req.query.fbId;
+            }
+
+
     if(!accessToken) {
         console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
         if(req.isAuthenticated()) {
-
-            res.render('productionhouseEdit', {  productionhouse: req.session.user, dropdowns:dropdowns});
+ProductionHouse.findOne({ 'facebook.id' : fbid}, function(error, db) {
+                res.render('productionhouseEdit', { productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
+            }); 
         } else {
                 res.redirect('/');
             

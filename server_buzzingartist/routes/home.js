@@ -5,7 +5,7 @@ var FB              = require('fb'),
     config          = require('../config');
     // passport = require('../passport/passport');
     // passport = require('passport');
-
+var ProductionHouse = require('../models/productionhouse');
 var User = require('../models/user');
 
 FB.options({
@@ -20,7 +20,12 @@ var profile = {
     email:'',
     gender:'',
 };
-
+var profileProductionHouse = {
+    
+    fullName:'',
+    email:'',
+  
+};
 // var isAuthenticated = function (req, res, next) {
 //     // if user is authenticated in the session, call the next() to call the next request handler 
 //     // Passport adds this method to request object. A middleware is allowed to add properties to
@@ -128,6 +133,24 @@ exports.profile = function (req, res) {
     }
 };
 
+exports.profileProductionHouse = function (req, res) {
+    var accessToken = req.session.access_token;
+    console.log("accesstoken111PH: "+ accessToken);
+    if(!accessToken) {
+        console.log("isAuthenticatedddddddd222PH: "+ req.isAuthenticated());
+        if(req.isAuthenticated()) {
+            console.log("req.user city " + req.session.user.local.city);
+            console.log("req.user name " + req.session.user.facebook.name);
+            res.render('productionhouseEdit', {  productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID });
+        } else {
+                res.redirect('/');
+            
+        }
+    } else {
+        // res.render('home');
+        res.redirect('/');
+    }
+};
 exports.home = function (req,res) {
     console.log("HOME_PAGE accessToken: "+req.session.access_token);
     if(req.session.access_token) {
