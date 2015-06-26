@@ -424,3 +424,61 @@ exports.deleteBlogComment = function(req, res) {
        }
   });
 }    
+
+exports.approveBlogs = function(req, res){
+
+    BlogPost.find({}, function(err, posts) {
+        //console.log(blogposts);
+        //console.log(count);
+        if(err)
+        {
+            console.log("errror in fetching all blog posts");
+        }
+        else
+        {
+            console.log(req.session.user.local.admin);
+            //console.log(allblogposts);
+            res.render('approveBlogs', {posts: posts, user: req.session.user});
+        } 
+    });
+
+}
+
+exports.changeApprovalStatus = function(req, res){
+    console.log(req.body.postid);
+    var id = req.body.postid;
+
+    BlogPost.findOne({ '_id' : req.body.postid }, function(error, post) {
+      if (error) {
+          console.log('info', "Error while fetching the forum thread")
+          res.send({completed: "NOK"});
+      } 
+
+      else{
+
+        var x = post.blogPost.approved;
+        var y = !x; 
+        var text="";
+
+        if(y == true) //it is now approved
+        {
+            text = "Disapprove Post";
+        }
+        else{
+            text = "Approve Post";
+        }
+
+        post.blogPost.approved = y;
+
+        post.save(function(err, post) {
+                               if (err) {
+                                    console.log("Error in saving" + err)  
+                                } else {
+                                    console.log("Saved");
+                                    res.send({completed: "OK", text: text, id: id, approved: y});
+                                }
+            });
+
+      }
+  });
+};

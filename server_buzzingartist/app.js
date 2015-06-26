@@ -271,7 +271,7 @@ passport.use(new FacebookStrategy({
 ));
 
 
-passport.use(new GoogleStrategy({
+/*passport.use(new GoogleStrategy({
 
         clientID        : config.googleAuth.clientID,
         clientSecret    : config.googleAuth.clientSecret,
@@ -324,7 +324,7 @@ passport.use(new GoogleStrategy({
             });
         });
 
-    }));
+    }));*/
 
 
 var app = express();
@@ -920,6 +920,8 @@ app.get('/searchallblogposts', blog.searchallblogposts);
 app.get('/searchmyblogposts', ensureAuthenticated, blog.searchmyblogposts);
 app.post('/deleteBlogComment', ensureAuthenticated, blog.deleteBlogComment)
 app.post('/editBlogComment', ensureAuthenticated, blog.editBlogComment)
+app.get('/approveBlogs', blog.approveBlogs);
+app.post('/changeApprovalStatus', ensureAuthenticated, blog.changeApprovalStatus)
 
 // http.createServer(app).listen(app.get('port'), function() {
 //     console.log("Express server listening on port " + app.get('port'));

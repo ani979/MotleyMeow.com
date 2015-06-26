@@ -14,6 +14,7 @@ var userSchema = mongoose.Schema({
         lang         :[{}],
         emailDisplay : {type:Boolean, default:true},
         privelege    : {type:String, default:"somebody"},
+        admin        : {type:Boolean, default:false},
         joiningDate  : Date,
         receiveNotif : {type:Boolean, default:true},
         notificationClickDate : Date,

@@ -93,6 +93,19 @@
 
                   <% } %> <!--if- close-->
 
+                </br> 
+                <% if (typeof user.local.admin != 'undefined' && user.local.admin == true) { %>  
+
+                    <div id="approvalStatus" style="padding-top:20px;">
+                      <% if(post.blogPost.approved == false) { %>
+                        <input type="button" value="Approve Post" id="approvalstatusbutton" class="btn btn-sm btn-primary" onclick="changePostApprovalStatus()">
+                      <% } else { %>
+                        <input type="button" value="Disapprove Post" id="approvalstatusbutton" class="btn btn-sm btn-primary" onclick="changePostApprovalStatus()">
+                      <%} %> 
+                    </div>
+                <% } %>
+
+
                 <hr>
 
                 <!-- Date/Time -->
@@ -308,6 +321,57 @@ function generateNotificationLayout(type, layout, text) {
          $(repliesid).hide();
          $(editReplyId).show();
       }
+
+  function changePostApprovalStatus()
+  {
+    console.log("Changingg status");
+
+        var data = {
+            postid: $("#postid").val()
+          };
+
+          //console.log(checkBoxes);
+          console.log(data);
+
+          $.ajax({ 
+           url: "/changeApprovalStatus",
+           type: "POST",
+           cache: false, 
+           async: true,
+           data: data,
+
+           success: function(data){
+              console.log('Success!');
+              
+              if(data.completed == "OK") {
+                console.log("OK");
+                console.log(data.text)
+                $("#approvalstatusbutton").val(data.text);
+                if(data.approved==true)
+                { 
+                  generateNotificationLayout('success', 'topCenter', 'Post is now approved.');
+                }
+                else
+                {
+                  generateNotificationLayout('error', 'topCenter', 'Post is now disapproved.');
+                }
+                
+                //var element = document.getElementById("approvalstatusbutton");
+                //element.innerHTML = "";
+                //window.location.href = data.redirect
+                //generateNotificationLayout('success', 'topCenter', 'Post published');
+              } else {
+                console.log("NOK");
+                //generateNotificationLayout('error', 'topCenter', 'Some problem with your post. Check fields again');
+              }
+           }, 
+
+           error: function(jqXHR, textStatus, err){
+               console.log('text status '+textStatus+', err '+err);
+               //generateNotificationLayout('error', 'topCenter', 'Some problem with your email. Check fields again');
+           }
+        }); //end of ajax function
+  };
 </script>
 
 
