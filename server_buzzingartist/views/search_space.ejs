@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html>
+  
+<head>
+   
+ <meta charset="utf-8">
+ 
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>MotleyMeow | Search Space</title>
+      
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/dropdowns-enhancement.js"></script>
+  <script src="js/jquery.searcher.min.js"></script>
+  
+  <link href="css/style.css" rel="stylesheet">       
+  <link href="css/tab.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/searcher_style.css">
+
+ 
+ </head>
+ 
+  
+ 
+<body>
+
+
+
+<div class = "main-container">
+ 
+  
+  <div class="col-md-12" style = "text-align: center;" id = "searchartists">
+   
+     <h3>
+        SPACES AROUND YOU
+      </h3>
+      
+
+      </br></br></br>
+      <label style="font-size:20px">Search for: <input id="cardsearchinput" type="text" style="font-size:15px"/></label>
+      <div class="btn-group" style="text-align:right;">
+       <a class="btn btn-success " href="/contactArtists" role="button">Contact Owners</a>
+      </div>
+      </br>
+      </br>
+      </br>
+      </br>
+      <text id="No_result_found" style="float:center;text-align:center;font-size:20px;display:none;">No results found</text>
+        <div id="carddata">
+         <% spaces.forEach(function(space){ %>
+           
+          
+            <div class="container card" style="width:390px;border:2px solid grey;border-radius:15px;padding:20px;">
+               <a href="/performanceView?spaceId=<%=space.space.spaceId%>" target="_blank">
+               <div class="col-sm-12 col-md-6" >
+                  <img src=<%=%> class="img-circle" style="height:150px;">
+               </div>
+            
+              <div class="col-sm-12 col-md-6" style="font-size:18px;">
+                <b><%= space.space.spaceName %></b>
+
+                <% if(typeof space.space.spaceCity == 'undefined' || space.space.spaceCity == "" || space.space.spaceCity=="None") { %>
+                  <p>City Not Set</p>
+                <% } else { %>
+                  <p>From <%= space.space.spaceCity %></p>
+                <% } %>
+              
+       
+                
+                <% if(typeof space.space.spaceType == 'undefined' ) { %>
+                      
+                    <% } else { %>
+                  <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><%= space.space.spaceType %></div>
+                 
+                    <% } %>
+                 
+                
+              </div>
+               </a>   
+          </div>
+      <% }); %>            
+        
+     </div>
+  </div>
+</div>
+  
+
+         
+
+    <!-- footer starts-->
+   <div id = "footer"></div>
+   <!-- footer ends-->
+
+    <script type="text/javascript">
+     $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
+
+    $("#carddata").searcher({
+        itemSelector: ".card",
+        textSelector: "div",
+        inputSelector: "#cardsearchinput",
+        highlight: "<span class='highlight'>$1</span>",
+        toggle: function(item, containsText) {
+          console.log("containsText: "+containsText);
+          if (containsText){
+            /*$('#No_result_found').hide();*/
+            $(item).fadeIn();
+          } else{
+            $(item).fadeOut();
+            /*$('#No_result_found').show();*/
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
