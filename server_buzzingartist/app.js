@@ -503,6 +503,19 @@ var sess = require('express-session');
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/search_space', function(req, res) {
+        
+        var allSpaces;
+        var allUsers;
+            Space.find( function ( err, spaces, count, db ){
+                //console.log("all users " + users);
+                
+                allSpaces = spaces
+                        
+                res.render('search_space', { space:db, spaces: allSpaces,rolearr:"AllArtists",langarr:"AllLanguage",cityarr:"AllIndia",
+                dropdowns:dropdowns });
+    });
+        });
     app.get('/landing', isAuthenticated, function(req, res) {
         res.render('/home', {
             user : req.user // get the user out of session and pass to template
@@ -719,6 +732,8 @@ app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequ
 
 
 app.get( '/artists', artists.artist);
+
+
 app.post('/deleteArtist', artists.deleteArtist);
 app.get( '/getRecentPosts', ensureAuthenticated, post_request.getRecentPosts);
 app.get( '/getRecentArtists', ensureAuthenticated,  artists.getRecentArtists);

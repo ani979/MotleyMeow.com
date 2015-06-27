@@ -25,12 +25,27 @@
 <!--//webfonts--><script type="text/javascript">
 window.onload = function () {
     document.getElementById("city").onchange = validateCity;
-    
+    //document.getElementById("password2").onchange = validatePassword;
 }
 function validateCity(){
 var pass2=document.getElementById("city").value;
-   
-              
+var pass1= document.getElementById("location").value
+if (pass2=='Bangluru'){
+  if (pass1!= "Bangluru1" && pass1!= "Bangluru2"){
+     document.getElementById("location").setCustomValidity("Passwords Don't Match");
+   }
+   else
+     document.getElementById("location").setCustomValidity("");
+}
+else if (pass2=='Bhopal'){
+  if (pass1!= "Bhopal1" && pass1
+    != "Bhopal2"){
+     document.getElementById("location").setCustomValidity("Passwords Don't Match");
+   }
+   else
+     document.getElementById("location").setCustomValidity("");
+           
+}
 }
 	</script>
 </head>
@@ -67,17 +82,18 @@ var pass2=document.getElementById("city").value;
 							<a href="#" class=" icon key"></a><select type="text" id="city" name="city" placeholder="City" required tabindex=3>
 							<% var cities = dropdowns.alldropdowns.cities;
                   for(var i = 0; i < cities.length; i ++) {   %> 
-                        <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
-            <!--  <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>--> 
+                        <option value = "<%=cities[i].city%>" selected="<%= ( i)?true:false %>" ><%=cities[i].text%></option>
+       
               <% } %>
           				</select>
 						</li>
 						<li class="psw two">
-							<a href="#" class=" icon key"></a><select type="text" id="location" name="location" placeholder="location" required tabindex=4>
-								<% var Bangluruloc = dropdowns.alldropdowns.Bangluruloc;
-                  for(var i = 0; i < Bangluruloc.length; i ++) {   %> 
-                        <option value = "<%=Bangluruloc[i].location%>"><%=Bangluruloc[i].text%></option>
-            <!--  <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>--> 
+							<a href="#" class=" icon key"></a><select type="text" id="location" name="location" placeholder="location"  tabindex=4>
+								
+                <% var Bangluru = dropdowns.alldropdowns.Bangluru;
+                  for(var i = 0; i < Bangluru.length; i ++) {   %> 
+                        <option value = "<%=Bangluru[i].location%>"   ><%=Bangluru[i].text%></option>
+ 
               <% } %>		 
 							 </select>
 						</li>
@@ -96,7 +112,7 @@ var pass2=document.getElementById("city").value;
 
 						<div class="clear"></div>
 						<div class="submit" style="margin-top:30px;">
-								<input type="submit" value="SUBMIT SPACE" >
+								<input type="submit" value="SUBMIT SPACE" onClick="validateCity()">
 								
 				       	</div>
 				       		

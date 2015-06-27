@@ -15,7 +15,8 @@ var spaceSchema = mongoose.Schema({
         prevShows : Number,
         spaceLocation : String,
         spaceCharge :  Number,
-        spaceEmail : String
+        spaceEmail : String,
+        cityval : Number
     },
     portfolio        : {
         myself      : String,
