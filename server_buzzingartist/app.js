@@ -496,6 +496,15 @@ var sess = require('express-session');
         res.render('performanceEdit.ejs', { space:db,  dropdowns:dropdowns, space: req.sess.space});
     
     });
+  app.get('/performanceView', function(req, res,db) {
+        spaceId= req.query.spaceId;
+         Space.findOne({ 'space.spaceId' : spaceId}, function(error, db) {
+                 
+        // render the page and pass in any flash data if it exists
+        res.render('performanceView.ejs', { space:db,   dropdowns:dropdowns});
+        });
+    });
+  
         // app.post('/signup', do all our passport stuff here);
 
     // =====================================
