@@ -4,7 +4,7 @@
    <meta charset="utf-8">
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>PRODUCTION HOUSE EDIT</title>
+   <title>ADD NEW PRODUCTION HOUSE</title>
       
   <link href="css/bootstrap.min.css" rel="stylesheet">
    
@@ -39,12 +39,12 @@
       </script>
   <!-- <h4 style="text-align:center"><strong> <%=infomessage%> </strong></h4> -->
         
-      <div class="modal fade" id="successprofile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="open-ViewDialog">
+      <div class="modal fade col-lg-12" id="successprofile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="open-ViewDialog">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
 
-              <h4 class="modal-title" id="myModalLabel">Profile updated successfully</h4>
+              <h4 class="modal-title" id="myModalLabel">Production House Added Successfully</h4>
             </div>
             
             <div class="modal-footer">
@@ -73,13 +73,10 @@
       <tr>
         <td>NAME OF THE PRODUCTION HOUSE:</td>
         <td>
-   <%if(typeof productionhouse.local.myname == 'undefined' || productionhouse.local.myname == 0 || productionhouse.local.myname == ' ') {%>
-                                         <input type="text" class="form-control" name="myname" id="myname" placeholder="My Production House's Name" 
+
+                                         <input type="text" class="form-control" name="myname" id="myname" placeholder="Production House's Name" 
                                             value = "" ></b>
-                                        <% } else { %>
-                                         <input type="text" class="form-control" name="myname" id="myname" placeholder="myname" 
-                                          value = "<%= productionhouse.local.myname %>" > </b>
-                                        <% } %> 
+                                        
 
 
         </td>
@@ -89,15 +86,10 @@
   </td>
   <td>
 
- <% if(typeof productionhouse.local.establishedIn == 'undefined' || productionhouse.local.establishedIn == 0) { %>
-                            
+                           
                           <p>   <input type="text" class="form-control" name="est" id="est" placeholder="Established In?" 
                                             value = "" ></p>
-                             <% } else { %>  
-                      
-                         <p>     <input type="text" class="form-control" name="est" id="est" placeholder="Established In?" 
-                                            value =" <%= productionhouse.local.establishedIn %> "> </p>
-                            <% } %>
+                            
 
   </td></tr>
 
@@ -108,42 +100,25 @@
                                             <i class="glyphicon glyphicon-plus"></i>
                                            <span>Add the display image of your production house.</span>
                                           <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple style="color: transparent;"/>  <input type="hidden" id="fileName" name = "fileName">
-                                            </span> </br></br></br>
-<div class="progress">
-
-  
-   <div class="bar">    </div >
-                                                <label class="percent">0</label >
-                                           
-
-</div>
-
-                                          </td>
+                                            </span> </td>
 </tr>
 
 
 <tr>
   <td>About us :
   </td>
-  <td><% if(typeof productionhouse.portfolio.myself == 'undefined' || productionhouse.portfolio.myself == 0 || productionhouse.portfolio.myself == "") { %>
+  <td>
                           <p>   <input type="text" class="form-control" name="myself" id="myself" placeholder="About us" 
                                             value = "" ></p>
-                             <% } else { %>  
-                         <p>     <input type="text" class="form-control" name="myself" id="myself" placeholder="About us" 
-                                            value =" <%= productionhouse.portfolio.myself %> "> </p>
-                            <% } %>
+                            
   </td>
 </tr>
 
 <tr>
   <td>CONTACT NUMBER :</td>
-  <td><% if(typeof productionhouse.local.contact == 'undefined' || productionhouse.local.contact== 0 ) { %>
-                          <p>   <input type="text" class="form-control" name="contact" id="contact" placeholder="contact number?" 
+  <td>            <p>   <input type="text" class="form-control" name="contact" id="contact" placeholder="contact number?" 
                                             value = "" ></p>
-                             <% } else { %>  
-                         <p>     <input type="text" class="form-control" name="contact" id="contact" placeholder="contact number?" 
-                                            value =" <%= productionhouse.local.contact %> "> </p>
-                            <% } %>
+                            
                           </td>
                         </tr>
 
@@ -151,13 +126,9 @@
   <td>CITY</td>
   <td> 
 
-<% if(typeof productionhouse.local.city == 'undefined' || productionhouse.local.city == 0 || productionhouse.local.city == " ") { %>
                           <p>   <input type="text" class="form-control" name="city" id="city" placeholder="City?" 
                                        ></p>
-                             <% } else { %>  
-                         <p>     <input type="text" class="form-control" name="city" id="city" placeholder=" <%=productionhouse.local.city %> " 
-                                    value ="<%=productionhouse.local.city %>"    > </p>
-                            <% } %>
+                            
 </td>
                                       </tr>
 
@@ -165,15 +136,10 @@
                                       <tr>
                                         <td>OWNER's NAME:</td>
                                           <td>
- <% if(typeof productionhouse.local.ownername == 'undefined' || productionhouse.local.ownername == 0 || productionhouse.local.ownername == ' ') { %>
-                            
+                      
                           <p>   <input type="text" class="form-control" name="ownername" id="ownername" placeholder="Owner's name?" 
                                       ></p>
-                             <% } else { %>  
-                      
-                         <p>     <input type="text" class="form-control" name="ownername" id="ownername" placeholder="Owner's name?" 
-                                            value =" <%= productionhouse.local.ownername %> "> </p>
-                            <% } %>
+                            
 
   </td></tr>
 
@@ -182,35 +148,23 @@
 <tr>
   <td>MY JOURNEY</td>
   <td>
-<% if(typeof productionhouse.portfolio.myjourney == 'undefined' || productionhouse.portfolio.myjourney == 0 || productionhouse.portfolio.myjourney == "") { %>
                           <p>   <input type="text" class="form-control" name="myjourney" id="myjourney" placeholder="My journey till now.." 
                                             value = "" ></p>
-                             <% } else { %>  
-                         <p>     <input type="text" class="form-control" name="myjourney" id="myjourney" placeholder=" <%= productionhouse.portfolio.myjourney %>" 
-                                            value =" <%= productionhouse.portfolio.myjourney %> "> </p>
-                            <% } %>
+                            
 
   </td>
 </tr>
 <tr>
   <td>MY HOURS OF OPERATION</td>
-  <td><% if(typeof productionhouse.portfolio.myHoursOfOperation == 'undefined' || productionhouse.portfolio.myHoursOfOperation== 0 || productionhouse.portfolio.myHoursOfOperation == "") { %>
-                          <p>   <input type="text" class="form-control" name="myHoursOfOperation" id="myHoursOfOperation" placeholder="Will write it when i have a day off!!" 
-                                            value = "" ></p>
-                             <% } else { %>  
-                         <p>     <input type="text" class="form-control" name="myHoursOfOperation" id="myHoursOfOperation" placeholder=" <%= productionhouse.portfolio.mymyHoursOfOperation %>" 
-                                            value =" <%= productionhouse.portfolio.myHoursOfOperation %> "> </p>
-                            <% } %>
+  <td>                   <p>   <input type="text" class="form-control" name="myHoursOfOperation" id="myHoursOfOperation" placeholder="Will write it when i have a day off!!" 
+                                            value ="" ></p>
+                            
   </td>
 </tr><tr>
   <td>MY ADDRESS</td>
-  <td><% if(typeof productionhouse.portfolio.myAddress == 'undefined' || productionhouse.portfolio.myAddress== 0 || productionhouse.portfolio.myAddress == "") { %>
-                          <p>   <input type="text" class="form-control" name="myAddress" id="myAddress" placeholder="My address" 
+  <td>                   <p>   <input type="text" class="form-control" name="myAddress" id="myAddress" placeholder="My address" 
                                             value = "" ></p>
-                             <% } else { %>  
-                         <p>     <input type="text" class="form-control" name="myAddress" id="myAddress" placeholder=" <%= productionhouse.portfolio.myAddress %>" 
-                                            value =" <%= productionhouse.portfolio.myAddress %> "> </p>
-                            <% } %>
+                             
 
 
 
@@ -271,7 +225,6 @@
   <td>     <div id="myPics">
                 
                   
-                    <% if(typeof productionhouse.portfolio == 'undefined' || typeof productionhouse.portfolio.myPhotos == 'undefined' || productionhouse.portfolio.myPhotos.length ==0 ) { %>
                       
                         <p class="form-control-static" >
                       <span class="btn btn-success fileinput-button col-md-12">  
@@ -280,22 +233,7 @@
                                           <input id = "imageGalleryPost" type="file" class = "imageUpdateField" name = "imageGalleryPost" multiple style="color: transparent;"/> 
                                            <input type="hidden" id="fileName" name = "fileName">
                                             </span>
-                    <% } else { 
-
-                        console.log(" productionhouse.portfolio.myPhotos.length " + productionhouse.portfolio.myPhotos.length) %>
-                        <td>
-                          <div id="links" class="row">
-                          <% for(var i = 0; i < productionhouse.portfolio.myPhotos.length; i ++ ) { %> 
-<tr>
-
-                            <img src="<%= productionhouse.portfolio.myPhotos[i] %>" class="img-rounded" alt="Image pic" style="height:170px;width:180px"> 
-                       </tr>
-                          <% } %>
-</td>
-                          </div>
-                    <% } %>
                    
-                  </div>
   </td>
 </tr>
 
@@ -321,7 +259,7 @@
 
 
 <p style="text-align:center;" class="antiguaFont">Please ensure you have read and will abide by our <b>"Terms of use"</b> located in the footer
-              <p style="text-align:center;"><button id = "submit" type="submit" data-toggle="modal" data-target="#successprofile" class="btn btn-primary" type="button" name="btnvalue" value="submit"><i class="glyphicon glyphicon-ok-circle">SUBMIT</i>
+              <p style="text-align:center;"><button id = "submit" type="submit" class="btn btn-primary" type="button" name="btnvalue" value="submit"><i class="glyphicon glyphicon-ok-circle">SUBMIT</i>
               </button></fieldset>
             </form>
 </div>
@@ -462,58 +400,6 @@
          
                
 
-
-
-
-          // Add the experience with plays
-        <% if(typeof productionhouse.portfolio == 'undefined' || typeof productionhouse.portfolio.myPlays == 'undefined' || productionhouse.portfolio.myPlays.length <= 0 ) { %>
-          <% } else { %>
-                var controlForm = $('.controls #playPlus:first'),
-                    currentEntry = $(this).find('.playEntry:first');
-                $(currentEntry).find('#playsText').val("<%=productionhouse.portfolio.myPlays[0].playName%>");
-                $(currentEntry).find('#playsLink').val("<%=productionhouse.portfolio.myPlays[0].playURL%>");
-            
-                $(currentEntry).find('#playsGroup').val("<%=productionhouse.portfolio.myPlays[0].playGroup%>");
-                $(currentEntry).find('#playsProdYear').val("<%=productionhouse.portfolio.myPlays[0].playProdYear%>");
-                 
-                controlForm.find('.playEntry .btn-addPlays')
-                    .removeClass('btn-addPlays').addClass('btn-removePlays')
-                    .removeClass('btn-success').addClass('btn-danger')
-                    .html('<span class="glyphicon glyphicon-minus"></span>');
-                playIndex++; 
-
-
-              <% for(var i = 1; i < productionhouse.portfolio.myPlays.length; i ++ ) { %> 
-                  var controlForm = $('.controls #playPlus:first'),
-                      currentEntry = $(this).find('.playEntry:last'),
-                      newEntry = $(currentEntry).clone().appendTo(controlForm);
-                $(newEntry).attr('id', 'plays' + playIndex);
-                $(newEntry).find('#playsText').val("<%=productionhouse.portfolio.myPlays[i].playName%>");
-                $(newEntry).find('#playsLink').val("<%=productionhouse.portfolio.myPlays[i].playURL%>");
-              
-                $(newEntry).find('#playsGroup').val("<%=productionhouse.portfolio.myPlays[i].playGroup%>");
-                $(newEntry).find('#playsProdYear').val("<%=productionhouse.portfolio.myPlays[i].playProdYear%>");
-                  
-                  controlForm.find('.playEntry:not(:last) .btn-addPlays')
-                      .removeClass('btn-addPlays').addClass('btn-removePlays')
-                      .removeClass('btn-success').addClass('btn-danger')
-                      .html('<span class="glyphicon glyphicon-minus"></span>');
-                  playIndex++; 
-              <% } %>  
-                  var controlForm = $('.controls #playPlus:first'),
-                  currentEntry = $(this).find('.playEntry:last'),
-                  newEntry = $(currentEntry).clone().appendTo(controlForm);
-                  $(newEntry).attr('id', 'plays' + playIndex);
-                  $(newEntry).find('#playsText').val("");
-                  $(newEntry).find('#playsLink').val("");
-                
-                  $(newEntry).find('#playsGroup').val("");
-                  $(newEntry).find('#playsProdYear').val("");
-                  newEntry.find('.btn-removePlays').removeClass('btn-removePlays').addClass('btn-addPlays')
-                  .removeClass('btn-danger').addClass('btn-success')
-                    .html('<span class="glyphicon glyphicon-plus"></span>');
-                  playIndex++;  
-          <% } %>
 
      });
 

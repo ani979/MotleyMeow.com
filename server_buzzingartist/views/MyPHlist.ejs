@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MyPH</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script>
+$(document).ready(function(){
+    $("#hi").click(function(){
+        $("button").hide();
+    });});
+
+function myFunction() {
+    var text = "";
+    var g;
+    for (g = 1; g <= <%=user.local.PHid %> ; g++) {
+        text = "PRODUCTION HOUSE " + g ;
+
+var links = document.createElement("a");
+links.setAttribute("id", g);
+links.setAttribute("href", "/profileProductionHouse?id=" + g);
+
+
+
+var textnode = document.createTextNode(text);
+links.appendChild(textnode);
+ document.getElementById("LI").appendChild(links); 
+
+
+var breaks = document.createElement("br");
+document.getElementById("LI").appendChild(breaks); 
+
+
+    }
+   
+}
+
+
+
+
+</script>
+</head>
+<body>
+<div class="container">
+  <div class="jumbotron">
+    <h1>My Production Houses!</h1>      
+        
+    </div>
+
+  <div class="row">
+ <div class="col-md-12">
+   
+<button id="hi" onclick="myFunction()">Production Houses?</button>
+<br>
+
+<div id = "LI"></div>
+
+    </div>
+    <div class="clearfix visible-lg"></div>
+  </div>
+</div>
+
+</body>
+</html>

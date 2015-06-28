@@ -45,9 +45,13 @@
   
    <div class="col-sm-2" style="padding:12px;margin-top:15px">
 
-        <% if(typeof productionhouse.local.picture == 'undefined' || productionhouse.local.picture == "None" ) { %>
+        <% if(typeof productionhouse.local.picture == 'undefined' ||typeof productionhouse.local.picture == " " || productionhouse.local.picture == 0 || productionhouse.local.picture == '' )
+         { %>
      <img src="./images/default.jpg" class="img-rounded" alt="Default image" style="max-height:170px;width:180px" > 
-     <% } else { %>
+     <% } 
+   else
+     if(typeof productionhouse.local.picture != 'undefined' ||typeof productionhouse.local.picture != " " || productionhouse.local.picture != '')
+     { %>
   <img src="<%= productionhouse.local.picture %>" class="img-rounded" alt="Display pic" style="height:170px;width:180px"> <% } %>
 
 
@@ -62,7 +66,7 @@
  <div class="col-sm-12" >
 
  <h1 class="oratorFont" style="color:rgb(239, 239, 239);">
-    <% if(typeof productionhouse.local.myname == 'undefined' || productionhouse.local.myname == 0) { %>
+    <% if(typeof productionhouse.local.myname == 'undefined' ||typeof productionhouse.local.myname == 0) { %>
                               <p style="color:white;font-size:30px;padding-left:50px;" class="antiguaFont"><b>PRODUCTION &nbsp HOUSE</b></p>
                             <% } else { %>  
                               <p style="color:white;font-size:30px;padding-left:50px;" id="role" class="antiguaFont"><b><%= productionhouse.local.myname %></b></p>
@@ -121,7 +125,7 @@
 <div class="col-sm-3" style="padding-top:10px">
             <!--left col-->
             <ul class="list-group" >
-                <li class="list-group-item text-right panelColors" ><span class="pull-left  oratorFont">CONTACT NUMBER: </span><br/>
+                <li class="list-group-item text-right panelColors glyphicon glyphicon-phone-alt" ><span class="pull-left  oratorFont">CONTACT NUMBER: </span><br/><br/>
                           <% if(typeof productionhouse.local.contact == 'undefined' || productionhouse.local.contact == 0) { %>
                               <p style="color:red;" class="antiguaFont"><b>Will be updating soon</b></p>
                             <% } else { %>  

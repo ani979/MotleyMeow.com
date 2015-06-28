@@ -29,9 +29,9 @@ if(typeof req.body.mypfolioPlays != 'undefined' && req.body.mypfolioPlays.length
             } else {
                 id = req.query.fbId;
             }
+id = id+req.session.i;
 
-
-    ProductionHouse.findOne({ 'facebook.id' : id }, function(error, db) {
+    ProductionHouse.findOne({ 'local.PHid' : id }, function(error, db) {
       
         console.log("coming 1");
         if (error || !db) {
@@ -56,7 +56,7 @@ if(typeof req.body.mypfolioPlays != 'undefined' && req.body.mypfolioPlays.length
                  db.portfolio.myHoursOfOperation = req.body.myHoursOfOperation ;
 file = req.session.filename ;
 console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" + file);
-                 db.local.picture = "./storagePH/" + req.session.user.facebook.id + "/pictures/"  + file ;
+                 db.local.picture = "./storagePH/" + req.session.user.facebook.id+req.session.i + "/pictures/"  + file ;
               
 
 

@@ -15,13 +15,11 @@ var express       = require('express'),
     multer  = require('multer'),
     argv = require('optimist').argv,
     im = require('imagemagick');
-
+    
 var moment = require('moment');
 var argv = require('optimist').argv;
 var crypto = require('crypto');
 var fsExtra = require('fs')
-
-
 
 exports.fsExtra = fsExtra;
 var path = require('path');
@@ -372,7 +370,6 @@ app.use(express.static(__dirname + '/views'));
 
 
 
-
 var isAuthenticated = function (req, res, next) {
     // if user is authenticated in the session, call the next() to call the next request handler 
     // Passport adds this method to request object. A middleware is allowed to add properties to
@@ -663,8 +660,12 @@ app.get( '/home',  ensureAuthenticated, home.landing_home);
 app.post( '/saveNotificationClickDate', home.saveNotificationClickDate);
 app.get( '/getNotification', home.getNotification);
 app.get( '/profile', home.profile);
-app.get('/profileProductionHouse',ensureAuthenticated, home.profileProductionHouse);
+app.get('/profileProductionHouse',setvali,ensureAuthenticated, home.profileProductionHouse);
+
+
 app.get( '/productionhouseEdit', home.productionhouseEdit);
+app.get('/addPH', home.addPH);
+app.get('/MyPHlist', home.MyPHlist);
 app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
 var mwMulter1 = multer({ dest: './views/uploads' });
@@ -687,6 +688,7 @@ app.post('/deleteArtist', artists.deleteArtist);
 app.get( '/getRecentPosts', ensureAuthenticated, post_request.getRecentPosts);
 app.get( '/getRecentArtists', ensureAuthenticated,  artists.getRecentArtists);
 // var mwMulter3 = multer({ dest: './views/profile' });
+
 app.post( '/updateProductionHouse',
 
 
@@ -695,7 +697,7 @@ multer({ dest: './views/storagePH/',
 
 
 changeDest: function(dest, req, res) {
-                                    var newDestination = dest + req.session.user.facebook.id;
+                                    var newDestination = dest + req.session.user.facebook.id + req.session.i;
                                     var stat = null;
                                     try {
                                       stat = fsExtra.statSync(newDestination);
@@ -730,6 +732,7 @@ onFileUploadComplete: function (file,req,res) {
 
                     }),
     productionhouses.update);
+
 
 app.post( '/update',
                     multer({ 
@@ -932,6 +935,18 @@ function ensureAuthenticated(req, res, next) {
     console.log("not authenticated");
     res.redirect('/')
 }
+function setvali(req, res, next) {
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+   var query = require('url').parse(req.url,true).query;
+var id = query.id;
+req.session.i = id ;
+console.log("in app.js value of id is" + id);
+return next();
+   
+}
+
+
+
 
 
 /*Functions for Forum*/

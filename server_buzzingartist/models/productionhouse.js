@@ -7,29 +7,30 @@ var bcrypt   = require('bcrypt-nodejs');
 var prodSchema = mongoose.Schema({
 
     local            : {
-      
-        picture      :  { type: String, default:'None'},
-        establishedIn : {type: String,default:'None'},
-        city         :  { type: String,default:'None'},
-        contact         :{type: String,default:'None'},
-        emailDisplay : {type:Boolean, default:true},
-        myname : {type: String,default:'None'},
-        ownername : {type: String,default:'None'},
-        lastProfileUpdateDate : Date,
         
+        picture      :   String,
+        establishedIn : {type: String,default:''},
+        city         :  { type: String,default:''},
+        contact         :{type: String,default:''},
+        emailDisplay : {type:Boolean, default:true},
+        myname :  String,
+        ownername : {type: String,default:''},
+        lastProfileUpdateDate : Date,
+        PHid : String,
     },
     facebook         : {
+       
         id           : String,
     },
     
     portfolio        : {
-        myself      :  {type: String,default:'None'},
+        myself      :  {type: String,default:''},
         myPhotos     : [{}],
         myPlays     :  [{}],
         myAddress : String,
         myFlickrPics     :  [{}],
         myHoursOfOperation : String ,
-        myjourney : {type: String,default:'None'},
+        myjourney : {type: String,default:''},
         
         mySocialPresence : [{}]
     },

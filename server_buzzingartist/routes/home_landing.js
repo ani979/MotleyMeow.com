@@ -11,7 +11,7 @@ var BlogPost = require('../models/blogPost');
 var Forum = require('../models/forum'); 
 
 
-
+var i =0;
 /*FB.options({
     appId:          config.facebook.appId,
     appSecret:      config.facebook.appSecret,
@@ -110,16 +110,16 @@ exports.profileProductionHouse = function (req, res) {
     
    
         console.log("isAuthenticatedddddddd22PH: "+ req.isAuthenticated());
-        
-            
+             
             if(typeof req.query.fbId == 'undefined') {
                 fbid = req.session.user.facebook.id;
             } else {
                 fbid = req.query.fbId;
             }
 
+console.log("MyPHlist has the value of i as" + req.session.i);
 
- ProductionHouse.findOne({ 'facebook.id' : fbid }, function(err, user) {
+ ProductionHouse.findOne({ 'local.PHid' : fbid+req.session.i }, function(err, user) {
                
                if (err) {
                         req.flash('info', "There is an error connecting to the database")
@@ -130,18 +130,7 @@ exports.profileProductionHouse = function (req, res) {
                     
                     if (!user) {
 console.log("A");
-                        var newPH  = new ProductionHouse();
-                        newPH.facebook.id    = fbid; 
-                       
-                         newPH.save(function(err) {
-                            
-                            if (err) {
-                                req.flash('info', "Error while saving the user in the database")
-                                res.redirect('/error');
-                            return 1;
-                            }
-                        });
-
+                     res.redirect('/addPH'); 
 
                             }
                     return 1;
@@ -153,7 +142,7 @@ console.log("A");
 
 console.log("B");
 
-            ProductionHouse.findOne({ 'facebook.id' : fbid}, function(error, db) {
+            ProductionHouse.findOne({ 'local.PHid' : fbid+ req.session.i}, function(error, db) {
                 res.render('productionhouseProfile', { productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
             });    
      
@@ -176,6 +165,80 @@ exports.profileEdit = function (req, res) {
     }
 };
 
+
+
+
+
+
+
+exports.addPH = function (req, res) {
+     var fbid = "";
+    
+     
+                     User.findOne({ 'facebook.id' : fbid }, function(error, db) {
+                            console.log("plzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" +i);
+                        i = db.local.PHid ;
+                            console.log("plzzzzzzz" +i);
+
+
+   }); 
+         var g = Number(i);
+         g = g+1;
+         var f = String(g); 
+           i = g;
+
+            if(typeof req.query.fbId == 'undefined') {
+                fbid = req.session.user.facebook.id;
+            } else {
+                fbid = req.query.fbId;
+            }
+
+req.session.total = i ;
+     var newPH  = new ProductionHouse();
+                        newPH.local.PHid    = fbid + i ; 
+
+                        console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyMHERE!!!!!!!!!!!!!!!!!!");
+                        req.session.i = i;
+                    
+                         newPH.save(function(err) {
+                            
+                            if (err) {
+                                req.flash('info', "Error while saving the user in the database")
+                                res.redirect('/error');
+                            return 1;
+                            }
+                        });
+                    
+                     User.findOne({ 'facebook.id' : fbid }, function(error, db) {
+                            db.local.PHid = i;
+
+     db.save(function (err, user) {
+                 if (err) {
+                        console.log("ERRRORRRR");
+             
+                    }
+
+        
+
+                  
+               });
+
+                        console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyMHERE!!!!!!!!!!!!!!!!!!");
+                        });          
+                          ProductionHouse.findOne({ 'local.PHid' : fbid + i }, function(error, db) {
+
+                res.render('addPH', { productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
+            });
+
+
+};
+
+
+
+
+
+
+
 exports.productionhouseEdit = function (req, res) {
     var accessToken = req.session.access_token;
     console.log("accesstokenk11: "+ accessToken);
@@ -196,7 +259,7 @@ exports.productionhouseEdit = function (req, res) {
     if(!accessToken) {
         console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
         if(req.isAuthenticated()) {
-ProductionHouse.findOne({ 'facebook.id' : fbid}, function(error, db) {
+ProductionHouse.findOne({ 'local.PHid' : fbid+req.session.i }, function(error, db) {
                 res.render('productionhouseEdit', { productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
             }); 
         } else {
@@ -207,6 +270,28 @@ ProductionHouse.findOne({ 'facebook.id' : fbid}, function(error, db) {
         // res.render('home');
         res.redirect('/');
     }
+};
+
+
+
+exports.MyPHlist = function (req, res) {
+   
+  var fbid = "";
+    
+     
+            
+            if(typeof req.query.fbId == 'undefined') {
+                fbid = req.session.user.facebook.id;
+            } else {
+                fbid = req.query.fbId;
+            }
+
+
+User.findOne({ 'facebook.id' : fbid }, function(error, db) {
+      req.session.total = db.local.PHid ;
+                res.render('MyPHlist', { user: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
+            }); 
+       
 };
 
 

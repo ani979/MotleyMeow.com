@@ -20,6 +20,7 @@ var userSchema = mongoose.Schema({
         lastProfileUpdateDate : Date,
         notificationCount : String,
         resetPasswordToken: String,
+        PHid :  {type: String,default:'0'},
         resetPasswordExpires: Date,
         subscribedCategories:[{}]
     },
