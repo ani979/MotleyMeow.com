@@ -12,7 +12,6 @@
 	<meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
 	<meta property="og:url" content="http://www.motleymeow.com" />
 	<link rel="stylesheet" type="text/css" href="indexPage/css/bootstrap.min.css">
-	<link rel="stylesheet" href="indexPage/css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/animate.css" rel="stylesheet">
 	
 	<link rel="stylesheet" type="text/css" href="indexPage/css/style.css">	
@@ -58,6 +57,11 @@
   vertical-align: middle;
   box-sizing: border-box;
   line-height: 17px;
+}
+
+body:before{
+    display:none;
+    content: url(../../images/bg_landing.jpg) 
 }
 </style>
 
@@ -206,7 +210,7 @@
 	
 	<script src="indexPage/js/jquery-1.10.2.min.js"></script>
 	<script src="indexPage/js/jquery-migrate-1.2.1.min.js"></script>
-	<script src="indexPage/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<script src="indexPage/js/jquery.easing.1.3.js"></script>
     <script src="js/countUp.min.js"></script>
     <script src="js/jquery.textillate.js"></script>
@@ -267,6 +271,8 @@
         $('.tlt').textillate('start');
 
     }
+
+
 
 
 
