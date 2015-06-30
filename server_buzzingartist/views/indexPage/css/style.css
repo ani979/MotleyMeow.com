@@ -179,7 +179,7 @@ body {
 
 @media (max-width: 2000px) {
 	#slide-1 {
-		background-image: url(../../images/FIrst-Page.jpg);
+		background-image: url(../../images/bg_landing.jpg);
 		color: #ffffff;
 	    -webkit-background-size: 100%;
 	    -moz-background-size: 100%;
@@ -664,7 +664,7 @@ body {
 
 .social-box{
   margin: 0 auto;
-  padding: 30px;
+  padding: 15px;
   /*border-bottom:1px #ccc solid;*/
 }
 .social-box a{
