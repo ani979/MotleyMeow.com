@@ -104,22 +104,13 @@ exports.profile = function (req, res) {
     // }
 };
 
+
 exports.profileProductionHouse = function (req, res) {
    var accessToken = req.session.access_token;
-    var fbid = "";
-    
-   
-        console.log("isAuthenticatedddddddd22PH: "+ req.isAuthenticated());
+  
+ console.log("isAuthenticatedddddddd22PH: "+ req.isAuthenticated());
              
-            if(typeof req.query.fbId == 'undefined') {
-                fbid = req.session.user.facebook.id;
-            } else {
-                fbid = req.query.fbId;
-            }
-
-console.log("MyPHlist has the value of i as" + req.session.i);
-
- ProductionHouse.findOne({ 'local.PHid' : fbid+req.session.i }, function(err, user) {
+    ProductionHouse.findOne({ 'local.PHid' : req.session.valph }, function(err, user) {
                
                if (err) {
                         req.flash('info', "There is an error connecting to the database")
@@ -129,24 +120,48 @@ console.log("MyPHlist has the value of i as" + req.session.i);
                     
                     
                     if (!user) {
-console.log("A");
+console.log("Something went wrong");
                      res.redirect('/addPH'); 
 
                             }
                     return 1;
                         });
 
-
-
-
-
-console.log("B");
-
-            ProductionHouse.findOne({ 'local.PHid' : fbid+ req.session.i}, function(error, db) {
-                res.render('productionhouseProfile', { productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
+  ProductionHouse.findOne({ 'local.PHid' : req.session.valph}, function(error, db) {
+                res.render('productionhouseProfile', { productionhouse: db, dropdowns:dropdowns,sessionVal:req.session.valph, sessionUser: req.session.user, appId:config.facebook.clientID});
             });    
      
 };
+exports.profileProductionHouseT = function (req, res) {
+   var accessToken = req.session.access_token;
+   if(typeof req.query.fbId == 'undefined') {
+                fbid = req.session.user.facebook.id;
+            } else {
+                fbid = req.query.fbId;
+            }
+    var ci =req.query.id ;
+       
+           User.findOne({ 'facebook.id' : fbid}, function(error, db) {
+            t = db.local.PHid ;
+          
+              
+            var PHS = t.split(" ");
+         req.session.valph = PHS[ci];
+         console.log(req.session.valph +"in profile change");
+
+
+
+ ProductionHouse.findOne({ 'local.PHid' : req.session.valph}, function(error, db) {
+                res.render('productionhouseProfile', { productionhouse: db, dropdowns:dropdowns,sessionVal:req.session.valph, sessionUser: req.session.user, appId:config.facebook.clientID});
+            });    
+     
+
+
+             });  
+           
+};
+
+
 exports.profileEdit = function (req, res) {
     var accessToken = req.session.access_token;
     console.log("accesstoken111: "+ accessToken);
@@ -172,66 +187,38 @@ exports.profileEdit = function (req, res) {
 
 
 exports.addPH = function (req, res) {
-     var fbid = "";
-    
-     
-                     User.findOne({ 'facebook.id' : fbid }, function(error, db) {
-                            console.log("plzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" +i);
-                        i = db.local.PHid ;
-                            console.log("plzzzzzzz" +i);
-
-
-   }); 
-         var g = Number(i);
-         g = g+1;
-         var f = String(g); 
-           i = g;
-
-            if(typeof req.query.fbId == 'undefined') {
+ 
+var valph = " " ;
+ if(typeof req.query.fbId == 'undefined') {
                 fbid = req.session.user.facebook.id;
             } else {
                 fbid = req.query.fbId;
             }
-
-req.session.total = i ;
-     var newPH  = new ProductionHouse();
-                        newPH.local.PHid    = fbid + i ; 
-
-                        console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyMHERE!!!!!!!!!!!!!!!!!!");
-                        req.session.i = i;
+                        //Creating a new PH
+                        var newPH  = new ProductionHouse();
+                        newPH.save(function(err) 
+                        {
+                                    if (err) {
+                                       req.flash('info', "Error while saving the user in the database")
+                                       res.redirect('/error');
+                                       return 1;
+                                              }
+                         });
+                        
+                        
+                        //storing the _id of new PH for further uses.
+                      newPH.local.PHid =  newPH._id ;
+                        req.session.valph = newPH._id ;
+                      
                     
-                         newPH.save(function(err) {
-                            
-                            if (err) {
-                                req.flash('info', "Error while saving the user in the database")
-                                res.redirect('/error');
-                            return 1;
-                            }
-                        });
-                    
-                     User.findOne({ 'facebook.id' : fbid }, function(error, db) {
-                            db.local.PHid = i;
-
-     db.save(function (err, user) {
-                 if (err) {
-                        console.log("ERRRORRRR");
-             
-                    }
-
-        
-
-                  
-               });
-
-                        console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyMHERE!!!!!!!!!!!!!!!!!!");
-                        });          
-                          ProductionHouse.findOne({ 'local.PHid' : fbid + i }, function(error, db) {
-
-                res.render('addPH', { productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
-            });
+                        console.log("value of the current PH"+ req.session.valph);
+                     User.findOne({ 'facebook.id' : fbid}, function(error, db) {
+             res.render('addPH', {user:db, dropdowns:dropdowns, sessionUser: req.session.user, sessionVal:req.session.valph , appId:config.facebook.clientID});
+           });  
+                       
 
 
-};
+                                     };
 
 
 
@@ -259,7 +246,7 @@ exports.productionhouseEdit = function (req, res) {
     if(!accessToken) {
         console.log("isAuthenticatedddddddd222: "+ req.isAuthenticated());
         if(req.isAuthenticated()) {
-ProductionHouse.findOne({ 'local.PHid' : fbid+req.session.i }, function(error, db) {
+ProductionHouse.findOne({ 'local.PHid' : req.session.valph }, function(error, db) {
                 res.render('productionhouseEdit', { productionhouse: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
             }); 
         } else {
@@ -278,7 +265,7 @@ exports.MyPHlist = function (req, res) {
    
   var fbid = "";
     
-     
+     req.session.nameall ="";
             
             if(typeof req.query.fbId == 'undefined') {
                 fbid = req.session.user.facebook.id;
@@ -286,11 +273,48 @@ exports.MyPHlist = function (req, res) {
                 fbid = req.query.fbId;
             }
 
+var t =""; var namePH="" ;
+            User.findOne({ 'facebook.id' : fbid }, function(error, db) {
+            req.session.total = db.local.PHid ;
+            t = req.session.total;
+            console.log("startPhids"+t);
+              
+            var PHS = t.split(" ");
+            var g = 0;
+            for (g = 0; g < PHS.length -1; g++) {
+            console.log("vaaaaaaaaaaaaaaaaallll"+ g+ " "+PHS[g]);
 
-User.findOne({ 'facebook.id' : fbid }, function(error, db) {
-      req.session.total = db.local.PHid ;
-                res.render('MyPHlist', { user: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
-            }); 
+
+ ProductionHouse.findOne({'local.PHid' : PHS[g]}  , function(error, db1) {               
+
+console.log(db1.local.myname);
+req.session.nameall = req.session.nameall + db1.local.myname +"_";
+ namePH = req.session.nameall;
+console.log(req.session.nameall+"idddddddddddddddddddddddddddd");
+  db.local.PHnames = req.session.nameall ;
+ db.save(function (err, user) {
+                   if (err) {
+                        console.log("ERRRORRRR");
+                    
+                       
+                    }
+                   
+               });
+  });     
+
+
+}
+ User.findOne({ 'facebook.id' : fbid }, function(error, db) {
+         
+console.log(db.local.PHnames+"succcesssssssssssssssddddddddddd");
+
+   res.render('MyPHlist', { user: db,PHnames : db.local.PHnames, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
+          
+
+});
+
+}); 
+
        
 };
 

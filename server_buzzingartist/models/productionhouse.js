@@ -8,7 +8,7 @@ var prodSchema = mongoose.Schema({
 
     local            : {
         
-        picture      :   String,
+        picture      :  {type: String,default:'None'},
         establishedIn : {type: String,default:''},
         city         :  { type: String,default:''},
         contact         :{type: String,default:''},
@@ -16,12 +16,9 @@ var prodSchema = mongoose.Schema({
         myname :  String,
         ownername : {type: String,default:''},
         lastProfileUpdateDate : Date,
-        PHid : String,
+        PHid :String,
     },
-    facebook         : {
-       
-        id           : String,
-    },
+   
     
     portfolio        : {
         myself      :  {type: String,default:''},

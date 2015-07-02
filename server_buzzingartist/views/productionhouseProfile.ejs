@@ -45,12 +45,12 @@
   
    <div class="col-sm-2" style="padding:12px;margin-top:15px">
 
-        <% if(typeof productionhouse.local.picture == 'undefined' ||typeof productionhouse.local.picture == " " || productionhouse.local.picture == 0 || productionhouse.local.picture == '' )
+        <% if(typeof productionhouse.local.picture == 'undefined' ||typeof productionhouse.local.picture == " " || productionhouse.local.picture == 0 || productionhouse.local.picture == 'None' )
          { %>
      <img src="./images/default.jpg" class="img-rounded" alt="Default image" style="max-height:170px;width:180px" > 
      <% } 
    else
-     if(typeof productionhouse.local.picture != 'undefined' ||typeof productionhouse.local.picture != " " || productionhouse.local.picture != '')
+     if(typeof productionhouse.local.picture != 'undefined' ||typeof productionhouse.local.picture != " " || productionhouse.local.picture != ' ')
      { %>
   <img src="<%= productionhouse.local.picture %>" class="img-rounded" alt="Display pic" style="height:170px;width:180px"> <% } %>
 

@@ -660,9 +660,10 @@ app.get( '/home',  ensureAuthenticated, home.landing_home);
 app.post( '/saveNotificationClickDate', home.saveNotificationClickDate);
 app.get( '/getNotification', home.getNotification);
 app.get( '/profile', home.profile);
-app.get('/profileProductionHouse',setvali,ensureAuthenticated, home.profileProductionHouse);
+app.get('/profileProductionHouseT' ,ensureAuthenticated, home.profileProductionHouseT);
 
 
+app.get('/profileProductionHouse' ,ensureAuthenticated, home.profileProductionHouse);
 app.get( '/productionhouseEdit', home.productionhouseEdit);
 app.get('/addPH', home.addPH);
 app.get('/MyPHlist', home.MyPHlist);
@@ -689,7 +690,60 @@ app.get( '/getRecentPosts', ensureAuthenticated, post_request.getRecentPosts);
 app.get( '/getRecentArtists', ensureAuthenticated,  artists.getRecentArtists);
 // var mwMulter3 = multer({ dest: './views/profile' });
 
+
+app.post( '/addProductionHouse',                            
+multer({ dest: './views/storagePH/',
+
+changeDest: function(dest, req, res) {
+
+                                    var newDestination = dest + req.session.user.facebook.id+req.session.valph;
+                                    var stat = null;
+                                    try {
+                                      stat = fsExtra.statSync(newDestination);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination);
+                                    }
+
+                                    var newDestination_1 = newDestination + "/pictures"
+                                    try {
+                                      stat = fsExtra.statSync(newDestination_1);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination_1);
+                                    }
+                                    if (stat && !stat.isDirectory()) {
+                                        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+                                    }
+                                    return newDestination_1
+                                },
+
+                                 rename: function (fieldname, filename) {
+    return filename;
+  },
+onFileUploadStart: function (file,req,res) {
+  console.log(file.originalname + ' is starting ...')
+},
+onFileUploadComplete: function (file,req,res) {
+  console.log(file.fieldname + ' uploaded to  ' + file.path)
+  done=true;
+  req.session.filename = file.originalname ;
+ 
+}
+
+                    }),
+    productionhouses.add);
+
+
+
+
+
+
+
+
+
+
+
 app.post( '/updateProductionHouse',
+
 
 
 multer({ dest: './views/storagePH/',
@@ -697,7 +751,7 @@ multer({ dest: './views/storagePH/',
 
 
 changeDest: function(dest, req, res) {
-                                    var newDestination = dest + req.session.user.facebook.id + req.session.i;
+                                    var newDestination = dest + req.session.user.facebook.id + req.session.valph;
                                     var stat = null;
                                     try {
                                       stat = fsExtra.statSync(newDestination);
@@ -935,15 +989,7 @@ function ensureAuthenticated(req, res, next) {
     console.log("not authenticated");
     res.redirect('/')
 }
-function setvali(req, res, next) {
-    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-   var query = require('url').parse(req.url,true).query;
-var id = query.id;
-req.session.i = id ;
-console.log("in app.js value of id is" + id);
-return next();
-   
-}
+
 
 
 

@@ -11,17 +11,24 @@
 $(document).ready(function(){
     $("#hi").click(function(){
         $("button").hide();
-    });});
 
-function myFunction() {
+var links = document.createElement("a");
+
+
+
     var text = "";
     var g;
-    for (g = 1; g <= <%=user.local.PHid %> ; g++) {
-        text = "PRODUCTION HOUSE " + g ;
+var m = "<%=PHnames%> ";
+
+
+
+var mn = m.split("_");
+    for (g = 0; g < mn.length -1  ; g++) {
+        text = g+1+"."+ mn[g] ;
 
 var links = document.createElement("a");
 links.setAttribute("id", g);
-links.setAttribute("href", "/profileProductionHouse?id=" + g);
+links.setAttribute("href", "/profileProductionHouseT?id=" + g);
 
 
 
@@ -34,9 +41,16 @@ var breaks = document.createElement("br");
 document.getElementById("LI").appendChild(breaks); 
 
 
-    }
+    
    
 }
+
+
+
+
+    });});
+
+
 
 
 
@@ -53,7 +67,7 @@ document.getElementById("LI").appendChild(breaks);
   <div class="row">
  <div class="col-md-12">
    
-<button id="hi" onclick="myFunction()">Production Houses?</button>
+<button id="hi" >Production Houses?</button>
 <br>
 
 <div id = "LI"></div>
