@@ -1,18 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>MyPH</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script>
+<html>
+  <head>
+   <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>MY PH</title>
+      
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+   
+     <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+ 
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/jquery.js"></script>
+       <script src="js/bootstrap.min.js"></script>
+ 
+       <script src="js/dropdowns-enhancement.js"></script>
+  
+      <script src="js/jquery.searcher.min.js"></script>
+
+       <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+  <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+   <link href="css/style.css" rel="stylesheet">       
+     <link href="css/tab.css" rel="stylesheet">
+     <link rel="stylesheet" href="css/font-awesome.min.css">
+  
+ <script>
+
+
+
+
 $(document).ready(function(){
+
+
+    $("#headerloggedin").load("/header");
+    
+    $("#footer").load("footer.ejs"); 
     $("#hi").click(function(){
         $("button").hide();
 
-var links = document.createElement("a");
+
 
 
 
@@ -24,10 +50,13 @@ var m = "<%=PHnames%> ";
 
 var mn = m.split("_");
     for (g = 0; g < mn.length -1  ; g++) {
-        text = g+1+"."+ mn[g] ;
+        text = g+1+"."+" "+ " "+" " +mn[g] ;
+
+
 
 var links = document.createElement("a");
 links.setAttribute("id", g);
+links.setAttribute("style", "font-size:35px;margin-left:70px;color:#DC143C");
 links.setAttribute("href", "/profileProductionHouseT?id=" + g);
 
 
@@ -48,7 +77,7 @@ document.getElementById("LI").appendChild(breaks);
 
 
 
-    });});
+    }); });
 
 
 
@@ -57,25 +86,57 @@ document.getElementById("LI").appendChild(breaks);
 
 </script>
 </head>
+  
 <body>
-<div class="container">
-  <div class="jumbotron">
-    <h1>My Production Houses!</h1>      
+
+
+ <div id = "headerloggedin"> </div>
+ 
+
+ <div id = "headerloggedout"/>
+
+<div class="container" style=" background-image: url(../images/catpawsd.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: 100% 100%;
+      width: 100%;
+">
+  <div class="jumbotron" style="margin-left:200px;width:70%;">
+    <h1>&nbsp&nbsp My Production Houses&nbsp....</h1>      
         
     </div>
 
   <div class="row">
  <div class="col-md-12">
    
-<button id="hi" >Production Houses?</button>
-<br>
+<button id="hi" style="height:40px;margin-left:400px;margin-top:100px;margin-top:100px;" ><b class="glyphicon glyphicon-home"  >&nbspClick here to get the Production Houses</b> </button>
 
-<div id = "LI"></div>
+<div id = "LI"  style="margin-top:30px"></div>
 
-    </div>
-    <div class="clearfix visible-lg"></div>
-  </div>
+ </div>
 </div>
+                   <div id = "footer" class ="oratorFont" style="margin-top:280px;">
+         <div class="container col-md-12 pull-right" >
+            <div class="bottom-footer">
+                  <ul class="footer-nav" style="font-size:16px;text-align:right">
+                    <li><a href="/aboutus">About Us |</a></li>
+                    <li><a href="/faq">FAQs |</a></li>
+                    <li><a href="/supportUs">Support US |</a></li>
+                    <li><a href="/credits">Thank You |</a></li>
+                    <li><a href="/terms">Terms Of Use |</a></li>
+                    <li><a href="/terms">Contact Us</a></li>
+                  </ul>
+            </div>
+        
+               <div class="row cp-copyright" style="text-align:right;">
+                <div class="col-sm-12 col-xs-12">
+                    <small>&copy; 2015 <br class="hidden-sm hidden-md hidden-lg" /> All Rights Reserved. | <a href="/privacy">Privacy Policy</a></small>
+                </div>
+            </div>
+          </div> 
+        </div>
+  </div>
 
 </body>
 </html>
