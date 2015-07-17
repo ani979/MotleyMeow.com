@@ -384,7 +384,7 @@ var isAuthenticated = function (req, res, next) {
 }
 
 // routes
-app.get( '/',  home.index);
+app.get( '/',  home.index_home);
 
 app.get('/auth/facebook',
     passport.authenticate('facebook', { scope: [ 'email' ] }),

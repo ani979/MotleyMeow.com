@@ -44,17 +44,17 @@ exports.index = function(req, res) {
         } else {
             User.count(function(err, uCnt) {
                if(err) {
-                res.render('index', {message: req.flash('loginMessage')});    
+                res.render('landing', {message: req.flash('loginMessage')});    
                }
                Posts.count(function(err, pCnt) {
                 if(err) {
-                    res.render('index', {aCount:uCnt, message: req.flash('loginMessage')});    
+                    res.render('landing', {aCount:uCnt, message: req.flash('loginMessage')});    
                 }
                 Event.count(function(err, eCnt) {
                     if(err) {
-                        res.render('index', {aCount:uCnt, pCount:pCnt, message: req.flash('loginMessage')});    
+                        res.render('landing', {aCount:uCnt, pCount:pCnt, message: req.flash('loginMessage')});    
                     } 
-                    res.render('index', {aCount:uCnt, pCount:pCnt, eCount:eCnt, message: req.flash('loginMessage')});    
+                    res.render('landing', {aCount:uCnt, pCount:pCnt, eCount:eCnt, message: req.flash('loginMessage')});    
                     
                 });    
                }); 
@@ -227,6 +227,227 @@ exports.getNotification = function(req, res) {
                              });
     }
 };
+
+exports.index_home = function(req, res) {
+    console.log("req.session " + req.session);
+    
+    var posts; 
+    var events;
+    var playEvents=null;;
+    var workshopEvents=null;
+    var otherEvents=null;
+    
+    var then = new Date();
+    var now = new Date();
+
+    then.setDate(then.getDate() - 10);
+    var selectedCity = new Array();
+    
+    
+    var posts = {};
+    var events = {};
+    var users = {};
+    var allDBPosts = {};
+    var postsArray = new Array();
+    var recentPostsArray = new Array();
+    var allLastUpdtdUsers = new Array();
+    var allForumThreads = {};
+    var recentJoinedUsers = {};
+    var eventsInDB = {};
+    var allBlogPosts = {};
+    async.parallel([            
+            function(callback) {
+                console.log("i am here2222")
+                if(typeof selectedCity != undefined && selectedCity.length != 0) {
+                    Event.aggregate([{ $match: { $and: [ { 'event.city': { $in: selectedCity } },  
+                                               { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
+                                                        { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
+                                                      ] } ] } }, 
+                                     { $sort : { 'event.date' : 1 } }, {$limit:5}]
+
+                            // ,  
+                            // { 'event.endDate': { $and: [ { $ne : null}, {$lte: new Date(new Date().toISOString()) } ] } } ] } }, 
+                            // { $sort : { 'event.date' : 1 } }, {$limit:5}]
+                        , function(err, eventsCriteria) {
+                        if(err) {
+                            eventsInDB = {};
+                            console.log("Event aggregated");
+                            console.log("error is " + err)
+                            
+                         } else {
+                            eventsInDB = eventsCriteria;
+                            if(typeof eventsCriteria != 'undefined' && eventsCriteria.length ==0) {
+                                Event.aggregate([{ $match: { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
+                                                        { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
+                                                      ] } },  { $sort : { 'event.date' : 1 } }, {$limit:5}],
+                                            function(err, allEventsInDB) {
+                                                if(err) {
+                                                    eventsInDB = {};
+                                                    console.log("Error when getting all events in Database when city doesnt have any events");
+                                                } else {
+                                                    eventsInDB = allEventsInDB;
+                                                    console.log("DONE with 2222 FROM EVENTS FROM OTHER CITIES WHILE THE CURRENT CITY DOESNT HV EVENTS")
+                                                    callback(null, "DONE2");
+                                                }
+                                });                
+                            } else {
+                                console.log("DONE with 2222 CURRENT CITY HAS EVENTS")
+                                callback(null, "DONE2");
+                            }
+                         }   
+                         
+                    }); 
+                 } else {
+                    Event.aggregate([{ $match: { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
+                                                        { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
+                                                      ] } },  
+                                    { $sort : { 'event.date' : 1 } }, {$limit:5}],
+                            function(err, allEventsInDB) {
+                        if(err) {
+                            eventsInDB = {};
+                            console.log("Error when getting all events in Database");
+                        } else {
+                            eventsInDB = allEventsInDB;
+                        }
+                        console.log("DONE with 2222")
+                        callback(null, "DONE2");
+                    });
+
+                 }   
+            },
+            function(callback){
+                console.log("i am here3333")
+                
+                    Posts.aggregate([{ $match: { 'post.date': { $gte: (then) } } } , { $sort : { 'post.date' : -1 } }, {$limit:5} ],
+                        function(err, allpostsinDB) {
+                        if (err || typeof allpostsinDB == 'undefined') {
+                            console.log("Error while getting all posts");
+                        }    
+
+                        console.log("allpostsinDB is " + allpostsinDB.length);
+                        
+                        if(!err) {
+                            allDBPosts = allpostsinDB;
+                        } else {
+                            allDBPosts = {};
+                        }
+
+                        console.log("DONE with 3333")
+                        callback(null, "DONE3")
+                    }); 
+            },
+            function(callback) {
+                console.log("i am here4444")
+                User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
+                         function(err, recentUsers) {
+                    
+                    if(err) {
+                            recentJoinedUsers = {};
+                            console.log("Error when getting recent joined Users");
+                        } else {
+                            recentJoinedUsers = recentUsers;
+                        } 
+                        console.log("DONE with 4444")
+                    callback(null,"DONE4")    
+                });   
+            },
+            function(callback){
+                console.log("i am here5555")
+                
+                User.aggregate([{ $match: { 'local.lastProfileUpdateDate': { $lte: new Date() } } } , { $sort : { 'local.lastProfileUpdateDate' : -1 } }, {$limit:5} ],
+                    function(err, lastUpdtdUsers) {
+                    if (err || typeof lastUpdtdUsers == 'undefined') {
+                        console.log("Error while getting last updated users");
+                    }    
+
+                    console.log("lastUpdatedUsers length is " + lastUpdtdUsers.length);
+                    
+                    if(!err) {
+                        allLastUpdtdUsers = lastUpdtdUsers;
+                    } else {
+                        allLastUpdtdUsers = {};
+                    }
+
+                    console.log("DONE with 5555")
+                    callback(null, "DONE5")
+                }); 
+            },
+            function(callback){
+                console.log("i am here6666")
+                BlogPost.aggregate([{ $match: {'blogPost.approved':true} },{ $sort : { 'blogPost.date' : -1 } }, {$limit:5}], function(err, allblogposts) {
+                    //console.log(blogposts);
+                    //console.log(count);
+                    if(err) {
+                        console.log("errror in fetching all blog posts");
+                        allBlogPosts = {};
+                        
+                    }
+                    else {
+                        console.log("All blog posts fetched");
+                        allBlogPosts = allblogposts;
+                        
+                        
+                    } 
+                    callback(null, "DONE6")
+                });
+               
+            },
+            function(callback){
+                console.log("i am here777")
+                Forum.aggregate([{ $match: { 'thread.date': { $lte: (now) } } } , { $sort : { 'thread.date' : -1 } }, {$limit:5} ], function(err, threads) {
+                    //console.log(blogposts);
+                    //console.log(count);
+                    if(err) {
+                        console.log("errror in fetching all forum threads");
+                        allForumThreads = {};
+                        
+                    }
+                    else {
+                        console.log("All forum posts fetched " + threads.length);
+                        allForumThreads = threads;
+                        
+                        
+                    } 
+                    callback(null, "DONE7")
+                });
+               
+            }
+
+
+        ],
+        // optional callback
+        function(err, results){
+            console.log("Finally")
+            //allDBPosts= allDBPosts.concat(allBlogPosts);
+            //console.log("All Blogs posts " + JSON.stringify(allDBPosts));
+            //allDBPosts.sort(function(a,b) { return new Date(a.result.date).getTime() - new Date(b.result.date).getTime(); });
+            var mainArray = new Array();
+            mainArray = mainArray.concat(allDBPosts)
+            mainArray = mainArray.concat(allBlogPosts)
+            mainArray = mainArray.concat(allForumThreads);
+            mainArray = mainArray.sort(function(a, b){
+                    var keyA, keyB;
+                    if(typeof a.post != 'undefined') { keyA = new Date(a.post.date)}
+                    if(typeof a.blogPost != 'undefined') { keyA = new Date(a.blogPost.date)}
+                    if(typeof a.thread != 'undefined') { keyA = new Date(a.thread.date)}
+
+                    if(typeof b.post != 'undefined') { keyB = new Date(b.post.date)}
+                    if(typeof b.blogPost != 'undefined') { keyB = new Date(b.blogPost.date)}
+                    if(typeof b.thread != 'undefined') { keyB = new Date(b.thread.date)}
+
+                    // Compare the 2 dates
+                    if(keyA < keyB) return 1;
+                    if(keyA > keyB) return -1;
+                    return 0;
+                    });
+            res.render("Landing", {events: eventsInDB, users:recentJoinedUsers, allPosts: allDBPosts, 
+                appId:config.facebook.clientID, dropdowns:dropdowns, lastProfileUpdtd:allLastUpdtdUsers,
+                allBlogs:allBlogPosts, allThreads:allForumThreads, allContents:mainArray})
+            // the results array will equal ['one','two'] even though
+            // the second function had a shorter timeout.
+        }
+    );
+}   
 
 
 exports.landing_home = function(req, res) {
