@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Keywords" content="Theatre, Artists, Motleymeow, Sponsor, Events, Bengaluru, Mumbai, Delhi, Chennai, Kolkata, Drama, Naatak"/>
+    <meta property="og:title" content="MOTLEYMEOW. Hear the artists meow."/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://www.motleymeow.com" />
+    <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <title>Motleymeow.com home page</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery.1.11.2.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.3.3.4.js"></script>
+    <script src="js/bootstrap-dialog.js"></script>
+    <script src="js/jquery.ellipsis.min.js"></script>
+    <script src = "js/moment.min.js"></script>
+   
+    
+    <link href="css/style.css" rel="stylesheet">       
+    <link href="css/tab.css" rel="stylesheet">
+    <link href="indexPage/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/forumhome.css" rel="stylesheet">
+    <link href="css/bootstrap-dialog.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+    <link href="css/lightbox.css" rel="stylesheet" media = "screen"/>
+     <script src="js/lightbox.min.js"></script>
+     <script src="js/lazysizes.min.js" async=""></script>
+    
+  </head>
+  
+  <body style="color:##666;" >
+
+<% getDate = function(x) {
+            var retDate;
+            MM = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 
+              10:"October", 11:"November", 12:"December"};
+
+            xx = x.replace(
+                  /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}).(\d{3})Z/,
+                  function($1,$2,$3,$4,$5,$6,$7, $8){                      
+                      retDate= MM[parseInt($3)]+" "+$4+", "+$2
+                  }
+                ); 
+            return retDate;
+        }
+%> 
+
+<% if(typeof user != 'undefined' && user!=null) { %>
+  <div id = "headerloggedin"> </div>
+<% } %>
+
+
+  
+<div id="home-row-1" class="clearfix slide-1" style="padding-top:0px;padding-left:0px;color:#E6E0E0;">
+  
+ 
+  <% if(typeof user == 'undefined' || user ==null) { %>
+    <div class = "col-md-4" style="padding-top:10px;padding-bottom:150px;">
+      <div class="col-sm-4" style="float:left;padding-top:20px;">
+        <h4 class="font-light" id="artistsCount">1</h4>
+        <span class="font-light" style="font-size:28px;">Artists</span>
+      </div><!-- /col-4-->
+      <div class="col-sm-4" style="float:left;padding-top:20px;">
+        <h4 class="font-light" id="postsCount">1</h4>
+        <span class="font-light" style="font-size:28px;">Posts</span>
+      </div><!-- /col-4-->
+      <div class="col-sm-4" style="float:left;padding-top:20px;">
+        <h4 class="font-light" id="eventCount">1</h4>
+        <span class="font-light" style="font-size:28px;">Events</span>
+      </div><!-- /col-4-->
+      <!-- <div class="col-12" style="float:center;"> -->
+
+      <!-- </div>  -->
+    </div>
+    <div class = "col-md-4" style="padding-top:0px;">  
+      <h1 class="font-light" style="text-align:center;"><img src ="images/MotleyMeow-logo02.gif" style="max-width:300px;max-height:300px;">
+        </h1>
+       <div>&nbsp;</div> 
+      <h3 class="font-light" style="text-align:center;font-style:italic;">With you, from pen to production</h3>
+    </div>
+    <div class="col-md-4" style="padding-top:80px;text-align:center;"> 
+        <button  type="button" style="font-size:20px;background-color: rgba(237, 16, 79, 0.28);border-radius: 2px;box-shadow: 0px 0px 3px 3px #888;" id = "signin">
+        <b>Login or Signup</b>
+        </button>
+      
+        <div id="login1" style= "float:center;padding-top:5px;display:none;position:relative;">
+          <div class="form-signin" style="position:absolute;z-index:999;">
+                     
+          
+              <div class="social-box">
+                <div class="row mg-btm">
+                      <div class = "col-md-12 form-group">
+                        <a id="FBlogin" class="btn btn-primary form-control" href="/auth/facebook" style="text-align:center;">
+                        <i class="icon-facebook"></i> &nbsp;&nbsp;Login with Facebook
+                        </a>
+                      </div> 
+                      <div class = "form-group col-md-12">                        
+                        <a href="/auth/google" class="btn btn-primary form-control" style="text-align:center;"> 
+                        <i class="icon-google-plus"></i>&nbsp;&nbsp;Login with Google</a>
+                      </div>  
+                </div>
+              </div>
+              
+              <div>
+                <hr class="hrInline" align="left" >
+                <span class="hrtext" >or </span> 
+                <hr class="hrInline" align="right" >
+                <div style="clear:both;"></div>
+              </div>
+              <div id="loginMessage" class="alert alert-danger" style="font-size:14px;display:none;"></div>
+              
+              <div>&nbsp;</div>
+              <div class="col-md-12" >
+                
+                  <!-- LOGIN FORM -->
+                  <div style="font-size:23px">
+                    <input autofocus class="form-control emailTxt centerAlign" id="username" name="email" placeholder="email" type="email" value="" required>        
+                  </div>
+                  <div>&nbsp;</div>
+                  <div style="font-size:23px">
+                    <input class="form-control emailTxt centerAlign" id="password" name="password" placeholder="password" type="password" value="" required>
+                  </div>
+                  <div>
+                    <div>
+                      <button  type="submit" class="btn btn-warning" onclick="submitForLogin();">
+             
+                      Login with Email
+                      </button>
+                    </div>
+                    <div> &nbsp;</div>
+                    <p style="font-size:20px;">Need an account? <a href="/signup">Signup</a> 
+                    <br/>
+                    <a href="/forgot">Forgot Password?</a></p>
+                  </div>
+              </div>
+                 
+          </div>      
+        </div>  
+
+    </div> 
+  <% } else { %>
+      <% var citysel = user.local.city %>
+
+        <div class = "col-md-12" style="padding-top:10px;padding-bottom:150px;">
+                <h2 class="title" style= "text-align:center;" >Welcome <strong> <%= user.facebook.name %>! </strong></h2>
+                <h3 class="font-light" style="text-align:center;font-style:italic;">With you, from pen to production</h3>
+                
+        </div>  
+    <% } %>   
+
+</div><!-- /row -->
+
+
+
+<div class = "col-md-12" id="landing">
+  <% if(typeof user != 'undefined' && user != null) { %>
+    <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
+        <h4 style= "text-align:center;"><small > Your location is not set currently and your current email id is set to "<%= user.facebook.email %>". You can always update your location and email id through <a href="/profileEdit" style="color:white;">"update profile"</a> and keep yourself updated about happenings in your city only.</small></h4>
+    <% } else { %>  
+        <h4 style= "text-align:center;"><small > Your current email id is set to "<%= user.facebook.email %>". You can always <a href="/profileEdit">"update it here"</a> to keep yourself updated about latest happenings.</small></h4>
+    <% } %>
+  <% } %> 
+
+
+   
+  <div class="categories col-md-12" style="text-align:center;">
+     <h2>Upcoming Events</h2>
+    <div>
+   
+      </br>
+      <% if (typeof events != 'undefined' && events != null && events.length != 0) { %>
+
+        <% for(var i = 0; i < events.length; i++) {%>
+            <%  var d = new Date(events[i].event.date).toISOString();
+                  var displayableStartDate = getDate(d);
+                  var displayableEndDate = displayableStartDate;
+                  if(typeof events[i].event.endDate != 'undefined' && events[i].event.endDate != "" && events[i].event.endDate != null) {
+                    var endDate = new Date(events[i].event.endDate).toISOString();
+                    displayableEndDate = getDate(endDate);
+                  }  
+            %>
+            <div class = "col-md-3 col-sm-4 col-xs-6">
+                  <a href = "<%=events[i].event.link%>" target="_blank"  class="img-responsive">
+                    <div class = "imgWrap" style="min-width:inherit;height:200px;">
+                      <img src="<%=events[i].event.eventcover%>" class="img-responsive" rel="lightbox" style="height:inherit;min-width:100%;max-width:100%;"/>
+                      <div class="imgDescriptionEvents">
+                        <h5 style="color:#FFF;padding-top:50px;width:inherit;overflow:hidden"><%=events[i].event.title%> from <%=displayableStartDate%> 
+                          until <%=displayableEndDate%> in <%=events[i].event.city%></h5>
+                      </div>  
+                    </div>  
+
+                  </a>
+
+            </div>
+        <% }  %>
+      <% } else { %>  
+        <h3 style="text-align:center;">Sorry, no recent events</h3>   
+      <% } %>  
+    </div>
+    <% if(typeof user != 'undefined' && user != null) { %> 
+      <div>&nbsp;</div>
+      <h3><a href="/allevents">All Events</a></h3> 
+      <hr/>
+    <% } %>  
+  </div>
+
+    
+</div>                
+  <div class="col-md-2" style="margin-top:20px;box-shadow: 3px 3px 6px 1px rgb(57, 17, 17);box-sizing: border-box;padding:0px;">
+
+      <div class="blogbox box-shadow">
+          <h3>Latest Forum Posts</h3>
+          <br/>
+          <%for (var i =0; i < allForum.length; i++) { 
+            allThreads = allForum[i]%>
+             
+              
+              <% var details=""; var blogLink = ""; var authorName=""; authorpic=""; %>
+                     
+                        <% if (typeof allThreads.thread.topic !='undefined') {
+                          details = allThreads.thread.tbody;
+                        } else  {
+                          details=""; 
+                        }  %>
+                        <div class="thread" id="divallthreads" style="text-align:left;color:#E6E0E0;">
+                            <% var userPicture, username, fbLink 
+                            var displayableDate = "";
+                            var isodateString = allThreads.thread.date.toISOString();
+                            displayableDate = getDate(isodateString) 
+                            authorpic = allThreads.thread.authorPic
+                            authorName = allThreads.thread.authorName
+
+                            %>
+                           <div style="color:#D3D5D8;">
+                         
+                                
+                                <a href="/viewThread?id=<%=allThreads._id%>" title="click to view the thread" rel="bookmark" style="color:#D3D5D8;"><h4><%=allThreads.thread.topic%></h4>
+                                </a>
+
+                                <h5><small style="color:#B7B4B4;">Forum thread started by
+                                    <% if(username != "") { %>
+                                      <span class='user'><a style="color:#E6E7E9;" href="/profile?fbId=<%=allThreads.thread.authorid%>" title='view users profile'><%=authorName%></a></span>
+                                    <% } else { %>  
+                                      <span class='user'><a style="color:#E6E7E9; "href="/profile?fbId=<%=allThreads.thread.authorid%>" title='view users profile'>a member</a></span>
+                                    <% } %>on <b><%=displayableDate%></b>
+                                </small></h5>    
+                            </div>
+                       </div>
+                       <hr/>
+            <% } %>
+          
+      </div>
+
+  </div>
+  <div class="col-md-8">    
+      <div class="col-md-12">
+        <div class="categories" style="text-align:center;">
+          <h2>Recent Requests<span class="sr-only" >(current)</span></h2>
+          <br/>
+             <%for (var i =0; i < allPosts.length; i++) { 
+               console.log("allPosts length" + allPosts.length);%>
+        
+               
+                  <% var details=""; %>
+                  
+                    <% if (typeof allPosts[i].post.postDetail !='undefined') {
+                                    details = allPosts[i].post.postDetail
+                    } else  {
+                      details=""; 
+                    }  %>
+                    <div class="thread col-sm-3 com-md-2 col-xs-6" id="divallthreads" style="text-align:left;">
+                          
+                      <% var userPicture, username, fbLink 
+                      var displayableDate = "";
+                      var isodateString = allPosts[i].post.date.toISOString();
+                      displayableDate = getDate(isodateString) ;
+                       %>
+                      <% if (typeof allPosts[i].post.imagePath !='undefined') {
+                          userPicture = allPosts[i].post.imagePath
+                          username = allPosts[i].post.user[0].facebook.name
+                          fbLink = '/profile?fbId=' + allPosts[i].post.user[0].facebook.id
+                      } else {
+                          userPicture = ""
+                          username = ""
+                          fbLink = '/profile?fbId='+ allPosts[i].post.userid
+                      } %>      
+                      <div class="work-item feeds-data">
+                        <div>
+
+                          <% if(typeof allPosts[i].post.imagePath == 'undefined' || allPosts[i].post.imagePath == '') { %>
+                            <a href="/images/postDefaultImage.jpg" rel="lightbox">
+                              <div class = "hover-container">
+                              <img data-sizes="auto" rel="lightbox" data-src="/images/postDefaultImage.jpg" style="height:250px;width:100%;" class="member-photo lazyload"> 
+                            </div>
+                            </a>
+                          <% } else { %>
+                            <a href="/uploads/<%=allPosts[i].post.imagePath%>" rel="lightbox">
+                              <div class = "hover-container">
+                            <img data-sizes="auto" rel="lightbox" data-src="/uploads/<%=allPosts[i].post.imagePath%>" style="height:250px;width:100%;" class="member-photo lazyload">
+                              </div>
+                          </a>
+                          <% } %>
+                        </div> 
+                        <hr style="margin-top:0px;border-width: 1px 0px 0px;border-color: #CCC -moz-use-text-color -moz-use-text-color;margin-bottom:0px;"/>
+                        <div  style="padding-left:10px;padding-right;10px;overflow:hidden;height:50px;">
+                          
+                          <h4><a href="/viewpost?postid=<%=allPosts[i]._id%>" title="<%=details%>" rel="bookmark"><h4 class ="postTitle" style="font-size:16px;"><%=allPosts[i].post.postTitle%></h4></a>
+                        </div>
+                        <div style="padding-left:10px;padding-right;10px;height:50px;">  
+                          <h5 style="font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:wrap;" class="postedBy">Request posted by
+                                <% if(username != "") { %>
+                                  <a href="<%=fbLink%>" title='view users profile'><%=username%></a>
+                                <% } else { %>  
+                                  <a href="<%=fbLink%>" title='view users profile'>a member</a>
+                                <% } %>on <b><%=displayableDate%></b>
+                                    <% if(allPosts[i].post.city != "") { %> 
+                                      <span class='user' style="font-size:11px;"> in <%=allPosts[i].post.city%></span>
+                                    <% } %>  
+                          </h5>   
+                         </div> 
+
+                                 
+                      </div>
+                          
+                    </div>
+
+             <% } %>
+
+          
+        </div>  
+        <% if(typeof user != 'undefined' && user != null) { %>     
+          <h3 style="text-align:center;"><a href="/viewallposts">View all Requests</a></h3> 
+      <div class = "lineBelow"></div>
+        
+      <% } %>
+      </div>
+      <div class="col-md-12">
+          <div class="categories" style="text-align:center;">
+            <h2>Recently updated profiles</h2>
+            <br/>
+                <% if (typeof lastProfileUpdtd != 'undefined' && lastProfileUpdtd != null && lastProfileUpdtd.length != 0) { %>
+                    
+                      <% for(var i = 0; i < lastProfileUpdtd.length; i++) {%>
+                              <div class="col-md-3" style="padding:0px;">
+                                <a href = "/profile?fbId=<%=lastProfileUpdtd[i].facebook.id%>" target="_blank" style="min-width:100%; height:200px;text-decoration: none;" rel="lightbox">
+                                  <div class = "imgWrap">
+                                    <% if(typeof lastProfileUpdtd[i].local.picture == 'undefined' || lastProfileUpdtd[i].local.picture == "") { %>
+                                    <img  src="/images/siteLogo.jpg" style="height:200px; min-width:100%;max-width:100%;" class="member-photo lazyload img-responsive" rel="lightbox"> 
+                                    <% } else { %>
+                                    <img src="<%=lastProfileUpdtd[i].local.picture%>" class ="lazyload img-responsive" style="height:200px; min-width:100%;" rel="lightbox"/>
+                                    <% } %>
+                                    <div class="imgDescription"><h5 style="padding-top:50px;"><%=lastProfileUpdtd[i].facebook.name%></h5></div>
+                                  </div>
+                                </a>
+                                </div><!-- /row -->
+                      <% }  %>
+
+                    
+                    
+                <% } %>  
+            <div> &nbsp;</div>    
+
+                
+           </div>
+           <% if(typeof user != 'undefined' && user != null) { %>    
+              <h3><a href="/artists">View all Artists</a></h3>   
+              <div class = "lineBelow"></div>
+           <% } %>   
+      </div>   
+
+            
+        
+                  
+  </div><!-- main-container End -->  
+  <div class="col-md-2" style="margin-top:20px;box-shadow: 3px 3px 6px 1px rgb(57, 17, 17);box-sizing: border-box;padding:0px;">
+
+      <div class="blogbox box-shadow">
+          <h3>Latest Blogs</h3>
+          <br/>
+          <%for (var i =0; i < allBlogs.length; i++) { %>
+             
+              
+              <% var details=""; var blogLink = ""; var authorName=""; authorpic=""; %>
+                     
+                        <% if (typeof allBlogs[i].blogPost.postBody !='undefined') {
+                        details = allBlogs[i].blogPost.postBody;
+                      } else  {
+                        details=""; 
+                      }  %>
+                        <div class="thread" id="divallthreads" style="text-align:left;color:#E6E0E0;">
+                            <% var userPicture, username, fbLink 
+                            var displayableDate = "";
+                            var isodateString = allBlogs[i].blogPost.date.toISOString();
+                            displayableDate = getDate(isodateString) 
+                            authorpic = allBlogs[i].blogPost.authorPic
+                            authorName = allBlogs[i].blogPost.authorName
+
+                            %>
+                           <div style="color:#D3D5D8;">
+                         
+                                
+                                <a href="/displayBlogPost?blogpostid=<%=allBlogs[i].blogPost._id%>" title="click to view the thread" rel="bookmark" style="color:#D3D5D8;"><h4><%=allBlogs[i].blogPost.postTitle%></h4>
+                                </a>     
+                                <h5><small style="color:#B7B4B4;">Blog posted by
+                                    <% if(username != "") { %>
+                                      <span class='user'><a style="color:#E6E7E9;" href="/profile?fbId=<%=allBlogs[i].blogPost.authorid%>" title='view users profile'><%=authorName%></a></span>
+                                    <% } else { %>  
+                                      <span class='user'><a style="color:#E6E7E9; "href="/profile?fbId=<%=allBlogs[i].blogPost.authorid%>" title='view users profile'>a member</a></span>
+                                    <% } %>on <b><%=displayableDate%></b>
+                                </small></h5>    
+                            </div>
+                       </div>
+                       <hr/>
+            <% } %>
+          
+      </div>
+
+  </div>
+</div>   
+ 
+    
+   <script src="js/private.js"></script>
+   <link href="css/font-awesome.min.css" rel="stylesheet"> 
+
+
+
+<div id = "footer" >
+         <div class="container col-md-12 pull-right" >
+            <div class="bottom-footer">
+                  <ul class="footer-nav" style="font-size:16px;text-align:right;">
+                    <li><a href="/aboutus" style="color:#141313;">About Us |</a></li>
+                    <li><a href="/faq" style="color:#141313;">FAQs |</a></li>
+                    <li><a href="/supportUs" style="color:#141313;">Support US |</a></li>
+                    <li><a href="/credits" style="color:#141313;">Thank You |</a></li>
+                    <li><a href="/terms" style="color:#141313;">Terms Of Use |</a></li>
+                    <li><a href="/terms" style="color:#141313;">Contact Us</a></li>
+                  </ul>
+            </div>
+        
+            
+
+
+            <div class="row cp-copyright" style="text-align:right;">
+                <div class="col-sm-12 col-xs-12">
+                    <small style="color:#141313;">&copy; 2015 <br class="hidden-sm hidden-md hidden-lg"  /> All Rights Reserved. | <a href="/privacy" style="color:#141313;">Privacy Policy</a></small>
+                </div>
+            </div>
+          </div> 
+        </div>   
+
+
+         
+
+   
+  
+  <% if( typeof user != "undefined" && user != null) {
+     var city = user.local.city;
+     console.log("cityyyyyyyy: "+city);
+     if(city == 'None') { %>
+        <div class="form-group panel-body" id="myCity" style="margin:0px;padding:0px;">
+            <label class="col-sm-6 control-label" for="city" style="padding:0px;">Location</label>
+            <div class="col-sm-6">
+              <select class="form-control" id="myCityForm" name="cityVal">
+              <% var cities = dropdowns.alldropdowns.cities;
+                  for(var i = 0; i < cities.length; i ++) {   %> 
+                        <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
+            <!--  <option>Bengaluru</option><option>Chennai</option><option>Delhi</option><option>Mumbai</option><option>Kolkata</option><option>None Of the above</option></select>--> 
+              <% } %>
+            </select></div>
+            <div id="myRole" class="form-group">
+              <label class="control-label">What kind of Artist are you?</label> 
+              <br>
+              <% var roles = dropdowns.alldropdowns.rolesForSearch;
+                for(var i = 0; i < roles.length; i ++) {   %> 
+                  <div class = "col-sm-6">
+                    <label class="checkbox-inline">
+                          <input type="checkbox" id="checkboxinline<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" ><%=roles[i].text%>
+                    </label>
+                 </div>  
+               <% } %>
+             
+            </div>
+            
+            <button id="donebtn" class="btn btn-primary pull-left" style="margin-top:30px;">DONE</button>
+            <button id="closebtn" class="btn btn-warning pull-right" style="margin-top:30px;">Don't bore me now, will fill later</button>
+            
+        </div>
+
+        <script type="text/javascript">
+
+           
+          $(document).ready(function(){
+            var dialog = new BootstrapDialog({
+            message: function(dialogRef){
+                var $message = $('<div></div>');
+                var $button = $('#donebtn');
+                var $closeButton = $('#closebtn');
+                
+                $button.on('click', {dialogRef: dialogRef}, function(event){
+                  
+                  var roles = $('input:checkbox[name="role"]:checked').map(function() {
+                              return this.value;
+                                }).get().join(',');
+                  var citiesss = $('#myCityForm').val();
+                  if(citiesss == "None Of the above") citiesss = "";
+                  event.data.dialogRef.close();
+                  $.ajax({
+                        url: "/getCity",
+                        type: "POST",
+                        data: {role: roles,city: citiesss},
+                        // data: {$("#myCityForm").serialize(), role: roles},
+                        success: function (data) {
+                            location.reload();
+                        },
+                        error: function (data) {
+                          console.log("some error " + data);
+                        }
+                        
+                  });
+
+                });
+
+                $closeButton.on('click', {dialogRef: dialogRef}, function(event){
+                    $.ajax({
+                        url: "/getCity",
+                        type: "POST",
+                        data: {city: ""},
+                        // data: {$("#myCityForm").serialize(), role: roles},
+                        success: function (data) {
+                            console.log("City and role saved ");
+                        },
+                        error: function (data) {
+                            console.log("some error " + data);
+                        }
+                        
+                    });
+                    event.data.dialogRef.close();
+                });
+                // $message.append($selectedCity).append($button);
+                $message.append($('#myCity'));
+        
+                return $message;
+              },
+              closable: false
+          });
+          dialog.realize();
+          dialog.setTitle("Just very quickly add these basic info about yourself. You can change it in your profile section anytime");
+          dialog.getModalHeader().show();
+          dialog.getModalHeader().css('padding', '10px');
+          dialog.getModalBody().css('background-color', '#1E485D');
+          dialog.getModalBody().css('color', '#fff');
+          dialog.open();
+        });
+          
+        </script>      
+  <% } %>
+ <% } %> 
+
+  <!-- <script src="js/jquery-1.10.2.min.js"></script> -->
+  <script src="js/jquery-migrate-1.2.1.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery-validate.js"></script>
+  <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+    <script src="indexPage/js/jquery.easing.1.3.js"></script>
+    <script src="js/countUp.min.js"></script>
+    <script src="js/jquery.textillate.js"></script>
+    <script src="js/jquery.lettering.js"></script>
+
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+        $('.postTitle').ellipsis({
+        row: 2
+        });
+       
+      });
+    
+//$("#footer").load("footer.ejs"); 
+  var isMobile = {
+                Android: function() {
+                return navigator.userAgent.match(/Android/i);
+                },
+                BlackBerry: function() {
+                return navigator.userAgent.match(/BlackBerry/i);
+                },
+                iOS: function() {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+                },
+                Opera: function() {
+                return navigator.userAgent.match(/Opera Mini/i);
+                },
+                Windows: function() {
+                return navigator.userAgent.match(/IEMobile/i);
+                },
+                any: function() {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+                }
+            };
+
+        
+   
+    $(document).ready(function() {
+      $('.post-detail-text').ellipsis({
+        row: 2
+      });   
+    }); 
+
+      $("#signin").click(function() {
+        $('#login1').toggle();
+      });
+
+      $("#landing").click(function() {
+        $("#login1").hide();
+      });
+
+     window.onload = function() {
+      var aCount = 0;
+      var pCount = 0;
+      var eCount=  0;
+     <% if(typeof aCount != 'undefined' && aCount !=0) { console.log("aCount is" + aCount);%>
+      aCount = <%=aCount%>;
+     <%}%>
+     <% if(typeof pCount != 'undefined' && pCount !=0) { console.log("pCount is" + pCount);%>
+      pCount = <%=pCount%>;
+     <%}%>
+     <% if(typeof eCount != 'undefined' && eCount !=0) { console.log("eCount is" + eCount);%>
+      eCount = <%=eCount%>;
+     <%}%>
+
+        // setup countUp object 
+        if(aCount != 0) {
+          artistsCount = new countUp('artistsCount', 0, aCount);
+          artistsCount.start();
+        }
+        
+        
+        if(pCount != 0) {
+          postsCount = new countUp('postsCount', 0, pCount);
+          postsCount.start();
+      }    
+
+      if(eCount != 0) {
+          eventCount = new countUp('eventCount', 0, eCount);
+          eventCount.start();
+      }    
+    }
+
+    function submitForLogin() {
+        var formData = {
+              email: $("#username").val(),
+              password: $('#password').val()
+        };
+      $.ajax({
+        url: "/landing",
+        type: "POST",
+        cache: false, 
+        async: true,
+        data: formData,
+        complete: function() {
+          console.log('process complete');
+        },
+        success: function(data) {
+            if(data.error) {
+            console.log('Opps, something bad happened');
+            return;
+            }
+            if(data.message) {
+              $('#loginMessage').show();
+              $('#loginMessage').html(data.message);
+            }  
+            if(data.completed == "OK") {
+                console.log("OK");
+                window.location.href = data.redirect;
+
+            } 
+        },
+        error: function() {
+          console.log('process error');
+        }
+      });
+  }
+
+</script>
+<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+  <!-- fancybox init -->
+  <script>
+    $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+
+
+    
+  </script>
+  </body>
+</html>

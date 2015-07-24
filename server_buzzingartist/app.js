@@ -89,17 +89,21 @@ passport.use('local-login', new LocalStrategy({
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) { // callback with email and password from our form
-
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'facebook.email' :  email }, function(err, user) {
             // if there are any errors, return the error before anything else
-            if (err)
+            if (err) {
+                console.log("error " + err);
                 return done(err);
 
+            }
+                
+
             // if no user is found, return the message
-            if (!user)
+            if (!user) {
                 return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+            }    
 
             //if (user.local.password=='0')
               if (typeof user.local.password == 'undefined' || user.local.password=='0' )
@@ -412,7 +416,7 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
      console.log("setting here");
      console.log("session " + JSON.stringify(req.session));
      req.session.user = req.user;
-     res.redirect('/');
+     res.redirect('/home');
             });
 
     //  app.get('/auth/twitter', passport.authenticate('twitter'));
@@ -427,16 +431,39 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
     //  res.redirect('/home');
     //         });
 
+    
+    app.post('/landing', function(req, res, next) {
+        console.log(" Here in Landing post")
+        passport.authenticate('local-login', function(err, user, info) {
+            if(err) {
+                console.log(" Here in error ")
+                res.send({message: req.flash('loginMessage')});
+                return next(err);
+            }
+            if(!user) {
+                console.log("here in user")
+                return res.send({message: req.flash('loginMessage')});
+                //return next(err);
+            }
+            if(user) {
+                req.logIn(user, function(err) {
+                    if (err) { return next(err); }
+                    return res.send({completed: "OK", redirect: "/home"});
+                });
+                
+            }    
+        })(req, res, next);
+    });
 
+//   app.post('/landing', passport.authenticate('local-login', function(err, user, info) {
+//     console.log("coming here in Login " + info);
 
-  app.post('/landing', 
-    passport.authenticate('local-login', { failureRedirect: '/' }),
-    function(req, res) {
-     console.log("setting here");
-     console.log("session " + JSON.stringify(req.session));
-     req.session.user = req.user;
-     res.redirect('/home');
-            });
+//   }), function(req, res) {
+//      console.log("setting here");
+//      console.log("session " + JSON.stringify(req.session));
+//      req.session.user = req.user;
+//      res.send({message: req.flash('loginMessage')});
+// });
     // app.post('/login', do all our passport stuff here);
 
     // =====================================

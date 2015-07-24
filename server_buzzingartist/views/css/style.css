@@ -121,31 +121,30 @@ div.srchBox {
 }
 
 .form-signin {
-  max-width: 400px;  
+  max-width: 300px;  
   margin: 0 auto;
   display:block;
-  background-color: #f7f7f7;
+  background-color: #FBFBFB;
   -moz-box-shadow: 0 0 3px 3px #888;
     -webkit-box-shadow: 0 0 3px 3px #888;
     box-shadow: 0 0 3px 3px #888;
   border-radius:2px;
+
 }
 .main{
     padding: 38px;
 }
 .social-box{
   margin: 0 auto;
-  padding: 38px;
-  border-bottom:1px #ccc solid;
+  padding: 38px 38px 10px 38px;
 }
 .social-box a{
-  font-weight:bold;
-  font-size:18px;
+  font-size:14px;
   padding:8px;
 }
 .social-box a i{
-  font-weight:bold;
-  font-size:20px;
+  font-weight:normal;
+  font-size:14px;
 }
 .heading-desc{
     font-size:20px;
@@ -185,7 +184,7 @@ div.srchBox {
     line-height:19px;
 }
 .mg-btm{
-    margin-bottom:20px;
+    margin-bottom:5px;
 }
 
 .imagecarousel img {
@@ -1298,3 +1297,194 @@ div.tooltip p {
 .navbar-inverse .navbar-nav > .open > a:focus {
     background-color: #290303;
 }    
+
+.hrInline {
+    display: inline-block;
+    border: 0;
+    margin: 0%;
+    width: 45%;
+    height: 1px;
+    margin-bottom: 2px;
+    background: #D8D8D8;
+}
+.hrtext {
+    display: inline-block;
+    margin: 0;
+    text-align: center;
+    width: 7%;
+    font-size: 14px;
+}
+
+.work-item {
+    margin-bottom: 30px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+}
+.feeds-data {
+    border: 1px solid #C7C7C7;
+}
+.hover-container {
+    position: relative;
+}
+#home-row-1,
+  #home-row-2 {
+    padding-top: 25px;
+  }
+  
+  #home-row-1 h1 {
+    font-size: 54px;
+  }
+  
+  #home-row-1 h4 {
+    font-size: 32px;
+  }
+  
+  #home-row-2 {
+    font-size: 25px;
+  }
+  
+  #home-row-2 .col-12 {
+    height: 232px;
+    padding-top: 30px;
+  }
+  
+  #home-row-2 .col-12 .home-hover {
+    height: 166px;
+    overflow: hidden;
+    padding-top: 26px;
+    transition: all ease-in .5s;
+  }
+  
+  #home-row-2 .col-12 .home-hover:hover {
+    height: 166px;
+    padding-top: 0;
+  }
+
+@media (max-width: 767px) {
+  #home-row-1,
+  #home-row-2 {
+    padding-top: 16px;
+  }
+  
+  #home-row-1 h1 {
+    font-size: 35px;
+  }
+  
+  #home-row-1 h4 {
+    font-size: 21px;
+  }
+  
+  #home-row-2 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  #home-row-1 img {
+    max-width:250px;
+    max-height:250px;
+  }
+}
+
+@media (min-width: 421px) {
+  #home-row-1 img {
+    max-width:400px;
+    max-height:400px;
+  }
+}
+
+
+
+#slide-1 h1 {
+  padding-top: 130px;
+}
+
+@media (max-width: 2000px) {
+  .slide-1 {
+    background-image: url(../images/bg_landing1.jpg);
+    color: #ffffff;
+
+    -webkit-background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    background-size: 100% 100%;
+    
+
+  }
+}
+
+.blogbox {
+    background: rgb(83, 24, 24) none repeat scroll 0% 0%;
+    border: medium none;
+    border-radius: 0px;
+    padding: 12px 19px;
+    position: relative;
+    color:#E6E0E0;
+}    
+
+.imgWrap {
+  position: relative;
+  
+}
+
+.imgDescription {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(35, 2, 2, 0.58) none repeat scroll 0% 0%;
+  color: #fff;
+  vertical-align: middle;
+
+  visibility: hidden;
+  opacity: 0;
+
+  /*remove comment if you want a gradual transition between states
+  -webkit-transition: visibility opacity 0.2s;
+  */
+}
+
+.imgDescriptionEvents {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(33, 4, 4, 0.78) none repeat scroll 0% 0%;
+  color: #fff;
+  vertical-align: middle;
+
+  visibility: hidden;
+  opacity: 0;
+
+  /*remove comment if you want a gradual transition between states
+  -webkit-transition: visibility opacity 0.2s;
+  */
+}
+
+
+.imgWrap:hover .imgDescription {
+  visibility: visible;
+  opacity: 1;
+  vertical-align: middle;
+}
+
+.imgWrap:hover .imgDescriptionEvents {
+  visibility: visible;
+  opacity: 1;
+  vertical-align: middle;
+}
+
+.lineBelow {
+  border-width: 1px 0px 0px;
+  border-style: solid none none;
+  border-color: #D4D0D0 -moz-use-text-color -moz-use-text-color;
+  -moz-border-top-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  border-image: none;
+
+}

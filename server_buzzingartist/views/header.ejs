@@ -18,9 +18,14 @@
                 <ul class="nav navbar-nav" id="headerlist" style="font-size:16px;">
                   <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
                    <li><a href="/profile?fbId=<%=user.facebook.id%>">View your profile <span class="sr-only">(current)</span></a></li>
-                   <li><a href="/postarequest">Post a request<span class="sr-only">(current)</span></a></li>
-                   </li> 
-                   <li ><a href="/searchPosts">Your posts<span class="sr-only">(current)</span></a></li>
+                   <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Posts</a>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a href="#postModal" data-toggle="modal" data-backdrop="static">Post a request<span class="sr-only">(current)</span></a></li>
+                          <li ><a href="/searchPosts">Your posts<span class="sr-only">(current)</span></a></li>
+                          <li><a href="/viewallposts">Browse Posts</a></li>             
+                      </ul>           
+                   </li>
+                   
                    <li><a href="/postevents">Post event from FB <span class="sr-only">(current)</span></a></li>
                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse</a>
                       <ul class="dropdown-menu" role="menu">
@@ -57,3 +62,145 @@
           </div>
     </div>
   </nav>
+
+<div class="modal fade" id="postModal" aria-labelledby="postModal" tabindex="-1" aria-hidden="true">  
+    <div class="modal-dialog">
+        <div class="modal-content" style="font-weight:300;">
+            <div class="modal-header" style = "background-color: rgba(72, 58, 58, 0.08);">
+                <h2 class="modal-title" style= "text-align:center;">crispost @Motleymeow</h2>
+            </div>
+            <div class="modal-body" style="color:black;">
+              
+                <form id="postSubmitForm" class="form-horizontal" enctype="multipart/form-data" action="/post" method="post">
+                
+                  <!-- Textarea -->
+                  <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
+                 <div class="control-group col-md-12">
+                      <label class="control-label col-md-3" for="postTitle">Title of the post</label>
+                      <div class="controls col-md-9">  
+                      <% if (typeof post != 'undefined' && post!= null) { %>   
+                       <input name="_postid"  type="hidden" value=<%=post._id%>>              
+                        <input type="textarea" name="postTitle" id="postTitle" style="width: 60%;" value= "<%=post.post.postTitle%>"> </input>
+                      <% } else { %> 
+                        <input type="textarea" name="postTitle" id="postTitle" placeholder="Any event or an audition" style="width: 100%;" value=" "> </input>
+                      <% } %>
+                      </div>
+                  </div>   
+                  <div>&nbsp;</div>
+                  <div>&nbsp;</div>  
+                  <div class="control-group col-md-12">
+                     <label class="control-label col-md-3" for="checkboxes">Select an image</label>
+                      <span class="btn btn-default btn-file col-md-9">
+                        <a href="" data-lightbox="No Image set" data-title="Post's image">
+                        <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
+                        <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost"/>
+                        
+                          <a href = "" id="updateImage" style="display:none">Update this image</a>
+                          <a href = "" id="deleteImage" style="display:none">Remove this image</a>
+                          <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged"/>
+                      </span>
+                  </div> 
+                  <div>&nbsp;</div>  
+                </form>
+              
+            </div>  
+            <div class="modal-footer">
+                 <span class="pull-left col-md-4 "><a href="#" onclick="redirect();" class="btn btn-success">Add more details</a></span>
+                 <span class="col-md-4 "><button type="button" class="btn btn-primary" onclick="submitForPost()">SUBMIT</button></span>
+                 <span class="pull-right col-md-4"><button type="button" class="btn btn-warning" data-dismiss="modal">CLOSE</button></span>
+            </div>
+           <script>
+
+            function redirect() {
+                window.location="/postarequest?title=" + $('#postTitle').val();
+                return false;
+            }    
+
+            </script> 
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+          $("#updateImage").on('click', function(e){
+            e.preventDefault();
+            $("#imagePost").trigger('click');
+          });
+        
+          $("#deleteImage").on('click', function(e){
+            e.preventDefault();
+            $("#updatedImage").attr("src","");
+            $("#updatedImage").parents("a").attr("href", "");
+            $("#updatedImage").parents("a").hide();
+            $("#imagePost").val("");
+            $("#postedImage").val("removed");
+            $("#deleteImage").hide();
+            $("#updateImage").hide();
+          });
+
+          $('input[id=imagePost]').change(function(e){
+            var data = new FormData();
+            data.append('image', $('input[id=imagePost]')[0].files[0]); 
+            // alert("Data is " + data);
+            $.ajax({
+              url: "/postPhotos",
+              type: "POST",
+              contentType: false,
+              processData: false,
+              data: data,
+              complete: function() {
+                console.log('process complete');
+              },
+
+              success: function(data) {
+                 if(data.error) {
+                  console.log('Opps, something bad happened');
+                  return;
+                  }
+                console.log("here success");  
+                console.log("Data.path is" + data.path);
+                
+                $("#updatedImage").attr("src","tempUploads/"+data.path);
+                $("#updatedImage").parents("a").show();
+                $("#updatedImage").parents("a").attr("href", "tempUploads/"+data.path)
+                $("#updatedImage").siblings("a").show();
+                $("#updateImage").show();
+                $("#deleteImage").show();
+                $("#updatedImage").show();
+                $("#postedImage").val(data.path);
+             },
+
+              error: function() {
+                console.log('process error');
+              },
+            });
+          });
+          $('#postSubmitForm').validate({
+            rules: {
+                postTitle: {
+                    required: true
+                }
+            },
+            highlight: function (element) {
+                $(element).closest('.control-group').removeClass('success').addClass('error');
+            },
+            success: function (element) {
+                element.text('OK!').addClass('valid')
+                    .closest('.control-group').removeClass('error').addClass('success');
+            }
+          });
+          submitForPost = function() {
+              $('#postSubmitForm').submit();
+          }    
+
+
+          $('#postModal').on('show.bs.modal', function () {
+           $('.main-landing-container').addClass('blur');
+          });
+
+          $('#postModal').on('hide.bs.modal', function () {
+             $('.main-landing-container').removeClass('blur');
+          });
+  });       
+</script>
