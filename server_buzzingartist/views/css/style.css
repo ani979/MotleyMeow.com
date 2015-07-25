@@ -1402,7 +1402,6 @@ div.tooltip p {
 
 @media (max-width: 2000px) {
   .slide-1 {
-    background-image: url(../images/bg_landing1.jpg);
     color: #ffffff;
 
     -webkit-background-size: 100% 100%;
