@@ -179,7 +179,7 @@
 <script>
 
 $(document).ready(function(e) {
-  $('#ForComments').load("displayComments?blogpostid=" + $("#postid").val());
+  $('#ForComments').load("displayComments?blogpostid=" + "<%=post._id%>");
 });  
 $("#footer").load("footer.ejs"); 
 $("#headerloggedin").load("/header");

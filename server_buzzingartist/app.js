@@ -499,10 +499,7 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
     // =====================================
     // LOGOUT ==============================
     // =====================================
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
+    app.get('/logout', home.logout);
 
 
 app.get('/forgot', function(req, res) {

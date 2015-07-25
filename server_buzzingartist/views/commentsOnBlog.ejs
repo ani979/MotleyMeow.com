@@ -18,7 +18,7 @@
                 <div id="comment<%=comment.commentorid%><%=stringforId%>">
                   <%= comment.comment %> 
                   <br/>
-                  <% if(user.facebook.id == comment.commentorid) { %>
+                  <% if(typeof user != "undefined" && user.facebook.id == comment.commentorid) { %>
                   <small><a href="javascript:void(0)" onclick="editBlogComment('<%=comment.commentorid%><%=stringforId%>')">EDIT</a></small>&nbsp;&nbsp;<small>
                             <a href="javascript:void(0)" id ="deleteComment" data-toggle="modal" data-target="#deleteCommentModal" data-id="<%=stringforId%>">DELETE</a></small>
                   <% } %>            
