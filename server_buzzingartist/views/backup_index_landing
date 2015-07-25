@@ -1,0 +1,108 @@
+<!-- else if (typeof allContents[i].blogPost != "undefined") { allBlogs = allContents[i] %>
+                    <div>&nbsp;</div>
+
+                    <% var details=""; var blogLink = ""; var authorName=""; authorpic=""; %>
+                     
+                      <% if (typeof allBlogs.blogPost.postBody !='undefined') {
+                        details = allBlogs.blogPost.postBody;
+                      } else  {
+                        details=""; 
+                      }  %>
+                      <div class="thread" id="divallthreads" style="text-align:left;">
+                        <% var userPicture, username, fbLink 
+                        var oneDay = 24*60*60*1000;
+                        var diffDays = Math.round(Math.abs((new Date().getTime() - allBlogs.blogPost.date.getTime())/(oneDay))); 
+                        var diffDaysinStr;
+                        var displayableDate = "";
+                        var isodateString = allBlogs.blogPost.date.toISOString();
+                        displayableDate = getDate(isodateString) 
+                        if (diffDays == 0)  {
+                          diffDaysinStr = "today" 
+                        } else if(diffDays == 1) {
+                          diffDaysinStr = "yesterday"
+                        } else { 
+                          diffDaysinStr = diffDays + " days ago"
+                         }
+
+                        authorpic = allBlogs.blogPost.authorPic
+                        authorName = allBlogs.blogPost.authorName
+
+                        %>
+                        <div>
+                       
+                          <div class="pull-left" style="padding-right:20px">
+                            
+                                <a href="/profile?fbId=<%=allBlogs.blogPost.authorid%>" title="View profile">
+                                <%if(typeof authorpic == 'undefined' || authorpic == "") { %>
+                                  <img  src="/images/siteLogo.jpg" style="height:48px; width:48px;" class="member-photo"> 
+                                <% } else { %>  
+                                  <img  src="<%=authorpic%>" style="height:48px; width:48px;" class="member-photo">
+                                <% } %>  
+                                </a>
+                              
+                          </div>            
+                          <text class = "post-detail-text"><a href="/displayBlogPost?blogpostid=<%=allBlogs._id%>" title="click to read the complete blog" rel="bookmark"><h4><%=allBlogs.blogPost.postTitle%></h4></a></text>
+                            <h5><small>Blog posted by
+                                    <% if(username != "") { %>
+                                      <span class='user'><a href="/profile?fbId=<%=allBlogs.blogPost.authorid%>" title='view users profile'><%=authorName%></a></span>
+                                    <% } else { %>  
+                                      <span class='user'><a href="/profile?fbId=<%=allBlogs.blogPost.authorid%>" title='view users profile'>a member</a></span>
+                                    <% } %>on <b><%=displayableDate%></b>
+                        </div>
+                      </div>
+                  
+
+                  <% } else if (typeof allContents[i].thread != "undefined") { allThreads = allContents[i]%>
+                   <div>&nbsp;</div>
+                    
+                    <% var details=""; var blogLink = ""; var authorName=""; authorpic=""; %>
+                     
+                        <% if (typeof allThreads.thread.topic !='undefined') {
+                          details = allThreads.thread.tbody;
+                        } else  {
+                          details=""; 
+                        }  %>
+                        <div class="thread" id="divallthreads" style="text-align:left;">
+                            <% var userPicture, username, fbLink 
+                            var oneDay = 24*60*60*1000;
+                            var diffDays = Math.round(Math.abs((new Date().getTime() - allThreads.thread.date.getTime())/(oneDay))); 
+                            var diffDaysinStr;
+                            var displayableDate = "";
+                            var isodateString = allThreads.thread.date.toISOString();
+                            displayableDate = getDate(isodateString) 
+                            if (diffDays == 0)  {
+                              diffDaysinStr = "today" 
+                            } else if(diffDays == 1) {
+                              diffDaysinStr = "yesterday"
+                            } else { 
+                              diffDaysinStr = diffDays + " days ago"
+                             }
+
+                            authorpic = allThreads.thread.authorPic
+                            authorName = allThreads.thread.authorName
+
+                            %>
+                           <div>
+                         
+                                <div class="pull-left" style="padding-right:20px">
+                                
+                                      <a href="/profile?fbId=<%=allThreads.thread.authorid%>" title="View profile">
+                                      <%if(typeof authorpic == 'undefined' || authorpic == "") { %>
+                                        <img  src="/images/siteLogo.jpg" style="height:48px; width:48px;" class="member-photo"> 
+                                      <% } else { %>  
+                                        <img  src="<%=authorpic%>" style="height:48px; width:48px;" class="member-photo">
+                                      <% } %>  
+                                      </a>
+                                    
+                                </div> 
+                                <a href="/viewThread?id=<%=allThreads._id%>" title="click to view the thread" rel="bookmark"><h4><%=allThreads.thread.topic%></h4></a>            
+                              
+                                <h5><small>Forum thread started by
+                                    <% if(username != "") { %>
+                                      <span class='user'><a href="/profile?fbId=<%=allThreads.thread.authorid%>" title='view users profile'><%=authorName%></a></span>
+                                    <% } else { %>  
+                                      <span class='user'><a href="/profile?fbId=<%=allThreads.thread.authorid%>" title='view users profile'>a member</a></span>
+                                    <% } %>on <b><%=displayableDate%></b>
+                            </div>
+                       </div>
+                  <% } %> -->
