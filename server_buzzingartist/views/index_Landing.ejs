@@ -61,16 +61,16 @@
   
  
   <% if(typeof user == 'undefined' || user ==null) { %>
-    <div class = "col-md-4" style="padding-top:10px;padding-bottom:150px;">
-      <div class="col-sm-4" style="float:left;padding-top:20px;">
+    <div class = "col-md-4 col-sm-4 col-xs-12" style="padding-top:10px;padding-bottom:150px;">
+      <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
         <h4 class="font-light" id="artistsCount">1</h4>
         <span class="font-light" style="font-size:28px;">Artists</span>
       </div><!-- /col-4-->
-      <div class="col-sm-4" style="float:left;padding-top:20px;">
+      <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
         <h4 class="font-light" id="postsCount">1</h4>
         <span class="font-light" style="font-size:28px;">Posts</span>
       </div><!-- /col-4-->
-      <div class="col-sm-4" style="float:left;padding-top:20px;">
+      <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
         <h4 class="font-light" id="eventCount">1</h4>
         <span class="font-light" style="font-size:28px;">Events</span>
       </div><!-- /col-4-->
@@ -79,7 +79,7 @@
       <!-- </div>  -->
     </div>
     <div class = "col-md-4" style="padding-top:0px;">  
-      <h1 class="font-light" style="text-align:center;"><img src ="images/MotleyMeow-logo02.gif" style="max-width:182px;max-height:111px;">
+      <h1 class="font-light" style="text-align:center;"><img src ="images/MotleyMeow-logo02.gif" style="max-width:250px;max-height:200px;">
         </h1>
        <div>&nbsp;</div> 
        <div>&nbsp;</div> 
@@ -174,7 +174,7 @@
 
    
   <div class="categories col-md-12" style="text-align:center;">
-     <h2>Upcoming Events</h2>
+    <h2>Upcoming Events</h2>
     <div>
    
       </br>
@@ -216,7 +216,7 @@
 
     
 </div>                
-  <div class="col-md-2" style="margin-top:20px;box-shadow: 3px 3px 6px 1px rgb(57, 17, 17);box-sizing: border-box;padding:0px;">
+<div class="col-md-2 col-xs-12" style="margin-top:20px;box-shadow: 3px 3px 6px 1px rgb(57, 17, 17);box-sizing: border-box;padding:0px;">
 
       <div class="blogbox box-shadow">
           <h3>Latest Forum Posts</h3>
@@ -262,7 +262,7 @@
       </div>
 
   </div>
-  <div class="col-md-8">    
+  <div class="col-md-8 col-xs-12">    
       <div class="col-md-12">
         <div class="categories" style="text-align:center;">
           <h2>Recent Requests<span class="sr-only" >(current)</span></h2>
@@ -278,7 +278,7 @@
                     } else  {
                       details=""; 
                     }  %>
-                    <div class="thread col-sm-3 com-md-2 col-xs-6" id="divallthreads" style="text-align:left;">
+                    <div class="thread col-sm-3 com-md-2 col-xs-12" id="divallthreads" style="text-align:left;">
                           
                       <% var userPicture, username, fbLink 
                       var displayableDate = "";
@@ -382,7 +382,7 @@
         
                   
   </div><!-- main-container End -->  
-  <div class="col-md-2" style="margin-top:20px;box-shadow: 3px 3px 6px 1px rgb(57, 17, 17);box-sizing: border-box;padding:0px;">
+  <div class="col-md-2 col-xs-12" style="margin-top:20px;box-shadow: 3px 3px 6px 1px rgb(57, 17, 17);box-sizing: border-box;padding:0px;">
 
       <div class="blogbox box-shadow">
           <h3>Latest Blogs</h3>
@@ -581,7 +581,6 @@
       $(document).ready(function() {
         
         var i = Math.floor(Math.random() * 3)
-        alert("i " + i);
         var imageUrl = "../images/bg_landing"+ i + ".jpg"
         $(".slide-1").css('background-image', 'url(' + imageUrl + ')');
         $('.postTitle').ellipsis({
