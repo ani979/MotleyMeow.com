@@ -580,7 +580,7 @@ exports.landing_home = function(req, res) {
                                                { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
                                                         { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
                                                       ] } ] } }, 
-                                     { $sort : { 'event.date' : 1 } }, {$limit:4}]
+                                     { $sort : { 'event.date' : 1 } }, {$limit:12}]
 
                             // ,  
                             // { 'event.endDate': { $and: [ { $ne : null}, {$lte: new Date(new Date().toISOString()) } ] } } ] } }, 
@@ -597,7 +597,7 @@ exports.landing_home = function(req, res) {
                             if(typeof eventsCriteria != 'undefined' && eventsCriteria.length ==0) {
                                 Event.aggregate([{ $match: { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
                                                         { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
-                                                      ] } },  { $sort : { 'event.date' : 1 } }, {$limit:4}],
+                                                      ] } },  { $sort : { 'event.date' : 1 } }, {$limit:12}],
                                             function(err, allEventsInDB) {
                                                 if(err) {
                                                     eventsInDB = {};
@@ -619,7 +619,7 @@ exports.landing_home = function(req, res) {
                     Event.aggregate([{ $match: { $or: [ { 'event.date': {$gte: new Date(new Date().toISOString()) } },  
                                                         { 'event.endDate': { $ne : null , $gte: new Date(new Date().toISOString()) } } 
                                                       ] } },  
-                                    { $sort : { 'event.date' : 1 } }, {$limit:4}],
+                                    { $sort : { 'event.date' : 1 } }, {$limit:12}],
                             function(err, allEventsInDB) {
                         if(err) {
                             eventsInDB = {};

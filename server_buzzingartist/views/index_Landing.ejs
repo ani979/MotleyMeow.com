@@ -81,9 +81,6 @@
     <div class = "col-md-4" style="padding-top:0px;">  
       <h1 class="font-light" style="text-align:center;"><img src ="images/MotleyMeow-logo02.gif" style="max-width:250px;max-height:200px;">
         </h1>
-       <div>&nbsp;</div> 
-       <div>&nbsp;</div> 
-       <div>&nbsp;</div> 
       <h3 class="font-light" style="text-align:center;font-style:italic;">With you, from pen to production</h3>
     </div>
     <div class="col-md-4" style="padding-top:25px;text-align:center;"> 
@@ -175,7 +172,11 @@
 
    
   <div class="categories col-md-12" style="text-align:center;">
+    <% if(typeof user != 'undefined' && user != null) { %>
+      <h2>Upcoming Events in your city</h2>
+    <% } else { %>  
     <h2>Upcoming Events</h2>
+    <% } %>
     <div>
    
       </br>
@@ -191,7 +192,7 @@
                   }  
             %>
 
-             <div class = "col-md-2 col-sm-2 col-xs-3" style="padding:0px;">
+             <div class = "col-md-2 col-sm-4 col-xs-4" style="padding:0px;">
                   <a href = "<%=events[i].event.link%>" target="_blank"  class="img-responsive">
                     <div class = "imgWrap" style="height:200px; min-width:100%;max-width:100%;">
                       <img src="<%=events[i].event.eventcover%>" class="img-responsive" rel="lightbox" style="height:200px;min-width:100%;max-width:100%;"/>
@@ -269,7 +270,7 @@
   <div class="col-md-8 col-xs-12">    
       <div class="col-md-12">
         <div class="categories" style="text-align:center;">
-          <h2>Recent Requests<span class="sr-only" >(current)</span></h2>
+          <h2>Recent posts<span class="sr-only" >(current)</span></h2>
           <br/>
              <%for (var i =0; i < allPosts.length; i++) { 
                console.log("allPosts length" + allPosts.length);%>
@@ -356,7 +357,7 @@
                     
                       <% for(var i = 0; i < lastProfileUpdtd.length; i++) {%>
                               <div class="col-md-3" style="padding:0px;">
-                                <a href = "/profile?fbId=<%=lastProfileUpdtd[i].facebook.id%>" target="_blank" style="min-width:100%; height:200px;text-decoration: none;" rel="lightbox">
+                                <a href = "/profile?fbId=<%=lastProfileUpdtd[i].facebook.id%>" target="_blank" style="min-width:100%; height:200px;text-decoration: none;">
                                   <div class = "imgWrap">
                                     <% if(typeof lastProfileUpdtd[i].local.picture == 'undefined' || lastProfileUpdtd[i].local.picture == "") { %>
                                     <img  src="/images/siteLogo.jpg" style="height:200px; min-width:100%;max-width:100%;" class="member-photo lazyload img-responsive" rel="lightbox"> 
