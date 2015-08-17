@@ -62,65 +62,90 @@
       <h1>Theatre blog</h1>
       <p>What would you like to share?</p>
 
-<form class="form-horizontal" id="blogForm">
-<fieldset>
+<form class="form-horizontal" id="blogForm" enctype="multipart/form-data">
+  <fieldset>
 
-<!-- Form Name -->
-<legend>New Post</legend>
+  <!-- Form Name -->
+  <legend>New Post</legend>
 
-<!-- Text input-->
-<div class="control-group">
-  <label class="control-label" for="postTitle">Title </label>
-  <div class="controls">  
-    <input id="postTitle" name="postTitle" type="text" placeholder="Enter a title for your post" style="height:30px;">
-  </div>
-</div>
-
-<!-- Text input-->
-<div class="control-group">
-  <label class="control-label" for="postSubtitle">Sub-title </label>
-  <div class="controls" >
-    <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" class="input-xlarge" style="height:30px;">
-    
-  </div>
-</div>
-
-
-<!-- Textarea -->
-<div class="control-group">
-  <label class="control-label" for="postBody">Body </label>
-  <div class="controls">                     
-    <textarea id="postBody" style="width: 350px; height: 300px;" name="postBody" rows="10" cols="100"></textarea>
-  </div>
-</div>
-
-<!--Hideen field-->
-<input type="hidden" id="hiddenbody" name="question_html" />
-
-
-<!-- Tags -->
+  <!-- Text input-->
   <div class="control-group">
-  <label class="control-label" for="postCategories">Add Tags</label>
-
-  <div class="controls" >
-    <ul id="tagsForPost" style="margin-left:0px;"></ul>
+    <label class="control-label" for="postTitle">Title </label>
+    <div class="controls">  
+      <input id="postTitle" name="postTitle" type="text" placeholder="Enter a title for your post" style="height:30px;">
+    </div>
   </div>
 
-</div>
-
-  <ul id="tagsForPost"></ul> <!--field for tags-->
-
-
-<!-- Button (Double) -->
-<div class="control-group">
-  <label class="control-label" for="buttonPublish">Final things</label>
-  <div class="controls">
-    <button id="buttonPublish" name="buttonPublish" class="btn btn-success" type="submit" value="submit" >Publish Post</button>
-    <button id="buttonCancel" name="buttonCancel" class="btn btn-danger" type="button" onclick="cancelPost()">Cancel Post</button>
+  <!-- Text input-->
+  <div class="control-group">
+    <label class="control-label" for="postSubtitle">Sub-title </label>
+    <div class="controls" >
+      <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" class="input-xlarge" style="height:30px;">
+      
+    </div>
   </div>
-</div>
 
-</fieldset>
+
+  <!-- Textarea -->
+  <div class="control-group">
+    <label class="control-label" for="postBody">Body </label>
+    <div class="controls">                     
+      <textarea id="postBody" style="width: 350px; height: 300px;" name="postBody" rows="10" cols="100"></textarea>
+    </div>
+  </div>
+
+  <!--Hideen field-->
+  <input type="hidden" id="hiddenbody" name="question_html" />
+
+
+  <!-- Tags -->
+  <div class="control-group">
+    <label class="control-label" for="postCategories">Add Tags</label>
+
+    <div class="controls" >
+      <ul id="tagsForPost" style="margin-left:0px;"></ul>
+    </div>
+
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="postPics">Add Pictures</label>
+    <span class="fieldNote" style="color:inherit;">Ensure that the picture is <5 MB and jpeg/jpg/png only. Images >5 MB may not respond</span>
+        <span class="btn btn-success fileinput-button col-md-9">  
+          <i class="glyphicon glyphicon-plus"></i>
+          
+          <span>Add images(jpg/jpeg/png only)</span>
+            <input id = "blogImage" type="file" class = "imageUpdateField" name = "blogImage" multiple style="color: transparent;"/>
+        </span>
+              
+         <input type="hidden" id="myblogPics" name = "myblogPics">
+         <div>&nbsp;</div>
+         <div class="progress col-md-6 col-md-offset-4" style= "display:none;padding:0px;">
+              <div class="bar"></div >
+              <label class="percent">0</label >
+          </div>
+          <div class='col-md-9' style='float:right;'>
+            <table role="presentation" id = "imageTable" class='table table-striped'><tbody class='files'></tbody>
+            </table>
+          </div>
+
+          <div id="status"></div>
+
+  </div>
+
+    <ul id="tagsForPost"></ul> <!--field for tags-->
+
+
+  <!-- Button (Double) -->
+  <div class="control-group">
+    <label class="control-label" for="buttonPublish">Final things</label>
+    <div class="controls">
+      <button id="buttonPublish" name="buttonPublish" class="btn btn-success" type="submit" value="submit" >Publish Post</button>
+      <button id="buttonCancel" name="buttonCancel" class="btn btn-danger" type="button" onclick="cancelPost()">Cancel Post</button>
+    </div>
+  </div>
+
+  </fieldset>
 </form>
 
 
@@ -131,31 +156,159 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.js"></script>
     <script src="js/jquery.1.11.2.min.js"></script>
+
+    <script src="js/bootstrap.min.js"></script>
     <!-- The JQUERY UI is very much needed for tag and just after jquery UI.js we need to add tag it.js -->
     <script src="js/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/tag-it.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/jquery-validate.js"></script>
+    <script src="js/lightbox.min.js"></script>
 <script>
+      var imageIndex = 0;
+      var blogImages =new Array();
   $(document).ready(function() {
-        $("#tagsForPost").tagit();
 
-        $('#blogForm').validate({
-          rules: {
-            postTitle: {
-                required: true
-            }
-          },
-          submitHandler: function(form) {
-            alert("here");
-            savePostData();
-          }  
-        });  
+    $('input[id=blogImage]').click(function(){
+        $('.progress').hide();
+        $('#errorMsg').hide();
+    }); 
+
+    $("#tagsForPost").tagit();
+
+    $('#blogForm').validate({
+      rules: {
+        postTitle: {
+            required: true
+        }
+      },
+      submitHandler: function(form) {
+        savePostData();
+      }  
+    });  
+
+     removeThis = function(imgIndx) {
+        blogImages.splice($.inArray( $('#imageName' + imgIndx).val(), blogImages),1);
+        $('img[id=image' + imgIndx + ']').attr("src","");
+        $('tr[id=div' + imgIndx + ']').remove();
+
+      }
+
+
+         
     });
 
+$(function(){
+  $('input[id=blogImage]').change(function(){
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+        var imagesAdded = false;
+        var dataToLoad;
+          var data = new FormData();
+          for (var i = 0; i < $('input[id=blogImage]')[0].files.length; i++) { 
+              var fileInput = $('input[id=blogImage]')[0].files[i];
+             
+              var filename = fileInput.name.split('.').pop().toLowerCase();
+              if (filename == 'jpg' || filename == 'jpeg' || filename == 'png') {
+                  var filesize=fileInput.size;
+                 
+                  if (filesize > 5242880) {
+                      $('#errorMsg').show();
+                  } else {
+                      imagesAdded = true;
+                      data.append('image', $('input[id=blogImage]')[0].files[i]); 
+                  }
+              } else {
+                  $('#errorMsg').show();
+              }
+              
+          }
+          
+          // alert(" imageAdded " + imagesAdded);
+          if(!imagesAdded) {
+            
+            return;
+          }
+          $.ajax({
+            url: "/addBlogPics",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: data,
+            beforeSend: function() {
+              status.empty();
+              var percentVal = '0%';
+              $('.progress').show();
+              bar.width(percentVal);
+              percent.html(percentVal);
+            },
+            xhr: function() {
+              var xhr = new window.XMLHttpRequest();
+              xhr.upload.addEventListener("progress", function(evt) {
+                // alert("progress evt.loaded " + evt.loaded);
+                //  alert("progress evt.total" + evt.total);
+                if (evt.lengthComputable) {
+                  var percentComplete = evt.loaded / evt.total;
+                  percentComplete = parseInt(percentComplete * 100);
+
+                  bar.width(percentComplete);
+                  percent.html(percentComplete + "% completed");
+                }
+              }, false);
+
+
+              xhr.upload.addEventListener("load", function(evt) {
+                bar.css( "width", "100%" );
+                percent.html("100% completed");
+              }, false);  
+              return xhr;
+            },
+            complete: function() {
+
+            },
+            success: function(data) {
+             if(data.error) {
+              // alert('Opps, something bad happened');
+              return;
+              }
+              // /alert("data.path " + data.path.length)
+              $('.progress').hide();
+              if(typeof data.path != 'undefined' && data.path.length > 0) {
+                for(var i = 0; i < data.path.length ; i++) {
+                  blogImages.push(data.path[i].name);
+
+                  // $('#mypics').append("<img id=image"+i+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
+                  // $("#image"+i).attr("src","tempUploads/"+data.path[i].name);
+                $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
+                $('#div' + imageIndex).append("<td> <a href=/blog/"+ "<%=user.facebook.id%>" + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Blog pictures'>");
+                $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /blog/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+ 
+
+
+                  $('#mypics').append("</div>");
+                  imageIndex++;
+                }
+              }
+            },
+            
+                
+
+
+            error: function() {
+              console.log('process error');
+            },
+          });
+      }); 
+
+});  
   function savePostData(){
 
           console.log("This is executing");
+          $('#blogImage').val("");
+          $('#myblogPics').val(blogImages);
           /*var ed = tinyMCE.get('content');
+blogImage
           console.log(ed);
 
           $('#postBody').bind('form-pre-serialize', function(e) {
@@ -177,6 +330,7 @@
             postTitle: $("#postTitle").val(),
             postSubtitle: $("#postSubtitle").val(),
             postBody: $("#postBody").val(),
+            myblogPics:$('#myblogPics').val(),
             postTags: $("#tagsForPost li").map(function() { if($(this).children('.tagit-hidden-field').val() != "") { return $(this).children('.tagit-hidden-field').val() } }).get()
           };
 

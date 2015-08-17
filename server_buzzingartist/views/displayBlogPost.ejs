@@ -23,6 +23,10 @@
     <link href="css/style.css" rel="stylesheet"> 
      <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
     <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+    <link href="css/lightbox.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="css/blueimp-gallery.min.css">
+    <link rel="stylesheet" href="css/bootstrap-image-gallery.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -103,17 +107,57 @@
                 <hr>
 
                 <!-- Post Content -->
-                <p class="lead" id="demo"></p>
-                <script>
-                  var myVar = <%- JSON.stringify(post.blogPost.postBody) %>;
-                  document.getElementById("demo").innerHTML = myVar;
-                </script>
-                <%if(post.blogPost.approved) { %>
-                <div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
-                <%}%>
-                
-                <hr>
+                <% 
+                if(post.blogPost.postBody != "undefined") { 
+                  var postBody = post.blogPost.postBody.split("\n");%>
+                  <% if(typeof post.blogPost.myPhotos != 'undefined' && post.blogPost.myPhotos.length != 0) { var imageIndex = 1;%>
+                    <div>
+                    <img src='/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[0]%>' rel="lightbox" style="height:300px;min-width:80%;max-width:80%;"/>
+                    </div>
+                    <hr>
+                    <% var difference = postBody.length - post.blogPost.myPhotos.length;
+                    console.log("difference is " + difference  + " postBody.length " + postBody.length);
+                    if(difference < -1) {
+                      for(var i =1; i < (post.blogPost.myPhotos.length - postBody.length); i ++ )  { %>
+                        <a href="/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[i]%>" data-gallery>
+                          <div class="img" style="background-image:url('/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[i]%>');background-position: -5px 1px;"></div>
+                       
+                      </a>
+                        <% imageIndex = i; 
+                      } %>
+                    <%}%>
+                    <% for(var i = 0; i < postBody.length; i++) { %>
+                      <% if(post.blogPost.myPhotos.length > imageIndex && post.blogPost.myPhotos[imageIndex] != 'undefined') { %>
+                        <% if(imageIndex % 2 == 0) { %>   
+                          <div style="float: right">
+                        <%} else { %>
+                          <div style="float: left">
+                        <% } %>
+                        <img src='/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[imageIndex]%>' style="max-width:200px;max-height:200px"/>
+                        </div>
 
+                      <% imageIndex++; }%>  
+                      <div><p id="post<%=i%>"></p></div>
+                      <script>
+                        var myVar = <%- JSON.stringify("<p>" + postBody[i]) %>;
+                        document.getElementById("post<%=i%>").innerHTML = myVar;
+                      </script>
+                      <div>&nbsp;</div> 
+                    <% } %>
+                  <%} else { %>  
+                    <p class="lead" id="demo"></p>
+                    <script>
+                      var myVar = <%- JSON.stringify(post.blogPost.postBody) %>;
+                      document.getElementById("demo").innerHTML = myVar;
+                    </script>
+                  <% } %>  
+                  <%if(post.blogPost.approved) { %>
+                    <div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                  <%}%>
+                  
+                  <hr>
+                <% } %>  
+                
                 <!-- Blog Comments -->
 
                 <!-- Comments Form -->
@@ -170,11 +214,48 @@
       </div>
     </form>
   </div>
+
+  <div id="blueimp-gallery" class="blueimp-gallery">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body next"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- jQuery -->
 
 <!-- Bootstrap Core JavaScript -->
 
 <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+<script src="js/lightbox.min.js"></script>
+<script src="js/jquery.blueimp-gallery.min.js"></script>
+<script src="js/bootstrap-image-gallery.min.js"></script>
     
 <script>
 

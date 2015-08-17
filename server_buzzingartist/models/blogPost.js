@@ -14,7 +14,8 @@ var blogPostSchema = mongoose.Schema({
         categories      : [{}],
         tags            : [{}],
         comments        : [{commentorid:String, commentorName:String, commentorPic:String, comment:String, date:Date}],
-        approved        : {type: Boolean, default: false}
+        approved        : {type: Boolean, default: false},
+        myPhotos     : [{}]
     }
 
 });

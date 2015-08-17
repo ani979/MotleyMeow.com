@@ -8,10 +8,36 @@ exports.newBlogPost = function(req, res){
 }
 
 exports.saveNewBlogPostData = function(req, res){
-	console.log(req.body);
-    console.log(req.session.user.facebook.id);
-    console.log(req.session.user.facebook.name);
-	var newblogpost = new BlogPost();
+  var blogPictures;
+  if(typeof req.body.myblogPics != 'undefined') {
+    blogPictures = req.body.myblogPics.split(",");
+    // console.log("req.body.myblogPics " + blogPictures.length);
+    //  app.fsExtra.readdirSync('./views/blog/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+    //   var found = false;
+    //   for(var i = 0; i < blogPictures.length; i++) {
+    //     if(blogPictures[i] == fileName) {
+    //       found = true;
+    //     }  
+    //   }
+    //   if(found == false) {
+    //     console.log("Removing file " + fileName);
+    //     app.fsExtra.unlinkSync('./views/blog/' + req.session.user.facebook.id + '/pictures/' + fileName);
+    //   }  
+    // });
+  } else {
+    if (app.fsExtra.existsSync('./views/blog/' + req.session.user.facebook.id + '/pictures/')) {
+    // Do something
+      console.log("The directory does exist");
+      console.log("removing all profile pictures")
+      app.fsExtra.readdirSync('./views/blog/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+          console.log("Removing file " + fileName);
+          app.fsExtra.unlinkSync('./views/blog/' + req.session.user.facebook.id + '/pictures/' + fileName);
+      });
+    }  else {
+      console.log("The directory for " +  req.session.user.facebook.id + " does not exist");
+    }
+  }
+    var newblogpost = new BlogPost();
 
 	newblogpost.blogPost.postTitle = req.body.postTitle;
     newblogpost.blogPost.postSubtitle = req.body.postSubtitle;
@@ -23,6 +49,7 @@ exports.saveNewBlogPostData = function(req, res){
     newblogpost.blogPost.authorPic = req.session.user.local.picture;
     console.log(" req.body.postTags " + req.body.postTags);
     newblogpost.blogPost.tags = req.body.postTags;
+    newblogpost.blogPost.myPhotos = blogPictures;
 	//newblogpost.blogPost.date = new Date();
 	//console.log(newblogpost.blogPost.date); 
 
@@ -421,6 +448,9 @@ exports.deleteBlogComment = function(req, res) {
               }    
            }
             res.send({completed: "OK"});
-       }
+        }
   });
 }    
+
+
+

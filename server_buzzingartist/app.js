@@ -784,7 +784,79 @@ app.get('/privacy', function(req, res){
 app.get('/terms', function(req, res){
   res.render('terms', { user: req.session.user });
 });
+app.post('/addBlogPics', ensureAuthenticated, multer({ 
+                    dest: './views/blog/', 
+                    putSingleFilesInArray: true,
+                    limits: { fileSize: 5* 1024 * 1024},
+                    changeDest: function(dest, req, res) {
+                                    var newDestination = dest + req.session.user.facebook.id;
+                                    var stat = null;
+                                    try {
+                                      stat = fsExtra.statSync(newDestination);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination);
+                                    }
 
+                                    var newDestination_1 = newDestination + "/pictures"
+                                    try {
+                                      stat = fsExtra.statSync(newDestination_1);
+                                    } catch (err) {
+                                    fsExtra.mkdirSync(newDestination_1);
+                                    }
+                                    if (stat && !stat.isDirectory()) {
+                                        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+                                    }
+                                    return newDestination_1
+                    },
+                    onFileUploadStart: function (file, req, res) {
+                        if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
+                            console.log("OK to start upload");
+                        } else {
+                            return false;
+                        }
+                    },
+                    onFileUploadComplete: function (file, req, res) {
+                        console.log("now going to resize " + file.path);
+                        if(file.size <= (500*1024)) {
+                            console.log("req.files.image.length " + req.files.image.length)
+                            console.log("req.files.length " + req.files.length)
+                            if(uploadedFiles.length == req.files.image.length) {
+                                res.end();
+                            } 
+                            
+                        }
+                        im.resize({
+                          srcPath: file.path,
+                          dstPath: './views/blog/' + req.session.user.facebook.id + "/pictures/" + file.name,
+                          width:   1024
+                        }, function(err, stdout, stderr){
+                          if (err) {
+                            console.log("Some error occurred")
+                          }
+                          uploadedFiles.push(file.path);
+                          console.log(" uploadedFiles "+ uploadedFiles.length)
+                          console.log(" req.files.image.length "+ req.files.image.length)
+                          if(uploadedFiles.length == req.files.image.length || uploadedFiles.length > req.files.image.length) {
+                            uploadedFiles = [];
+                            res.send({path: req.files.image});
+                          }
+                        });
+                        
+                    },
+                    onFileSizeLimit: function (file) {
+                      console.log('Failed: ', file.originalname)
+                      fsExtra.unlink('./' + file.path) // delete the partially written file 
+                      return false;
+                    },
+                    onParseEnd: function (req, next) {
+                      console.log('Form parsing completed at: ', new Date());
+                      // call the next middleware
+                      next();
+                    },
+                    onParseStart: function() {
+                        uploadedFiles = [];
+                    }
+            }), artists.postProfilePhoto);
 //var mwMulter4 = multer({ dest: './views/profile/tempUploads' });
 var uploadedFiles = new Array();
 app.post('/postProfilePics', multer({ 
@@ -932,6 +1004,7 @@ app.get('/newBlogPost', ensureAuthenticated, blog.newBlogPost);
 app.post('/saveNewBlogPostData', ensureAuthenticated, blog.saveNewBlogPostData);
 app.get('/myBlogPosts', ensureAuthenticated, blog.myBlogPosts);
 app.post('/deleteBlogPost', ensureAuthenticated, blog.deleteBlogPost);
+
 app.get('/displayComments', blog.displayComments);
 //app.post('/displayFullBlogPost', blog.displayFullBlogPost);
 app.get('/displayBlogPost', blog.displayBlogPost);
