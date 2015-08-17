@@ -70,9 +70,9 @@
 
   <!-- Text input-->
   <div class="control-group">
-    <label class="control-label" for="postTitle">Title </label>
+    <label class="control-label" for="titleOfPost">Title </label>
     <div class="controls">  
-      <input id="postTitle" name="postTitle" type="text" placeholder="Enter a title for your post" style="height:30px;">
+      <input id="titleOfPost" name="titleOfPost" type="text" placeholder="Enter a title for your post" style="height:30px;" class="input-xlarge">
     </div>
   </div>
 
@@ -168,6 +168,7 @@
       var blogImages =new Array();
   $(document).ready(function() {
 
+
     $('input[id=blogImage]').click(function(){
         $('.progress').hide();
         $('#errorMsg').hide();
@@ -177,7 +178,7 @@
 
     $('#blogForm').validate({
       rules: {
-        postTitle: {
+        titleOfPost: {
             required: true
         }
       },
@@ -327,7 +328,7 @@ blogImage
           });*/
 
           var data = {
-            postTitle: $("#postTitle").val(),
+            postTitle: $("#titleOfPost").val(),
             postSubtitle: $("#postSubtitle").val(),
             postBody: $("#postBody").val(),
             myblogPics:$('#myblogPics').val(),

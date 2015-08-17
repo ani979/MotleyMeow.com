@@ -9,7 +9,7 @@ exports.newBlogPost = function(req, res){
 
 exports.saveNewBlogPostData = function(req, res){
   var blogPictures;
-  if(typeof req.body.myblogPics != 'undefined') {
+  if(typeof req.body.myblogPics != 'undefined' && req.body.myblogPics.length !=0) {
     blogPictures = req.body.myblogPics.split(",");
     // console.log("req.body.myblogPics " + blogPictures.length);
     //  app.fsExtra.readdirSync('./views/blog/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
@@ -24,19 +24,20 @@ exports.saveNewBlogPostData = function(req, res){
     //     app.fsExtra.unlinkSync('./views/blog/' + req.session.user.facebook.id + '/pictures/' + fileName);
     //   }  
     // });
-  } else {
-    if (app.fsExtra.existsSync('./views/blog/' + req.session.user.facebook.id + '/pictures/')) {
-    // Do something
-      console.log("The directory does exist");
-      console.log("removing all profile pictures")
-      app.fsExtra.readdirSync('./views/blog/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
-          console.log("Removing file " + fileName);
-          app.fsExtra.unlinkSync('./views/blog/' + req.session.user.facebook.id + '/pictures/' + fileName);
-      });
-    }  else {
-      console.log("The directory for " +  req.session.user.facebook.id + " does not exist");
     }
-  }
+  //  else {
+  //   if (app.fsExtra.existsSync('./views/blog/' + req.session.user.facebook.id + '/pictures/')) {
+  //   // Do something
+  //     console.log("The directory does exist");
+  //     console.log("removing all profile pictures")
+  //     app.fsExtra.readdirSync('./views/blog/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+  //         console.log("Removing file " + fileName);
+  //         app.fsExtra.unlinkSync('./views/blog/' + req.session.user.facebook.id + '/pictures/' + fileName);
+  //     });
+  //   }  else {
+  //     console.log("The directory for " +  req.session.user.facebook.id + " does not exist");
+  //   }
+  // }
     var newblogpost = new BlogPost();
 
 	newblogpost.blogPost.postTitle = req.body.postTitle;
@@ -186,8 +187,24 @@ exports.editBlogPost = function(req, res){
 
 
 exports.editBlogPostData = function(req, res){
-   
+    var blogPictures;
     console.log(req.body);
+    if(typeof req.body.myblogPics != 'undefined' && req.body.myblogPics.length !=0) {
+        blogPictures = req.body.myblogPics.split(",");
+        // console.log("req.body.myblogPics " + blogPictures.length);
+        //  app.fsExtra.readdirSync('./views/blog/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
+        //   var found = false;
+        //   for(var i = 0; i < blogPictures.length; i++) {
+        //     if(blogPictures[i] == fileName) {
+        //       found = true;
+        //     }  
+        //   }
+        //   if(found == false) {
+        //     console.log("Removing file " + fileName);
+        //     app.fsExtra.unlinkSync('./views/blog/' + req.session.user.facebook.id + '/pictures/' + fileName);
+        //   }  
+        // });
+    }
 
     BlogPost.findOne({'_id' : req.body.postid}, function(err, blogpost)
     {
@@ -204,7 +221,7 @@ exports.editBlogPostData = function(req, res){
             blogpost.blogPost.postSubtitle = req.body.postSubtitle;
             blogpost.blogPost.postBody = req.body.postBody;
             blogpost.blogPost.tags = req.body.postTags;
-    
+            blogpost.blogPost.myPhotos = blogPictures;
             //var d = new Date();
             //console.log(d);
             
