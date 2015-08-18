@@ -10,7 +10,12 @@
     <meta name="author" content="">
     <meta property="og:title" content="View the blog <%=post.blogPost.postTitle%>">
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
+    <% if(typeof post.blogPost != 'undefined' && typeof post.blogPost.myPhotos != 'undefined' && post.blogPost.myPhotos.length !=0) { %>
+      
+      <meta property="og:image" content="http://www.motleymeow.com/blog=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[0]%>"/>
+    <% } else {%>
+      <meta property="og:image" content="http://www.motleymeow.com/images/blogDefault.jpg"/>
+    <% } %>
     <meta property="og:description" content="Read about this article from <%= post.blogPost.authorName %>"/>
     <title>Blog Post</title>
 
