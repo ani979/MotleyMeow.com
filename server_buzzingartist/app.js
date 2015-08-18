@@ -787,7 +787,7 @@ app.get('/terms', function(req, res){
 app.post('/addBlogPics', ensureAuthenticated, multer({ 
                     dest: './views/blog/', 
                     putSingleFilesInArray: true,
-                    limits: { fileSize: 5* 1024 * 1024},
+                    limits: { fileSize: 25* 1024 * 1024},
                     changeDest: function(dest, req, res) {
                                     var newDestination = dest + req.session.user.facebook.id;
                                     var stat = null;

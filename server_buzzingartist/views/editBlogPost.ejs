@@ -301,12 +301,12 @@
               if (filename == 'jpg' || filename == 'jpeg' || filename == 'png') {
                   var filesize=fileInput.size;
                  
-                  if (filesize > 5242880) {
-                      $('#errorMsg').show();
-                  } else {
+                  // if (filesize > 5242880) {
+                  //     $('#errorMsg').show();
+                  // } else {
                       imagesAdded = true;
                       data.append('image', $('input[id=blogImage]')[0].files[i]); 
-                  }
+                  //
               } else {
                   $('#errorMsg').show();
               }

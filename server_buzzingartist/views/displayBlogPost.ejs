@@ -112,7 +112,8 @@
                   var postBody = post.blogPost.postBody.split("\n");%>
                   <% if(typeof post.blogPost.myPhotos != 'undefined' && post.blogPost.myPhotos.length != 0) { var imageIndex = 1;%>
                     <div>
-                    <img src='/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[0]%>' rel="lightbox" style="height:300px;min-width:80%;max-width:80%;"/>
+                      <a href="/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[0]%>" data-lightbox="IMAGE" data-title="Blog's image">
+                    <img src='/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[0]%>' rel="lightbox" style="height:683px;min-width:1024;max-width:1024;"/>
                     </div>
                     <hr>
                     <% var difference = postBody.length - post.blogPost.myPhotos.length;
@@ -123,7 +124,7 @@
                           <div class="img" style="background-image:url('/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[i]%>');background-position: -5px 1px;"></div>
                        
                       </a>
-                        <% imageIndex = i; 
+                        <% imageIndex = (i+1); 
                       } %>
                     <%}%>
                     <% for(var i = 0; i < postBody.length; i++) { %>
