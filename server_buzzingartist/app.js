@@ -816,31 +816,17 @@ app.post('/addBlogPics', ensureAuthenticated, multer({
                         }
                     },
                     onFileUploadComplete: function (file, req, res) {
-                        console.log("now going to resize " + file.path);
-                        if(file.size <= (500*1024)) {
-                            console.log("req.files.image.length " + req.files.image.length)
-                            console.log("req.files.length " + req.files.length)
-                            if(uploadedFiles.length == req.files.image.length) {
-                                res.end();
-                            } 
+                        console.log("Upload completed " + file.name)
+                        // if(file.size <= (500*1024)) {
+                        //     console.log("req.files.image.length " + req.files.image.length)
+                        //     console.log("req.files.length " + req.files.length)
+                        //     if(uploadedFiles.length == req.files.image.length) {
+                        //         console.log("Finally Ending here");
+                        //         res.end();
+                        //     } 
                             
-                        }
-                        im.resize({
-                          srcPath: file.path,
-                          dstPath: './views/blog/' + req.session.user.facebook.id + "/pictures/" + file.name,
-                          width:   1024
-                        }, function(err, stdout, stderr){
-                          if (err) {
-                            console.log("Some error occurred")
-                          }
-                          uploadedFiles.push(file.path);
-                          console.log(" uploadedFiles "+ uploadedFiles.length)
-                          console.log(" req.files.image.length "+ req.files.image.length)
-                          if(uploadedFiles.length == req.files.image.length || uploadedFiles.length > req.files.image.length) {
-                            uploadedFiles = [];
-                            res.send({path: req.files.image});
-                          }
-                        });
+                        // }
+                        
                         
                     },
                     onFileSizeLimit: function (file) {
@@ -852,13 +838,46 @@ app.post('/addBlogPics', ensureAuthenticated, multer({
                       console.log('Form parsing completed at: ', new Date());
                       // call the next middleware
                       next();
-                    },
-                    onParseStart: function() {
-                        uploadedFiles = [];
                     }
-            }), artists.postProfilePhoto);
+            }), function(req,res) {
+                async.each(req.files.image, 
+                    function(file, callback) {
+                        // Perform operation on file here.
+                        if(file.size <= (500*1024)) {
+                            console.log("here")
+                            callback();
+                        } else {
+                            im.resize({
+                              srcPath: file.path,
+                              dstPath: './views/blog/' + req.session.user.facebook.id + "/pictures/" + file.name,
+                              width:   1024
+                            }, function(err, stdout, stderr){
+                              if (err) {
+                                console.log("Some error occurred")
+                                callback(err);
+                              } else {
+                                  console.log(" DONE " + file.path);
+                                  callback();
+                              }   
+
+                            });
+                        }    
+                }, function(err){
+                    // if any of the file processing produced an error, err would equal that error
+                    if( err ) {
+                          // One of the iterations produced an error.
+                          // All processing will now stop.
+                        console.log('A file failed to process');
+                    } else {
+                        res.send({path: req.files.image});
+                        res.end();
+                        console.log('All files have been processed successfully');
+                    }
+                });
+
+                }   
+);
 //var mwMulter4 = multer({ dest: './views/profile/tempUploads' });
-var uploadedFiles = new Array();
 app.post('/postProfilePics', multer({ 
                     dest: './views/portfolio/', 
                     putSingleFilesInArray: true,
@@ -891,31 +910,8 @@ app.post('/postProfilePics', multer({
                         }
                     },
                     onFileUploadComplete: function (file, req, res) {
-                        console.log("now going to resize " + file.path);
-                        if(file.size <= (500*1024)) {
-                            console.log("req.files.image.length " + req.files.image.length)
-                            console.log("req.files.length " + req.files.length)
-                            if(uploadedFiles.length == req.files.image.length) {
-                                res.end();
-                            } 
-                            
-                        }
-                        im.resize({
-                          srcPath: file.path,
-                          dstPath: './views/portfolio/' + req.session.user.facebook.id + "/pictures/" + file.name,
-                          width:   1024
-                        }, function(err, stdout, stderr){
-                          if (err) {
-                            console.log("Some error occurred")
-                          }
-                          uploadedFiles.push(file.path);
-                          console.log(" uploadedFiles "+ uploadedFiles.length)
-                          console.log(" req.files.image.length "+ req.files.image.length)
-                          if(uploadedFiles.length == req.files.image.length || uploadedFiles.length > req.files.image.length) {
-                            uploadedFiles = [];
-                            res.send({path: req.files.image});
-                          }
-                        });
+                        console.log("file upload completed for profile picture" + file.path);
+                        
                         // gm(file.path)
                         //     .resize(240, 240)
                         //     .noProfile()
@@ -936,11 +932,46 @@ app.post('/postProfilePics', multer({
                       console.log('Form parsing completed at: ', new Date());
                       // call the next middleware
                       next();
-                    },
-                    onParseStart: function() {
-                        uploadedFiles = [];
                     }
-            }), artists.postProfilePhoto);
+            }), function(req,res) {
+                 console.log(JSON.stringify(req.files));
+                 console.log(" req.files.image.length "+ req.files.image.length)
+                 async.each(req.files.image, 
+                    function(file, callback) {
+                        // Perform operation on file here.
+                        if(file.size <= (500*1024)) {
+                            console.log("here")
+                            callback();
+                        } else {
+                            im.resize({
+                              srcPath: file.path,
+                              dstPath: './views/portfolio/' + req.session.user.facebook.id + "/pictures/" + file.name,
+                              width:   1024
+                            }, function(err, stdout, stderr){
+                              if (err) {
+                                console.log("Some error occurred")
+                                callback(err);
+                              } else {
+                                  console.log(" DONE " + file.path);
+                                  callback();
+                              }   
+
+                            });
+                        }    
+                }, function(err){
+                    // if any of the file processing produced an error, err would equal that error
+                    if( err ) {
+                          // One of the iterations produced an error.
+                          // All processing will now stop.
+                        console.log('A file failed to process');
+                    } else {
+                        res.send({path: req.files.image});
+                        res.end();
+                        console.log('All files have been processed successfully');
+                    }
+                });
+                
+});
 
 app.post('/postProfileResume', multer({ 
                     dest: './views/portfolio/', 

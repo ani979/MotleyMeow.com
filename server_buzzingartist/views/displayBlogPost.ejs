@@ -8,15 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <meta property="og:title" content="View the blog <%=post.blogPost.postTitle%>">
+    <meta property="og:url" content="http://www.motleymeow.com/displayBlogPost?blogpostid=<%=post._id%>">
+    <meta property="og:title" content="<%=post.blogPost.postTitle%>">
     <meta property="og:type" content="website" />
     <% if(typeof post.blogPost != 'undefined' && typeof post.blogPost.myPhotos != 'undefined' && post.blogPost.myPhotos.length !=0) { %>
       
-      <meta property="og:image" content="http://www.motleymeow.com/blog=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[0]%>"/>
+      <meta property="og:image" content="http://www.motleymeow.com/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>"/>
     <% } else {%>
       <meta property="og:image" content="http://www.motleymeow.com/images/blogDefault.jpg"/>
     <% } %>
-    <meta property="og:description" content="Read about this article from <%= post.blogPost.authorName %>"/>
     <title>Blog Post</title>
 
     <!-- Bootstrap Core CSS -->
@@ -115,18 +115,21 @@
                 <% 
                 if(post.blogPost.postBody != "undefined") { 
                   var postBody = post.blogPost.postBody.split("\n");%>
-                  <% if(typeof post.blogPost.myPhotos != 'undefined' && post.blogPost.myPhotos.length != 0) { var imageIndex = 1;%>
+                  <% var imageIndex = 1;%>
+                  <% if(post.blogPost.myPhotos != 'undefined' && post.blogPost.myPhotos.length != 0) { %> 
+
                     <div>
-                      <a href="/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[0]%>" data-lightbox="IMAGE" data-title="Blog's image">
-                    <img src='/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[0]%>' rel="lightbox" style="height:683px;min-width:1024;max-width:1024;"/>
+                    <a href="/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>" data-lightbox="IMAGE" data-title="Blog's image">  
+                    <img src='/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>' style="max-width:700px;max-height:500px;"/>
+                    </a>
                     </div>
                     <hr>
                     <% var difference = postBody.length - post.blogPost.myPhotos.length;
                     console.log("difference is " + difference  + " postBody.length " + postBody.length);
                     if(difference < -1) {
                       for(var i =1; i < (post.blogPost.myPhotos.length - postBody.length); i ++ )  { %>
-                        <a href="/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[i]%>" data-gallery>
-                          <div class="img" style="background-image:url('/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[i]%>');background-position: -5px 1px;"></div>
+                        <a href="/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[i]%>" data-lightbox="IMAGE" data-title="Blog's image">
+                          <div class="img" style="background-image:url('/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[i]%>');background-position: -5px 1px;"></div>
                        
                       </a>
                         <% imageIndex = (i+1); 
@@ -139,13 +142,15 @@
                         <%} else { %>
                           <div style="float: left">
                         <% } %>
-                        <img src='/blog/<%=user.facebook.id%>/pictures/<%=post.blogPost.myPhotos[imageIndex]%>' style="max-width:200px;max-height:200px"/>
+                        <a href="/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[imageIndex]%>" data-lightbox="IMAGE" data-title="Blog's image">
+                          <img src='/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[imageIndex]%>' style="max-width:200px;max-height:200px"/>
+                        </a>
                         </div>
 
                       <% imageIndex++; }%>  
                       <div><p id="post<%=i%>"></p></div>
                       <script>
-                        var myVar = <%- JSON.stringify("<p>" + postBody[i]) %>;
+                        var myVar = <%- JSON.stringify("\n" + postBody[i]) %>;
                         document.getElementById("post<%=i%>").innerHTML = myVar;
                       </script>
                       <div>&nbsp;</div> 

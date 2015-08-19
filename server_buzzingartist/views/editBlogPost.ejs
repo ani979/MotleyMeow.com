@@ -205,7 +205,7 @@
         });
 
         removeThis = function(imgIndx) {
-            blogImages.splice($.inArray( $('#imageName' + imgIndx).val(), blogImages),1);
+            blogImages.splice($.inArray( $('#image' + imgIndx).val(), blogImages),1);
             $('img[id=image' + imgIndx + ']').attr("src","");
             $('tr[id=div' + imgIndx + ']').remove();
 

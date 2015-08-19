@@ -283,7 +283,7 @@
                                             <i class="glyphicon glyphicon-plus"></i>
                                             
                                             <span>Add images(jpg/jpeg/png only)</span>
-                                              <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost" multiple style="color: transparent;"/>
+                                              <input id = "profileImagePost" type="file" class = "imageUpdateField" name = "profileImagePost" multiple style="color: transparent;"/>
                                             </span>
                                                 
                                            <input type="hidden" id="mypfolioPics" name = "mypfolioPics">
@@ -692,7 +692,7 @@
         var portfolioRemovedVideos =new Array();
         var portfolioPlays =new Array();
         var flickrPictures = new Array();
-        $('#imagePost').val("");
+        $('#profileImagePost').val("");
         $('#mypfolioPics').val(portfolioImages);
         //$('#mypfolioRemPics').val(portfolioRemovedImages);
         $('#videoPlus').children('div').each(function () {
@@ -978,14 +978,14 @@
     $(function(){
 
 
-      $('input[id=imagePost]').click(function(){
+      $('input[id=profileImagePost]').click(function(){
         $('.progress').hide();
         $('#errorMsg').hide();
       });  
 
       removeThis = function(imgIndx) {
         //portfolioRemovedImages.push($('#imageName' + imgIndx).val());
-        portfolioImages.splice($.inArray( $('#imageName' + imgIndx).val(), portfolioImages),1);
+        portfolioImages.splice($.inArray( $('#image' + imgIndx).val(), portfolioImages),1);
         $('img[id=image' + imgIndx + ']').attr("src","");
         $('tr[id=div' + imgIndx + ']').remove();
 
@@ -1022,7 +1022,7 @@
           });
       });       
 
-      $('input[id=imagePost]').change(function(e){
+      $('input[id=profileImagePost]').change(function(e){
         var bar = $('.bar');
         var percent = $('.percent');
         var status = $('#status');
@@ -1030,8 +1030,8 @@
         var dataToLoad;
           // alert("here")
           var data = new FormData();
-          for (var i = 0; i < $('input[id=imagePost]')[0].files.length; i++) { 
-              var fileInput = $('input[id=imagePost]')[0].files[i];
+          for (var i = 0; i < $('input[id=profileImagePost]')[0].files.length; i++) { 
+              var fileInput = $('input[id=profileImagePost]')[0].files[i];
              
               var filename = fileInput.name.split('.').pop().toLowerCase();
              
@@ -1043,7 +1043,7 @@
                       $('#errorMsg').show();
                   } else {
                       imagesAdded = true;
-                      data.append('image', $('input[id=imagePost]')[0].files[i]); 
+                      data.append('image', $('input[id=profileImagePost]')[0].files[i]); 
                   }
               } else {
                   $('#errorMsg').show();
@@ -1098,7 +1098,7 @@
               // alert('Opps, something bad happened');
               return;
               }
-
+              console.log("Data " + data.path)
               if(typeof data.path != 'undefined' && data.path.length > 0) {
                 for(var i = 0; i < data.path.length ; i++) {
                   portfolioImages.push(data.path[i].name);
