@@ -172,9 +172,11 @@
         <% if (typeof post != 'undefined' && post!= null) { %>   
          <input name="_postid"  type="hidden" value=<%=post._id%>>    
          <input id="postTitle" name="postTitle" style="width:60%;" type="text" value = "<%=post.post.postTitle%>"></input>     
-        <% } else { %>
+        <% } else if(postTitle != 'undefined' && postTitle != null) { %>
+          <input id="postTitle" name="postTitle" style="width:60%;" type="text" value = "<%=postTitle%>"></input>
+        <% } else { %>  
           <input id="postTitle" name="postTitle" style="width:60%;" type="text"></input>
-        <% } %>  
+        <% } %>
 
         </div>
      </div>   

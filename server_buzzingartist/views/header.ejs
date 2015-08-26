@@ -234,9 +234,9 @@ $(document).ready(function () {
 
                 // $('#mypics').append("<img id=image"+i+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
                 // $("#image"+i).attr("src","tempUploads/"+data.path[i].name);
-              $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
+              $('#imageTableCrispPost').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
               $('#div' + imageIndex).append("<td class='col-md-6'> <a href=/uploads/"+ "<%=user.facebook.id%>" + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Post pictures'>");
-              $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /uploads/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a></td>");
+              $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /uploads/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:100%;max-height:200px' ></img></a></td>");
               $('#div' + imageIndex).append("<td class = 'col-md-6'> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
                 $('#mypics').append("</div>");
               }
