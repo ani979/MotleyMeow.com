@@ -57,7 +57,7 @@
 
 
   
-<div id="home-row-1" class="clearfix slide-1" style="padding-top:0px;padding-left:0px;color:#E6E0E0; height:278px;">
+<div id="home-row-1" class="clearfix slide-1" style="padding-top:0px;padding-left:0px;color:#D8D3D3; height:278px;">
  
   <% if(typeof user == 'undefined' || user ==null) { %>
      
@@ -68,7 +68,7 @@
      <div>&nbsp;</div>
      <div>&nbsp;</div>
      <div>&nbsp;</div>
-     
+
     <div class="col-md-4 col-md-offset-4" style="padding-top:25px;text-align:center;float:right;"> 
 
       <h3 class="font-light" style="text-align:center;"><b>BROWSE&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;&nbsp;&nbsp;&nbsp;SHARE</b></h3>
@@ -135,11 +135,7 @@
   <% } else { %>
       <% var citysel = user.local.city %>
 
-        <div class = "col-md-12" style="padding-top:10px;padding-bottom:150px;">
-                <h2 class="title" style= "text-align:center;" >Welcome <strong> <%= user.facebook.name %>! </strong></h2>
-                <h3 class="font-light" style="text-align:center;font-style:italic;">With you, from pen to production</h3>
-                
-        </div>  
+        
     <% } %>   
 
 </div><!-- /row -->
@@ -148,6 +144,9 @@
 
 <div class = "col-md-12" id="landing">
   <% if(typeof user != 'undefined' && user != null) { %>
+      <div class = "col-md-12" >
+                <h2 class="title" style= "text-align:center;" >Welcome <strong> <%= user.facebook.name %>! </strong></h2>
+      </div>  
     <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
         <h4 style= "text-align:center;"><small > Your location is not set currently and your current email id is set to "<%= user.facebook.email %>". You can always update your location and email id through <a href="/profileEdit" style="color:white;">"update profile"</a> and keep yourself updated about happenings in your city only.</small></h4>
     <% } else { %>  
@@ -329,12 +328,14 @@
 
           
         </div>  
-        <% if(typeof user != 'undefined' && user != null) { %>     
+
+
+      </div>
+              <% if(typeof user != 'undefined' && user != null) { %>     
           <h3 style="text-align:center;"><a href="/viewallposts">View all Requests</a></h3> 
-      <div class = "lineBelow"></div>
+          <div class = "lineBelow"></div>
         
       <% } %>
-      </div>
       <div class="col-md-12">
           <div class="categories" style="text-align:center;">
             <h2>Recently updated profiles</h2>
@@ -360,13 +361,13 @@
                     
                 <% } %>  
            </div>
-           <% if(typeof user != 'undefined' && user != null) { %>    
+             
+      </div>   
+      <% if(typeof user != 'undefined' && user != null) { %>    
               <h3 style="text-align:center;"><a href="/artists">View all Artists</a></h3>   
               <div class = "lineBelow"></div>
               <div> &nbsp;</div>
-           <% } %>   
-      </div>   
-
+           <% } %> 
             
         
                   
