@@ -21,7 +21,8 @@ var userSchema = mongoose.Schema({
         notificationCount : String,
         resetPasswordToken: String,
         resetPasswordExpires: Date,
-        subscribedCategories:[{}]
+        subscribedCategories:[{}],
+        adminRole: {type:Boolean, default:false}
     },
     facebook         : {
         id           : String,

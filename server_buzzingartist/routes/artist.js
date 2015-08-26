@@ -277,6 +277,41 @@ exports.getEmails = function (req, res) {
    
 };
 
+
+exports.getEmailsForPost = function (req, res) {
+  var allUsers;
+
+ if(req.body.cities == "" || req.body.roles == "" || req.body.lang == "") {
+    console.log("Not all good")
+     res.send({error: "City, roles and Language fields must be selected"});
+     return;
+  } 
+  console.log("Its all good")
+  var selectedCity = req.body.cities.split(",");
+  var selectedRoles = req.body.roles.split(",");
+  var selectedLang = req.body.lang.split(",");
+
+ 
+
+  User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
+                                            {"local.role": { $in: selectedRoles } },
+                                            { $or: [ {"local.lang": { $in: selectedLang } }, {"local.lang": null}, {"local.lang": {$size: 0} } ] },
+                                            {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
+                          function(err, emails) {
+                            if(err) {
+                              res.send({error: err});
+                              return
+                            }
+                            console.log("emails = " + emails);
+      res.send({selectedEmails: emails});
+      
+ 
+  });
+
+  
+   
+};
+
 exports.getRecentArtists = function (req, res) {
    User.aggregate([{ $match: { 'local.joiningDate': { $lte: new Date() } } } , { $sort : { 'local.joiningDate' : -1 } }, {$limit:5} ],
                             function(err, recentUsers) {
@@ -288,6 +323,33 @@ exports.contactArtists = function (req, res) {
     res.render('emailArtists', { user: req.session.user, dropdowns:dropdowns});
 };
 
+exports.unsubscribeme = function (req, res) {
+    res.render('unsubscribeme', { user: req.session.user});
+};
+
+exports.unsubscribeFromMailing = function (req, res) {
+  console.log("req.body.artistEmail " + req.body.artistEmail);
+    User.findOne({ 'facebook.email' : req.body.artistEmail }, function(error, db) {
+      if(error) {
+        res.end();
+      }
+      if(!db.local.receiveNotif) {
+        res.send({"alreadyUnsubscribedBefore":true});
+        res.end();
+        return;
+      }
+      db.local.receiveNotif = false;
+      db.save(function (err, user) {
+                   if (err) {
+                        res.end();
+                    }
+                   res.send({"receiveNotification":db.local.receiveNotif});
+      });
+      
+    });  
+};
+
+
 exports.sendMailsToArtists = function (req, res){
 
   console.log(req.body);
@@ -297,7 +359,7 @@ exports.sendMailsToArtists = function (req, res){
   //console.log(typeof bccEmails);
   //console.log("hello");
   var name = req.body.first_name,
-      email = req.body.email,
+      fromEmail = req.body.email,
       emailText = req.body.comments,
       bccEmails = req.body.bcc_Emails,
       toArtists = req.body.toArtists + ",motleymeow@gmail.com";
@@ -309,7 +371,7 @@ exports.sendMailsToArtists = function (req, res){
 
       var mailOptions = {
                 "message": {
-                            "from_email":email,
+                            "from_email":fromEmail,
                             "from_name":req.body.first_name,
                             "to":toArray,
                             "subject": "MotleyMeow: "+ name + " wants to contact you!",

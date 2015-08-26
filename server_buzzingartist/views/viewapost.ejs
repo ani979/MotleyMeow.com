@@ -162,7 +162,7 @@
             <div class="col-sm-8">
               <% if(typeof post!= 'undefined' && typeof post.post != 'undefined' && post.post.imagePath != "") { %>
               <div>
-                  <a href="uploads/<%=post.post.imagePath%>" data-lightbox="IMAGE(Something is wrong)" data-title="Post's image"><img src="uploads/<%=post.post.imagePath%>" alt="No Image set" style="max-width:400px;max-height:400px"/></a>
+                  <a href="uploads/<%=post.post.userid%>/pictures/<%=post.post.imagePath%>" data-lightbox="IMAGE(Something is wrong)" data-title="Post's image"><img src="uploads/<%=post.post.userid%>/pictures/<%=post.post.imagePath%>" alt="No Image set" style="max-width:400px;max-height:400px"/></a>
               </div>
               <% } else { %>    
               <div>
@@ -173,8 +173,8 @@
          </label>
        </div>         
        
-       <div class="control-group" style="text-align:center">
-       
+       <div class="control-group col-sm-6 col-sm-offset-4">
+          <div class = "col-sm-4">
           <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.facebook.id == user.facebook.id) { %> 
              <% console.log("same user as logged in so can edit"); %>
              <form action="/editpost" method="POST">
@@ -183,14 +183,18 @@
                 <input name="_postid"  type="hidden" value=<%=post._id%>>
                 
             </form>
-            <% } %>  
-            &nbsp;&nbsp;<br/>
-            <input action="action" type="button" value="Back" onclick="history.go(-1);" class="btn btn-primary">
+          <% } %>
+          </div><div class = "col-sm-4">  
+            &nbsp;&nbsp;
+            <input action="action" type="button" value="Back" onclick="history.go(-1);" class="btn btn-primary col-sm-4">
+          </div>  
         
         
     
       </div>        
   </div> 
+ <div>&nbsp;</div>
+ <div>&nbsp;</div> 
 
 <div class="fb-like col-md-8 col-md-offset-4" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 

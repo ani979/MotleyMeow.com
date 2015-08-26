@@ -11,6 +11,7 @@ var express       = require('express'),
     artists  = require('./routes/artist'),
     forum = require('./routes/forum'),
     blog = require('./routes/blog'),
+    admin = require('./routes/admin'),
     multer  = require('multer'),
     argv = require('optimist').argv,
     im = require('imagemagick');
@@ -19,6 +20,7 @@ var moment = require('moment');
 var argv = require('optimist').argv;
 var crypto = require('crypto');
 var fsExtra = require('fs')
+var request = require('request');
 
 
 
@@ -189,6 +191,8 @@ passport.use(new FacebookStrategy({
                 return done(err);
 
             if (user) {
+                //checkIfProfilePicPresentElseAdd(user.local.picture);
+                //request(user.local.picture).pipe(fsExtra.createWriteStream('./views/portfolio/'+user.facebook.id + "/pictures/myProfilePic.jpg"));
                 hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
                 req.session.hashValue = hash;
                 if(typeof user.local.joiningDate == 'undefined' || user.local.joiningDate == "") {
@@ -245,6 +249,7 @@ passport.use(new FacebookStrategy({
                     newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first    
                 }
                 newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
+
                 newUser.local.joiningDate    = new Date(); 
                 newUser.facebook.link  = "https://www.facebook.com/" + profile.id;
                 //    console.log("email id " + newUser.facebook.email);
@@ -688,7 +693,7 @@ app.get( '/profile', home.profile);
 app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
 var mwMulter1 = multer({ dest: './views/uploads' });
-app.post( '/post',  mwMulter1, post_request.post);
+app.post( '/post', post_request.post);
 app.post( '/searchallposts',  post_request.searchallposts);
 app.post( '/editpost', ensureAuthenticated, mwMulter1,post_request.editpost);
 app.get( '/viewpost', mwMulter1,post_request.viewpost);
@@ -733,12 +738,17 @@ app.post( '/update',
                     }), ensureAuthenticated, artists.update);
 app.get( '/contactArtists', artists.contactArtists);
 app.post( '/getEmails', artists.getEmails);
+app.post( '/getEmailsForPost', artists.getEmailsForPost);
 app.post('/sendMailsToArtists', artists.sendMailsToArtists);
+app.get('/unsubscribeme', artists.unsubscribeme);
+app.post('/unsubscribeFromMailing', artists.unsubscribeFromMailing);
+
 app.post( '/getCity', artists.updateCityAndRoles);
 app.post( '/showRespect', ensureAuthenticated, artists.showRespect);
 app.get( '/postevents',ensureAuthenticated, post_event.postevents);
 app.get( '/allEvents', ensureAuthenticated, post_event.allEvents);
 app.post( '/posteventDetails', post_event.posteventDetails);
+app.post('/sendPostMailsToArtists', post_request.sendPostMailsToArtists);
 
 
 app.get('/error', function(req, res){
@@ -974,32 +984,113 @@ app.post('/postProfilePics', multer({
 });
 
 app.post('/postProfileResume', multer({ 
-                    dest: './views/portfolio/', 
-                    changeDest: function(dest, req, res) {
-                                    var newDestination = dest + req.session.user.facebook.id;
-                                    var stat = null;
-                                    try {
-                                      stat = fsExtra.statSync(newDestination);
-                                    } catch (err) {
-                                    fsExtra.mkdirSync(newDestination);
-                                    }
+    dest: './views/portfolio/', 
+    changeDest: function(dest, req, res) {
+                    var newDestination = dest + req.session.user.facebook.id;
+                    var stat = null;
+                    try {
+                      stat = fsExtra.statSync(newDestination);
+                    } catch (err) {
+                    fsExtra.mkdirSync(newDestination);
+                    }
 
-                                    var newDestination_1 = newDestination + "/resume"
-                                    try {
-                                      stat = fsExtra.statSync(newDestination_1);
-                                    } catch (err) {
-                                    fsExtra.mkdirSync(newDestination_1);
-                                    }
-                                    if (stat && !stat.isDirectory()) {
-                                        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
-                                    }
-                                    return newDestination_1
-                                }
-                    }), artists.postProfileResume);
+                    var newDestination_1 = newDestination + "/resume"
+                    try {
+                      stat = fsExtra.statSync(newDestination_1);
+                    } catch (err) {
+                    fsExtra.mkdirSync(newDestination_1);
+                    }
+                    if (stat && !stat.isDirectory()) {
+                        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+                    }
+                    return newDestination_1
+                }
+    }), artists.postProfileResume);
 
 
-var mwMulter2 = multer({ dest: './views/tempUploads' });
-app.post('/postPhotos', mwMulter2, post_request.postPhoto);
+var mwMulter2 = multer({ dest: './views/uploads' });
+app.post('/addPostImagePics', ensureAuthenticated, multer({ 
+            dest: './views/uploads/', 
+            putSingleFilesInArray: true,
+            limits: { fileSize: 25* 1024 * 1024},
+            changeDest: function(dest, req, res) {
+                            var newDestination = dest + req.session.user.facebook.id;
+                            var stat = null;
+                            try {
+                              stat = fsExtra.statSync(newDestination);
+                            } catch (err) {
+                            fsExtra.mkdirSync(newDestination);
+                            }
+
+                            var newDestination_1 = newDestination + "/pictures"
+                            try {
+                              stat = fsExtra.statSync(newDestination_1);
+                            } catch (err) {
+                            fsExtra.mkdirSync(newDestination_1);
+                            }
+                            if (stat && !stat.isDirectory()) {
+                                throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+                            }
+                            return newDestination_1
+            },
+            onFileUploadStart: function (file, req, res) {
+                if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
+                    console.log("OK to start upload");
+                } else {
+                    return false;
+                }
+            },
+            onFileUploadComplete: function (file, req, res) {
+                console.log("Upload completed " + file.name)
+            },
+            onFileSizeLimit: function (file) {
+              console.log('Failed: ', file.originalname)
+              fsExtra.unlink('./' + file.path) // delete the partially written file 
+              return false;
+            },
+            onParseEnd: function (req, next) {
+              console.log('Form parsing completed at: ', new Date());
+              // call the next middleware
+              next();
+            }
+    }), function(req,res) {
+        async.each(req.files.image, 
+            function(file, callback) {
+                // Perform operation on file here.
+                if(file.size <= (500*1024)) {
+                    console.log("here")
+                    callback();
+                } else {
+                    im.resize({
+                      srcPath: file.path,
+                      dstPath: './views/uploads/' + req.session.user.facebook.id + "/pictures/" + file.name,
+                      width:   1024
+                    }, function(err, stdout, stderr){
+                      if (err) {
+                        console.log("Some error occurred")
+                        callback(err);
+                      } else {
+                          console.log(" DONE " + file.path);
+                          callback();
+                      }   
+
+                    });
+                }    
+        }, function(err){
+            // if any of the file processing produced an error, err would equal that error
+            if( err ) {
+                  // One of the iterations produced an error.
+                  // All processing will now stop.
+                console.log('A file failed to process');
+            } else {
+                res.send({path: req.files.image});
+                res.end();
+                console.log('All files have been processed successfully');
+            }
+        });
+
+        }   
+);
 
 function ensureAuthenticated(req, res, next) {
     console.log("req.user " + req.user)
@@ -1008,6 +1099,23 @@ function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { 
         return next(); 
     }
+    console.log("not authenticated");
+    res.redirect('/')
+}
+
+function ensureAuthenticatedAndAdmin(req, res, next) {
+    console.log("req.user " + req.user)
+    console.log("req.session.user " + req.session.user);
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    if (req.isAuthenticated()) {
+        if(req.user.local.adminRole) {
+            return next();
+        } else {
+            console.log("user is not an admin")
+        }
+         
+    }
+
     console.log("not authenticated");
     res.redirect('/')
 }
@@ -1048,6 +1156,18 @@ app.get('/searchallblogposts', blog.searchallblogposts);
 app.get('/searchmyblogposts', ensureAuthenticated, blog.searchmyblogposts);
 app.post('/deleteBlogComment', ensureAuthenticated, blog.deleteBlogComment)
 app.post('/editBlogComment', ensureAuthenticated, blog.editBlogComment)
+
+
+
+// routes
+app.get( '/startAdministration',  ensureAuthenticatedAndAdmin, admin.startAdministration);
+app.post( '/retrieveOldPosts',  ensureAuthenticatedAndAdmin, admin.retrieveOldPosts);
+app.post( '/deleteOldPosts',ensureAuthenticatedAndAdmin, admin.deleteOldPosts);
+
+app.post( '/retrieveOldEvents',  ensureAuthenticatedAndAdmin, admin.retrieveOldEvents);
+app.post( '/deleteOldEvents',ensureAuthenticatedAndAdmin, admin.deleteOldEvents);
+
+
 
 // http.createServer(app).listen(app.get('port'), function() {
 //     console.log("Express server listening on port " + app.get('port'));

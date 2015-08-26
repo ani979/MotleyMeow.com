@@ -309,9 +309,9 @@
                             </div>
                             </a>
                           <% } else { %>
-                            <a href="/uploads/<%=allPosts[i].post.imagePath%>" rel="lightbox">
+                            <a href="/uploads/<%=allPosts[i].post.userid%>/pictures/<%=allPosts[i].post.imagePath%>" rel="lightbox">
                               <div class = "hover-container">
-                            <img data-sizes="auto" rel="lightbox" data-src="/uploads/<%=allPosts[i].post.imagePath%>" style="height:250px;width:100%;" class="member-photo lazyload">
+                            <img data-sizes="auto" rel="lightbox" data-src="/uploads/<%=allPosts[i].post.userid%>/pictures/<%=allPosts[i].post.imagePath%>" style="height:250px;width:100%;" class="member-photo lazyload">
                               </div>
                           </a>
                           <% } %>

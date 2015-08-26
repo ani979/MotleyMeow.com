@@ -2,6 +2,32 @@ var Posts = require('../models/posts.js');
 var User = require('../models/user.js');
 var app = require('../app.js');
 var dropdowns = require('../views/js/theatreContrib.js');
+var mandrill = require('mandrill-api/mandrill');
+var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
+var app = require('../app.js');
+var async        = require('async')
+var fsEtxra = require('fs-extra')
+var request = require('request').defaults({ encoding: null });
+//var mailer   = require("mailer")            //required for setting mail server
+  //, mailerUsername = "motleymeow@gmail.com"
+  //, mailerPassword = "_r3bNHCw5JzpjPLfVRu24g";
+
+'use strict';
+var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
+// var transport = nodemailer.createTransport(mandrillTransport({
+//   auth: {
+//     apiKey: '_r3bNHCw5JzpjPLfVRu24g'
+//   }
+// }));
+
+var transport = nodemailer.createTransport("SMTP",{
+    service: "Mandrill",
+    auth: {
+        user: "motleymeow@gmail.com",
+        pass: "_r3bNHCw5JzpjPLfVRu24g"
+    }
+});
 
 exports.post = function (req, res) {
     console.log("User is " + req.session.user.facebook.email)
@@ -51,10 +77,10 @@ exports.post = function (req, res) {
     //           console.log("successfully removed!")
     // })
 
-    app.fsExtra.readdirSync('./views/tempUploads').forEach(function(fileName) {
-        console.log("Removing file " + fileName);
-        app.fsExtra.unlinkSync('./views/tempUploads/'+fileName);
-    });
+    // app.fsExtra.readdirSync('./views/tempUploads').forEach(function(fileName) {
+    //     console.log("Removing file " + fileName);
+    //     app.fsExtra.unlinkSync('./views/tempUploads/'+fileName);
+    // });
     console.log("req.body._postid: "+req.body._postid);
     if(typeof req.body._postid != 'undefined') {
         console.log("posts already existed");
@@ -68,51 +94,43 @@ exports.post = function (req, res) {
 
                     console.log("found post " + db);
                     console.log("message db.post.postTitle: "+db.post.postTitle);
-                    console.log("req.body.postTitle:::::::::: "+req.body.postTitle);  
-                    console.log("req.files " + JSON.stringify(req.files));
+                    console.log("req.body.postTitle:::::::::: "+req.body.postTitle); 
+                    console.log("req.body.myPostPics:::::::::: "+req.body.myPostPics);  
                     db.post.postTitle = req.body.postTitle;
                     db.post.postDetail = req.body.post;
-                    // managing images. If image pat in DB is not defined
-                    console.log("req.body.postedImage value = " + req.body.postedImage);
-                    // if(req.body.postedImage == "true") {
-                    //     db.post.imagePath = req.files.imagePost.name;
-                    // } else {
 
-                    // }
                     if(typeof db.post.imagePath != 'undefined' || db.post.imagePath != "") {
                         // Check if request has some files. If it has check if both the files are same, if yes dont do anthing else delete file from tmp folder
                         // if both the files are same, dont do anything. Set db image to imagePath
                         // if req.files is undefined, dont do anything it means user has not selectedt any new image and has just posted as it is. 
-                        if(typeof req.files != 'undefined' && typeof req.files.imagePost != 'undefined') {
-                            if(db.post.imagePath != req.files.imagePost.name) {
+                        if(typeof req.body.myPostPics != 'undefined' && typeof req.body.myPostPics != "") {
+                            if(db.post.imagePath != req.body.myPostPics) {
                                 console.log("found an image " + db.post.imagePath);
-                                app.fsExtra.unlink('./views/uploads/'+db.post.imagePath, function (err) {
+                                app.fsExtra.unlink('./views/uploads/'+ req.session.user.facebook.id + "/pictures/" + db.post.imagePath, function (err) {
                                     if (err) { console.log("cannto delete as file not present"); return; }
                                         console.log('successfully deleted');
                                 });
                             } else {
                                 console.log("No change in image " + db.post.imagePath);
                             }
-                            db.post.imagePath = req.files.imagePost.name;
+                            db.post.imagePath = req.body.myPostPics;
                         }  else {
                             // We are here when db has an image but req doesnt have. Then dont do anything
                             // Dont do anything db.post.imagePath = "";
-                            if(req.body.postedImage == "removed") {
-                                db.post.imagePath = "";
-                                app.fsExtra.unlink('./views/uploads/'+db.post.imagePath, function (err) {
-                                    if (err) { console.log("cannto delete as file not present"); return; }
-                                        console.log('successfully deleted');
-                                });
- 
-                            }
+                            db.post.imagePath = "";
+                            app.fsExtra.unlink('./views/uploads/'+ req.session.user.facebook.id + "/pictures/" +db.post.imagePath, function (err) {
+                                if (err) { console.log("cannto delete as file not present"); return; }
+                                    console.log('successfully deleted');
+
+                            });
                         }
                        
                     } else {
                         // We come here when image is not in DB. If req.files is undefined, the n set image path to empty else set it to whatever req.files has.
-                        if(typeof req.files == 'undefined' || typeof req.files.imagePost == 'undefined') {
+                        if(typeof req.body.myPostPics == 'undefined' || typeof req.body.myPostPics == 'undefined') {
                             db.post.imagePath = "";
                         } else {
-                            db.post.imagePath = req.files.imagePost.name;
+                            db.post.imagePath = req.body.myPostPics;
                         }   
                     }
                     db.post.date = new Date();
@@ -137,7 +155,7 @@ exports.post = function (req, res) {
     } else {
         console.log("New post");
             var newPost = new Posts();
-
+            console.log("req.body = " + JSON.stringify(req.body));
             // set all of the facebook information in our user model
             newPost.post.userid    = req.session.user.facebook.id; 
             newPost.post.user    = req.session.user; 
@@ -147,16 +165,21 @@ exports.post = function (req, res) {
             newPost.post.city = cityarr;
             newPost.requirement.role = rolearr;
             newPost.requirement.lang = langarr;
-            console.log("req.files " + JSON.stringify(req.files));
-            //console.log("req.body.imagePost " + req.body.postedImage);
-            if(typeof req.files == 'undefined' || typeof req.files.imagePost == 'undefined') {
-                // if(req.body.postedImage != "" && req.body.postedImage != "notChanged") {
-                //     newPost.post.imagePath = req.body.postedImage;
-                // }
-                newPost.post.imagePath = "";    
-            } else {
-                newPost.post.imagePath = req.files.imagePost.name;
+            console.log(" req.body.myPostPics " + req.body.myPostPics)
+            if(typeof req.body.myPostPics != "undefined") {
+                newPost.post.imagePath = req.body.myPostPics;
             }
+            
+            // console.log("req.files " + JSON.stringify(req.files));
+            // //console.log("req.body.imageForAPost " + req.body.postedImage);
+            // if(typeof req.files == 'undefined' || typeof req.files.imageForAPost == 'undefined') {
+            //     // if(req.body.postedImage != "" && req.body.postedImage != "notChanged") {
+            //     //     newPost.post.imagePath = req.body.postedImage;
+            //     // }
+            //     newPost.post.imagePath = "";    
+            // } else {
+            //     newPost.post.imagePath = req.files.imageForAPost.name;
+            // }
             newPost.save(function(err, post) {
                        if (err) {
                             req.flash('info', "Error while saving the new Post in the database")
@@ -494,7 +517,184 @@ exports.deletepost = function (req, res) {
 };
 
 exports.postPhoto = function(req,res) {
-    console.log(JSON.stringify(req.files));
+    console.log("req.files " + JSON.stringify(req.files));
     console.log("image name is " + req.files.image.name);
     res.send({path: req.files.image.name});
 }
+
+exports.sendPostMailsToArtists = function (req, res){
+
+  console.log(req.body);
+  console.log("req.files.myPostPics "  + req.body.myPostPics);
+  var name = req.body.first_name,
+      fromEmail = req.body.fromEmail,
+      emailText = req.body.postBody,
+      subject = req.body.postTitle,
+      toArtists = req.body.toArtists;
+   var artistsArray = toArtists.split(",");
+      var toArray = new Array();
+      for(var index = 0; index < artistsArray.length; index++) {
+            console.log("artistsEmail " + artistsArray[index]);
+          toArray.push({"email":artistsArray[index]});    
+      }
+      var base64 = null;
+      async.series( [ 
+           function(callback) {
+                if(typeof req.body.myPostPics != "undefined" && req.body.myPostPics.length == 1) {
+                    var attachedImage =  req.protocol + '://' + req.get('host') + "/uploads/"+ req.session.user.facebook.id + "/pictures/" + req.body.myPostPics[0];
+                    request.get(attachedImage, function (error, response, body) {
+                        console.log("error " + error);
+                        if (!error && response.statusCode == 200) {
+                            base64 = new Buffer(body).toString('base64');
+                            callback(null);
+                        }
+                    });
+                 } else {
+                    callback(null);
+                 }       
+            },        
+
+            function(callback) {
+                var mailOptions;
+                if(base64 != null) {
+                    mailOptions = {
+                        "template_name": "ContactEmailArtists",
+                        "template_content": [
+                            {
+                                "name": "header",
+                                "content": emailText
+                            }
+                        ],
+                        "message": {
+                                "from_email":fromEmail,
+                                "from_name":req.body.first_name,
+                                "to":toArray,
+                                "subject": "MotleyMeow:"+ subject,
+                                "auto_html":true,
+                                "text": emailText,
+                                "attachments": [
+                                  {type: "image/png", name: "postImage.png", content: base64}
+                                ]
+                        }
+                    };
+                 } else {
+                    mailOptions = {
+                        "template_name": "ContactEmailArtists",
+                        "template_content": [
+                            {
+                                "name": "header",
+                                "content": emailText
+                            }
+                        ],
+                        "message": {
+                                "from_email":fromEmail,
+                                "from_name":req.body.first_name,
+                                "to":toArray,
+                                "subject": "MotleyMeow:"+ subject,
+                                "auto_html":true,
+                                "text": emailText
+                        }
+                    };
+                 }   
+                m.messages.sendTemplate(mailOptions, function(result) {
+                            console.log("Send mail result is " + JSON.stringify(result));
+                            callback(null);
+                            
+                        }, function(err) {
+                            callback(err);
+                            res.send({completed: "NOK"});
+                });
+            }
+        ],
+        function(err, results){
+            if(err) {
+                console.log("err is " + err);
+                res.send({completed: "NOK"});
+            } else {
+                res.send({completed: "OK"});
+            }
+      });
+      // request.get(attachedImage, function (error, response, body) {
+      //   console.log("error " + error);
+      //       if (!error && response.statusCode == 200) {
+      //           base64 = new Buffer(body).toString('base64');
+      //           var mailOptions = {
+      //               "template_name": "ContactEmailArtists",
+      //               "template_content": [
+      //                   {
+      //                       "name": "header",
+      //                       "content": emailText
+      //                   }
+      //               ],
+      //               "message": {
+      //                       "from_email":fromEmail,
+      //                       "from_name":req.body.first_name,
+      //                       "to":toArray,
+      //                       "subject": "MotleyMeow:"+ subject,
+      //                       "auto_html":true,
+      //                       "text": emailText,
+      //                       "attachments": [
+      //                         {type: "image/png", name: "abc.png", content: base64}
+      //                       ]
+      //                     }
+      //           };
+
+      //          m.messages.sendTemplate(mailOptions, function(result) {
+      //                       console.log("Send mail result is " + JSON.stringify(result));
+      //                       res.send({completed: "OK"});
+      //                   }, function(err) {
+      //                       console.log("Send mail err is " + JSON.stringify(err));
+      //                       res.send({completed: "NOK"});
+      //         });   
+      //       }
+      //  });
+      //var base64 = new Buffer(attachedImage).toString('base64');
+      
+      
+      // transport.sendMail({
+      //   //host: "smtp.mandrillapp.com",
+      //   to:             toArtists,
+      //   subject:        "MotleyMeow: "+ name + " wants to contact you!",
+      //   from:           email,
+      //   text:           emailText
+      // }, 
+
+      // function(err, info) {
+      //   if (err) {
+      //     console.log(err);
+      //     res.send({completed:"NOK"});
+      //   } else {
+      //     console.log("Mail sent!" + JSON.stringify(info));
+      //     res.send({completed:"OK"});
+      //   }
+      // });
+  //var obj = {name:name, email:email, emailText:emailText, bccEmails};
+
+  /*mailer.send(
+  { host:           "smtp.mandrillapp.com"
+  , port:           587
+  , to:             "motleymeow@gmail.com"
+  , bcc:            bccEmails
+  , from:           email
+  , subject:        "MotleyMeow: "+ name + " wants to contact you!"
+  , body:           emailText
+  , authentication: "login"
+  , username:       mailerUsername
+  , password:       mailerPassword
+  }, function(err, result){
+    if(err){
+      console.log(err);
+      res.send({completed:"NOK"});
+    }
+    else {
+      console.log("Mail sent!" + result);
+      res.send({completed:"OK"});
+    }
+  }
+  );*/
+
+  //res.send();
+  
+
+
+};

@@ -43,6 +43,9 @@
                       </ul>           
                    </li>
                    <li><a href="/comingsoon">Coming soon <span class="sr-only">(current)</span></a></li>
+                   <% if(typeof user.local.adminRole != 'undefined' && user.local.adminRole) { %>
+                   <li><a href="/startAdministration">Administration <span class="sr-only">(current)</span></a></li>
+                   <% } %>
                 </ul>
 
             <ul class="nav navbar-right navbar-nav">           
@@ -71,7 +74,7 @@
             </div>
             <div class="modal-body" style="color:black;">
               
-                <form id="postSubmitForm" class="form-horizontal" enctype="multipart/form-data" action="/post" method="post">
+                <form id="postSubmitForm" class="form-horizontal" action="/post" method="post">
                 
                   <!-- Textarea -->
                   <!--<div class="col-xs-6 col-sm-6 col-md-6">-->
@@ -88,18 +91,34 @@
                   </div>   
                   <div>&nbsp;</div>
                   <div>&nbsp;</div>  
-                  <div class="control-group col-md-12">
-                     <label class="control-label col-md-3" for="checkboxes">Select an image</label>
-                      <span class="btn btn-default btn-file col-md-9">
-                        <a href="" data-lightbox="No Image set" data-title="Post's image">
-                        <img id="updatedImage" src="" alt="No Image Set" style="display:none;max-width:200px;max-height:200px"/></a>
-                        <input id = "imagePost" type="file" class = "imageUpdateField" name = "imagePost"/>
-                        
-                          <a href = "" id="updateImage" style="display:none">Update this image</a>
-                          <a href = "" id="deleteImage" style="display:none">Remove this image</a>
-                          <input id = "postedImage" name="postedImage"  type="hidden" value="notChanged"/>
-                      </span>
-                  </div> 
+                 
+                  <div class="control-group col-md-12" style = "text-align:center;">
+                        <label class="control-label col-md-3" for="postPics">Add Pictures</label>
+                        <div class="controls col-md-9" >
+                          <span class="fieldNote col-md-12" style="color:inherit;text-align:left;">Ensure that the picture is <5 MB and jpeg/jpg/png only. Image >5 MB may not respond very well</span>
+                          <span class="btn btn-success fileinput-button col-md-12">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            
+                            <span>Add a single image(jpg/jpeg/png only)</span>
+                              <input id = "imageForACrispPost" type="file" class = "imageUpdateField" name = "imageForACrispPost" single style="color: transparent;"/>
+                            </span>
+                          </span>  
+                                
+                           <input type="hidden" id="myPostPics" name = "myPostPics">
+                           <div>&nbsp;</div>
+                           <div class="progress col-md-12" style= "display:none;padding:0px;">
+                                <div class="bar"></div >
+                                <label class="percent">0</label >
+                            </div>
+                            <div class="col-md-12" >
+                              <table role="presentation" id = "imageTableCrispPost" class='table table-striped'><tbody class='files'></tbody>
+                              </table>
+                            </div>
+
+                            <div id="status"></div>
+                        </div>    
+
+                  </div>
                   <div>&nbsp;</div>  
                 </form>
               
@@ -120,87 +139,134 @@
         </div>
     </div>
 </div>
-
+<script src="js/jquery-validate.js"></script>
 <script>
+var imageIndex = 0;
+var postImages =new Array();
+removeThis = function(imgIndx) {
+    postImages.splice($.inArray( $('#imageName' + imgIndx).val(), postImages),1);
+    $('img[id=image' + imgIndx + ']').attr("src","");
+    $('tr[id=div' + imgIndx + ']').remove();
+    $('#myPostPics').val(postImages[0]);
+}
 $(document).ready(function () {
-          $("#updateImage").on('click', function(e){
-            e.preventDefault();
-            $("#imagePost").trigger('click');
-          });
-        
-          $("#deleteImage").on('click', function(e){
-            e.preventDefault();
-            $("#updatedImage").attr("src","");
-            $("#updatedImage").parents("a").attr("href", "");
-            $("#updatedImage").parents("a").hide();
-            $("#imagePost").val("");
-            $("#postedImage").val("removed");
-            $("#deleteImage").hide();
-            $("#updateImage").hide();
-          });
+    $('input[id=imageForACrispPost]').change(function(){
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+        var imagesAdded = false;
+        var dataToLoad;
+        var data = new FormData();
+        for (var i = 0; i < $('input[id=imageForACrispPost]')[0].files.length; i++) { 
+          var fileInput = $('input[id=imageForACrispPost]')[0].files[i];
+         
+          var filename = fileInput.name.split('.').pop().toLowerCase();
+          if (filename == 'jpg' || filename == 'jpeg' || filename == 'png') {
+              var filesize=fileInput.size;
+              if($("#div0").length > 0) {
+                removeThis(0);
+              }
+              // if (filesize > 5242880) {
+              //     $('#errorMsg').show();
+              // } else {
+               
+                  imagesAdded = true;
+                  data.append('image', $('input[id=imageForACrispPost]')[0].files[i]); 
+             // }
+          } else {
+              $('#errorMsg').show();
+          }
+              
+        }
+          
+        // alert(" imageAdded " + imagesAdded);
+        if(!imagesAdded) {
+          
+          return;
+        }
+        $.ajax({
+          url: "/addPostImagePics",
+          type: "POST",
+          contentType: false,
+          processData: false,
+          data: data,
+          beforeSend: function() {
+            status.empty();
+            var percentVal = '0%';
+            $('.progress').show();
+            bar.width(percentVal);
+            percent.html(percentVal);
+          },
+          xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+              // alert("progress evt.loaded " + evt.loaded);
+              //  alert("progress evt.total" + evt.total);
+              if (evt.lengthComputable) {
+                var percentComplete = evt.loaded / evt.total;
+                percentComplete = parseInt(percentComplete * 100);
 
-          $('input[id=imagePost]').change(function(e){
-            var data = new FormData();
-            data.append('image', $('input[id=imagePost]')[0].files[0]); 
-            // alert("Data is " + data);
-            $.ajax({
-              url: "/postPhotos",
-              type: "POST",
-              contentType: false,
-              processData: false,
-              data: data,
-              complete: function() {
-                console.log('process complete');
-              },
+                bar.width(percentComplete);
+                percent.html(percentComplete + "% completed");
+              }
+            }, false);
 
-              success: function(data) {
-                 if(data.error) {
-                  console.log('Opps, something bad happened');
-                  return;
-                  }
-                console.log("here success");  
-                console.log("Data.path is" + data.path);
-                
-                $("#updatedImage").attr("src","tempUploads/"+data.path);
-                $("#updatedImage").parents("a").show();
-                $("#updatedImage").parents("a").attr("href", "tempUploads/"+data.path)
-                $("#updatedImage").siblings("a").show();
-                $("#updateImage").show();
-                $("#deleteImage").show();
-                $("#updatedImage").show();
-                $("#postedImage").val(data.path);
-             },
 
-              error: function() {
-                console.log('process error');
-              },
-            });
-          });
-          $('#postSubmitForm').validate({
-            rules: {
-                postTitle: {
-                    required: true
-                }
-            },
-            highlight: function (element) {
-                $(element).closest('.control-group').removeClass('success').addClass('error');
-            },
-            success: function (element) {
-                element.text('OK!').addClass('valid')
-                    .closest('.control-group').removeClass('error').addClass('success');
+            xhr.upload.addEventListener("load", function(evt) {
+              bar.css( "width", "100%" );
+              percent.html("100% completed");
+            }, false);  
+            return xhr;
+          },
+          complete: function() {
+
+          },
+          success: function(data) {
+           if(data.error) {
+            // alert('Opps, something bad happened');
+            return;
             }
-          });
-          submitForPost = function() {
-              $('#postSubmitForm').submit();
-          }    
+            // /alert("data.path " + data.path.length)
+            $('.progress').hide();
+            if(typeof data.path != 'undefined' && data.path.length > 0) {
+              for(var i = 0; i < data.path.length ; i++) {
+                postImages.push(data.path[i].name);
+
+                // $('#mypics').append("<img id=image"+i+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
+                // $("#image"+i).attr("src","tempUploads/"+data.path[i].name);
+              $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
+              $('#div' + imageIndex).append("<td class='col-md-6'> <a href=/uploads/"+ "<%=user.facebook.id%>" + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Post pictures'>");
+              $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /uploads/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a></td>");
+              $('#div' + imageIndex).append("<td class = 'col-md-6'> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#mypics').append("</div>");
+              }
+            }
+            $('#myPostPics').val(postImages[0]);
+          },
+          error: function() {
+            console.log('process error');
+          },
+        });
+    }); 
+
+      submitForPost = function() {
+        $('#postSubmitForm').submit();
+      } 
 
 
-          $('#postModal').on('show.bs.modal', function () {
-           $('.main-landing-container').addClass('blur');
-          });
-
-          $('#postModal').on('hide.bs.modal', function () {
-             $('.main-landing-container').removeClass('blur');
-          });
+      $('#postSubmitForm').validate({
+          rules: {
+              postTitle: {
+                  required: true
+              }
+          },
+          highlight: function (element) {
+              $(element).closest('.control-group').removeClass('success').addClass('error');
+          },
+          success: function (element) {
+              element.text('OK!').addClass('valid')
+                  .closest('.control-group').removeClass('error').addClass('success');
+          }
+      });
   });       
 </script>

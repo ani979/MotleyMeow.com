@@ -10,64 +10,6 @@ var BlogPost = require('../models/blogPost');
 var Forum = require('../models/forum'); 
 
 
-
-/*FB.options({
-    appId:          config.facebook.appId,
-    appSecret:      config.facebook.appSecret,
-    redirectUri:    config.facebook.redirectUri
-});*/
-// configure upload middleware 
-
-var profile = {
-    firstName:'',
-    fullName:'',
-    email:'',
-    gender:'',
-};
-
-exports.index = function(req, res) {
-
-    // req.session = null;
-    // if(req.session == null) {
-    //     res.render('index', {
-    //             title: 'Express',
-    //             loginUrl: FB.getLoginUrl({ scope: 'user_about_me' })                
-    //         });
-    // }
-    var accessToken = req.session.access_token;
-    console.log("accesstoken: "+ accessToken);
-    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-    if(typeof accessToken == 'undefined' || !accessToken) {
-        console.log("isAuthenticatedddddddd: "+ req.isAuthenticated());
-        if(req.isAuthenticated()) {
-            res.redirect('/home');
-        } else {
-            User.count(function(err, uCnt) {
-               if(err) {
-                res.render('landing', {message: req.flash('loginMessage')});    
-               }
-               Posts.count(function(err, pCnt) {
-                if(err) {
-                    res.render('landing', {aCount:uCnt, message: req.flash('loginMessage')});    
-                }
-                Event.count(function(err, eCnt) {
-                    if(err) {
-                        res.render('landing', {aCount:uCnt, pCount:pCnt, message: req.flash('loginMessage')});    
-                    } 
-                    res.render('landing', {aCount:uCnt, pCount:pCnt, eCount:eCnt, message: req.flash('loginMessage')});    
-                    
-                });    
-               }); 
-            });
-                       
-            
-        }
-    } else {
-        // res.render('home');
-        res.redirect('/home');
-    }
-};
-
 exports.logout = function (req, res) {
     console.log("LOGOUTTTTT");
     req.session.destroy();
@@ -92,14 +34,7 @@ exports.profile = function (req, res) {
             User.findOne({ 'facebook.id' : fbid}, function(error, db) {
                 res.render('profileView', { user: db, dropdowns:dropdowns, sessionUser: req.session.user, appId:config.facebook.clientID});
             });    
-        // } else {
-        //     res.render('profileView', { user: db, dropdowns:dropdowns, appId:config.facebook.clientID});
-            
-        // }
-    // } else {
-    //     // res.render('home');
-    //     res.redirect('/');
-    // }
+
 };
 
 exports.profileEdit = function (req, res) {
