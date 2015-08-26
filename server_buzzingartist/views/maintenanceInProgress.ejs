@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">       
+        <link href="css/tab.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="css/animate.css"/>
+       
+    </head>
+
+  
+
+<body>
+     
+ <% if(typeof user != 'undefined' && user!=null) { %>
+ <div id = "headerloggedin"> </div>
+ <% } else { %>
+ <div id = "headerloggedout"></div>
+  <%}%> 
+
+
+<div class="jumbotron">
+   <h2 class="black-heading" style="text-align:center"><u>Maintenance activities</u></h2>
+    <div class = "artistsCheck">
+      
+
+            
+                <button id="removePostsButon" name="removePostsButon" class="btn btn-primary" onclick="removeOldPosts();return false;">Remove posts older than 30 days</button>
+            
+            <div>&nbsp;</div>
+            <div>&nbsp;</div>
+                <button id="removeEventsButton" name="removeEventsButton" class="btn btn-primary" onclick="removeOldEvents();return false;">Remove events older than 7 days</button>
+                
+            
+            <br/>
+            
+        
+
+    </div>  
+    
+  </div>  
+</div>  
+
+
+<div id = "footer"></div>
+<div id="postsViewModal" class="modal fade multi-step" tabindex="-1" role="dialog" aria-labelledby="postsViewModal" aria-hidden="true">
+      
+        <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title step-1" data-step="1">Retrieved Posts</h4>
+              <h4 class="modal-title step-2" data-step="2">Confirm Deletion</h4>
+          </div>
+          <div>&nbsp;</div>
+          <div class="modal-body step-1" data-step="1" id="allPosts">
+                <p> Here is all the posts retrieved that you want to delete</p>
+                <ul>
+                </ul>  
+
+          </div><!-- End of Modal body -->
+          <div class="modal-body step-2" data-step="2">
+            <p>Are you really sure you want to delete these posts??</p>
+          </div>  
+          <div class="modal-footer step-1" style="border:0px;" data-step="1">
+              <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+              <span class="pull-right"><button type="button" class="btn btn-default" onclick="sendEvent('#postsViewModal', 2)">Delete these</button></span>
+              
+          </div>
+          <div class="modal-footer step-2" style="border:0px;" data-step="2">
+              <span class="pull-right"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+              <span class="pull-left"><button type="button" class="btn btn-default" onclick="deleteALL()">Delete</button></span>
+          </div>
+        </div><!-- End of Modal content -->
+        </div><!-- End of Modal dialog -->
+
+    </div><!-- End of Modal --> 
+
+
+    <div id="eventsViewModal" class="modal fade multi-step" tabindex="-1" role="dialog" aria-labelledby="eventsViewModal" aria-hidden="true">
+      
+        <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title step-1" data-step="1">Retrieved Events</h4>
+              <h4 class="modal-title step-2" data-step="2">Confirm Deletion</h4>
+          </div>
+          <div>&nbsp;</div>
+          <div class="modal-body step-1" data-step="1" id="allEvents">
+                <p> Here is all the events retrieved that you want to delete</p>
+                <ul>
+                </ul>  
+
+          </div><!-- End of Modal body -->
+          <div class="modal-body step-2" data-step="2">
+            <p>Are you really sure you want to delete these events??</p>
+          </div>  
+          <div class="modal-footer step-1" style="border:0px;" data-step="1">
+              <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+              <span class="pull-right"><button type="button" class="btn btn-default" onclick="sendEvent('#eventsViewModal', 2)">Delete these</button></span>
+              
+          </div>
+          <div class="modal-footer step-2" style="border:0px;" data-step="2">
+              <span class="pull-right"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+              <span class="pull-left"><button type="button" class="btn btn-default" onclick="deleteALLEvents()">Delete</button></span>
+          </div>
+        </div><!-- End of Modal content -->
+         </div><!-- End of Modal dialog -->
+
+    </div><!-- End of Modal -->  
+<script src="js/jquery-validate.js"></script>
+<script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/multiple-modals.js"></script>
+ 
+<script type="text/javascript">
+     $("#footer").load("footer.ejs"); 
+    $("#headerloggedin").load("/header");
+    $("#headerloggedout").load("headerloggedout.ejs");
+</script>
+
+<script>
+ $(document).ready(function() {
+
+      sendEvent = function(sel, step) {
+          $(sel).trigger('next.m.' + step);
+      }
+
+});      
+function generateNotificationLayout(type, layout, text) {
+       var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+                    
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click","button"],
+        buttons: [
+            {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+              $noty.close();
+                }
+             }
+            
+          ]
+      });
+    }
+
+getDate = function(x) {
+           var oneDay = 24*60*60*1000;
+           var diffDays = Math.round(Math.abs((new Date().getTime() - x)/(oneDay))); 
+           var diffDaysinStr;
+           if (diffDays == 0)  {
+            diffDaysinStr = "today" 
+           } else if(diffDays == 1) {
+            diffDaysinStr = "yesterday"
+           } else { 
+            diffDaysinStr = diffDays + " days ago"
+           }
+           return diffDaysinStr;
+
+        }
+ function removeOldPosts() {
+   $.ajax({
+          url: "/retrieveOldPosts",
+          type: "POST",
+          success: function (data) {
+              console.log("found items " +data.posts.length)
+              if(data.posts != null && data.posts.length != 0) {
+                  for(var i =0; i < data.posts.length; i++) {
+                    var displayableDate = getDate(new Date(data.posts[i].date).getTime())
+                    $("#allPosts ul").append('<li>' + data.posts[i].postTitle + " posted " + displayableDate+ '</li>');
+                  }
+              } else {
+                $("#allPosts ul").append('<li>' + "No posts to delete" + '</li>');
+              }
+              $('#postsViewModal').modal('show');
+          },
+          error: function (data) {
+              console.log("some error " + data);
+          }
+          
+      });
+ }   
+
+ function deleteALL() {
+  $('#postsViewModal').modal('hide')
+   $.ajax({
+          url: "/deleteOldPosts",
+          type: "POST",
+          success: function (data) {
+              if(data.completed == "NOK") {
+                console.log("Got the error");
+                generateNotificationLayout('warning', 'topCenter', 'Cannot remove');
+              } else {
+                console.log("Removed");
+                generateNotificationLayout('success', 'topCenter', 'Old Posts removed');
+              }  
+              
+          },
+          error: function (data) {
+              console.log("some error " + data);
+          }
+          
+      });
+ }
+
+
+
+ function removeOldEvents() {
+   $.ajax({
+          url: "/retrieveOldEvents",
+          type: "POST",
+          success: function (data) {
+              console.log("found items " +data.events.length)
+              if(data.events != null && data.events.length != 0) {
+                  for(var i =0; i < 3; i++) {
+                    var displayableDate = getDate(new Date(data.events[i].endDate).getTime())
+                    $("#allEvents ul").append('<li>' + data.events[i].title + " last played on " + displayableDate+ '</li>');
+                  }
+              } else {
+                $("#allEvents ul").append('<li>' + "No events to Remove"+ '</li>');
+              }
+              $('#eventsViewModal').modal('show')
+          },
+          error: function (data) {
+              console.log("some error " + data);
+          }
+          
+      });
+ }   
+
+ function deleteALLEvents() {
+  $('#eventsViewModal').modal('hide')
+   $.ajax({
+          url: "/deleteOldEvents",
+          type: "POST",
+          success: function (data) {
+              if(data.completed == "NOK") {
+                console.log("Got the error");
+                generateNotificationLayout('warning', 'topCenter', 'Cannot remove');
+              } else {
+                console.log("Removed");
+                generateNotificationLayout('success', 'topCenter', 'Old Events removed');
+              }  
+              
+          },
+          error: function (data) {
+              console.log("some error " + data);
+          }
+          
+      });
+ }
+ </script>   
+</body>
+</html>
