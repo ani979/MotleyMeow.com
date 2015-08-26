@@ -57,33 +57,19 @@
 
 
   
-<div id="home-row-1" class="clearfix slide-1" style="padding-top:0px;padding-left:0px;color:#E6E0E0;">
-  
+<div id="home-row-1" class="clearfix slide-1" style="padding-top:0px;padding-left:0px;color:#E6E0E0; height:278px;">
  
   <% if(typeof user == 'undefined' || user ==null) { %>
-    <div class = "col-md-4 col-sm-4 col-xs-12" style="padding-top:10px;padding-bottom:150px;">
-      <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
-        <h4 class="font-light" id="artistsCount">1</h4>
-        <span class="font-light" style="font-size:28px;">Artists</span>
-      </div><!-- /col-4-->
-      <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
-        <h4 class="font-light" id="postsCount">1</h4>
-        <span class="font-light" style="font-size:28px;">Posts</span>
-      </div><!-- /col-4-->
-      <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
-        <h4 class="font-light" id="eventCount">1</h4>
-        <span class="font-light" style="font-size:28px;">Events</span>
-      </div><!-- /col-4-->
-      <!-- <div class="col-12" style="float:center;"> -->
-
-      <!-- </div>  -->
-    </div>
-    <div class = "col-md-4" style="padding-top:0px;">  
-      <h1 class="font-light" style="text-align:center;"><img src ="images/MotleyMeow-logo02.gif" style="max-width:250px;max-height:200px;">
-        </h1>
-      <h3 class="font-light" style="text-align:center;font-style:italic;">With you, from pen to production</h3>
-    </div>
-    <div class="col-md-4" style="padding-top:25px;text-align:center;"> 
+     
+     <div>&nbsp;</div> 
+     <div>&nbsp;</div>
+     <div>&nbsp;</div>
+     <div>&nbsp;</div>
+     <div>&nbsp;</div>
+     <div>&nbsp;</div>
+     <div>&nbsp;</div>
+     
+    <div class="col-md-4 col-md-offset-4" style="padding-top:25px;text-align:center;float:right;"> 
 
       <h3 class="font-light" style="text-align:center;"><b>BROWSE&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;&nbsp;&nbsp;&nbsp;SHARE</b></h3>
       <div>&nbsp;</div>
@@ -583,9 +569,12 @@
   <script type="text/javascript">
       $(document).ready(function() {
         
-        var i = Math.floor(Math.random() * 3)
-        var imageUrl = "../images/bg_landing"+ i + ".jpg"
+        // var i = Math.floor(Math.random() * 3)
+        // var imageUrl = "../images/bg_landing"+ i + ".jpg"
+        var imageUrl = "../images/MM_CoverPage.jpg";
         $(".slide-1").css('background-image', 'url(' + imageUrl + ')');
+        $(".slide-1").css('background-size', '100% 100%');
+        $(".slide-1").css(' background-repeat', 'no-repeat');
         $('.postTitle').ellipsis({
         row: 2
         });
@@ -630,37 +619,37 @@
         $("#login1").hide();
       });
 
-     window.onload = function() {
-      var aCount = 0;
-      var pCount = 0;
-      var eCount=  0;
-     <% if(typeof aCount != 'undefined' && aCount !=0) { console.log("aCount is" + aCount);%>
-      aCount = <%=aCount%>;
-     <%}%>
-     <% if(typeof pCount != 'undefined' && pCount !=0) { console.log("pCount is" + pCount);%>
-      pCount = <%=pCount%>;
-     <%}%>
-     <% if(typeof eCount != 'undefined' && eCount !=0) { console.log("eCount is" + eCount);%>
-      eCount = <%=eCount%>;
-     <%}%>
+    //  window.onload = function() {
+    //   var aCount = 0;
+    //   var pCount = 0;
+    //   var eCount=  0;
+    //  <% if(typeof aCount != 'undefined' && aCount !=0) { console.log("aCount is" + aCount);%>
+    //   aCount = <%=aCount%>;
+    //  <%}%>
+    //  <% if(typeof pCount != 'undefined' && pCount !=0) { console.log("pCount is" + pCount);%>
+    //   pCount = <%=pCount%>;
+    //  <%}%>
+    //  <% if(typeof eCount != 'undefined' && eCount !=0) { console.log("eCount is" + eCount);%>
+    //   eCount = <%=eCount%>;
+    //  <%}%>
 
-        // setup countUp object 
-        if(aCount != 0) {
-          artistsCount = new countUp('artistsCount', 0, aCount);
-          artistsCount.start();
-        }
+    //     // setup countUp object 
+    //     if(aCount != 0) {
+    //       artistsCount = new countUp('artistsCount', 0, aCount);
+    //       artistsCount.start();
+    //     }
         
         
-        if(pCount != 0) {
-          postsCount = new countUp('postsCount', 0, pCount);
-          postsCount.start();
-      }    
+    //     if(pCount != 0) {
+    //       postsCount = new countUp('postsCount', 0, pCount);
+    //       postsCount.start();
+    //   }    
 
-      if(eCount != 0) {
-          eventCount = new countUp('eventCount', 0, eCount);
-          eventCount.start();
-      }    
-    }
+    //   if(eCount != 0) {
+    //       eventCount = new countUp('eventCount', 0, eCount);
+    //       eventCount.start();
+    //   }    
+    // }
 
     function submitForLogin() {
         var formData = {
