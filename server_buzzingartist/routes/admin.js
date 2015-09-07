@@ -4,10 +4,31 @@ var Events = require('../models/event.js');
 var dropdowns = require('../views/js/theatreContrib.js');
 var Posts = require('../models/posts.js');
 var app = require('../app.js');
+var request = require('request');
+var fsExtra = require('fs');
+var async        = require('async')
 
 exports.startAdministration = function (req, res) {
+	var uCnt = 0,eCnt=0,pCnt=0;
 	console.log("coming here in startAdministration");
-    res.render('maintenanceInProgress', { user: req.session.user});
+	User.count(function(err, uCount) {
+                    if(!err) {
+                        uCnt = uCount;
+                    }
+                    Posts.count(function(err, pCount) {
+                        if(!err) {
+                            pCnt = pCount;   
+                        }
+                        Events.count(function(err, eCount) {
+                            if(!err) {
+                                eCnt = eCount;   
+
+                            } 
+                            res.render('maintenanceInProgress', { user: req.session.user, aCount:uCnt, pCount:pCnt, eCount:eCnt});
+                        });    
+                    }); 
+                });
+    
 };
 
 
@@ -128,3 +149,108 @@ exports.deleteOldEvents = function (req, res) {
 	});	
     
 };
+
+
+exports.addProfilePicsLocally = function(req,res) {
+  var count = 0;
+  console.log("here in add ProfilePicsLocally");
+  User.find( function ( err, users ){
+     //console.log("all users " + users);
+     console.log("users is " + users.length);
+  	 async.eachSeries(users, function(user, callback) {
+  		console.log("user is " + user.facebook.name + " facebook id " + user.facebook.id);
+        if(typeof user.local.picture  != 'undefined' && user.local.picture != null && user.local.picture.substring(0, 4) =='http') {
+          console.log("Found user with picture from facebook " + user.facebook.name);
+          if (!fsExtra.existsSync('./views/portfolio/' + user.facebook.id)) {
+		    // Do something
+		      console.log("The directory does not exist");
+		      console.log("creating Directory")
+		      fsExtra.mkdirSync('./views/portfolio/' + user.facebook.id);
+		      fsExtra.mkdirSync('./views/portfolio/' + user.facebook.id + '/profilePicture');
+		  } else if(!fsExtra.existsSync('./views/portfolio/' + user.facebook.id + '/profilePicture')) {
+		  		console.log("The directory profilePicture does not exist");
+		      console.log("creating Directory")
+		      fsExtra.mkdirSync('./views/portfolio/' + user.facebook.id + '/profilePicture');
+		  }
+		  request(user.local.picture, function (error, response, body) {
+			  if (!error && response.statusCode == 200) {
+			  	console.log("NO ERROR")
+			  	request(user.local.picture).pipe(fsExtra.createWriteStream('./views/portfolio/'+user.facebook.id + "/profilePicture/myProfilePic.jpg"));
+			  	user.local.picture = "/portfolio/"+user.facebook.id + "/profilePicture/myProfilePic.jpg";
+			  	count++;
+			  	user.save(function (err, user) {
+                   if (!err) {
+                        console.log("User saved!!");
+                        callback();
+                    }
+               });
+			  } else {
+			  	user.local.picture = "http://localhost:3000" + "/images/mask.png";
+			  	count++;
+			  	user.save(function (err, user) {
+                   if (!err) {
+                        console.log("User saved!!");
+                        callback();
+                    }
+                });
+			  }
+		   })
+		 } else {
+		 	callback();
+		 }
+		}, function(err){
+		    if( err ) {
+		      console.log('A user failed to process');
+		    } else {
+		      console.log('All users have been processed successfully');
+		      res.send({completed:"NOK", total: count});
+		    }
+	});
+   //    for(var i =0; i < users.length; i++) {
+   //      console.log("user is " + users[i].facebook.name + " facebook id " + users[i].facebook.id);
+   //      if(typeof users[i].local.picture  != 'undefined' && users[i].local.picture != null && users[i].local.picture.substring(0, 4) =='http') {
+   //        console.log("Found user with picture from facebook " + users[i].facebook.name);
+   //        if (!fsExtra.existsSync('./views/portfolio/' + users[i].facebook.id)) {
+		 //    // Do something
+		 //      console.log("The directory does not exist");
+		 //      console.log("creating Directory")
+		 //      fsExtra.mkdirSync('./views/portfolio/' + users[i].facebook.id);
+		 //      fsExtra.mkdirSync('./views/portfolio/' + users[i].facebook.id + '/profilePicture');
+
+		 //  } else if(!fsExtra.existsSync('./views/portfolio/' + users[i].facebook.id + '/profilePicture')) {
+		 //  		console.log("The directory profilePicture does not exist");
+		 //      console.log("creating Directory")
+		 //      fsExtra.mkdirSync('./views/portfolio/' + users[i].facebook.id + '/profilePicture');
+		 //  }
+
+		 //  // assuming openFiles is an array of file names
+
+			
+		 //  request(users[i].local.picture, function (error, response, body) {
+			//   if (!error && response.statusCode == 200) {
+			//   	console.log("NO ERROR")
+			//    //  request
+			//   	// .get(users[i].local.picture)
+			//   	// .on('response', function(response) {
+			// 	  //   if(response.statusCode != 200) {
+			// 	  //   	console.log(" response.statusCode " + response.statusCode + " return")
+			// 	  //   } else {
+			// 	  //   	console.log(" response.statusCode " + response.statusCode + " Dont return")
+			// 	  //   }
+			// 	  // })
+			//   	// .pipe(fsExtra.createWriteStream('./views/portfolio/'+users[i].facebook.id + "/profilePicture/myProfilePic.jpg"))
+			//   	request(users[i].local.picture).pipe(fsExtra.createWriteStream('./views/portfolio/'+users[i].facebook.id + "/profilePicture/myProfilePic.jpg"));
+			//   } else {
+			//   	console.log("ERROR");
+			//   	return;
+			//   }
+			// })
+		  
+   //        //request(users[i].local.picture).pipe(fsExtra.createWriteStream('./views/portfolio/'+users[i].facebook.id + "/profilePicture/myProfilePic.jpg"));
+   //        //users[i].local.picture = "/portfolio/"+users[i].facebook.id + "/profilePicture/myProfilePic.jpg";
+   //        count ++;
+   //      } 
+   //    }
+      
+  });
+}

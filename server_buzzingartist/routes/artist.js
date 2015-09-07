@@ -5,7 +5,7 @@ var deletedArtists = require('../models/deletedArtists.js');
 var mandrill = require('mandrill-api/mandrill');
 var m = new mandrill.Mandrill('_r3bNHCw5JzpjPLfVRu24g');
 var app = require('../app.js');
-var fsEtxra = require('fs-extra')
+var fsEtxra = require('fs-extra');
 
 //var mailer   = require("mailer")            //required for setting mail server
   //, mailerUsername = "motleymeow@gmail.com"
@@ -554,8 +554,12 @@ exports.saveProfilePic = function(req,res) {
       if (err) return console.error(err)
         console.log("success!")
         app.fsExtra.readdirSync('./views/tempUploads/').forEach(function(fileName) {
-          console.log("Removing old profile file " + fileName);
-          app.fsExtra.unlinkSync('./views/tempUploads/' + fileName);
+          if(app.fsExtra.lstatSync('./views/tempUploads/'+fileName).isDirectory()) {
+            console.log(" Its a directory|| So leave");
+          } else {
+            console.log("Removing old profile file " + fileName);
+            app.fsExtra.unlinkSync('./views/tempUploads/' + fileName);
+          } 
         });
         User.findOne({ 'facebook.id' : req.session.user.facebook.id }, function(error, db) {
             db.local.picture = '/portfolio/'+req.session.user.facebook.id+"/profilePicture/" + req.body.imageName;
@@ -571,6 +575,4 @@ exports.saveProfilePic = function(req,res) {
       });
       // dir has now been created, including the directory it is to be placed in 
   });
-
-    
 }

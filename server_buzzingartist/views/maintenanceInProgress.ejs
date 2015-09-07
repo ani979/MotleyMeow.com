@@ -37,7 +37,27 @@
             <div>&nbsp;</div>
             <div>&nbsp;</div>
                 <button id="removeEventsButton" name="removeEventsButton" class="btn btn-primary" onclick="removeOldEvents();return false;">Remove events older than 7 days</button>
-                
+            <div>&nbsp;</div>
+            <div>&nbsp;</div>    
+            <!-- <button id="addProfilePics" name="addProfilePics" class="btn btn-primary" onclick="changeProfilePics();return false;">Add profile pics</button> -->
+            <div>&nbsp;</div>  
+            <div class = "col-md-12" style="padding-top:10px;">
+              <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
+                <h4 class="font-light" id="artistsCount">1</h4>
+                <span class="font-light" style="font-size:28px;">Artists</span>
+              </div><!-- /col-4-->
+              <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
+                <h4 class="font-light" id="postsCount">1</h4>
+                <span class="font-light" style="font-size:28px;">Posts</span>
+              </div><!-- /col-4-->
+              <div class="col-md-4 col-sm-4 col-xs-4" style="float:left;padding-top:20px;">
+                <h4 class="font-light" id="eventCount">1</h4>
+                <span class="font-light" style="font-size:28px;">Events</span>
+              </div><!-- /col-4-->
+              <!-- <div class="col-12" style="float:center;"> -->
+
+              <!-- </div>  -->
+          </div>
             
             <br/>
             
@@ -77,6 +97,7 @@
               <span class="pull-right"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
               <span class="pull-left"><button type="button" class="btn btn-default" onclick="deleteALL()">Delete</button></span>
           </div>
+
         </div><!-- End of Modal content -->
         </div><!-- End of Modal dialog -->
 
@@ -133,7 +154,28 @@
           $(sel).trigger('next.m.' + step);
       }
 
-});      
+});    
+
+window.onload = function() {
+      var aCount = 0;
+      var pCount = 0;
+      var eCount=  0;
+     <% if(typeof aCount != 'undefined' && aCount !=0) { console.log("aCount is" + aCount);%>
+      aCount = <%=aCount%>;
+     <%}%>
+     <% if(typeof pCount != 'undefined' && pCount !=0) { console.log("pCount is" + pCount);%>
+      pCount = <%=pCount%>;
+     <%}%>
+     <% if(typeof eCount != 'undefined' && eCount !=0) { console.log("eCount is" + eCount);%>
+      eCount = <%=eCount%>;
+     <%}%>
+          $('#artistsCount').text(aCount);
+          $('#eventCount').text(eCount);
+          $('#postsCount').text(pCount);
+        
+        
+           
+    }  
 function generateNotificationLayout(type, layout, text) {
        var n = noty({ layout: layout,
         type: type,
@@ -269,6 +311,27 @@ getDate = function(x) {
               } else {
                 console.log("Removed");
                 generateNotificationLayout('success', 'topCenter', 'Old Events removed');
+              }  
+              
+          },
+          error: function (data) {
+              console.log("some error " + data);
+          }
+          
+      });
+ }
+
+ function changeProfilePics() {
+   $.ajax({
+          url: "/addProfilePicsLocally",
+          type: "POST",
+          success: function (data) {
+              if(data.completed == "NOK") {
+                console.log("Didn't find any such user");
+                generateNotificationLayout('warning', 'topCenter', 'Did not find any such user');
+              } else {
+                console.log("Removed");
+                generateNotificationLayout('success', 'topCenter', 'Done for ' + data.total);
               }  
               
           },

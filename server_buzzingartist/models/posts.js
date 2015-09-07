@@ -10,7 +10,8 @@ var postsSchema = mongoose.Schema({
             city         :[{}],
             user : [{}],
             imagePath        : String,
-            kind : String
+            kind : String,
+            mailRequested: {type: Boolean, default: false}
         },
 
         requirement : {

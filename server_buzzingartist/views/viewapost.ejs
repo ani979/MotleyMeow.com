@@ -17,8 +17,11 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">       
         <link href="css/tab.css" rel="stylesheet">
-        
+        <link href="css/bootstrap-dialog.css" rel="stylesheet">
+        <script src="js/bootstrap-dialog.js"></script>
         <link href="css/lightbox.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="css/animate.css"/>
   </head>
   <script type="text/javascript">
  
@@ -59,7 +62,7 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<% if(typeof user != 'undefined' && user!=null) { %>
+<% if(typeof sessionUser != 'undefined' && sessionUser!=null) { %>
  <div id = "headerloggedin"> </div>
  <% } else { %>
  <div id = "headerloggedout"></div>
@@ -84,7 +87,7 @@
             <div class="col-sm-8">
               <div >
                 <label >
-                    <p class="form-control-static"><%=post.post.postTitle%></p>
+                    <p class="form-control-static" id="postTitle"><%=post.post.postTitle%></p>
                 </label>
               </div>
             </div>
@@ -95,7 +98,7 @@
             <div class="col-sm-8">
               <div >
                 <label style="text-align:left">
-                    <p class="form-control-static" data-linkify="this" ><%=post.post.postDetail%></p>
+                    <p class="form-control-static" data-linkify="this" id="postDetail"><%=post.post.postDetail%></p>
                 </label>
               </div>
             </div>
@@ -156,7 +159,7 @@
             </div>
          </label>
        </div> 
-
+       <input type="hidden" name="toEmails" id="toEmails">
        <div class="form-group">
         <label class="col-sm-4 control-label">Image attached to it</label>
             <div class="col-sm-8">
@@ -187,6 +190,9 @@
           </div><div class = "col-sm-4">  
             &nbsp;&nbsp;
             <input action="action" type="button" value="Back" onclick="history.go(-1);" class="btn btn-primary col-sm-4">
+            <% if (typeof sessionUser != 'undefined' && sessionUser!= null && sessionUser.local.adminRole == true && post.post.mailRequested) { %>
+             <button id="mailButton" name="mailButton" class="btn btn-primary col-ms-4" onclick="sendMails();return false;">Send Mail</button>
+            <%} %>
           </div>  
         
         
@@ -211,13 +217,60 @@
    <!-- footer starts-->
     <!-- footer starts-->
    <div id = "footer"></div>
+   <div id="emailModal" class="modal fade multi-step" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+      
+        <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title step-1" data-step="1">Email Post</h4>
+              <h4 class="modal-title step-2" data-step="2">Confirm email</h4>
+          </div>
+          <div>&nbsp;</div>
+          <div class="modal-body step-1" data-step="1">
+                <div class="form-group">
+                      <label class="control-label col-md-4" >Choosen criterias to send Email</label>
+                      <div class="col-md-8">
+                          <textarea class="form-control" id="emailCriteria" name="emailCriteria" style="min-height:100px;"></textarea>
+                      </div>
+                  </div>
+                 <div class="form-group">
+                      <label class="control-label col-md-4" >Subject</label>
+                      <div class="col-md-8">
+                          <input type="text" class="form-control" id="emailTitle" name="emailTitle" placeholder="Please type the subject here">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label col-md-4" >Email Body</label>
+                      <div class="col-md-8">
+                          <textarea class="form-control" id="emailBody" name="emailBody" placeholder="Please type the e-mail here, we will send it to all artists you selected.." style="min-height:300px;"></textarea>
+                      </div>
+                  </div>
+          </div><!-- End of Modal body -->
+          <div class="modal-body step-2" data-step="2">
+            <p>You confirm you want to send email?</p>
+          </div>  
+          <div class="modal-footer step-1" style="border:0px;" data-step="1">
+              <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+              <span class="pull-right"><button type="button" class="btn btn-default" onclick="sendEvent('#emailModal', 2)">Send</button></span>
+              
+          </div>
+          <div class="modal-footer step-2" style="border:0px;" data-step="2">
+              <span class="pull-right"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
+              <span class="pull-left"><button type="button" class="btn btn-default" onclick="shootTheMail()">Shoot the mail</button></span>
+          </div>
+        </div><!-- End of Modal content -->
+        </div><!-- End of Modal dialog -->
+
+    </div><!-- End of Modal --> 
     
    <!-- footer ends-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <script src="js/jquery.js"></script>
    <script src="js/lightbox.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/multiple-modals.js"></script>
     <script src="js/linkified-min.js"></script>
+    <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
     <script type="text/javascript">
     $("#footer").load("footer.ejs"); 
     $("#headerloggedin").load("/header");
@@ -232,6 +285,146 @@
     ga('create', 'UA-61218032-1', 'auto');
     ga('send', 'pageview');
 
+
+    function sendMails(){
+      var roles, lang;
+     
+      var selectedCitiesValue, selectedLangValue, selectedRoleValue;
+      // //build a regex filter string with an or(,) condition
+      var cities = "<%=post.post.city%>"
+      selectedCitiesValue = cities;
+
+      if(cities == "") {
+        selectedCitiesValue = ""
+      }
+      // //build a regex filter string with an or(,) condition
+      roles = "<%=post.requirement.role%>"
+      //}
+      selectedRoleValue = roles;
+
+      if(roles == "") {
+        selectedRoleValue = ""
+      }
+
+      lang = "<%=post.requirement.lang%>"
+      //}  
+      selectedLangValue = lang;
+
+      if(lang == "") {
+        selectedLangValue = "";
+      }
+
+      $.ajax({
+          url: "/getEmailsForPost",
+          type: "POST",
+          data: { cities: cities, roles: roles, lang:lang },
+          success: function (data) {
+              if(data.error) {
+                console.log("Got the error");
+                generateNotificationLayout('warning', 'topCenter', 'Roles, Languages and Cities all must be selected. Please check the fields and try again');
+              } else {
+
+                console.log("retrieved email ids " + data.selectedEmails);
+                if(data.selectedEmails.length == 0) {
+                  generateNotificationLayout('warning', 'topCenter', 'There were no emails found with the criteria that you mentioned. Please try again');
+                  return;
+                }
+                $('#emailBody').val(document.getElementById("postDetail").innerHTML);
+                $('#emailTitle').val("<%=post.post.postTitle%>");
+                $('#emailCriteria').text("You have choosen to send mail to all artists who are " + roles + " from " + cities + " comfortable in " + lang 
+                  + ". Overall count of such artists is "+ data.selectedEmails.length + ". The mail will also contain any attachment that you may have added");
+                $('#toEmails').val(data.selectedEmails);
+                $('#emailModal').modal('show');
+              }  
+              
+          },
+          error: function (data) {
+              console.log("some error " + data);
+          }
+          
+      });
+       
+    }
+      sendEvent = function(sel, step) {
+          $(sel).trigger('next.m.' + step);
+      }
+     function shootTheMail(selectedEmails) {
+        generateNotificationLayout('warning', 'topCenter', 'Please wait. Mail is being sent.');
+        var data={
+            first_name: "<%=post.post.user[0].facebook.name%> via MotleyMeow",
+            fromEmail: "noreply@motleymeow.com",
+            postBody: document.getElementById("postDetail").innerHTML,
+            toArtists: $('#toEmails').val() + "ani979@gmail.com,motleymeow@gmail.com," + "<%=post.post.user[0].facebook.email%>,
+            postTitle: "<%=post.post.postTitle%>",
+            myPostPictures: "<%=post.post.imagePath%>"
+            };
+
+          $.ajax({ 
+           url: "/sendPostMailsToArtists",
+           type: "POST",
+           cache: false, 
+           async: true,
+           data: data,
+           //data: $("commentform").serialize(),
+
+           success: function(data){
+              console.log('Success!');
+              $("#emailModal").modal('hide');
+              if(data.completed == "OK") {
+                generateNotificationLayout('success', 'topCenter', 'Mail Sent');
+              } else {
+                generateNotificationLayout('warning', 'topCenter', 'Some problem with your email. Check fields again');
+              }  
+
+           }
+           , 
+           error: function(jqXHR, textStatus, err){
+               console.log('text status '+textStatus+', err '+err);
+               generateNotificationLayout('warning', 'topCenter', 'Some problem with your email. Check fields again');
+           }
+        });
+
+      //return false;
+
+  }
+      function generateNotificationLayout(type, layout, text) {
+       var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+                    
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click","button"],
+        buttons: [
+            {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+              $noty.close();
+                }
+             }
+            
+          ]
+      });
+    }
     </script>
   </body>
 </html>

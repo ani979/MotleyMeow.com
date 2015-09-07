@@ -174,8 +174,6 @@ passport.use('local-login', new LocalStrategy({
     }));
 
 
-
-
 // config
 passport.use(new FacebookStrategy({
          clientID: config.facebook.clientID,
@@ -191,8 +189,7 @@ passport.use(new FacebookStrategy({
                 return done(err);
 
             if (user) {
-                //checkIfProfilePicPresentElseAdd(user.local.picture);
-                //request(user.local.picture).pipe(fsExtra.createWriteStream('./views/portfolio/'+user.facebook.id + "/pictures/myProfilePic.jpg"));
+                console.log("here in profile pic")
                 hash = crypto.createHmac('sha256', config.facebook.clientSecret).update(accessToken).digest('hex');
                 req.session.hashValue = hash;
                 if(typeof user.local.joiningDate == 'undefined' || user.local.joiningDate == "") {
@@ -206,16 +203,43 @@ passport.use(new FacebookStrategy({
                                                         }
                     });                        
                 }
-                if(typeof user.local.picture == 'undefined' || user.local.picture == "") {
+                // if(typeof user.local.picture == 'undefined' || user.local.picture == "") {
+                //     User.update({'facebook.id' : user.facebook.id},
+                //                          { $set: {"local.picture": "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue}},
+                //                                     function (err, user) {
+                //                                         if(err) {
+                //                                             console.log("Something went wrong in saving picture");
+                //                                             req.flash('info', "Something went wrong in saving picture")
+                //                                             res.redirect('/error');
+                //                                         }
+                //     });                        
+                // }
+
+                if(typeof user.local.picture  == 'undefined' || user.local.picture == null || user.local.picture.substring(0, 4) == 'http') {
+                    var picture = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
+                    if (!fsExtra.existsSync('./views/portfolio/' + user.facebook.id)) {
+                    // Do something
+                      console.log("The directory does not exist");
+                      console.log("creating Directory")
+                      fsExtra.mkdirSync('./views/portfolio/' + user.facebook.id);
+                      fsExtra.mkdirSync('./views/portfolio/' + user.facebook.id + '/profilePicture');
+
+                    } else if(!fsExtra.existsSync('./views/portfolio/' + user.facebook.id + '/profilePicture')) {
+                        console.log("The directory profilePicture does not exist");
+                        console.log("creating Directory")
+                        fsExtra.mkdirSync('./views/portfolio/' + user.facebook.id + '/profilePicture');
+                    }
+                    request(picture).pipe(fsExtra.createWriteStream('./views/portfolio/'+user.facebook.id + "/profilePicture/myProfilePic.jpg"));
+                    user.local.picture = "/portfolio/"+user.facebook.id + "/profilePicture/myProfilePic.jpg";
                     User.update({'facebook.id' : user.facebook.id},
-                                         { $set: {"local.picture": "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue}},
+                                         { $set: {"local.picture": "./views/portfolio/"+user.facebook.id + "/profilePicture/myProfilePic.jpg"}},
                                                     function (err, user) {
                                                         if(err) {
                                                             console.log("Something went wrong in saving picture");
                                                             req.flash('info', "Something went wrong in saving picture")
                                                             res.redirect('/error');
                                                         }
-                    });                        
+                    }); 
                 }
                 if(typeof user.facebook.link == 'undefined' || user.facebook.link == "") {
                     User.update({'facebook.id' : user.facebook.id},
@@ -248,8 +272,22 @@ passport.use(new FacebookStrategy({
                 } else {
                     newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first    
                 }
-                newUser.local.picture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
+                var userPicture  = "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken + '&appsecret_proof=' + req.session.hashValue;
+                if (!fsExtra.existsSync('./views/portfolio/' + profile.id)) {
+                // Do something
+                  console.log("The directory does not exist");
+                  console.log("creating Directory")
+                  fsExtra.mkdirSync('./views/portfolio/' + profile.id);
+                  fsExtra.mkdirSync('./views/portfolio/' + profile.id + '/profilePicture');
 
+                } else if(!fsExtra.existsSync('./views/portfolio/' + profile.id + '/profilePicture')) {
+                    console.log("The directory profilePicture does not exist");
+                    console.log("creating Directory")
+                    fsExtra.mkdirSync('./views/portfolio/' + profile.id + '/profilePicture');
+                }
+                request(userPicture).pipe(fsExtra.createWriteStream('./views/portfolio/'+ newUser.facebook.id + "/profilePicture/myProfilePic.jpg"));
+                newUser.local.picture = "/portfolio/"+newUser.facebook.id + "/profilePicture/myProfilePic.jpg";
+                //} 
                 newUser.local.joiningDate    = new Date(); 
                 newUser.facebook.link  = "https://www.facebook.com/" + profile.id;
                 //    console.log("email id " + newUser.facebook.email);
@@ -453,6 +491,7 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
             if(user) {
                 req.logIn(user, function(err) {
                     if (err) { return next(err); }
+                    req.session.user = user;
                     return res.send({completed: "OK", redirect: "/home"});
                 });
                 
@@ -694,6 +733,7 @@ app.get( '/profileEdit', ensureAuthenticated, home.profileEdit);
 app.get('/logout', home.logout);
 var mwMulter1 = multer({ dest: './views/uploads' });
 app.post( '/post', post_request.post);
+app.post( '/crispPost', post_request.crispPost);
 app.post( '/searchallposts',  post_request.searchallposts);
 app.post( '/editpost', ensureAuthenticated, mwMulter1,post_request.editpost);
 app.get( '/viewpost', mwMulter1,post_request.viewpost);
@@ -708,6 +748,7 @@ app.get( '/postarequest', ensureAuthenticated, mwMulter1, post_request.postarequ
 
 app.get( '/artists', artists.artist);
 app.post('/saveProfilePic', ensureAuthenticated, artists.saveProfilePic);
+app.post('/addProfilePicsLocally', ensureAuthenticated, admin.addProfilePicsLocally);
 app.post('/deleteArtist', artists.deleteArtist);
 app.get( '/getRecentPosts', ensureAuthenticated, post_request.getRecentPosts);
 app.get( '/getRecentArtists', ensureAuthenticated,  artists.getRecentArtists);
@@ -749,7 +790,7 @@ app.get( '/postevents',ensureAuthenticated, post_event.postevents);
 app.get( '/allEvents', ensureAuthenticated, post_event.allEvents);
 app.post( '/posteventDetails', post_event.posteventDetails);
 app.post('/sendPostMailsToArtists', post_request.sendPostMailsToArtists);
-
+app.post('/indicateMailToBeSent', post_request.indicateMailToBeSent);
 
 app.get('/error', function(req, res){
   res.render('error', { message: req.flash('info'), user:req.session.user});
@@ -1084,6 +1125,78 @@ app.post('/addPostImagePics', ensureAuthenticated, multer({
                 console.log('A file failed to process');
             } else {
                 res.send({path: req.files.image});
+                res.end();
+                console.log('All files have been processed successfully');
+            }
+        });
+
+        }   
+);
+
+app.post('/postPhotos', ensureAuthenticated, multer({ 
+            dest: './views/tempUploads/', 
+            putSingleFilesInArray: true,
+            limits: { fileSize: 25* 1024 * 1024},
+            changeDest: function(dest, req, res) {
+                            var newDestination = dest;
+                            var stat = null;
+                            try {
+                              stat = fsExtra.statSync(newDestination);
+                            } catch (err) {
+                            fsExtra.mkdirSync(newDestination);
+                            }
+
+                            return newDestination;
+            },
+            onFileUploadStart: function (file, req, res) {
+                if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
+                    console.log("OK to start upload");
+                } else {
+                    return false;
+                }
+            },
+            onFileUploadComplete: function (file, req, res) {
+                console.log("Upload completed " + file.name)
+            },
+            onFileSizeLimit: function (file) {
+              console.log('Failed: ', file.originalname)
+              fsExtra.unlink('./' + file.path) // delete the partially written file 
+              return false;
+            },
+            onParseEnd: function (req, next) {
+              console.log('Form parsing completed at: ', new Date());
+              // call the next middleware
+              next();
+            }
+    }), function(req,res) {
+        async.each(req.files.image, 
+            function(file, callback) {
+                // Perform operation on file here.
+                console.log("Going for resize " + file.name);
+                im.resize({
+                  srcPath: file.path,
+                  dstPath: './views/tempUploads/' + file.name,
+                  width:   200,
+                  height:  200
+                }, function(err, stdout, stderr){
+                  if (err) {
+                    console.log("Some error occurred")
+                    callback(err);
+                  } else {
+                      console.log(" DONE " + file.path);
+                      callback();
+                  }   
+
+                });
+        }, function(err){
+            // if any of the file processing produced an error, err would equal that error
+            if( err ) {
+                  // One of the iterations produced an error.
+                  // All processing will now stop.
+                console.log('A file failed to process');
+            } else {
+                console.log("req.files " + JSON.stringify(req.files));
+                res.send({path: req.files.image[0].name});
                 res.end();
                 console.log('All files have been processed successfully');
             }

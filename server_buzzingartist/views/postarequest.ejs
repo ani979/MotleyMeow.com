@@ -244,20 +244,20 @@
       </div>
     </div>
     <div>&nbsp;</div>
-
+ 
     <div class="control-group col-md-12" style = "text-align:center;">
           <label class="control-label col-md-3" for="postPics">Add Pictures</label>
           <div class="controls col-md-9" >
             <span class="fieldNote col-md-12" style="color:inherit;text-align:left;">Ensure that the picture is <5 MB and jpeg/jpg/png only. Image >5 MB may not respond very well</span>
             <span class="btn btn-success fileinput-button col-md-6">
               <i class="glyphicon glyphicon-plus"></i>
-              
+              <input type="hidden" id="myPostPictures" name = "myPostPictures">
               <span>Add a single image(jpg/jpeg/png only)</span>
                 <input id = "imageForAPost" type="file" class = "imageUpdateField" name = "imageForAPost" single style="color: transparent;"/>
               </span>
             </span>  
                   
-             <input type="hidden" id="myPostPics" name = "myPostPics">
+            
              <div>&nbsp;</div>
              <div class="progress col-md-12" style= "display:none;padding:0px;">
                   <div class="bar"></div >
@@ -282,8 +282,8 @@
         <button id="submitbutton" name="submitbutton" class="btn btn-primary">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="/searchPosts"><input type="button" class="btn btn-primary" value="Back" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </a>
-
-        <button id="mailButton" name="mailButton" class="btn btn-primary" onclick="sendMails();return false;">Send Mail and Submit</button><span class="question">?</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       
+          <input type="hidden" name="indicateMailToBeSent" id="indicateMailToBeSent" >
+          <button id="mailButton" name="mailButton" class="btn btn-primary" onclick="sendMails();return false;">Send Mail and Submit</button><span class="question">?</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       
       </div>
 
     </div>
@@ -377,7 +377,7 @@
                   </div>
           </div><!-- End of Modal body -->
           <div class="modal-body step-2" data-step="2">
-            <p>Are you really sure you want to send Email to all the artists?</p>
+            <p>The mail will be sent by Admin after a short review and this will be done within two hours from now. So, you confirm you want to send email? You will also receive this email. If you don't receive it, please inform on 9886244329.</p>
           </div>  
           <div class="modal-footer step-1" style="border:0px;" data-step="1">
               <span class="pull-left"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
@@ -386,7 +386,7 @@
           </div>
           <div class="modal-footer step-2" style="border:0px;" data-step="2">
               <span class="pull-right"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></span>
-              <span class="pull-left"><button type="button" class="btn btn-default" onclick="shootTheMail()">Shoot the mail </button></span>
+              <span class="pull-left"><button type="button" class="btn btn-default" onclick="shootTheMail()">YES</button></span>
           </div>
         </div><!-- End of Modal content -->
         </div><!-- End of Modal dialog -->
@@ -552,7 +552,7 @@
             $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /uploads/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=post.post.imagePath%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
             $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
               postImages.push("<%=post.post.imagePath%>");
-              $('#myPostPics').val(postImages[0]);
+              $('#myPostPictures').val(postImages[0]);
           <%} %>
 
       $( "#auditionButton" ).click(function() {
@@ -759,7 +759,8 @@
     }
 
      function shootTheMail(selectedEmails) {
-        generateNotificationLayout('warning', 'topCenter', 'Please wait. Mail is being sent.');
+        $('#indicateMailToBeSent').val("true");
+        generateNotificationLayout('warning', 'topCenter', 'Please wait.');
         var subject = $("#emailBody").val();
         if(subject == "Not mentioned") {
           subject = "";
@@ -768,13 +769,12 @@
             first_name: "<%=user.facebook.name%> via MotleyMeow",
             fromEmail: "noreply@motleymeow.com",
             postBody: subject,
-            toArtists: $('#toEmails').val() + ",motleymeow@gmail.com," + "<%=user.facebook.email%>",
-            postTitle: $('input:text[name="postTitle"]').val(),
-            myPostPics: postImages
+            toArtists: "ani979@gmail.com,motleymeow@gmail.com",
+            postTitle: $('input:text[name="postTitle"]').val()
             };
 
           $.ajax({ 
-           url: "/sendPostMailsToArtists",
+           url: "/indicateMailToBeSent",
            type: "POST",
            cache: false, 
            async: true,
@@ -846,7 +846,7 @@
         postImages.splice($.inArray( $('#imageName' + imgIndx).val(), postImages),1);
         $('img[id=image' + imgIndx + ']').attr("src","");
         $('tr[id=div' + imgIndx + ']').remove();
-        $('#myPostPics').val(postImages[0]);
+        $('#myPostPictures').val(postImages[0]);
     }
 
 
@@ -942,7 +942,7 @@
                 $('#mypics').append("</div>");
               }
             }
-            $('#myPostPics').val(postImages[0]);
+            $('#myPostPictures').val(postImages[0]);
           },
           error: function() {
             console.log('process error');
