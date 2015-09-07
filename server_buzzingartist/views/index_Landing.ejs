@@ -285,20 +285,16 @@
                           fbLink = '/profile?fbId='+ allPosts[i].post.userid
                       } %>      
                       <div class="work-item feeds-data">
-                        <div>
-
+                        <div class = "imgWrap" style="position: relative; left: 0; top: 0;">
+                            <img  src="/images/backgroundPost.gif" style="position: relative; top: 0; left: 0;"> 
                           <% if(typeof allPosts[i].post.imagePath == 'undefined' || allPosts[i].post.imagePath == '') { %>
                             <a href="/images/postDefaultImage.jpg" rel="lightbox">
-                              <div class = "hover-container">
-                              <img data-sizes="auto" rel="lightbox" data-src="/images/postDefaultImage.jpg" style="height:250px;width:100%;" class="member-photo lazyload"> 
-                            </div>
+                              <img data-sizes="auto" rel="lightbox" data-src="/images/postDefaultImage.jpg" style="height:250px;width:95%;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload"> 
                             </a>
                           <% } else { %>
                             <a href="/uploads/<%=allPosts[i].post.userid%>/pictures/<%=allPosts[i].post.imagePath%>" rel="lightbox">
-                              <div class = "hover-container">
-                            <img data-sizes="auto" rel="lightbox" data-src="/uploads/<%=allPosts[i].post.userid%>/pictures/<%=allPosts[i].post.imagePath%>" style="height:250px;width:100%;" class="member-photo lazyload">
-                              </div>
-                          </a>
+                            <img data-sizes="auto" rel="lightbox" data-src="/uploads/<%=allPosts[i].post.userid%>/pictures/<%=allPosts[i].post.imagePath%>" style="height:250px;width:95%;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload">
+                           </a>
                           <% } %>
                         </div> 
                         <hr style="margin-top:0px;border-width: 1px 0px 0px;border-color: #CCC -moz-use-text-color -moz-use-text-color;margin-bottom:0px;"/>
@@ -345,11 +341,13 @@
                       <% for(var i = 0; i < lastProfileUpdtd.length; i++) {%>
                               <div class="col-md-3" style="padding:0px;width:200px;">
                                 <a href = "/profile?fbId=<%=lastProfileUpdtd[i].facebook.id%>" target="_blank" style="min-width:200px; height:200px;text-decoration: none;">
-                                  <div class = "imgWrap">
+                                  
+                                  <div class = "imgWrap" style="position: relative; left: 0; top: 0;">
+                                    <img  src="/images/backgroundProfile.gif" style="position: relative; top: 0; left: 0;"> 
                                     <% if(typeof lastProfileUpdtd[i].local.picture == 'undefined' || lastProfileUpdtd[i].local.picture == "") { %>
-                                    <img  src="/images/siteLogo.jpg" style="height:200px; min-width:200;max-width:200;" class="member-photo lazyload img-responsive" rel="lightbox"> 
+                                    <img  src="/images/siteLogo.jpg" style="height:200px; min-width:200;max-width:200;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload img-responsive" rel="lightbox"> 
                                     <% } else { %>
-                                    <img src="<%=lastProfileUpdtd[i].local.picture%>" class ="lazyload img-responsive" style="height:200px; min-width:200;" rel="lightbox"/>
+                                    <img src="<%=lastProfileUpdtd[i].local.picture%>" class ="lazyload img-responsive" style="height:200px; min-width:200; position: absolute; top: 5px; left: 5px;" rel="lightbox"/>
                                     <% } %>
                                     <div class="imgDescription"><h5 style="padding-top:50px;"><%=lastProfileUpdtd[i].facebook.name%></h5></div>
                                   </div>
