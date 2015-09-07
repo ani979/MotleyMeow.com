@@ -179,8 +179,9 @@
 
              <div class = "col-md-2 col-sm-4 col-xs-4" style="padding:0px;">
                   <a href = "<%=events[i].event.link%>" target="_blank"  class="img-responsive">
-                    <div class = "imgWrap" style="height:200px; min-width:100%;max-width:100%;">
-                      <img src="<%=events[i].event.eventcover%>" class="img-responsive" rel="lightbox" style="height:200px;min-width:100%;max-width:100%;"/>
+                    <div class = "imgWrap" style="height:200px; min-width:100%;max-width:100%;position: relative; left: 0; top: 0;">
+                            <img  src="/images/backgroundEvent.gif" style="position: relative; top: 0; left: 0;"> 
+                      <img src="<%=events[i].event.eventcover%>" class="img-responsive" rel="lightbox" style="height:190px;min-width:95%;max-width:96%;position: absolute; top: 5px; left: 5px;"/>
                       <div class="imgDescriptionEvents col-md-12 col-sm-12 col-xs-12"
                           style="color:#FFF;padding-top:25px;width:100%;height:200px;text-overflow:ellipsis;white-space:wrap;font-size:14px;">
                         <span><%=events[i].event.title%> from <%=displayableStartDate%> 
