@@ -578,23 +578,16 @@ exports.indicateMailToBeSent = function(req, res) {
    }
 
    mailOptions = {
-                        "template_name": "ContactEmailArtists",
-                        "template_content": [
-                            {
-                                "name": "header",
-                                "content": emailText
-                            }
-                        ],
                         "message": {
                                 "from_email":fromEmail,
                                 "from_name":req.body.first_name,
                                 "to":toArray,
-                                "subject": "MotleyMeow:"+ subject,
+                                "subject": "MotleyMeow: someone requested you to send this mail: "+ subject,
                                 "auto_html":true,
                                 "text": emailText
                         }
                  }   
-    m.messages.sendTemplate(mailOptions, function(result) {
+    m.messages.send(mailOptions, function(result) {
                 console.log("Send mail result is " + JSON.stringify(result));
                 res.send({completed: "OK"});
             }, function(err) {
