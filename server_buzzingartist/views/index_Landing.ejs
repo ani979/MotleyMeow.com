@@ -156,7 +156,7 @@
 
 
    
-  <div class="categories col-md-12" style="text-align:center;">
+  <!-- <div class="categories col-md-12" style="text-align:center;">
     <% if(typeof user != 'undefined' && user != null) { %>
       <h2>Upcoming Events in your city</h2>
     <% } else { %>  
@@ -204,7 +204,7 @@
       <hr/>
     <% } %>  
   </div>
-
+ -->
     
 </div>                
 <div class="col-md-2 col-xs-12" style="margin-top:20px;box-shadow: 3px 3px 6px 1px rgb(57, 17, 17);box-sizing: border-box;padding:0px;">
@@ -346,9 +346,9 @@
                                   <div class = "imgWrap" style="position: relative; left: 0; top: 0;">
                                     <img  src="/images/backgroundProfile.gif" style="position: relative; top: 0; left: 0;"> 
                                     <% if(typeof lastProfileUpdtd[i].local.picture == 'undefined' || lastProfileUpdtd[i].local.picture == "") { %>
-                                    <img  src="/images/siteLogo.jpg" style="height:200px; min-width:200;max-width:200;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload img-responsive" rel="lightbox"> 
+                                    <img  src="/images/siteLogo.jpg" style="height:200px; min-width:200px;max-width:200px;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload img-responsive" rel="lightbox"> 
                                     <% } else { %>
-                                    <img src="<%=lastProfileUpdtd[i].local.picture%>" class ="lazyload img-responsive" style="height:200px; min-width:200; position: absolute; top: 5px; left: 5px;" rel="lightbox"/>
+                                    <img src="<%=lastProfileUpdtd[i].local.picture%>" class ="lazyload img-responsive" style="height:200px; min-width:200px; position: absolute; top: 5px; left: 5px;" rel="lightbox"/>
                                     <% } %>
                                     <div class="imgDescription"><h5 style="padding-top:50px;"><%=lastProfileUpdtd[i].facebook.name%></h5></div>
                                   </div>

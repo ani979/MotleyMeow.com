@@ -760,6 +760,7 @@
 
      function shootTheMail(selectedEmails) {
         $('#indicateMailToBeSent').val("true");
+        $('#post').val($("#emailBody").val());
         generateNotificationLayout('warning', 'topCenter', 'Please wait.');
         var subject = $("#emailBody").val();
         if(subject == "Not mentioned") {

@@ -129,12 +129,12 @@ exports.post = function (req, res) {
                     res.redirect('/error');         
                 } else {
 
-                    console.log("found post " + db);
-                    console.log("message db.post.postTitle: "+db.post.postTitle);
-                    console.log("req.body.postTitle:::::::::: "+req.body.postTitle); 
-                    console.log("req.body.myPostPictures:::::::::: "+req.body.myPostPictures);  
+                    console.log("req.body:::::::::: "+JSON.stringify(req.body));  
                     db.post.postTitle = req.body.postTitle;
                     db.post.postDetail = req.body.post;
+                    if(req.body.indicateMailToBeSent == "true") {
+                        db.post.mailRequested = true;
+                    }
 
                     if(typeof db.post.imagePath != 'undefined' || db.post.imagePath != "") {
                         // Check if request has some files. If it has check if both the files are same, if yes dont do anthing else delete file from tmp folder

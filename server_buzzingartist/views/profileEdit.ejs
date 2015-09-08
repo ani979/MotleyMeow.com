@@ -13,6 +13,8 @@
         <link href="css/lightbox.css" rel="stylesheet" />
         <link href="css/bootstrap-dialog.css" rel="stylesheet">
         <script src="js/bootstrap-dialog.js"></script>
+                <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="css/animate.css"/>
 <!-- 
 <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
  -->
@@ -91,8 +93,9 @@
                   <div class="col-md-3 col-lg-3 " align="center"> <img id="myProfilePic" alt="User Pic" src=<%= user.local.picture %> class="img-circle" style="max-height:180px;padding-bottom:0px;"></br> 
                   <a id = "editMyPic" href = "javascript:void()" onclick = "changeMyPic()" style="color:#E9DFD7;">Edit My Pic</a>
                 <% } else { %>
-                  <i class="fa fa-user" style="font-size:180px;color:rgba(59, 0, 0, 0.76)"></i>
-                  <img id="myProfilePic" alt="User Pic" src="" class="img-circle" style="max-height:180px;padding-bottom:0px;display:none;">
+                  <div class="col-md-3 col-lg-3 " align="center">
+                  <i id ="dummyPfPic" class="fa fa-user" style="font-size:180px;color:rgba(59, 0, 0, 0.76)"></i>
+                  <img id="myProfilePic" alt="User Pic" src="" class="img-circle" style="max-height:180px;padding-bottom:0px;display:none;"><br>
                   <a id = "editMyPic" href = "javascript:void()" onclick = "changeMyPic()" style="color:#E9DFD7;">Add My Pic</a>
                 <% } %>  
                 <a id = "saveMyPic" href = "javascript:void()" onclick = "saveMyPic()" style="color:#E9DFD7;display:none;">Save</a><br/>
@@ -103,422 +106,422 @@
               </div>
 
 
-                <div class=" col-md-9 col-lg-9 "> 
-                  <form id = "profileUpdateForm" class="form-horizontal" role="form" enctype="multipart/form-data" action="/update" method="post">
+              <div class=" col-md-9 col-lg-9 "> 
+                <form id = "profileUpdateForm" class="form-horizontal" role="form" enctype="multipart/form-data" action="/update" method="post">
 
 
-                      <fieldset>
-                        
-                          <div class="panel-group" id="accordion">
-                            <div class="panel panel-default panelHeadingColor">
-                              <div class="panel-heading">
-                                <h4 class="panel-title">
-                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseBasicProfile">Personal Details and Settings</a>
-                                </h4>
-                              </div>
-                              <div id="collapseBasicProfile" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                      <label class="col-sm-3 control-label controlLabelText" for="fullname">Full Name</label>
-                                      <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Name" Maxlength="100"
-                                        value = "<%= user.facebook.name %>" >
-                                      </div>
-                                    </div>
-                                   
-                                   <div class="form-group">
-                                       <label class="col-sm-3 control-label controlLabelText" for="email">Email address</label>
-                                        <div class="col-sm-9">
-                                        <%if(typeof user.facebook.email == 'undefined') {%>
-                                           <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
-                                            value = "" >
-                                        <% } else { %>
-                                          <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
-                                          value = "<%= user.facebook.email %>" >
-                                        <% } %> 
-                                        
-                                        <p><span class="fieldNote" style="color:inherit;">We currently don't do validation of emails. Please ensure you key in the right one else you are easy to miss on important notifications.</span></p>
-                                      </div>
-                                        <input type="hidden" name = "userId" value = <%= user.facebook.id %> >
-                                    </div>
-                                     
-                                    <div class="form-group">
-                                      <label class="col-sm-3 control-label controlLabelText" for="city">Location</label>
-                                      <div class="col-sm-9">
-
-                                        <select class="form-control" value="<%= user.local.city %>" name="city">
-                                          <% var cities = dropdowns.alldropdowns.cities;
-                                              for(var i = 0; i < cities.length; i ++) {   %> 
-                                                  <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
-
-                                               <% } %>   
-                                        </select> 
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                       <label class="col-sm-3 control-label controlLabelText" for="emailDisplay">Email privacy setting</label>
-                                      <div class="col-sm-9">
-                                        <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
-                                        <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK to share
-                                        <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK to share
-                                        <br><span class="fieldNote" style="color:inherit">Please confirm you are ok to share your email id to the artists to mail you regarding their audition or needs in their production. The emails are shared after authenticated by MotleyMeow.</span>
-                                      </div>                                
-                                    </div>
-                                    <div class="form-group">
-                                       <label class="col-sm-3 control-label controlLabelText" for="receiveNotif">Receive newsletters from us</label>
-                                      
-                                      <div class="col-sm-9">
-                                        <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
-                                        <input id="receiveNotif" type="radio" name="receiveNotif" value = "ok"> OK to receive mails
-                                        <input id="receiveNotif" type="radio" name="receiveNotif" value = "nok"> Not OK to receive mails
-                                        <br><span class="fieldNote" style="color:inherit">MotleyMeow may share some notificiations time to time on whats meowing in the city.</span>
-                                      </div> 
-                                    </div>  
-                                  </div>
-                                </div>  
+                    <fieldset>
+                      
+                        <div class="panel-group" id="accordion">
+                          <div class="panel panel-default panelHeadingColor">
+                            <div class="panel-heading">
+                              <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseBasicProfile">Personal Details and Settings</a>
+                              </h4>
                             </div>
-                            <!-- Artistic details -->
-                            <div class="panel panel-default panelHeadingColor">
-                              <div class="panel-heading">
-                                <h4 class="panel-title">
-                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseContribution">Your contribution in Theatre</a>
-                                </h4>
-                              </div>
-                              <div id="collapseContribution" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                  <text class="controlLabelText">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! </text>
-                                  <br/><span class="fieldNote" style="color:inherit;font-size:12px;">If something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
-                                  <br>
+                            <div id="collapseBasicProfile" class="panel-collapse collapse">
+                              <div class="panel-body">
                                   <div class="form-group">
-                                    
-                                    <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                        <label class="control-label controlLabelText">Your association or interests in theatre:</label> 
-                                          <br>
-                                    </div>      
-                                    <div class = "col-sm-9">
-                                      <% var roles = dropdowns.alldropdowns.roles;
-                                      for(var i = 0; i < roles.length; i ++) {   %> 
-                                        <div class = "col-sm-6">
-                                          <label class="checkbox-inline">
-                                                <input type="checkbox" id="checkboxinline<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" ><%=roles[i].text%>
-                                          </label>
-                                       </div>  
-
-                                       <% } %>
-                                     </div> 
-                                  </div>   
-
-                                                   
-                                </div>
-                              </div> 
-                            </div>
-
-
-
-                            <!-- Artistic details -->
-                            <div class="panel panel-default panelHeadingColor">
-                              <div class="panel-heading">
-                                <h4 class="panel-title">
-                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseLanguage">Languages that you connect with</a>
-                                </h4>
-                              </div>
-                              <div id="collapseLanguage" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                  <div class="form-group">
-                                    <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                        <label class="control-label controlLabelText">What languages are you most comfortable with:</label> 
-                                          <br>
-                                    </div> 
+                                    <label class="col-sm-3 control-label controlLabelText" for="fullname">Full Name</label>
                                     <div class="col-sm-9">
-                                              <% var languages = dropdowns.alldropdowns.languages;
-                                              for(var i = 0; i < languages.length; i ++) {   %> 
-                                              <div class = "col-sm-3">
-                                                  <label class="checkbox-inline">
-                                                      <input type="checkbox" id="<%=languages[i]%>lang" value="<%=languages[i]%>" name="lang"/> <%=languages[i]%>
-                                                  </label>
-                                              </div>
-                                              <% } %>
+                                      <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Name" Maxlength="100"
+                                      value = "<%= user.facebook.name %>" >
                                     </div>
                                   </div>
-                                </div>  
-                              </div> 
+                                 
+                                 <div class="form-group">
+                                     <label class="col-sm-3 control-label controlLabelText" for="email">Email address</label>
+                                      <div class="col-sm-9">
+                                      <%if(typeof user.facebook.email == 'undefined') {%>
+                                         <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
+                                          value = "" >
+                                      <% } else { %>
+                                        <input type="text" class="form-control" name="email" id="email" placeholder="Email id" 
+                                        value = "<%= user.facebook.email %>" >
+                                      <% } %> 
+                                      
+                                      <p><span class="fieldNote" style="color:inherit;">We currently don't do validation of emails. Please ensure you key in the right one else you are easy to miss on important notifications.</span></p>
+                                    </div>
+                                      <input type="hidden" name = "userId" value = <%= user.facebook.id %> >
+                                  </div>
+                                   
+                                  <div class="form-group">
+                                    <label class="col-sm-3 control-label controlLabelText" for="city">Location</label>
+                                    <div class="col-sm-9">
+
+                                      <select class="form-control" value="<%= user.local.city %>" name="city">
+                                        <% var cities = dropdowns.alldropdowns.cities;
+                                            for(var i = 0; i < cities.length; i ++) {   %> 
+                                                <option value = "<%=cities[i].city%>"><%=cities[i].text%></option>
+
+                                             <% } %>   
+                                      </select> 
+                                      </div>
+                                  </div>
+                                  <div class="form-group">
+                                     <label class="col-sm-3 control-label controlLabelText" for="emailDisplay">Email privacy setting</label>
+                                    <div class="col-sm-9">
+                                      <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
+                                      <input id="emailDisplay" type="radio" name="emailDisplay" value = "ok"> OK to share
+                                      <input id="emailDisplay" type="radio" name="emailDisplay" value = "nok"> Not OK to share
+                                      <br><span class="fieldNote" style="color:inherit">Please confirm you are ok to share your email id to the artists to mail you regarding their audition or needs in their production. The emails are shared after authenticated by MotleyMeow.</span>
+                                    </div>                                
+                                  </div>
+                                  <div class="form-group">
+                                     <label class="col-sm-3 control-label controlLabelText" for="receiveNotif">Receive newsletters from us</label>
+                                    
+                                    <div class="col-sm-9">
+                                      <!-- <input type="text" class="form-control" name="city" id="card-holder-name" placeholder="Card Holder's Name" value = <%= user.local.city%>> -->
+                                      <input id="receiveNotif" type="radio" name="receiveNotif" value = "ok"> OK to receive mails
+                                      <input id="receiveNotif" type="radio" name="receiveNotif" value = "nok"> Not OK to receive mails
+                                      <br><span class="fieldNote" style="color:inherit">MotleyMeow may share some notificiations time to time on whats meowing in the city.</span>
+                                    </div> 
+                                  </div>  
+                                </div>
+                              </div>  
+                          </div>
+                          <!-- Artistic details -->
+                          <div class="panel panel-default panelHeadingColor">
+                            <div class="panel-heading">
+                              <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseContribution">Your contribution in Theatre</a>
+                              </h4>
+                            </div>
+                            <div id="collapseContribution" class="panel-collapse collapse">
+                              <div class="panel-body">
+                                <text class="controlLabelText">So, how are you associated with Theatre? Do let us know so that we connect you to the ones who are looking for theatre artists like you!! </text>
+                                <br/><span class="fieldNote" style="color:inherit;font-size:12px;">If something interests and you have no experience but willing to learn, select it so that you stay connected.</span>
+                                <br>
+                                <div class="form-group">
+                                  
+                                  <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                      <label class="control-label controlLabelText">Your association or interests in theatre:</label> 
+                                        <br>
+                                  </div>      
+                                  <div class = "col-sm-9">
+                                    <% var roles = dropdowns.alldropdowns.roles;
+                                    for(var i = 0; i < roles.length; i ++) {   %> 
+                                      <div class = "col-sm-6">
+                                        <label class="checkbox-inline">
+                                              <input type="checkbox" id="checkboxinline<%=roles[i].role%>" name="role" value="<%=roles[i].role%>" ><%=roles[i].text%>
+                                        </label>
+                                     </div>  
+
+                                     <% } %>
+                                   </div> 
+                                </div>   
+
+                                                 
+                              </div>
+                            </div> 
+                          </div>
+
+
+
+                          <!-- Artistic details -->
+                          <div class="panel panel-default panelHeadingColor">
+                            <div class="panel-heading">
+                              <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseLanguage">Languages that you connect with</a>
+                              </h4>
+                            </div>
+                            <div id="collapseLanguage" class="panel-collapse collapse">
+                              <div class="panel-body">
+                                <div class="form-group">
+                                  <div id="animesh" class="col-sm-3 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                      <label class="control-label controlLabelText">What languages are you most comfortable with:</label> 
+                                        <br>
+                                  </div> 
+                                  <div class="col-sm-9">
+                                            <% var languages = dropdowns.alldropdowns.languages;
+                                            for(var i = 0; i < languages.length; i ++) {   %> 
+                                            <div class = "col-sm-3">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" id="<%=languages[i]%>lang" value="<%=languages[i]%>" name="lang"/> <%=languages[i]%>
+                                                </label>
+                                            </div>
+                                            <% } %>
+                                  </div>
+                                </div>
+                              </div>  
+                            </div> 
+                          </div>
+
+                          <!-- Artistic details -->
+                          <div class="panel panel-default panelHeadingColor">
+                            <div class="panel-heading">
+                              <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseArtistInYou">Your artistic journey</a>
+                              </h4>
+                            </div>
+                            <div id="collapseArtistInYou" class="panel-collapse collapse">
+                              <div class="panel-body">
+                                <div class="control-group col-md-12">
+                                  <label class="control-label col-md-3 controlLabelText">Tell something about your artistic journey:</label>        
+                                    <div class="controls col-md-9">                
+                                  <% if (typeof user != 'undefined' && typeof user.portfolio != 'undefined' && typeof user.portfolio.myself != 'undefined') { %>       
+                                      <textarea id="textarea" name="myself" style="min-width:100%;color:black;"rows=6><%=user.portfolio.myself%></textarea>
+                                  <%} else { %>   
+                                      <textarea id="textarea" name="myself" style="min-width:100%;color:black;"rows=6></textarea>
+                                  <%}%> 
+                                    </div>
+                                </div>
+                              </div>  
+                            </div> 
+                          </div>
+
+
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePictures">Let your pictures talk</a>
+                              </h4>
+                            </div>
+                            <div id="collapsePictures" class="panel-collapse collapse">
+                              <div class="panel-body">
+                                  <div class="control-group col-md-12" id = "mypics">
+                                      <label class="control-label col-md-3 controlLabelText">Upload your pictures:</label>
+                                        <span class="fieldNote" style="color:inherit;">Ensure that the picture is <5 MB and jpeg/jpg/png only. Images >5 MB may not respond</span>
+                                        <span class="btn btn-success fileinput-button col-md-9">  
+                                          <i class="glyphicon glyphicon-plus"></i>
+                                          
+                                          <span>Add images(jpg/jpeg/png only)</span>
+                                            <input id = "profileImagePost" type="file" class = "imageUpdateField" name = "profileImagePost" multiple style="color: transparent;"/>
+                                          </span>
+                                              
+                                         <input type="hidden" id="mypfolioPics" name = "mypfolioPics">
+                                         <input type="hidden" id="mypfolioRemPics" name = "mypfolioRemPics">
+                                         <div>&nbsp;</div>
+                                         <div class="progress col-md-6 col-md-offset-4" style= "display:none;padding:0px;">
+                                              <div class="bar"></div >
+                                              <label class="percent">0</label >
+                                          </div>
+                                          <div class='col-md-9' style='float:right;'>
+                                            <table role="presentation" id = "imageTable" class='table table-striped'><tbody class='files'></tbody>
+                                            </table>
+                                          </div>
+
+                                          <div id="status"></div>
+                                  </div> 
+                                  <div class = "control-group col-md-12" id = "myFlickPics">
+                                    <label class="control-label col-md-3 controlLabelText" for="field1">Embed from Flickr</label>
+                                          <div class="controls col-md-9"> 
+                                            <span class="question">?</span>
+                                            <span class="fieldNote" style="color:inherit;">Ensure that the picture in Flickr is public. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
+                                              <div id = "flickrPicPlus">
+                                                  <div class="fPicentry input-group col-md-12" id="fpic0">
+                                                      <input class="col-md-9" id="fpic0" name="fpic0" type="text" placeholder="Copy and pase the Flickr url" 
+                                                      />
+                                                    <span class="input-group-btn col-md-3">
+                                                          <button class="btn btn-success btn-addFPics" type="button" style="font-size:8px;">
+                                                              <span class="glyphicon glyphicon-plus"></span>
+                                                          </button>
+                                                      </span>
+                                                  </div>
+                                                  <div>&nbsp;</div>
+                                               </div>   
+                                          <br>
+                                          <input type="hidden" id="mypfolioFlickrPics" name = "mypfolioFlickrPics">
+                                          </div>
+                                  </div>  
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseVideos">Videos that complete you</a>
+                              </h4>
+                            </div>
+                            <div id="collapseVideos" class="panel-collapse collapse">
+                              <div class="panel-body">
+                                   <div class="control-group col-md-12" id = "myVideos">
+                                      <div class="control-group" id="fields">
+                                          <label class="control-label col-md-3 controlLabelText" for="field1">Add your videos</label>
+
+                                          <div class="controls col-md-9"> 
+                                            <span class="question">?</span>
+                                            <span class="fieldNote" style="color:inherit;">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
+                                              <div id = "videoPlus">
+                                                  <div class="entry input-group col-md-12" id="vid0">
+                                                      <input class="col-md-9" id="videos0" name="videos0" type="text" placeholder="Give video URL here" 
+                                                      />
+                                                    <span class="input-group-btn col-md-3">
+                                                          <button class="btn btn-success btn-addVideos" type="button" style="font-size:8px;">
+                                                              <span class="glyphicon glyphicon-plus"></span>
+                                                          </button>
+                                                      </span>
+                                                  </div>
+                                               </div>   
+                                          <br>
+                                          <input type="hidden" id="mypfolioVids" name = "mypfolioVids">
+                                          </div>
+                                      </div>
+                                    </div>
+                              </div>
+                            </div>
+                          </div>  
+                          <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePlays">Your experiences</a>
+                                </h4>
+                              </div>
+                              <div id="collapsePlays" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="control-group col-md-12" id = "myPlays">
+                                        <div class="control-group">
+                                            <label class="control-label col-md-3 controlLabelText" for="field1">Your performances</label>
+
+                                            <div class="panel panel-default controls col-md-9"> 
+                                              
+                                                <div id = "playPlus" class="panel-body">
+                                                    <div class="playEntry input-group col-md-12" id="plays0" style="padding-top:15px;">
+                                                        <input class="col-md-12 playsText" id="playsText" name="playsText" type="text" placeholder="Name the play you were part of"/>
+                                                        <div>&nbsp;</div>
+                                                        <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it" onchange="insertURL(this)"/>
+                                                        <input class="col-md-12 playsGroup" id="playsGroup" name="playsGroup" type="text" placeholder="The theatre group's name"/>
+                                                        
+                                                        <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                                            <label class="control-label">Which year was the play produced</label> 
+                                                              <br>
+                                                        </div> 
+                                                        <div class = "col-sm-5">
+                                                         <select class="col-sm-7" id="playsProdYear" name="playsProdYear" placeholder="The year of production" style="max-height:20px;"></select>
+                                                        </div> 
+                                                      
+                                                        <div>&nbsp;</div>
+                                                        <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
+                                                            <label class="control-label">Your involvement in this event:(Cntrl-select to add more)</label> 
+                                                              <br>
+                                                        </div> 
+                                                        <div class = "col-sm-5" style="height:100%">
+                                                              <select class="playsRole" id="playsRole" multiple="multiple">
+                                                                <% var roles = dropdowns.alldropdowns.roles;
+                                                                for(var i = 0; i < roles.length; i ++) {   %> 
+                                                                      <option value="<%=roles[i].role%>"><%=roles[i].text%></option>
+                                                                 <% } %>
+                                                              </select>
+                                                         </div> 
+                                                      
+                                                      <span class="col-md-12">
+                                                            <button class="btn btn-success btn-addPlays col-md-12" type="button" style="font-size:12px;">
+                                                                <span class="glyphicon glyphicon-plus">Add more experiences</span>
+                                                            </button>
+                                                      </span>
+
+                                                  </div>
+                                                </div>   
+                                            <br>
+                                            
+                                            <input type="hidden" id="mypfolioPlays" name = "mypfolioPlays">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
                             </div>
 
-                            <!-- Artistic details -->
                             <div class="panel panel-default panelHeadingColor">
                               <div class="panel-heading">
                                 <h4 class="panel-title">
-                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseArtistInYou">Your artistic journey</a>
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSocialPresence">Your social presence</a>
                                 </h4>
                               </div>
-                              <div id="collapseArtistInYou" class="panel-collapse collapse">
+                              <div id="collapseSocialPresence" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                  <div class="control-group col-md-12">
-                                    <label class="control-label col-md-3 controlLabelText">Tell something about your artistic journey:</label>        
-                                      <div class="controls col-md-9">                
-                                    <% if (typeof user != 'undefined' && typeof user.portfolio != 'undefined' && typeof user.portfolio.myself != 'undefined') { %>       
-                                        <textarea id="textarea" name="myself" style="min-width:100%;color:black;"rows=6><%=user.portfolio.myself%></textarea>
-                                    <%} else { %>   
-                                        <textarea id="textarea" name="myself" style="min-width:100%;color:black;"rows=6></textarea>
-                                    <%}%> 
-                                      </div>
-                                  </div>
-                                </div>  
-                              </div> 
-                            </div>
-
-
-                            <div class="panel panel-default">
-                              <div class="panel-heading">
-                                <h4 class="panel-title">
-                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePictures">Let your pictures talk</a>
-                                </h4>
-                              </div>
-                              <div id="collapsePictures" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="control-group col-md-12" id = "mypics">
-                                        <label class="control-label col-md-3 controlLabelText">Upload your pictures:</label>
-                                          <span class="fieldNote" style="color:inherit;">Ensure that the picture is <5 MB and jpeg/jpg/png only. Images >5 MB may not respond</span>
-                                          <span class="btn btn-success fileinput-button col-md-9">  
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                            
-                                            <span>Add images(jpg/jpeg/png only)</span>
-                                              <input id = "profileImagePost" type="file" class = "imageUpdateField" name = "profileImagePost" multiple style="color: transparent;"/>
-                                            </span>
-                                                
-                                           <input type="hidden" id="mypfolioPics" name = "mypfolioPics">
-                                           <input type="hidden" id="mypfolioRemPics" name = "mypfolioRemPics">
-                                           <div>&nbsp;</div>
-                                           <div class="progress col-md-6 col-md-offset-4" style= "display:none;padding:0px;">
-                                                <div class="bar"></div >
-                                                <label class="percent">0</label >
-                                            </div>
-                                            <div class='col-md-9' style='float:right;'>
-                                              <table role="presentation" id = "imageTable" class='table table-striped'><tbody class='files'></tbody>
-                                              </table>
-                                            </div>
-
-                                            <div id="status"></div>
-                                    </div> 
-                                    <div class = "control-group col-md-12" id = "myFlickPics">
-                                      <label class="control-label col-md-3 controlLabelText" for="field1">Embed from Flickr</label>
-                                            <div class="controls col-md-9"> 
-                                              <span class="question">?</span>
-                                              <span class="fieldNote" style="color:inherit;">Ensure that the picture in Flickr is public. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
-                                                <div id = "flickrPicPlus">
-                                                    <div class="fPicentry input-group col-md-12" id="fpic0">
-                                                        <input class="col-md-9" id="fpic0" name="fpic0" type="text" placeholder="Copy and pase the Flickr url" 
-                                                        />
-                                                      <span class="input-group-btn col-md-3">
-                                                            <button class="btn btn-success btn-addFPics" type="button" style="font-size:8px;">
-                                                                <span class="glyphicon glyphicon-plus"></span>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                    <div>&nbsp;</div>
-                                                 </div>   
-                                            <br>
-                                            <input type="hidden" id="mypfolioFlickrPics" name = "mypfolioFlickrPics">
-                                            </div>
-                                    </div>  
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                              <div class="panel-heading">
-                                <h4 class="panel-title">
-                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseVideos">Videos that complete you</a>
-                                </h4>
-                              </div>
-                              <div id="collapseVideos" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                     <div class="control-group col-md-12" id = "myVideos">
-                                        <div class="control-group" id="fields">
-                                            <label class="control-label col-md-3 controlLabelText" for="field1">Add your videos</label>
-
-                                            <div class="controls col-md-9"> 
-                                              <span class="question">?</span>
-                                              <span class="fieldNote" style="color:inherit;">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
-                                                <div id = "videoPlus">
-                                                    <div class="entry input-group col-md-12" id="vid0">
-                                                        <input class="col-md-9" id="videos0" name="videos0" type="text" placeholder="Give video URL here" 
-                                                        />
-                                                      <span class="input-group-btn col-md-3">
-                                                            <button class="btn btn-success btn-addVideos" type="button" style="font-size:8px;">
-                                                                <span class="glyphicon glyphicon-plus"></span>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                 </div>   
-                                            <br>
-                                            <input type="hidden" id="mypfolioVids" name = "mypfolioVids">
-                                            </div>
-                                        </div>
-                                      </div>
-                                </div>
-                              </div>
-                            </div>  
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                  <h4 class="panel-title">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePlays">Your experiences</a>
-                                  </h4>
-                                </div>
-                                <div id="collapsePlays" class="panel-collapse collapse">
-                                  <div class="panel-body">
-                                      <div class="control-group col-md-12" id = "myPlays">
-                                          <div class="control-group">
-                                              <label class="control-label col-md-3 controlLabelText" for="field1">Your performances</label>
-
-                                              <div class="panel panel-default controls col-md-9"> 
-                                                
-                                                  <div id = "playPlus" class="panel-body">
-                                                      <div class="playEntry input-group col-md-12" id="plays0" style="padding-top:15px;">
-                                                          <input class="col-md-12 playsText" id="playsText" name="playsText" type="text" placeholder="Name the play you were part of"/>
-                                                          <div>&nbsp;</div>
-                                                          <input class="col-md-12 playsLink" id="playsLink" name="playsLink" type="text" placeholder="Give any web link of it if you have it" onchange="insertURL(this)"/>
-                                                          <input class="col-md-12 playsGroup" id="playsGroup" name="playsGroup" type="text" placeholder="The theatre group's name"/>
-                                                          
-                                                          <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                                              <label class="control-label">Which year was the play produced</label> 
-                                                                <br>
-                                                          </div> 
-                                                          <div class = "col-sm-5">
-                                                           <select class="col-sm-7" id="playsProdYear" name="playsProdYear" placeholder="The year of production" style="max-height:20px;"></select>
-                                                          </div> 
-                                                        
-                                                          <div>&nbsp;</div>
-                                                          <div class="col-sm-7 form-group" style = "margin-left:1px; margin-right=1px; ">
-                                                              <label class="control-label">Your involvement in this event:(Cntrl-select to add more)</label> 
-                                                                <br>
-                                                          </div> 
-                                                          <div class = "col-sm-5" style="height:100%">
-                                                                <select class="playsRole" id="playsRole" multiple="multiple">
-                                                                  <% var roles = dropdowns.alldropdowns.roles;
-                                                                  for(var i = 0; i < roles.length; i ++) {   %> 
-                                                                        <option value="<%=roles[i].role%>"><%=roles[i].text%></option>
-                                                                   <% } %>
-                                                                </select>
-                                                           </div> 
-                                                        
-                                                        <span class="col-md-12">
-                                                              <button class="btn btn-success btn-addPlays col-md-12" type="button" style="font-size:12px;">
-                                                                  <span class="glyphicon glyphicon-plus">Add more experiences</span>
-                                                              </button>
-                                                        </span>
-
-                                                    </div>
-                                                  </div>   
-                                              <br>
-                                              
-                                              <input type="hidden" id="mypfolioPlays" name = "mypfolioPlays">
+                                    <div class="control-group col-md-12" id = "mySocialPresence">
+                                        <div class="control-group">
+                                          <%if(typeof user.portfolio.mySocialPresence == 'undefined' || user.portfolio.mySocialPresence.length == 0) {%>
+                                            <%if(typeof user.google == 'undefined' || typeof user.google.link =='undefined' || user.google.link == "") { %>
+                                              <label class="col-sm-3 control-label  controlLabelText" for="socialG">Google+</label>
+                                              <div class="col-sm-9">
+                                                  <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"> 
                                               </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                </div>
-                              </div>
+                                            <% } %>  
+                                            
+                                            <label class="col-sm-3 control-label  controlLabelText" for="socialT">Twitter</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="socialT" id="socialT" placeholder="Your twitter profile link"> 
+                                            </div>    
 
-                              <div class="panel panel-default panelHeadingColor">
-                                <div class="panel-heading">
-                                  <h4 class="panel-title">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSocialPresence">Your social presence</a>
-                                  </h4>
-                                </div>
-                                <div id="collapseSocialPresence" class="panel-collapse collapse">
-                                  <div class="panel-body">
-                                      <div class="control-group col-md-12" id = "mySocialPresence">
-                                          <div class="control-group">
-                                            <%if(typeof user.portfolio.mySocialPresence == 'undefined' || user.portfolio.mySocialPresence.length == 0) {%>
-                                              <%if(typeof user.google == 'undefined' || typeof user.google.link =='undefined' || user.google.link == "") { %>
-                                                <label class="col-sm-3 control-label  controlLabelText" for="socialG">Google+</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"> 
-                                                </div>
-                                              <% } %>  
-                                              
-                                              <label class="col-sm-3 control-label  controlLabelText" for="socialT">Twitter</label>
-                                              <div class="col-sm-9">
-                                                  <input type="text" class="form-control" name="socialT" id="socialT" placeholder="Your twitter profile link"> 
-                                              </div>    
-
-                                              <label class="col-sm-3 control-label  controlLabelText" for="socialLn">LinkedIn</label>
-                                              <div class="col-sm-9">
-                                                  <input type="text" class="form-control" name="socialLn" id="socialLn" placeholder="Your Linkedin profile link"> 
-                                              </div>   
-                                            <% } else { 
-                                               for(var i =0; i < user.portfolio.mySocialPresence.length; i ++) {%>
-                                                  
-                                                     <% if(user.portfolio.mySocialPresence[i].name == "socialG") {
-                                                        if(typeof user.google == 'undefined' || typeof user.google.link =='undefined' || user.google.link == "") { %>
-                                                        <label class="col-sm-3 control-label controlLabelText" for="socialG">Google+</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"
-                                                            value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
-                                                        </div>
-                                                      <%}
-                                                      } %>  
-                                                  <% if(user.portfolio.mySocialPresence[i].name == "socialT") {%>
-                                                    <label class="col-sm-3 control-label controlLabelText" for="socialT">Twitter</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="socialT" id="socialT" placeholder="Your twitter profile link" value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
-                                                    </div>    
-                                                  <% } %>
-                                                  <% if(user.portfolio.mySocialPresence[i].name == "socialLn") {%>
-                                                    <label class="col-sm-3 control-label controlLabelText" for="socialLn">LinkedIn</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" name="socialLn" id="socialLn" placeholder="Your Linkedin profile link" value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
-                                                    </div>  
-                                                  <%} %>  
-                                               <% } %> 
-                                            <% } %>
-                                          </div>
-                                      </div>
-                                  </div>
-                                </div>
-                                <input type = "hidden" id = "mypfolioSocialPres" name = "mypfolioSocialPres"/>
-                              </div>
-
-
-                              <div class="panel panel-default panelHeadingColor">
-                                <div class="panel-heading">
-                                  <h4 class="panel-title">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseResume">More to say...</a>
-                                  </h4>
-                                </div>
-                                <div id="collapseResume" class="panel-collapse collapse">
-                                  <div class="panel-body">
-                                       <div class="control-group col-md-12">
-                                        <% if( typeof user.portfolio.myResume != 'undefined' && user.portfolio.myResume != "") { %>
-                                              <label class="control-label col-md-3 controlLabelText">Update your Artistic Résumé</label>
-                                                <a href= "/portfolio/<%=user.facebook.id%>/resume/<%=user.portfolio.myResume%>" class="antiguaFont" style="color:inherit;">View it here</a>
-                                                <span class="btn btn-default col-md-9">
-                                                <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
-                                                </span>
-                                                <input type="hidden" id="myResume" name = "myResume">
-                                         <% } else { %>      
-                                               <label class="control-label col-md-3 controlLabelText">Add your Artistic Résumé</label>
-                                                <span class="btn btn-default col-md-9">
-                                                <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
-                                                </span>
-                                               <input type="hidden" id="myResume" name = "myResume">
-                                          <% } %>      
+                                            <label class="col-sm-3 control-label  controlLabelText" for="socialLn">LinkedIn</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="socialLn" id="socialLn" placeholder="Your Linkedin profile link"> 
+                                            </div>   
+                                          <% } else { 
+                                             for(var i =0; i < user.portfolio.mySocialPresence.length; i ++) {%>
+                                                
+                                                   <% if(user.portfolio.mySocialPresence[i].name == "socialG") {
+                                                      if(typeof user.google == 'undefined' || typeof user.google.link =='undefined' || user.google.link == "") { %>
+                                                      <label class="col-sm-3 control-label controlLabelText" for="socialG">Google+</label>
+                                                      <div class="col-sm-9">
+                                                          <input type="text" class="form-control" name="socialG" id="socialG" placeholder="Your google+ profile link"
+                                                          value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
+                                                      </div>
+                                                    <%}
+                                                    } %>  
+                                                <% if(user.portfolio.mySocialPresence[i].name == "socialT") {%>
+                                                  <label class="col-sm-3 control-label controlLabelText" for="socialT">Twitter</label>
+                                                  <div class="col-sm-9">
+                                                      <input type="text" class="form-control" name="socialT" id="socialT" placeholder="Your twitter profile link" value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
+                                                  </div>    
+                                                <% } %>
+                                                <% if(user.portfolio.mySocialPresence[i].name == "socialLn") {%>
+                                                  <label class="col-sm-3 control-label controlLabelText" for="socialLn">LinkedIn</label>
+                                                  <div class="col-sm-9">
+                                                      <input type="text" class="form-control" name="socialLn" id="socialLn" placeholder="Your Linkedin profile link" value="<%=user.portfolio.mySocialPresence[i].URL%>"> 
+                                                  </div>  
+                                                <%} %>  
+                                             <% } %> 
+                                          <% } %>
                                         </div>
-                                  </div>
+                                    </div>
                                 </div>
-                              </div> 
-                          </div> 
-                                  
+                              </div>
+                              <input type = "hidden" id = "mypfolioSocialPres" name = "mypfolioSocialPres"/>
+                            </div>
 
-                </div>
+
+                            <div class="panel panel-default panelHeadingColor">
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseResume">More to say...</a>
+                                </h4>
+                              </div>
+                              <div id="collapseResume" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                     <div class="control-group col-md-12">
+                                      <% if( typeof user.portfolio.myResume != 'undefined' && user.portfolio.myResume != "") { %>
+                                            <label class="control-label col-md-3 controlLabelText">Update your Artistic Résumé</label>
+                                              <a href= "/portfolio/<%=user.facebook.id%>/resume/<%=user.portfolio.myResume%>" class="antiguaFont" style="color:inherit;">View it here</a>
+                                              <span class="btn btn-default col-md-9">
+                                              <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
+                                              </span>
+                                              <input type="hidden" id="myResume" name = "myResume">
+                                       <% } else { %>      
+                                             <label class="control-label col-md-3 controlLabelText">Add your Artistic Résumé</label>
+                                              <span class="btn btn-default col-md-9">
+                                              <input id = "resume" type="file" class = "resumeField" name = "resume" style="color: transparent;"/>
+                                              </span>
+                                             <input type="hidden" id="myResume" name = "myResume">
+                                        <% } %>      
+                                      </div>
+                                </div>
+                              </div>
+                            </div> 
+                        </div> 
+                                
+
+              </div>
                     
 
-              </div>    
+            </div>    
                       
 
 
-            </div>
+        </div>
             <div class="panel-footer" style= "background-color: rgba(245, 245, 245, 0);padding: 10px 15px;border:0px;color:#ECE9E9;">
           
          <!--  <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)"><span style="padding-left: 10px;">Please confirm you have read and will abide by our
@@ -629,6 +632,7 @@
     <script src="js/multiple-modals.js"></script>
     <script src="js/lightbox.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
      <script type="text/javascript">
       var imageIndex = 0;
       var vidIndex = 0;
@@ -1422,6 +1426,7 @@
           $("#changeMyPic").show();
           $("#saveMyPic").show();
           $("#editMyPic").hide();
+          $('#dummyPfPic').hide();
           $("#imageName").val(data.path);
        },
 
@@ -1452,11 +1457,12 @@
             return;
             }
           console.log("here success");  
-          
+          generateNotificationLayout('success', 'topCenter', 'Profile Picture saved');
           $("#myProfilePic").attr("src", data.image);
           $("#myProfilePic").show();
           $("#changeMyPic").hide();
           $("#saveMyPic").hide();
+          $("#editMyPic").val("Edit My Pic");
           $("#editMyPic").show();
           $("#imageName").val(data.image);
        },
@@ -1468,7 +1474,44 @@
      
     }
     
-
+  function generateNotificationLayout(type, layout, text) {
+       var n = noty({ layout: layout,
+        type: type,
+        text: text, // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text" style="font-size:16px;color:rgb(0, 96, 244);"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
+            close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
+            easing: 'swing',
+            speed: 500 // opening & closing animation speed
+        },
+        timeout: false, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 10, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+         // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {
+            },
+            afterShow: function() {},
+            onClose: function() {
+                    
+            },
+            afterClose: function() {},
+            onCloseClick: function() {}
+        },
+        closeWith: ["click","button"],
+        buttons: [
+            {addClass: 'btn btn-primary', text: 'DONE', onClick: function($noty) {
+              $noty.close();
+                }
+             }
+            
+          ]
+      });
+    }
     </script>
 
   </body>
