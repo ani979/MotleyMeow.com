@@ -694,8 +694,8 @@ app.post('/reset', function(req, res) {
         // text: 'Hello,\n\n' +
         //   'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
         "message": {
-                    "from_email":"noreply@motleymeow.com",
-                    "from_name":"Motley Meow",
+                    "from_email":"motleymeow@gmail.com",
+                    "from_name":"MotleyMeow",
                     "to":[{"email":user.facebook.email}],
                     "subject": 'Your password has been changed',
                     "text": 'Hello,\n\n' +
@@ -1322,7 +1322,7 @@ function sendTheMail(email) {
                 ],
 
                 "message": {
-                    "from_email":"noreply@motleymeow.com",
+                    "from_email":"motleymeow@gmail.com",
                     "from_name":"Motley Meow",
                     "to":[{"email":email}],
                     "subject": "Welcome to MotleyMeow!",

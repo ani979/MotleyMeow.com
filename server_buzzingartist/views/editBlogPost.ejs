@@ -80,9 +80,9 @@
 
 <!-- Textarea -->
 <div class="control-group">
-  <label class="control-label" for="postBody">Body </label>
+  <label class="control-label" for="blogPostBody">Body </label>
   <div class="controls">                     
-    <textarea id="postBody" style="width: 350px; height: 300px;" name="postBody" rows="10" cols="100"></textarea>
+    <textarea id="blogPostBody" style="width: 350px; height: 300px;" name="blogPostBody" rows="10" cols="100"></textarea>
   </div>
 </div>
 
@@ -90,13 +90,12 @@
 
 <script>
   var originalpostbody = <%- JSON.stringify(post.blogPost.postBody) %> ; 
-  console.log(originalpostbody);  
-  $('#postBody').html(originalpostbody); //setting initial content
+  $('#blogPostBody').text(originalpostbody); //setting initial content
 </script>
 
 <script type="application/x-javascript">
       tinymce.init({
-        selector:'#postBody',
+        selector:'#blogPostBody',
         plugins: "link"
       });
 </script>
@@ -245,7 +244,7 @@
           var data = {
             postTitle: $("#titleOfPost").val(),
             postSubtitle: $("#postSubtitle").val(),
-            postBody: $("#postBody").val(),
+            postBody: $("#blogPostBody").val(),
             postTags: $("#tagsForPost li").map(function() { if($(this).children('.tagit-hidden-field').val() != "") { return $(this).children('.tagit-hidden-field').val() } }).get(),
             postid: $("#postid").val(),
             myblogPics:$('#myblogPics').val(),

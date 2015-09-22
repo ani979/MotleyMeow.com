@@ -349,13 +349,14 @@
           $(sel).trigger('next.m.' + step);
       }
      function shootTheMail(selectedEmails) {
+        alert("$('#emailTitle').val() " + $('#emailTitle').val())
         generateNotificationLayout('warning', 'topCenter', 'Please wait. Mail is being sent.');
         var data={
             first_name: "<%=post.post.user[0].facebook.name%> via MotleyMeow",
-            fromEmail: "noreply@motleymeow.com",
+            fromEmail: "motleymeow@gmail.com",
             postBody: document.getElementById("postDetail").innerHTML,
             toArtists: $('#toEmails').val() + "ani979@gmail.com,motleymeow@gmail.com," + "<%=post.post.user[0].facebook.email%>",
-            postTitle: "<%=post.post.postTitle%>",
+            postTitle: $('#emailTitle').val(),
             myPostPictures: "<%=post.post.imagePath%>"
             };
 

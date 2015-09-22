@@ -148,7 +148,7 @@
                 <h2 class="title" style= "text-align:center;" >Welcome <strong> <%= user.facebook.name %>! </strong></h2>
       </div>  
     <% if (typeof citysel == 'undefined' || citysel == "" || citysel == "None") { %>
-        <h4 style= "text-align:center;"><small > Your location is not set currently and your current email id is set to "<%= user.facebook.email %>". You can always update your location and email id through <a href="/profileEdit" style="color:white;">"update profile"</a> and keep yourself updated about happenings in your city only.</small></h4>
+        <h4 style= "text-align:center;"><small > Your location is not set currently and your current email id is set to "<%= user.facebook.email %>". You can always update your location and email id through <a href="/profileEdit">"update profile"</a> and keep yourself updated about happenings in your city only.</small></h4>
     <% } else { %>  
         <h4 style= "text-align:center;"><small > Your current email id is set to "<%= user.facebook.email %>". You can always <a href="/profileEdit">"update it here"</a> to keep yourself updated about latest happenings.</small></h4>
     <% } %>
