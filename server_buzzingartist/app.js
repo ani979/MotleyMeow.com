@@ -232,7 +232,7 @@ passport.use(new FacebookStrategy({
                     request(picture).pipe(fsExtra.createWriteStream('./views/portfolio/'+user.facebook.id + "/profilePicture/myProfilePic.jpg"));
                     user.local.picture = "/portfolio/"+user.facebook.id + "/profilePicture/myProfilePic.jpg";
                     User.update({'facebook.id' : user.facebook.id},
-                                         { $set: {"local.picture": "./views/portfolio/"+user.facebook.id + "/profilePicture/myProfilePic.jpg"}},
+                                         { $set: {"local.picture": "/portfolio/"+user.facebook.id + "/profilePicture/myProfilePic.jpg"}},
                                                     function (err, user) {
                                                         if(err) {
                                                             console.log("Something went wrong in saving picture");

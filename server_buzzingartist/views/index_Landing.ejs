@@ -346,14 +346,16 @@
                                   <div class = "imgWrap" style="position: relative; left: 0; top: 0;">
                                     <img  src="/images/backgroundProfile.gif" style="position: relative; top: 0; left: 0;"> 
                                     <% if(typeof lastProfileUpdtd[i].local.picture == 'undefined' || lastProfileUpdtd[i].local.picture == "") { %>
-                                    <img  src="/images/siteLogo.jpg" style="height:200px; min-width:200px;max-width:200px;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload img-responsive" rel="lightbox"> 
+                                    <img  src="/images/noProfilePic.jpg" style="height:200px; min-width:200px;max-width:200px;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload img-responsive" rel="lightbox"> 
                                     <% } else { %>
-                                    <img src="<%=lastProfileUpdtd[i].local.picture%>" class ="lazyload img-responsive" style="height:200px; min-width:200px; position: absolute; top: 5px; left: 5px;" rel="lightbox"/>
+                                    <img src="<%=lastProfileUpdtd[i].local.picture%>" onError="this.src = '/images/noProfilePic.jpg'" class ="lazyload img-responsive" style="height:200px; min-width:200px; position: absolute; top: 5px; left: 5px;" rel="lightbox"/>
                                     <% } %>
                                     <div class="imgDescription"><h5 style="padding-top:50px;"><%=lastProfileUpdtd[i].facebook.name%></h5></div>
                                   </div>
                                 </a>
                                 </div><!-- /row -->
+
+
                       <% }  %>
 
                     
@@ -393,13 +395,22 @@
                             displayableDate = getDate(isodateString) 
                             authorpic = allBlogs[i].blogPost.authorPic
                             authorName = allBlogs[i].blogPost.authorName
+                            var blogImage ="";
+                            if(typeof allBlogs[i].blogPost.myPhotos != 'undefined' && allBlogs[i].blogPost.myPhotos.length > 0) {
+                                blogImage = allBlogs[i].blogPost.myPhotos[0]
+                            } 
+                            var authorid = allBlogs[i].blogPost.authorid
 
                             %>
                            <div style="color:#D3D5D8;">
                          
                                 
-                                <a href="/displayBlogPost?blogpostid=<%=allBlogs[i]._id%>" title="click to view the Blog" rel="bookmark" style="color:#D3D5D8;"><h4><%=allBlogs[i].blogPost.postTitle%></h4>
-                                </a>     
+                                <a href="/displayBlogPost?blogpostid=<%=allBlogs[i]._id%>" title="click to view the Blog" rel="bookmark" style="color:#D3D5D8;"><% if(blogImage != "") { %>
+                                  <img src="/blog/<%=authorid%>/pictures/<%=blogImage%>" style="height:200px;width:100%;"> 
+                                 <% } else { %>
+                                  <img src="/images/blogDefault.jpg" style="height:200px;width:100%;">
+                                 <% } %> 
+                                <h4><%=allBlogs[i].blogPost.postTitle%></h4></a>     
                                 <h5><small style="color:#B7B4B4;">Blog posted by
                                     <% if(username != "") { %>
                                       <span class='user'><a style="color:#E6E7E9;" href="/profile?fbId=<%=allBlogs[i].blogPost.authorid%>" title='view users profile'><%=authorName%></a></span>
