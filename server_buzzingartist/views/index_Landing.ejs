@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Keywords" content="Theatre, Artists, Motleymeow, Sponsor, Events, Bengaluru, Mumbai, Delhi, Chennai, Kolkata, Drama, Naatak"/>
-    <meta property="og:title" content="MOTLEYMEOW. Hear the artists meow."/>
+    <meta property="og:title" content="MOTLEYMEOW"/>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="http://www.motleymeow.com" />
     <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
@@ -57,7 +57,7 @@
 
 
   
-<div id="home-row-1" class="clearfix slide-1" style="padding-top:0px;padding-left:0px;color:#D8D3D3; height:278px;">
+<div id="home-row-1" class="clearfix slide-1" >
  
   <% if(typeof user == 'undefined' || user ==null) { %>
      
@@ -287,7 +287,7 @@
                       } %>      
                       <div class="work-item feeds-data">
                         <div class = "imgWrap" style="position: relative; left: 0; top: 0;">
-                            <img  src="/images/backgroundPost.gif" style="position: relative; top: 0; left: 0;"> 
+                            <img  data-sizes="auto" src="/images/backgroundPost.gif" style="position: relative; top: 0; left: 0;"> 
                           <% if(typeof allPosts[i].post.imagePath == 'undefined' || allPosts[i].post.imagePath == '') { %>
                             <a href="/images/postDefaultImage.jpg" rel="lightbox">
                               <img data-sizes="auto" rel="lightbox" data-src="/images/postDefaultImage.jpg" style="height:250px;width:95%;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload"> 
@@ -567,20 +567,7 @@
 
 
   <script type="text/javascript">
-      $(document).ready(function() {
-        
-        // var i = Math.floor(Math.random() * 3)
-        // var imageUrl = "../images/bg_landing"+ i + ".jpg"
-        var imageUrl = "../images/MM_CoverPage.jpg";
-        $(".slide-1").css('background-image', 'url(' + imageUrl + ')');
-        $(".slide-1").css('background-size', '100% 100%');
-        $(".slide-1").css(' background-repeat', 'no-repeat');
-        $('.postTitle').ellipsis({
-        row: 2
-        });
-       
-      });
-    
+     
 //$("#footer").load("footer.ejs"); 
   var isMobile = {
                 Android: function() {

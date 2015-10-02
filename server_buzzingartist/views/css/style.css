@@ -1487,3 +1487,26 @@ div.tooltip p {
   border-image: none;
 
 }
+
+@media only screen and (min-width:700px) {
+  #home-row-1 {
+    padding-top: 0px;
+    padding-left: 0px;
+    color: #D8D3D3;
+    height: 278px;
+    background-image: url("../images/MM_CoverPage.jpg");
+    background-size: 100% 100%;
+  }
+}
+
+@media only screen and (max-device-width:700px) {
+  #home-row-1 {
+    padding-top: 0px;
+    padding-left: 0px;
+    color: #D8D3D3;
+    height: 278px;
+    background-image: url("../images/MM_CoverPage_Mobile.jpg");
+    background-size: 100% 100%;
+  }
+}
+
