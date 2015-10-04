@@ -204,7 +204,7 @@
         });
 
         removeThis = function(imgIndx) {
-            blogImages.splice($.inArray( $('#image' + imgIndx).val(), blogImages),1);
+            blogImages.splice($.inArray( $('#blogImageName' + imgIndx).val(), blogImages),1);
             $('img[id=image' + imgIndx + ']').attr("src","");
             $('tr[id=div' + imgIndx + ']').remove();
 
@@ -217,11 +217,12 @@
             // $('#mypics').append("<div class='col-md-9' style='float:right;'><table role=presentation" + " id = imageTable" + " class='table table-striped'><tbody class='files'>");
 
 
-            <% for(var i = 0; i < post.blogPost.myPhotos.length; i ++ ) { %> 
+            <% for(var i = 0; i < post.blogPost.myPhotos.length; i++ ) { %> 
                 $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
                 $('#div' + imageIndex).append("<td> <a href=/blog/"+ "<%=user.facebook.id%>" + "/pictures/" + "<%=post.blogPost.myPhotos[i]%>" + " id = mypicsa" + imageIndex + " data-lightbox='Uploading..' data-title='Portfolio pictures'>");
-                $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /blog/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=post.blogPost.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#mypicsa' + imageIndex).append("<img id=imageName"+imageIndex + " src = /blog/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=post.blogPost.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' type = 'button' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#mypicsa' + imageIndex).append("<input type='hidden' id=blogImageName"+imageIndex + " value = " + "<%=post.blogPost.myPhotos[i]%>" + " >");
 
                   imageIndex++;
                   blogImages.push("<%=post.blogPost.myPhotos[i]%>");
@@ -369,9 +370,9 @@
                   // $("#image"+i).attr("src","tempUploads/"+data.path[i].name);
                 $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
                 $('#div' + imageIndex).append("<td> <a href=/blog/"+ "<%=user.facebook.id%>" + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Blog pictures'>");
-                $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /blog/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
- 
+                $('#mypicsa' + imageIndex).append("<img id=imageName"+imageIndex + " src = /blog/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
+                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' type = 'button' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#mypicsa' + imageIndex).append("<input type='hidden' id=blogImageName"+imageIndex + " value = " + "<%=post.blogPost.myPhotos[i]%>" + " >");
 
 
                   $('#mypics').append("</div>");

@@ -822,7 +822,9 @@
                 $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
                 $('#div' + imageIndex).append("<td> <a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + "<%=user.portfolio.myPhotos[i]%>" + " id = mypicsa" + imageIndex + " data-lightbox='Uploading..' data-title='Portfolio pictures'>");
                 $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +"<%=user.portfolio.myPhotos[i]%>" + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' type = 'button' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#mypicsa' + imageIndex).append("<input type='hidden' id=portfolioImageName"+imageIndex + " value = " + "<%=user.portfolio.myPhotos[i]%>" + " >");
+
 
                   imageIndex++;
                   portfolioImages.push("<%=user.portfolio.myPhotos[i]%>");
@@ -989,7 +991,8 @@
 
       removeThis = function(imgIndx) {
         //portfolioRemovedImages.push($('#imageName' + imgIndx).val());
-        portfolioImages.splice($.inArray( $('#image' + imgIndx).val(), portfolioImages),1);
+
+        portfolioImages.splice($.inArray( $('#portfolioImageName' + imgIndx).val(), portfolioImages),1);
         $('img[id=image' + imgIndx + ']').attr("src","");
         $('tr[id=div' + imgIndx + ']').remove();
 
@@ -1105,6 +1108,7 @@
               console.log("Data " + data.path)
               if(typeof data.path != 'undefined' && data.path.length > 0) {
                 for(var i = 0; i < data.path.length ; i++) {
+                  
                   portfolioImages.push(data.path[i].name);
 
                   // $('#mypics').append("<img id=image"+i+" alt='No Image Set' style='max-width:200px;max-height:200px'></img>");
@@ -1112,7 +1116,8 @@
                 $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
                 $('#div' + imageIndex).append("<td> <a href=/portfolio/"+ "<%=user.facebook.id%>" + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Portfolio pictures'>");
                 $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /portfolio/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' type = 'button' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#mypicsa' + imageIndex).append("<input type='hidden' id=portfolioImageName"+imageIndex + " value = " + data.path[i].name + " >");
  
 
 

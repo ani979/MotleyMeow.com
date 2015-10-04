@@ -58,7 +58,9 @@
 
   
 <div id="home-row-1" class="clearfix slide-1" >
- 
+ <div class="col-md-4 col-sm-4 col-xs-4">
+  <img src ="images/weblogo.gif" style="width:40%;height:80%;">
+ </div> 
   <% if(typeof user == 'undefined' || user ==null) { %>
      
      <div>&nbsp;</div> 
@@ -133,6 +135,7 @@
 
     </div> 
   <% } else { %>
+  
       <% var citysel = user.local.city %>
 
         

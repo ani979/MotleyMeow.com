@@ -25,13 +25,7 @@
     <script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script><!--Let this be from http itself-->
     <!--<script src="tinymce/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="tinymce/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>-->
-    <script type="application/x-javascript">
-      tinymce.init({
-        selector:'#postBody',
-        plugins: "link"
-        //save_onsavecallback: "savePostData"      
-      });
-    </script>
+    
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery.1.11.2.min.js"></script>
     <script src="js/bootstrap.min.3.3.4.js"></script>
@@ -93,7 +87,14 @@
       <textarea id="postBody" style="width: 350px; height: 300px;" name="postBody" rows="10" cols="100"></textarea>
     </div>
   </div>
-
+<script type="application/x-javascript">
+      tinymce.init({
+        selector:'#postBody',
+        plugins: "link"
+        //save_onsavecallback: "savePostData"      
+      });
+      // CKEDITOR.replace( 'postBody' );
+    </script>
   <!--Hideen field-->
   <input type="hidden" id="hiddenbody" name="question_html" />
 
@@ -188,7 +189,7 @@
     });  
 
      removeThis = function(imgIndx) {
-        blogImages.splice($.inArray( $('#imageName' + imgIndx).val(), blogImages),1);
+        blogImages.splice($.inArray( $('#blogImageName' + imgIndx).val(), blogImages),1);
         $('img[id=image' + imgIndx + ']').attr("src","");
         $('tr[id=div' + imgIndx + ']').remove();
 
@@ -283,7 +284,9 @@ $(function(){
                 $('#imageTable').append("<tr class='template-upload fade in' id = div" + imageIndex + " >");
                 $('#div' + imageIndex).append("<td> <a href=/blog/"+ "<%=user.facebook.id%>" + "/pictures/" + data.path[i].name + " id = mypicsa" + imageIndex + " data-lightbox='No Image set' data-title='Blog pictures'>");
                 $('#mypicsa' + imageIndex).append("<img id=image"+imageIndex + " src = /blog/" + "<%=user.facebook.id%>" + "/pictures/" +data.path[i].name + " alt='No Image Set' style='max-width:200px;max-height:200px' ></img></a>");
-                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#div' + imageIndex).append("<td> <button class='btn btn-warning cancel' type = 'button' id=deleteImage" + imageIndex + " onclick='removeThis("+ imageIndex +");return false;'><i class='glyphicon glyphicon-ban-circle'></i><span>Remove this image</span></button> </td></tr>");
+                $('#mypicsa' + imageIndex).append("<input type='hidden' id=blogImageName"+imageIndex + " value = " + data.path[i].name + " >");
+
  
 
 
