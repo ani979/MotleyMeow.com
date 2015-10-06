@@ -431,12 +431,10 @@ var isAuthenticated = function (req, res, next) {
 }
 
 // routes
-app.get( '/',  home.index_home);
+app.get( '/',  goToHome, home.index_home);
 
-app.get('/auth/facebook',
-    passport.authenticate('facebook', { scope: [ 'email' ] }),
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: [ 'email' ] }),
     function(req, res){
-
     });
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/' }),
@@ -444,7 +442,7 @@ app.get('/auth/facebook/callback',
      console.log("setting here");
      console.log("session " + JSON.stringify(req.session));
      req.session.user = req.user;
-     res.redirect('/home');
+     res.redirect(req.get('referer'));
 });
 
 app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }),
@@ -459,7 +457,7 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
      console.log("setting here");
      console.log("session " + JSON.stringify(req.session));
      req.session.user = req.user;
-     res.redirect('/home');
+     res.redirect(req.get('referer'));
             });
 
     //  app.get('/auth/twitter', passport.authenticate('twitter'));
@@ -492,7 +490,7 @@ app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'e
                 req.logIn(user, function(err) {
                     if (err) { return next(err); }
                     req.session.user = user;
-                    return res.send({completed: "OK", redirect: "/home"});
+                    return res.send({completed: "OK", redirect: req.get('referer')});
                 });
                 
             }    
@@ -1337,3 +1335,14 @@ function sendTheMail(email) {
         console.log("Send mail err is " + JSON.stringify(err));
     });
 }
+
+function goToHome(req, res, next){
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    if (req.isAuthenticated()) {
+        res.redirect('/home')
+         
+    } else {
+        console.log("not authenticated");
+        return next();
+    }
+};
