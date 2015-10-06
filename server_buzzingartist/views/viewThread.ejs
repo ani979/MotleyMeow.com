@@ -7,10 +7,10 @@
 	<title>MM - Forum</title> 
 	<meta name="description" content="Be a part of the buzz." />	    
 	<meta name="keywords" content="forum, motleymeow">
-    <meta property="og:title" content="View the forum thread <%=thread.thread.topic%>">
+    <meta property="og:title" content="<%=thread.thread.topic%>">
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="http://www.motleymeow.com/images/siteLogo.jpg"/>
-    <meta property="og:description" content="Read about this thread from <%= thread.thread.authorName %>"/>
+    <meta property="og:image" content="http://www.motleymeow.com/images/postDefaultImage.jpg"/>
+    <meta property="og:description" content="document.body.innerHTML +=<%=thread.thread.tbody%>"/>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>

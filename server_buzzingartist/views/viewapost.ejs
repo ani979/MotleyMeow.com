@@ -285,6 +285,15 @@
     ga('create', 'UA-61218032-1', 'auto');
     ga('send', 'pageview');
 
+    $('#emailModal').on('hide.bs.modal', function () {
+        $('.step-1').hide();
+        $('.step-2').hide();
+      })
+
+    $('#emailModal').on('show.bs.modal', function () {
+        $('.step-1').show();
+        $('.step-2').hide();
+      })
 
     function sendMails(){
       var roles, lang;
@@ -349,12 +358,11 @@
           $(sel).trigger('next.m.' + step);
       }
      function shootTheMail(selectedEmails) {
-        alert("$('#emailTitle').val() " + $('#emailTitle').val())
         generateNotificationLayout('warning', 'topCenter', 'Please wait. Mail is being sent.');
         var data={
             first_name: "<%=post.post.user[0].facebook.name%> via MotleyMeow",
             fromEmail: "motleymeow@gmail.com",
-            postBody: document.getElementById("postDetail").innerHTML,
+            postBody: document.getElementById("postDetail").innerHTML + "<br><br><font color='#888888' size='2'>This mail is sent to you because you are registered in MotleyMeow as one of these:'" + "<%=post.requirement.role%>" + "'</font>",
             toArtists: $('#toEmails').val() + "ani979@gmail.com,motleymeow@gmail.com," + "<%=post.post.user[0].facebook.email%>",
             postTitle: $('#emailTitle').val(),
             myPostPictures: "<%=post.post.imagePath%>"
