@@ -41,8 +41,10 @@ exports.saveNewBlogPostData = function(req, res){
     var newblogpost = new BlogPost();
 
 	newblogpost.blogPost.postTitle = req.body.postTitle;
+    newblogpost.blogPost.link = req.body.postLink;
     newblogpost.blogPost.postSubtitle = req.body.postSubtitle;
 	newblogpost.blogPost.postBody = req.body.postBody;
+    newblogpost.blogPost.category = req.body.postCategory;
 	//newblogpost.blogPost.categories = req.body.categories;
 	newblogpost.blogPost.authorid = req.session.user.facebook.id; 
     newblogpost.blogPost.authorName = req.session.user.facebook.name;
@@ -127,11 +129,15 @@ exports.myBlogPosts = function(req, res){
 exports.displayBlogPost = function(req, res){
     console.log(req.query.blogpostid);
 
-    BlogPost.findOne({'_id' : req.query.blogpostid}, function(err, blogpost)
+    BlogPost.findOne({ $or: [ { '_id' : req.query.blogpostid }, { 'blogPost.link' : req.query.blogpostid } ] }, function(err, blogpost)
     {
         if(err)
             {
-                console.log("Error in fetching post");
+                console.log("Error in fetching post " + err);
+                BlogPost.findOne({ 'blogPost.link' : req.query.blogpostid }, function(err, blogpost) {
+                    res.render('displayBlogPost', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
+                });
+
             }
         else
             {
@@ -222,6 +228,8 @@ exports.editBlogPostData = function(req, res){
             blogpost.blogPost.postBody = req.body.postBody;
             blogpost.blogPost.tags = req.body.postTags;
             blogpost.blogPost.myPhotos = blogPictures;
+            blogpost.blogPost.category = req.body.postCategory;
+            blogpost.blogPost.link = req.body.postLink;
             //var d = new Date();
             //console.log(d);
             

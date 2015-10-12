@@ -11,11 +11,12 @@ var blogPostSchema = mongoose.Schema({
         postSubtitle    : {type: String, default:'Not mentioned'},
         postBody        : {type: String, default:'Not mentioned'},
         date            : {type: Date, default: Date.now},
-        categories      : [{}],
+        category      : {type: String, default:'General'},
         tags            : [{}],
         comments        : [{commentorid:String, commentorName:String, commentorPic:String, comment:String, date:Date}],
         approved        : {type: Boolean, default: false},
-        myPhotos     : [{}]
+        myPhotos     : [{}],
+        link     : String
     }
 
 });

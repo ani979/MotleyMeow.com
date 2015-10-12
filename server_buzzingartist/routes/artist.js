@@ -295,7 +295,7 @@ exports.getEmailsForPost = function (req, res) {
 
   User.distinct("facebook.email", { $and: [ {"local.city": { $in: selectedCity } }, 
                                             {"local.role": { $in: selectedRoles } },
-                                            { $or: [ {"local.lang": { $in: selectedLang } }, {"local.lang": null}, {"local.lang": {$size: 0} } ] },
+                                            { "local.lang": { $in: selectedLang } },
                                             {"local.emailDisplay": { $in: [Boolean(true), null] } } ] } ,
                           function(err, emails) {
                             if(err) {

@@ -292,11 +292,11 @@
                         <div class = "imgWrap" style="position: relative; left: 0; top: 0;">
                             <img  data-sizes="auto" src="/images/backgroundPost.gif" style="position: relative; top: 0; left: 0;"> 
                           <% if(typeof allPosts[i].post.imagePath == 'undefined' || allPosts[i].post.imagePath == '') { %>
-                            <a href="/images/postDefaultImage.jpg" rel="lightbox">
+                            <a href="/viewpost?postid=<%=allPosts[i]._id%>" title="<%=details%>" rel="bookmark">
                               <img data-sizes="auto" rel="lightbox" data-src="/images/postDefaultImage.jpg" style="height:250px;width:95%;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload"> 
                             </a>
                           <% } else { %>
-                            <a href="/uploads/<%=allPosts[i].post.userid%>/pictures/<%=allPosts[i].post.imagePath%>" rel="lightbox">
+                            <a href="/viewpost?postid=<%=allPosts[i]._id%>" title="<%=details%>" rel="bookmark">
                             <img data-sizes="auto" rel="lightbox" data-src="/uploads/<%=allPosts[i].post.userid%>/pictures/<%=allPosts[i].post.imagePath%>" style="height:250px;width:95%;position: absolute; top: 5px; left: 5px;" class="member-photo lazyload">
                            </a>
                           <% } %>

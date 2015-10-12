@@ -70,13 +70,23 @@
     </div>
   </div>
 
+  <div class="control-group">
+    <label class="control-label" for="linkOfPost">Link</label>
+    <div class="controls">  
+      <input id="linkOfPost" name="linkOfPost" type="text" placeholder="How do you want the link to appear" style="height:30px;" class="input-xlarge">
+    </div>
+  </div>
+
   <!-- Text input-->
   <div class="control-group">
-    <label class="control-label" for="postSubtitle">Sub-title </label>
-    <div class="controls" >
-      <input id="postSubtitle" name="postSubtitle" type="text" placeholder="Enter a 1-2 line description of your post" class="input-xlarge" style="height:30px;">
-      
-    </div>
+      <label class="control-label" for="titleOfPost">Select Category </label>
+      <div class = "controls">
+         <select id="category" name="category">
+          <option value="General">General</option>
+          <option value="Fitoor">Fitoor</option>
+          <option value="Vartalaap">Vartalaap</option>
+        </select>  
+      </div>  
   </div>
 
 
@@ -329,12 +339,14 @@ blogImage
           $.each($("input[name='postCategories']:checked"), function(){
             checkBoxes.push($(this).val());
           });*/
-
+          alert("Category selected " + $('#category').val())
           var data = {
             postTitle: $("#titleOfPost").val(),
             postSubtitle: $("#postSubtitle").val(),
             postBody: $("#postBody").val(),
             myblogPics:$('#myblogPics').val(),
+            postCategory: $('#category').val(),
+            postLink: $('#linkOfPost').val(),
             postTags: $("#tagsForPost li").map(function() { if($(this).children('.tagit-hidden-field').val() != "") { return $(this).children('.tagit-hidden-field').val() } }).get()
           };
 

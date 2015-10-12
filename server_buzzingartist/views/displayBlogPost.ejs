@@ -76,14 +76,10 @@
         <div class="row" syle="margin-right:0px;">
 
             <!-- Blog Post Content Column -->
-            <div class = "col-md-2 col-md-offset-1" style="padding-top:20px;">
-              <% if(typeof post.blogPost.authorPic == 'undefined' || post.blogPost.authorPic == "") { %>
-                <i class="fa fa-user" style="font-size:150px;color:rgba(59, 0, 0, 0.76)"></i>
-              <% } else { %> 
-                <img src=<%=post.blogPost.authorPic %> class="img-circle" style="max-height:150px;">
-              <% } %>
+            <div class = "col-md-2 " style="padding-top:20px;">
+
             </div>  
-            <div class="col-md-6">
+            <div class="col-md-8">
 
                 <!-- Blog Post -->
 
@@ -120,7 +116,7 @@
 
                     <div>
                     <a href="/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>" data-lightbox="IMAGE" data-title="Blog's image">  
-                    <img src='/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>' style="max-width:700px;max-height:500px;"/>
+                    <img src='/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>' style="max-width:100%;max-height:100%;"/>
                     </a>
                     </div>
                     <hr>
