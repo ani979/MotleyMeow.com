@@ -143,6 +143,29 @@
           <div id="status"></div>
 
   </div>
+    <div class="control-group col-md-12" id = "myVideos">
+      <div class="control-group" id="fields">
+          <label class="control-label col-md-3" for="field1">Add blog videos</label>
+
+            <div class="controls col-md-9"> 
+              <span class="question">?</span>
+              <span class="fieldNote" style="color:inherit;">We are currently supporting only YouTube Videos. Please copy, paste the URL here and then press <span class="glyphicon glyphicon-plus gs"></span> to embed it here. Thanks.</span>
+                <div id = "videoPlus">
+                    <div class="entry input-group col-md-12" id="vid0">
+                        <input class="col-md-9" id="videos0" name="videos0" type="text" placeholder="Give video URL here" 
+                        />
+                      <span class="input-group-btn col-md-3">
+                            <button class="btn btn-success btn-addVideos" type="button" style="font-size:8px;">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </span>
+                    </div>
+                 </div>   
+            <br>
+            <input type="hidden" id="mypfolioVids" name = "mypfolioVids">
+            </div>
+      </div>
+    </div>
 
     <ul id="tagsForPost"></ul> <!--field for tags-->
 
@@ -177,6 +200,7 @@
 <script>
       var imageIndex = 0;
       var blogImages =new Array();
+      var vidIndex = 0;
   $(document).ready(function() {
 
 
@@ -318,28 +342,22 @@ $(function(){
 });  
   function savePostData(){
 
-          console.log("This is executing");
-          $('#blogImage').val("");
-          $('#myblogPics').val(blogImages);
-          /*var ed = tinyMCE.get('content');
-blogImage
-          console.log(ed);
+        console.log("This is executing");
+        $('#blogImage').val("");
+        tinyMCE.triggerSave(); //this gives the textarea the value from tinyMCE editor
 
-          $('#postBody').bind('form-pre-serialize', function(e) {
-           tinyMCE.triggerSave();
-          });
-
-          var ef = tinyMCE.get('#postBody');
-          console.log(ef);*/
-         // console.log($("#hiddenbody").val());
-
-         tinyMCE.triggerSave(); //this gives the textarea the value from tinyMCE editor
-
-          /*var checkBoxes = [];
-          $.each($("input[name='postCategories']:checked"), function(){
-            checkBoxes.push($(this).val());
-          });*/
-          alert("Category selected " + $('#category').val())
+        var blogVideos =new Array();
+        
+        $('#videoPlus').children('div').each(function () {
+            var iframeElem = $(this).find('iframe');
+            
+            if(iframeElem.length !=0 && $(iframeElem).attr('src') != "") {
+              blogVideos.push({
+                    "videoURL": $(this).find('iframe').attr('src'),
+                    "videoText": $(this).find('textarea').val()
+              }); 
+            }  
+        });
           var data = {
             postTitle: $("#titleOfPost").val(),
             postSubtitle: $("#postSubtitle").val(),
@@ -347,6 +365,7 @@ blogImage
             myblogPics:$('#myblogPics').val(),
             postCategory: $('#category').val(),
             postLink: $('#linkOfPost').val(),
+            blogVids: blogVideos,
             postTags: $("#tagsForPost li").map(function() { if($(this).children('.tagit-hidden-field').val() != "") { return $(this).children('.tagit-hidden-field').val() } }).get()
           };
 
@@ -384,6 +403,81 @@ blogImage
     //console.log("I decided to cancel");
     window.location = "/myBlogPosts";
   }
+
+  $(function() {
+      $(document).on('click', '.btn-addVideos', function(e) {
+          e.preventDefault();
+          if(!insertIframe(this)) return false;
+          var controlForm = $('.controls #videoPlus:first'),
+              currentEntry = $(this).parents('.entry:first'),
+              newEntry = $(currentEntry).clone().appendTo(controlForm);
+          $(newEntry).find('iframe').remove();
+          $(newEntry).find('textarea').remove();
+          $(newEntry).attr('id', 'vid' + vidIndex);
+          newEntry.find('input').attr('id', 'videos'+vidIndex);
+          newEntry.find('input').val('');
+          controlForm.find('.entry:not(:last) .btn-addVideos')
+              .removeClass('btn-addVideos').addClass('btn-remove')
+              .removeClass('btn-success').addClass('btn-danger')
+              .html('<span class="glyphicon glyphicon-minus"></span>');
+          vidIndex++;    
+      }).on('click', '.btn-remove', function(e) {
+        // portfolioVideos.splice($.inArray(  $(this).parents('.entry:first').find('iframe').attr('src'), portfolioVideos.videoURL),1);
+        $(this).parents('.entry:first').remove();
+        e.preventDefault();
+        return false;
+      });
+
+      function insertIframe(element) {
+        var currentEntry = $(element).parents('.entry:first');
+        $(currentEntry).find('iframe').remove();
+        $(currentEntry).find('textarea').remove();
+        var URLText = currentEntry.find('input').val();
+        if(URLText != "") {
+          if(convertURLToEmbedVideo(URLText) != "") {
+            var embedURL = convertURLToEmbedVideo(URLText);
+            $(currentEntry).append("<iframe src=" +  embedURL + " width=500 height=300 frameborder=0 allowfullscreen class=col-md-12></iframe>");
+            $(currentEntry).append("<textarea id=videoText"+ currentEntry.attr('id') + 
+                                    " name= videoText"+ currentEntry.attr('id') + " placeholder='Tell us something about this video' " +
+                                    "style='min-width:100%';rows=6></textarea>"); 
+            return true;
+          } else {
+            alert("Unable to parse the youtube URL - " + URLText + " Key in the right one directly from url. If its a mistake from us, please bring to our notice, sorry for any inconvenience");
+            currentEntry.find('input').val('');
+            return false
+          }
+        }    
+
+      }
+
+      function insertURL(element) {
+        // var currentEntry = $(element).parents('.playEntry:first');
+        // var str = $(currentEntry).find('#playsLink').val();
+        var str = $(element).val();
+          var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+          if(!re.test(str)) {
+            $(element).val("");
+            alert("Please enter a valid URL.");
+            return false;
+          } else {
+            return true;
+          }
+      
+      }
+
+      function convertURLToEmbedVideo(element) {
+        if(element.indexOf("embed") != -1) {
+          return element;
+        }  
+        var splitURLbyEqualTo = element.split("=");
+        if(splitURLbyEqualTo.length > 1) {
+          var videoId = splitURLbyEqualTo[1];
+          var embedVideoURL = "https://www.youtube.com/embed/"+ videoId;
+          return embedVideoURL
+        } 
+        return "";
+      }
+ });     
 
 </script>
 

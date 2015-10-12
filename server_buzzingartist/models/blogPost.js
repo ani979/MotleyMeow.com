@@ -16,6 +16,7 @@ var blogPostSchema = mongoose.Schema({
         comments        : [{commentorid:String, commentorName:String, commentorPic:String, comment:String, date:Date}],
         approved        : {type: Boolean, default: false},
         myPhotos     : [{}],
+        myVideos     : [{}],
         link     : {type: String, default:''}
     }
 

@@ -9,8 +9,10 @@ exports.newBlogPost = function(req, res){
 
 exports.saveNewBlogPostData = function(req, res){
   var blogPictures;
+  var blogVideos;
   if(typeof req.body.myblogPics != 'undefined' && req.body.myblogPics.length !=0) {
     blogPictures = req.body.myblogPics.split(",");
+
     // console.log("req.body.myblogPics " + blogPictures.length);
     //  app.fsExtra.readdirSync('./views/blog/' + req.session.user.facebook.id + '/pictures/').forEach(function(fileName) {
     //   var found = false;
@@ -38,6 +40,11 @@ exports.saveNewBlogPostData = function(req, res){
   //     console.log("The directory for " +  req.session.user.facebook.id + " does not exist");
   //   }
   // }
+    if(typeof req.body.blogVids != 'undefined' && req.body.blogVids.length > 0) {
+        console.log(" req.body.blogVids.length " + req.body.blogVids);
+        blogVideos = req.body.blogVids;
+        console.log("blogVideos[0] " + blogVideos[0].videoURL)
+    }
     var newblogpost = new BlogPost();
 
 	newblogpost.blogPost.postTitle = req.body.postTitle;
@@ -53,6 +60,7 @@ exports.saveNewBlogPostData = function(req, res){
     console.log(" req.body.postTags " + req.body.postTags);
     newblogpost.blogPost.tags = req.body.postTags;
     newblogpost.blogPost.myPhotos = blogPictures;
+    newblogpost.blogPost.myVideos = blogVideos;
 	//newblogpost.blogPost.date = new Date();
 	//console.log(newblogpost.blogPost.date); 
 
