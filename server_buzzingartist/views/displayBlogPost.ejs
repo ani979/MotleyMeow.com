@@ -111,38 +111,32 @@
                 <% 
                 if(post.blogPost.postBody != "undefined") { 
                   var postBody = post.blogPost.postBody.split("\n");%>
-                  <% var imageIndex = 0; var videIndex = 0;%>
-                  <% if(typeof post.blogPost == 'undefined' || typeof post.blogPost.myVideos == 'undefined' || post.blogPost.myVideos.length ==0 ) { %>
-                      
-                        <% if(post.blogPost.myPhotos != 'undefined' && post.blogPost.myPhotos.length != 0) { %> 
-                        <div>
-                          <a href="/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>" data-lightbox="IMAGE" data-title="Blog's image">  
-                          <img src='/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>' style="max-width:100%;max-height:100%;"/>
-                          </a>
-                        </div>
-                        <% imageIndex = 1; } %>
-                      
-                  <% } else { %>
-                      <iframe src="<%=post.blogPost.myVideos[0].videoURL%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
-                      <p> <%=post.blogPost.myVideos[0].videoText%>
-                      <% videIndex = 1; %>
-                  <% } %>
-                  <hr>
+                  <% var imageIndex = 1;%>
                   <% if(post.blogPost.myPhotos != 'undefined' && post.blogPost.myPhotos.length != 0) { %> 
+
+                    <div>
+                    <a href="/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>" data-lightbox="IMAGE" data-title="Blog's image">  
+                    <img src='/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[0]%>' style="max-width:100%;max-height:100%;"/>
+                    </a>
+                    </div>
+                    <hr>
                     <% var difference = postBody.length - post.blogPost.myPhotos.length;
                     console.log("difference is " + difference  + " postBody.length " + postBody.length);
                     if(difference < -1) {
-                      for(var i = imageIndex; i < (post.blogPost.myPhotos.length); i ++ )  { %>
+                      for(var i =1; i < (post.blogPost.myPhotos.length); i ++ )  { %>
                         <a href="/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[i]%>" data-lightbox="IMAGE" data-title="Blog's image">
                           <div class="img" style="background-image:url('/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[i]%>');background-position: -5px 1px;"></div>
-                        </a>
-                     <% } %>
+                       
+                      </a>
+                        <% imageIndex = (i+1); 
+
+                      } %>
                       <% for(var j = 0; j < postBody.length; j++) { %>
-                           <p id="post<%=j%>" style="clear:both;"></p>
-                            <script>
-                              var myVar = <%- JSON.stringify("\n" + postBody[j]) %>;
-                              document.getElementById("post<%=j%>").innerHTML = myVar;
-                            </script>
+                          <p id="post<%=j%>" style="clear:both;"></p>
+                          <script>
+                            var myVar = <%- JSON.stringify("\n" + postBody[j]) %>;
+                            document.getElementById("post<%=j%>").innerHTML = myVar;
+                          </script>
                       <% } %>  
                     <%} else { 
                        var pIndex = 0;%>
@@ -150,7 +144,7 @@
                        for loop with 0th paragraph to 10 paragraph with an += imagePositions -->
                       <% var imagePositions = Math.floor( postBody.length/post.blogPost.myPhotos.length)
                       console.log("imagePositions " + imagePositions + "postBody.length " + postBody.length)
-                      for(var i = imageIndex; i < post.blogPost.myPhotos.length; i++) { 
+                      for(var i = 1; i < post.blogPost.myPhotos.length; i++) { 
                          for(var j = pIndex; j < pIndex + imagePositions; j++) { %>
                            <p id="post<%=j%>"></p>
                           <script>
@@ -161,9 +155,9 @@
 
                           <% if(post.blogPost.myPhotos[i] != 'undefined') { %>
                             <% if(i % 2 == 0) { %>   
-                              <div style="float: right;clear:left;margin: 10px;">
+                              <div style="float: right;margin: 10px;">
                             <%} else { %>
-                              <div style="float: left;clear:right;margin: 10px;">
+                              <div style="float: left;margin: 10px;">
                             <% } %>
                             <a href="/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[i]%>" data-lightbox="IMAGE" data-title="Blog's image">
                               <img src='/blog/<%=post.blogPost.authorid%>/pictures/<%=post.blogPost.myPhotos[i]%>' style="width:250px;"/>
@@ -172,42 +166,52 @@
                           <% } %>  
                        <% } %> 
                        <% if(pIndex < postBody.length) { 
-                        for(var j = pIndex; j < postBody.length; j++) { %>
-                           <p id="post<%=j%>"></p>
-                          <script>
-                            var myVar = <%- JSON.stringify("\n" + postBody[j]) %>;
-                            document.getElementById("post<%=j%>").innerHTML = myVar;
-                          </script>
+                            for(var j = pIndex; j < postBody.length; j++) { %>
+                              <p id="post<%=j%>"></p>
+                              <script>
+                                var myVar = <%- JSON.stringify("\n" + postBody[j]) %>;
+                                document.getElementById("post<%=j%>").innerHTML = myVar;
+                              </script>
+                          <% } %>  
                         <% } %>  
                       <% } %>  
+                    <% } else { %>
+                        <p id="fullPostBody" style="clear:both;"></p>
+                          <script>
+                            var myVar = <%- JSON.stringify(post.blogPost.postBody) %>;
+                            document.getElementById("fullPostBody").innerHTML = myVar;
+                          </script>
                     <% } %>  
-                  <% } %>  
                   <%if(post.blogPost.approved) { %>
                     <div class="fb-like " data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
                   <%}%>
-                  
+                  <div style="clear:both;">
+
                   <hr>
+                </div>
                 <% } %>  
                 
                 <!-- Blog Comments -->
 
                 <!-- Comments Form -->
                 <!-- Videos -->
+                  <div style="clear:both;">
                 
-                <% if(typeof post.blogPost == 'undefined' || typeof post.blogPost.myVideos == 'undefined' || post.blogPost.myVideos.length ==0 ) { %>
-                  
-                    
-                  
-                <% } else { 
-                    for(var i = videIndex; i < post.blogPost.myVideos.length; i ++ ) { %> 
+                    <% if(typeof post.blogPost == 'undefined' || typeof post.blogPost.myVideos == 'undefined' || post.blogPost.myVideos.length ==0 ) { %>
                       
-                            <iframe src="<%=post.blogPost.myVideos[i].videoURL%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
-                            <p> <%=post.blogPost.myVideos[i].videoText%>
-                            <div>&nbsp;</div>
-                            <div>&nbsp;</div>
-                    <% } %>
-                <%} %>
-                   
+                        
+                      
+                    <% } else { 
+
+                        for(var i = 0; i < post.blogPost.myVideos.length; i ++ ) { %> 
+                          
+                                <iframe src="<%=post.blogPost.myVideos[i].videoURL%>"width="560" height="315" frameborder="0" allowfullscreen></iframe> 
+                                <p> <%=post.blogPost.myVideos[i].videoText%>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                        <% } %>
+                    <%} %>
+                   </div>
                 <% if(typeof user != "undefined") {%> 
                 <div class="well">
                     <h4>Leave a Comment:</h4>
