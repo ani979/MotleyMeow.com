@@ -12,16 +12,15 @@
     <title>MM - All Blogs</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="/cleanblog/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="/cleanblog/css/clean-blog.min.css" rel="stylesheet">
-
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="cleanblog/css/clean-blog.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    
     <!-- Custom Fonts -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'> <!--Let this be http-->
-    <link href="css/style.css" rel="stylesheet">
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -49,70 +48,68 @@
 <body>
     
     
-
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('/images/MMBlogs.jpg');">
-      <div class="container">
-            <% if(typeof user != 'undefined' && user!=null) { %>
+    <% if(typeof user != 'undefined' && user!=null) { %>
       <div id = "headerloggedin"> </div>
-            <% } else { %>
+    <% } else { %>
       <div id = "headerloggedout"></div>
     <%}%> 
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-
-                <% if(search == null) { %>
-                    <div class="site-heading">
-                        <h1 class="oratorFont" style="font-size:36px;">All Blogs</h1>
-                        <hr class="small">
-                        <span class="subheading">This is what everyone's been upto</span>
-                    </div>
-                     <% }
-
-                else { %>
-                    <div class="site-heading">
-                        <h1 class="oratorFont" style="font-size:36px;">All Blogs</h1>
-                        <hr class="small">
-                        <span class="subheading">Showing results for <%= search %></span>
-                    </div>
-                <%} %>
-
-                </div>
-            </div>
-        </div>
-    </header>
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <div id="blog-row-1" style="margin-bottom: 25px;">
+     
+    </div>
 
     <!-- Main Content -->
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-0 col-md-10 col-md-offset-0">
-                
-                <% allposts.forEach(function(post) { %>
 
+            <%for (var i =0; i < allposts.length; i++) { %>
+             
+              
+              <% var details=""; var blogLink = ""; var authorName=""; authorpic=""; %>
+                     
+                        <% if (typeof allposts[i].blogPost.postBody !='undefined') {
+                        details = allposts[i].blogPost.postBody;
+                      } else  {
+                        details=""; 
+                      }  %>
+                        <div class="thread" id="divallthreads" style="text-align:left;color:#E6E0E0;">
+                            <% var userPicture, username, fbLink 
+                            var displayableDate = "";
+                            var isodateString = allposts[i].blogPost.date.toISOString();
+                            displayableDate = getDate(isodateString) 
+                            authorpic = allposts[i].blogPost.authorPic
+                            authorName = allposts[i].blogPost.authorName
+                            var blogImage ="";
+                            if(typeof allposts[i].blogPost.myPhotos != 'undefined' && allposts[i].blogPost.myPhotos.length > 0) {
+                                blogImage = allposts[i].blogPost.myPhotos[0]
+                            } 
+                            var authorid = allposts[i].blogPost.authorid
 
-                            <!--Every post-->
-                            <div class="post-preview">
-                                <a href="/displayBlogPost?blogpostid=<%=post._id%>">
-                                    <h2 class="post-title panel-title" style="font-size:24px;">
-                                        <%= post.blogPost.postTitle %>
-                                    </h2>
-                                    <h3 class="post-subtitle antiguaFont" style="font-size:20px;">
-                                        <text id = "subtitle"><%= post.blogPost.postSubtitle %></text>
-                                    </h3>
-                                </a>
-                                <script>
-                                    // var d = <%- JSON.stringify(post.blogPost.date) %>;
-                                    // var n = d.toString();
-                                    // var x = n.substr(0, 25);
-                                </script>
-                                 <% var isodateString = post.blogPost.date.toISOString();
-                                    var displayableDate = getDate(isodateString) %>
-                                <p class="post-meta oratorFont" style="font-size:16px;">Posted by <a href="#"><%= post.blogPost.authorName %></a> on <%= displayableDate %></p>
+                            %>
+                           <div style="color:#D3D5D8;">
+                         
+                                
+                                <a href="/displayBlogPost?blogpostid=<%=allposts[i]._id%>" title="click to view the Blog" rel="bookmark" style="color:#D3D5D8;"><% if(blogImage != "") { %>
+                                  <img src="/blog/<%=authorid%>/pictures/<%=blogImage%>" style="height:200px;width:100%;"> 
+                                 <% } else { %>
+                                  <img src="/images/blogDefault.jpg" style="height:200px;width:100%;">
+                                 <% } %> 
+                                <h4><%=allposts[i].blogPost.postTitle%></h4></a>     
+                                <h5><small style="color:#B7B4B4;">Blog posted by
+                                    <% if(username != "") { %>
+                                      <span class='user'><a style="color:#E6E7E9;" href="/profile?fbId=<%=allposts[i].blogPost.authorid%>" title='view users profile'><%=authorName%></a></span>
+                                    <% } else { %>  
+                                      <span class='user'><a style="color:#E6E7E9; "href="/profile?fbId=<%=allposts[i].blogPost.authorid%>" title='view users profile'>a member</a></span>
+                                    <% } %>on <b><%=displayableDate%></b>
+                                </small></h5>    
                             </div>
-                            <hr>
-
-                <% }); %> 
+                       </div>
+                       <hr/>
+            <% } %>
+                
+               
                 
                 
                 
@@ -131,7 +128,7 @@
                     <!-- Blog Search Well -->
                     <div style="padding-top:25px">
                         <div class="well" style="">
-                            <h4 class="oratorFont" style="font-size:16px;">Blog Search</h4>
+                            <h4 style="font-size:16px;">Blog Search</h4>
                             <div class="input-group">
                                 <input type="text" class="form-control" style="height:52px" id="search">
                                 <span class="input-group-btn">

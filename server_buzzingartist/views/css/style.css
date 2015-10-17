@@ -1510,3 +1510,25 @@ div.tooltip p {
   }
 }
 
+@media only screen and (min-width:700px) {
+  #blog-row-1 {
+    padding-top: 0px;
+    padding-left: 0px;
+    color: #D8D3D3;
+    height: 278px;
+    background-image: url("../images/blogCoverPage.jpg");
+    background-size: 100% 100%;
+  }
+}
+
+@media only screen and (max-device-width:700px) {
+  #blog-row-1 {
+    padding-top: 0px;
+    padding-left: 0px;
+    color: #D8D3D3;
+    height: 96px;
+    background-image: url("../images/blogCoverPage_small.jpg");
+    background-size: 100% 100%;
+  }
+}
+

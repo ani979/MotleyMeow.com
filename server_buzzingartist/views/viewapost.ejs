@@ -362,7 +362,7 @@
         var data={
             first_name: "<%=post.post.user[0].facebook.name%> via MotleyMeow",
             fromEmail: "motleymeow@gmail.com",
-            postBody: document.getElementById("postDetail").innerHTML + "<br><br><font color='#888888' size='2'>This mail is sent to you because you are registered in MotleyMeow as one of these:'" + "<%=post.requirement.role%>'" + ", who are conversant in one or more languages: '" + "<%=post.requirement.lang%>'" + ", from one of these cities: '" + "<%=post.post.city%>"+ "'</font>",
+            postBody: document.getElementById("postDetail").innerHTML + "<br><br><font color='#888888' size='2'>This mail is sent to you because you are registered in MotleyMeow as one of these:'" + "<%=post.requirement.role%>'" + ", who is conversant in one or more languages: '" + "<%=post.requirement.lang%>'" + ", from one of these cities: '" + "<%=post.post.city%>"+ "'</font>",
             toArtists: $('#toEmails').val() + "ani979@gmail.com,motleymeow@gmail.com," + "<%=post.post.user[0].facebook.email%>",
             postTitle: $('#emailTitle').val(),
             myPostPictures: "<%=post.post.imagePath%>"
