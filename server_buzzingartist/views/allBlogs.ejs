@@ -74,7 +74,7 @@
                       } else  {
                         details=""; 
                       }  %>
-                        <div class="thread" id="divallthreads" style="text-align:left;color:#E6E0E0;">
+                        <div class="thread" id="divallthreads" style="text-align:left;color:rgb(73, 74, 77);">
                             <% var userPicture, username, fbLink 
                             var displayableDate = "";
                             var isodateString = allposts[i].blogPost.date.toISOString();
@@ -88,20 +88,20 @@
                             var authorid = allposts[i].blogPost.authorid
 
                             %>
-                           <div style="color:#D3D5D8;">
+                           <div style="color:rgb(73, 74, 77);">
                          
                                 
-                                <a href="/displayBlogPost?blogpostid=<%=allposts[i]._id%>" title="click to view the Blog" rel="bookmark" style="color:#D3D5D8;"><% if(blogImage != "") { %>
+                                <a href="/displayBlogPost?blogpostid=<%=allposts[i]._id%>" title="click to view the Blog" rel="bookmark" style="color:rgb(73, 74, 77);"><% if(blogImage != "") { %>
                                   <img src="/blog/<%=authorid%>/pictures/<%=blogImage%>" style="height:200px;width:100%;"> 
                                  <% } else { %>
                                   <img src="/images/blogDefault.jpg" style="height:200px;width:100%;">
                                  <% } %> 
                                 <h4><%=allposts[i].blogPost.postTitle%></h4></a>     
-                                <h5><small style="color:#B7B4B4;">Blog posted by
+                                <h5><small style="color:rgb(73, 74, 77);">Blog posted by
                                     <% if(username != "") { %>
-                                      <span class='user'><a style="color:#E6E7E9;" href="/profile?fbId=<%=allposts[i].blogPost.authorid%>" title='view users profile'><%=authorName%></a></span>
+                                      <span class='user'><a style="color:rgb(73, 74, 77);" href="/profile?fbId=<%=allposts[i].blogPost.authorid%>" title='view users profile'><%=authorName%></a></span>
                                     <% } else { %>  
-                                      <span class='user'><a style="color:#E6E7E9; "href="/profile?fbId=<%=allposts[i].blogPost.authorid%>" title='view users profile'>a member</a></span>
+                                      <span class='user'><a style="color:rgb(15, 62, 201);" href="/profile?fbId=<%=allposts[i].blogPost.authorid%>" title='view users profile'>a member</a></span>
                                     <% } %>on <b><%=displayableDate%></b>
                                 </small></h5>    
                             </div>

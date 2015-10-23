@@ -1,6 +1,8 @@
 var BlogPost = require('../models/blogPost'); //load up blogPost model
 var User = require('../models/user.js');	//load up user model
 var app = require('../app.js');
+var async        = require('async')
+
 
 exports.newBlogPost = function(req, res){
 	res.render("newBlogPost", {user: req.session.user});
@@ -10,7 +12,9 @@ exports.newBlogPost = function(req, res){
 exports.saveNewBlogPostData = function(req, res){
   var blogPictures;
   var blogVideos;
+  console.log("req.body.myblogPics.length" + req.body.myblogPics.length);
   if(typeof req.body.myblogPics != 'undefined' && req.body.myblogPics.length !=0) {
+    
     blogPictures = req.body.myblogPics.split(",");
 
     // console.log("req.body.myblogPics " + blogPictures.length);
@@ -136,23 +140,61 @@ exports.myBlogPosts = function(req, res){
 
 exports.displayBlogPost = function(req, res){
     console.log(req.query.blogpostid);
+    var blogPostRes = {};
+    var commentsRes = {};
+    var allBlogPosts = {};
+    async.parallel([            
+            function(callback) {
+                BlogPost.findOne({ $or: [ { '_id' : req.query.blogpostid }, { 'blogPost.link' : req.query.blogpostid } ] }, function(err, blogpost) {
+                    if(err)
+                        {
+                            console.log("Error in fetching post " + err);
+                            BlogPost.findOne({ 'blogPost.link' : req.query.blogpostid }, function(err, blogpost) {
+                                blogPostRes = blogpost;
+                                commentsRes = blogpost.blogPost.comments;
+                                callback(null, "DONE1")
+                                
+                            });
 
-    BlogPost.findOne({ $or: [ { '_id' : req.query.blogpostid }, { 'blogPost.link' : req.query.blogpostid } ] }, function(err, blogpost)
-    {
-        if(err)
-            {
-                console.log("Error in fetching post " + err);
-                BlogPost.findOne({ 'blogPost.link' : req.query.blogpostid }, function(err, blogpost) {
-                    res.render('displayBlogPost', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
+                        }
+                    else
+                        {
+                            blogPostRes = blogpost;
+                            commentsRes = blogpost.blogPost.comments;
+                            callback(null, "DONE1")
+                            
+                        }
                 });
-
+            },
+            function(callback) {
+                BlogPost.aggregate([{ $match: {'blogPost.approved':true} },{ $sort : { 'blogPost.date' : -1 } }, {$limit:5}], function(err, allblogposts) {
+                    //console.log(blogposts);
+                    //console.log(count);
+                    if(err) {
+                        console.log("errror in fetching all blog posts");
+                        allBlogPosts = {};
+                        
+                    }
+                    else {
+                        console.log("All blog posts fetched");
+                        allBlogPosts = allblogposts;
+                        
+                        
+                    } 
+                    callback(null, "DONE6")
+                });
             }
-        else
-            {
+            ],
+        // optional callback
+        function(err, results){
+            console.log("Finally")
+            res.render('displayBlogPost', {post: blogPostRes, user: req.session.user, comments: commentsRes, allBlogs: allBlogPosts});
+        }    
+    );
 
-                res.render('displayBlogPost', {post: blogpost, user: req.session.user, comments: blogpost.blogPost.comments});
-            }
-    });
+                
+
+    
 };
 
 exports.displayComments = function(req, res){
